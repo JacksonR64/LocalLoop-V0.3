@@ -227,6 +227,155 @@ Once a task has been broken down into subtasks using `expand_task` or similar me
 10. **Proceed to Next Subtask:**
     *   Identify the next subtask (e.g., using `next_task` / `task-master next`).
 
+## **MANDATORY Task Completion Workflow** 🚨
+
+**CRITICAL: This workflow MUST be executed whenever a complete task (not just subtasks) is finished. No exceptions.**
+
+### **When to Trigger This Workflow:**
+- ✅ All subtasks for a task are complete (status = 'done')
+- ✅ Main task functionality has been implemented and tested
+- ✅ Task is ready to be marked as 'done'
+
+### **Step 1: Update Memory Bank (REQUIRED)**
+**Update ALL relevant memory bank files with current progress and lessons learned:**
+
+1. **`memory-bank/progress.md`** - Update with:
+   - Task completion status and timestamp
+   - Summary of what was accomplished
+   - Major issues encountered and how they were resolved
+   - Key technical implementations
+   - Any template improvements or patterns discovered
+   - Build/test status
+
+2. **`memory-bank/techContext.md`** - Update with:
+   - New confirmed working configurations
+   - Updated tech stack details with actual implementations
+   - Architecture changes or discoveries
+   - Working code patterns and best practices
+   - API integrations that were completed
+
+3. **`memory-bank/activeContext.md`** - Update with:
+   - Current status and next steps
+   - Completed task summary
+   - Ready-to-start next task information
+   - Any blockers or dependencies identified
+
+### **Step 2: Mark Task as Complete**
+```bash
+# Mark the main task as done
+set_task_status --id=<taskId> --status=done
+```
+
+### **Step 3: Git Commit with Conventional Commit Message (REQUIRED)**
+**Use conventional commit format for all task completions:**
+
+```bash
+# Stage all changes
+git add .
+
+# Commit with conventional commit message format
+git commit -m "<type>(<scope>): <task-title>
+
+<detailed-description>
+
+- ✅ <Subtask 1 summary>
+- ✅ <Subtask 2 summary>
+- ✅ <Subtask N summary>
+
+<technical-details>
+- <Key implementation details>
+- <Issues resolved>
+- <Dependencies added/configured>
+- <Template improvements made>
+
+<testing-status>
+- <Build status>
+- <Test status>
+- <Deployment status>
+
+Completes Task <taskId> - Task Master Status: <taskId> → done"
+```
+
+**Conventional Commit Types:**
+- `feat`: New feature implementation
+- `fix`: Bug fixes
+- `docs`: Documentation updates
+- `style`: Code formatting changes
+- `refactor`: Code refactoring without functionality changes
+- `test`: Adding or updating tests
+- `chore`: Maintenance tasks, dependency updates
+- `ci`: CI/CD pipeline changes
+
+**Scope Examples:**
+- `task-1`, `task-2`, etc. (for task-specific work)
+- `auth` (authentication features)
+- `db` (database schema/operations)
+- `api` (API endpoints)
+- `ui` (user interface components)
+- `config` (configuration changes)
+
+### **Step 4: Push to Repository (REQUIRED)**
+```bash
+# Push changes to trigger CI/CD pipeline
+git push origin main
+```
+
+### **Step 5: Verify CI/CD Pipeline (REQUIRED)**
+- ✅ Confirm GitHub Actions workflow runs successfully
+- ✅ Verify all tests pass
+- ✅ Confirm deployment completes (if applicable)
+- ✅ Check for any pipeline failures and resolve immediately
+
+### **Example Complete Workflow:**
+
+```bash
+# After Task 2 completion
+set_task_status --id=2 --status=done
+
+git add .
+git commit -m "feat(task-2): Database Schema Design and Setup
+
+Complete Supabase database schema implementation with Google Calendar API integration
+
+- ✅ 2.1: Event management tables with proper indexing
+- ✅ 2.2: User authentication schema with OAuth support  
+- ✅ 2.3: RSVP system with capacity tracking
+- ✅ 2.4: Google Calendar API token storage (encrypted)
+- ✅ 2.5: Row-Level Security (RLS) policies implemented
+- ✅ 2.6: Database functions for complex queries
+
+Technical Implementation:
+- PostgreSQL schema with full-text search capabilities
+- Encrypted Google Calendar token storage in users table
+- RLS policies for data access control
+- Computed columns for event status and capacity
+- Database indexes for performance optimization
+
+Build Status: ✅ PASSING
+Test Status: ✅ Database tests implemented
+Deployment Status: ✅ Supabase schema deployed
+
+Completes Task 2 - Task Master Status: 2 → done"
+
+git push origin main
+```
+
+### **Consequences of NOT Following This Workflow:**
+- ❌ Loss of implementation context for future development
+- ❌ Incomplete project history and knowledge transfer
+- ❌ Difficulty resuming work after breaks
+- ❌ Template improvements not captured for future projects
+- ❌ Inconsistent commit history making rollbacks difficult
+- ❌ CI/CD pipeline not validated
+
+### **Exception Handling:**
+**If this workflow is skipped due to chat limitations or interruptions:**
+1. **Create a task reminder** to complete the memory bank updates
+2. **Make a temporary commit** with basic information
+3. **Schedule completion** of the full workflow in the next development session
+
+**This workflow is MANDATORY and must be completed for every task. No exceptions.**
+
 ## Code Analysis & Refactoring Techniques
 
 - **Top-Level Function Search**:

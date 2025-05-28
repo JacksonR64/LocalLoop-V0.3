@@ -279,6 +279,66 @@ test('RSVP flow with Google Calendar integration', async ({ page }) => {
 - Don't forget mobile testing
 - Don't expose sensitive keys in client code
 
+## 🚨 **MANDATORY Task Completion Workflow** 
+
+**CRITICAL: This workflow MUST be executed whenever a complete task is finished. No exceptions.**
+
+### **When to Trigger:**
+- ✅ All subtasks for a task are complete (status = 'done')
+- ✅ Main task functionality has been implemented and tested
+- ✅ Task is ready to be marked as 'done'
+
+### **Required Steps (DO NOT SKIP):**
+
+#### **1. Update Memory Bank Files:**
+```bash
+# Update progress.md with task completion summary
+# Update techContext.md with confirmed working configurations  
+# Update activeContext.md with current status and next steps
+```
+
+#### **2. Mark Task Complete:**
+```bash
+set_task_status --id=<taskId> --status=done
+```
+
+#### **3. Git Commit with Conventional Format:**
+```bash
+git add .
+git commit -m "<type>(<scope>): <task-title>
+
+<detailed-description>
+
+- ✅ <Subtask 1 summary>
+- ✅ <Subtask 2 summary>
+
+<technical-details>
+- <Key implementation details>
+- <Issues resolved>
+- <Dependencies added/configured>
+
+<testing-status>
+- Build Status: ✅ PASSING
+- Test Status: ✅ [status]
+- Deployment Status: ✅ [status]
+
+Completes Task <taskId> - Task Master Status: <taskId> → done"
+```
+
+#### **4. Push to Repository:**
+```bash
+git push origin main
+```
+
+#### **5. Verify CI/CD Pipeline:**
+- ✅ Confirm GitHub Actions runs successfully
+- ✅ Verify all tests pass
+- ✅ Confirm deployment completes
+
+**Conventional Commit Types:** `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`, `ci`
+
+**This workflow is MANDATORY and must be completed for every task. No exceptions.**
+
 ## 🎯 Success Criteria Alignment
 Every feature must support the project's success criteria:
 - ✅ Google Calendar API integration working reliably
