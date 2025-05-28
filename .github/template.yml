@@ -1,0 +1,27 @@
+name: "AI-First Next.js Starter"
+description: "Complete AI-powered development environment with MCP tools, Supabase, and auto-deployment"
+title_placeholder: "My AI App"
+filename_placeholder: "my-ai-app"
+
+include:
+  - "package.json"
+  - "README.md" 
+  - "scripts/"
+  - ".env.example"
+  - ".github/"
+  - "app/"
+  - "components/"
+  - "lib/"
+  - "e2e/"
+  - "next.config.js"
+  - "tailwind.config.js"
+  - "tsconfig.json"
+  - "playwright.config.ts"
+
+exclude:
+  - ".env"
+  - ".env.*"
+  - "node_modules/"
+  - ".next/"
+  - "dist/"
+  - "*.log"

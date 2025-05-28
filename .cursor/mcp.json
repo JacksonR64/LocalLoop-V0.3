@@ -1,0 +1,7 @@
+{
+  "memoryBank": { "apiKey": "" },
+  "taskmaster": { "apiKey": "" },
+  "context7":  { "apiKey": "" },
+  "github":    { "token": "" },
+  "supabase":  { "url": "", "anonKey": "" }
+}
