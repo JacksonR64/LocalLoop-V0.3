@@ -1,0 +1,291 @@
+# LocalLoop Community Events Platform - Cursor Rules
+
+## 🎯 Project Context & Architecture
+You are an expert full-stack developer building LocalLoop, a community events platform with Next.js 15, TypeScript, Supabase, and Google Calendar API integration.
+
+**Core Tech Stack:**
+- **Frontend:** Next.js 15 with App Router, TypeScript, Tailwind CSS 4
+- **Backend:** Supabase (Postgres, Auth, Storage, RLS)
+- **Payments:** Stripe (checkout, webhooks)
+- **Calendar:** Google Calendar API with OAuth 2.0 (PRIMARY CLIENT REQUIREMENT)
+- **Testing:** Playwright E2E, Jest/Vitest unit tests
+- **Deployment:** Vercel
+- **Email:** Resend or Mailgun
+
+## 🔑 Critical Client Requirements
+- **Google Calendar API integration is MANDATORY** - users must add events directly to Google Calendar with one-click
+- **Mobile-first responsive design** for community members
+- **Guest checkout** without forced account creation
+- **Stripe payments** for paid events
+- **Staff dashboard** for event organizers
+
+## 📁 Project Structure & Context Awareness
+- **Always check memory-bank/** files first:
+  - `projectbrief.md` - mission, goals, client requirements
+  - `productContext.md` - user personas, UX requirements
+  - `techContext.md` - technical architecture decisions
+- **Reference scripts/prd.txt** for comprehensive feature requirements
+- **Follow 1000x-app template conventions** for file structure and patterns
+- **Use consistent naming**: kebab-case for files, PascalCase for components, camelCase for functions
+
+## 🏗️ Code Structure & Best Practices
+
+### Next.js 15 App Router Patterns
+- Use App Router (`app/` directory) exclusively
+- Implement Server Components by default, Client Components only when needed
+- Follow Next.js 15 conventions: `page.tsx`, `layout.tsx`, `loading.tsx`, `error.tsx`
+- Use proper TypeScript with strict mode enabled
+- Implement proper SEO with metadata API
+
+### File Organization
+```
+app/
+├── (routes)/
+│   ├── events/
+│   │   ├── page.tsx              # Event discovery
+│   │   ├── [id]/
+│   │   │   ├── page.tsx          # Event details
+│   │   │   └── rsvp/page.tsx     # RSVP flow
+│   ├── dashboard/
+│   │   ├── page.tsx              # Staff dashboard
+│   │   └── events/
+│   └── api/
+│       ├── events/
+│       ├── rsvp/
+│       ├── payments/
+│       └── calendar/             # Google Calendar API routes
+├── components/
+│   ├── ui/                       # Shadcn/ui components
+│   ├── forms/                    # Form components
+│   ├── calendar/                 # Google Calendar integration
+│   └── events/                   # Event-specific components
+├── lib/
+│   ├── supabase/                 # Supabase clients and utilities
+│   ├── stripe/                   # Stripe integration
+│   ├── google-calendar/          # Google Calendar API
+│   └── utils/                    # Shared utilities
+└── types/                        # TypeScript definitions
+```
+
+### TypeScript Standards
+- Use strict TypeScript configuration
+- Define interfaces for all data structures
+- Use proper typing for Supabase queries
+- Create type-safe API routes
+- Implement proper error handling with typed errors
+
+## 🗄️ Supabase Integration Rules
+
+### Database Patterns
+- **Always use @supabase/ssr** for Next.js integration
+- **Never use deprecated @supabase/auth-helpers-nextjs**
+- Use Row-Level Security (RLS) policies for all tables
+- Implement proper database types with `supabase gen types typescript`
+
+### Client Usage
+```typescript
+// Server Component
+import { createServerClient } from '@supabase/ssr'
+
+// Client Component  
+import { createBrowserClient } from '@supabase/ssr'
+
+// Route Handlers
+import { createRouteHandlerClient } from '@supabase/ssr'
+```
+
+### Authentication
+- Implement Supabase Auth with email/password and OAuth (Google, Apple)
+- Use middleware for protected routes
+- Handle authentication state properly in components
+- Implement proper session management
+
+## 🗓️ Google Calendar API Integration (CRITICAL)
+
+### Implementation Requirements
+- **OAuth 2.0 flow** for calendar permissions
+- **Token management** with refresh handling
+- **Error handling** with .ics fallback
+- **One-click integration** for both logged-in and guest users
+
+### Code Patterns
+```typescript
+// Google Calendar service structure
+interface GoogleCalendarService {
+  authenticateUser(): Promise<AuthResult>;
+  createEvent(event: CalendarEvent): Promise<string>;
+  deleteEvent(eventId: string): Promise<void>;
+  refreshToken(refreshToken: string): Promise<TokenResponse>;
+}
+
+// Database schema for tokens (encrypted)
+interface UserCalendarTokens {
+  google_access_token?: string;
+  google_refresh_token?: string;
+  google_token_expires_at?: Date;
+  google_calendar_connected: boolean;
+}
+```
+
+## 💳 Stripe Integration
+
+### Payment Patterns
+- Use Stripe Checkout for payment processing
+- Implement proper webhook handling with signature verification
+- Handle payment intents correctly
+- Provide proper error handling and user feedback
+- Support multiple ticket types per event
+
+### Security
+- Never expose secret keys in client-side code
+- Validate all payments server-side
+- Implement proper refund functionality
+- Use Stripe's built-in security features
+
+## 🎨 UI/UX Guidelines
+
+### Tailwind CSS 4
+- Use Tailwind's utility-first approach
+- Implement responsive design with mobile-first breakpoints
+- Use consistent spacing and color systems
+- Follow accessibility guidelines (WCAG 2.1 Level AA)
+
+### Component Patterns
+- Use Shadcn/ui for base components
+- Create reusable event components
+- Implement proper loading states
+- Use Suspense boundaries appropriately
+- Design for touch-friendly mobile interaction
+
+### Form Handling
+- Use react-hook-form with Zod validation
+- Implement proper error states
+- Use optimistic updates where appropriate
+- Handle network failures gracefully
+
+## 🧪 Testing Standards
+
+### Test Coverage Requirements
+- **100% coverage for payment flows** (Stripe integration)
+- **100% coverage for RSVP flows** (including Google Calendar)
+- **Comprehensive E2E tests** with Playwright
+- **Unit tests** for all utility functions and API routes
+
+### Testing Patterns
+```typescript
+// E2E test structure
+test('RSVP flow with Google Calendar integration', async ({ page }) => {
+  // Test complete user journey
+  await page.goto('/events/test-event');
+  await page.click('[data-testid="rsvp-button"]');
+  await page.click('[data-testid="add-to-calendar"]');
+  // Verify Google Calendar OAuth flow
+});
+```
+
+## 🚀 Performance & Optimization
+
+### Next.js Optimization
+- Use Server Components for data fetching
+- Implement proper caching strategies
+- Optimize images with Next.js Image component
+- Use dynamic imports for code splitting
+- Implement proper loading states
+
+### Database Optimization
+- Use proper indexing for Supabase queries
+- Implement pagination for event listings
+- Use real-time subscriptions sparingly
+- Cache frequently accessed data
+
+## 🔒 Security Best Practices
+
+### Authentication & Authorization
+- Implement proper RLS policies in Supabase
+- Use middleware for route protection
+- Validate all API inputs
+- Implement proper CORS policies
+- Handle sensitive data (calendar tokens) with encryption
+
+### API Security
+- Validate all webhook signatures
+- Implement rate limiting
+- Use proper error handling (don't expose sensitive info)
+- Implement CSRF protection
+
+## 📱 Mobile-First Development
+
+### Responsive Design
+- Design for mobile viewport first (320px+)
+- Use touch-friendly interactive elements (44px minimum)
+- Implement swipe gestures where appropriate
+- Optimize for one-handed usage
+- Test on real devices
+
+### Performance on Mobile
+- Minimize JavaScript bundle size
+- Use progressive loading
+- Implement proper caching
+- Optimize for slow networks
+
+## 🎯 Event-Specific Business Logic
+
+### Event Management
+- Support both free RSVP and paid ticketing
+- Implement capacity management
+- Handle event status (upcoming, in-progress, past, full)
+- Support multiple ticket types with different pricing
+- Enable event duplication for recurring events
+
+### User Flows
+- **Guest checkout** must work seamlessly
+- **Account creation** should be optional but encouraged
+- **Calendar integration** should work for both guests and registered users
+- **Mobile experience** should be equivalent to desktop
+
+## 📋 Documentation & Maintenance
+
+### Code Documentation
+- Document all API routes with clear examples
+- Comment complex business logic
+- Document Google Calendar integration setup
+- Maintain up-to-date README with setup instructions
+- Document environment variables and configuration
+
+### Error Handling
+- Implement proper error boundaries
+- Log errors appropriately (not sensitive data)
+- Provide meaningful error messages to users
+- Handle API failures gracefully with fallbacks
+
+## 🚫 Common Pitfalls to Avoid
+
+### Supabase
+- Don't use deprecated auth helpers
+- Don't expose service role key in client code
+- Don't forget RLS policies on new tables
+- Don't use `get`, `set`, `remove` methods (use `getAll`, `setAll`)
+
+### Google Calendar API
+- Don't assume user has Google account
+- Don't ignore token refresh requirements
+- Don't forget rate limiting
+- Always provide .ics fallback
+
+### General
+- Don't create files longer than 300 lines (split into modules)
+- Don't hardcode configuration values
+- Don't skip TypeScript strict mode
+- Don't forget mobile testing
+- Don't expose sensitive keys in client code
+
+## 🎯 Success Criteria Alignment
+Every feature must support the project's success criteria:
+- ✅ Google Calendar API integration working reliably
+- ✅ 100% test coverage on payment and RSVP paths  
+- ✅ Mobile-responsive design meeting WCAG standards
+- ✅ Guest access without forced account creation
+- ✅ Staff dashboard with live RSVP numbers
+- ✅ Deployment ready for custom domain
+
+Remember: This is a community events platform where ease of use and mobile experience are paramount. Every decision should prioritize user experience for both event organizers and community members.
