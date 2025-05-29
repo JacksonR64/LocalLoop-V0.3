@@ -119,37 +119,79 @@ LocalLoop uses Google Calendar API to provide users with seamless calendar integ
 2. Copy the **Client ID** and **Client Secret**
 3. Store these securely - you'll need them for environment variables
 
-## Step 5: Configure Environment Variables
+## Step 5: Environment Variable Configuration
 
-### 5.1 Development Environment
-Create or update your `.env.local` file in the project root:
+### 5.1 Add Google Calendar Credentials to Your Environment
+
+After completing Steps 1-4 and obtaining your OAuth 2.0 credentials, you need to add them to your LocalLoop environment configuration.
+
+#### Option A: Using the Automated Setup Script (Recommended)
+
+LocalLoop includes an automated environment setup script:
 
 ```bash
-# Google Calendar API Configuration
-GOOGLE_CLIENT_ID=your_client_id_here
-GOOGLE_CLIENT_SECRET=your_client_secret_here
-GOOGLE_REDIRECT_URI=http://localhost:3000/auth/google/callback
+# Run the environment setup script
+./scripts/env-setup.sh
 ```
 
-### 5.2 Production Environment (Vercel)
-Add these environment variables to your Vercel project:
+When prompted, provide your Google Calendar API credentials:
+- **GOOGLE_CLIENT_ID**: Your OAuth 2.0 client ID (ends with .apps.googleusercontent.com)
+- **GOOGLE_CLIENT_SECRET**: Your OAuth 2.0 client secret
+- **GOOGLE_REDIRECT_URI**: `http://localhost:3000/auth/google/callback` (for development)
 
-1. Go to your Vercel dashboard
-2. Select your LocalLoop project
-3. Go to Settings > Environment Variables
-4. Add these variables:
-   - `GOOGLE_CLIENT_ID`: Your Google OAuth client ID
-   - `GOOGLE_CLIENT_SECRET`: Your Google OAuth client secret
-   - `GOOGLE_REDIRECT_URI`: `https://your-domain.com/auth/google/callback`
+#### Option B: Manual Environment Configuration
 
-### 5.3 GitHub Secrets (CI/CD)
-Add these secrets to your GitHub repository:
+If you prefer to configure manually, add these variables to your `.env.local` file:
 
-1. Go to your GitHub repository
-2. Settings > Secrets and variables > Actions
-3. Add these repository secrets:
-   - `GOOGLE_CLIENT_ID`
-   - `GOOGLE_CLIENT_SECRET`
+```bash
+# Create or update .env.local file
+cat >> .env.local << EOF
+
+# Google Calendar API Configuration
+GOOGLE_CLIENT_ID=your-client-id.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=your-client-secret
+GOOGLE_REDIRECT_URI=http://localhost:3000/auth/google/callback
+EOF
+```
+
+### 5.2 Environment Variables Required
+
+| Variable | Description | Example |
+|----------|-------------|---------|
+| `GOOGLE_CLIENT_ID` | OAuth 2.0 Client ID from Google Cloud Console | `123456789012-abcdef...apps.googleusercontent.com` |
+| `GOOGLE_CLIENT_SECRET` | OAuth 2.0 Client Secret from Google Cloud Console | `GOCSPX-abcdef123456...` |
+| `GOOGLE_REDIRECT_URI` | OAuth callback URL for your application | `http://localhost:3000/auth/google/callback` |
+
+### 5.3 Vercel Deployment Configuration
+
+For production deployment on Vercel, add these environment variables in your Vercel dashboard:
+
+1. Navigate to your Vercel project settings
+2. Go to "Environment Variables" 
+3. Add each variable:
+   - **GOOGLE_CLIENT_ID**: Production Client ID
+   - **GOOGLE_CLIENT_SECRET**: Production Client Secret  
+   - **GOOGLE_REDIRECT_URI**: `https://yourdomain.com/auth/google/callback`
+
+### 5.4 Security Considerations
+
+- ✅ **Never commit** `.env.local` or `.env` files to version control
+- ✅ Use different credentials for development and production environments
+- ✅ Regularly rotate your OAuth client secrets
+- ✅ Monitor API usage in Google Cloud Console
+- ✅ Set up proper domain restrictions in production
+
+### 5.5 Testing Your Configuration
+
+After setting up your environment variables:
+
+```bash
+# Test that variables are loaded correctly
+npm run dev
+
+# Check the console for any environment variable errors
+# The Google Calendar integration should now be accessible
+```
 
 ## Step 6: Test the Integration
 
