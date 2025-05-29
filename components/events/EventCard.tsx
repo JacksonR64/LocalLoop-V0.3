@@ -1,0 +1,466 @@
+'use client';
+
+import React from 'react';
+import Image from 'next/image';
+import { Calendar, MapPin, Users, Clock, Tag, ExternalLink } from 'lucide-react';
+import { Card, CardHeader, CardContent, CardFooter, CardTitle, CardDescription } from '@/components/ui';
+import { formatDateTime, formatPrice, truncateText } from '@/lib/utils';
+
+// Event interface (simplified from database types)
+export interface EventData {
+    id: string;
+    title: string;
+    description: string;
+    short_description?: string;
+    start_time: string;
+    end_time: string;
+    location: string;
+    category: string;
+    is_paid: boolean;
+    featured?: boolean;
+    capacity?: number;
+    rsvp_count: number;
+    image_url?: string | null;
+    image_alt_text?: string;
+    organizer: {
+        display_name: string;
+    };
+    ticket_types?: Array<{
+        price: number;
+        name: string;
+    }>;
+}
+
+// Event Card Display Styles
+export type EventCardStyle = 'default' | 'preview' | 'full' | 'compact' | 'timeline';
+
+// Event Card Size Options
+export type EventCardSize = 'sm' | 'md' | 'lg';
+
+interface EventCardProps {
+    event: EventData;
+    style?: EventCardStyle;
+    size?: EventCardSize;
+    featured?: boolean;
+    showImage?: boolean;
+    className?: string;
+    onClick?: () => void;
+}
+
+// Common card props interface
+interface CardComponentProps {
+    event: EventData;
+    size?: EventCardSize;
+    featured?: boolean;
+    showImage?: boolean;
+    className?: string;
+    onClick?: () => void;
+    spotsRemaining: number | null;
+    isUpcoming: boolean;
+    hasPrice: boolean;
+    lowestPrice: number;
+}
+
+// Default Event Card Component
+export function EventCard({
+    event,
+    style = 'default',
+    size = 'md',
+    featured = false,
+    showImage = true,
+    className = '',
+    onClick
+}: EventCardProps) {
+    const spotsRemaining = event.capacity ? event.capacity - event.rsvp_count : null;
+    const isUpcoming = new Date(event.start_time) > new Date();
+    const hasPrice = Boolean(event.is_paid && event.ticket_types && event.ticket_types.length > 0);
+    const lowestPrice = hasPrice ? Math.min(...event.ticket_types!.map(t => t.price)) : 0;
+
+    const commonProps: CardComponentProps = {
+        event,
+        size,
+        featured: Boolean(featured),
+        showImage: Boolean(showImage),
+        className: className || '',
+        onClick,
+        spotsRemaining,
+        isUpcoming,
+        hasPrice,
+        lowestPrice
+    };
+
+    // Render based on style
+    switch (style) {
+        case 'preview':
+            return <PreviewListCard {...commonProps} />;
+        case 'full':
+            return <FullListCard {...commonProps} />;
+        case 'compact':
+            return <CompactCard {...commonProps} />;
+        case 'timeline':
+            return <TimelineCard {...commonProps} />;
+        default:
+            return <DefaultCard {...commonProps} />;
+    }
+}
+
+// Default Card Style (same as current homepage implementation)
+function DefaultCard({ event, size, featured, showImage, className, onClick, spotsRemaining, isUpcoming, hasPrice, lowestPrice }: CardComponentProps) {
+    return (
+        <Card
+            size={size}
+            variant={featured ? 'elevated' : 'default'}
+            className={`hover:shadow-lg transition-shadow cursor-pointer group ${className}`}
+            onClick={onClick}
+        >
+            {showImage && event.image_url && (
+                <div className="relative w-full h-48 overflow-hidden rounded-t-lg">
+                    <Image
+                        src={event.image_url}
+                        alt={event.image_alt_text || event.title}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-200"
+                    />
+                    {featured && (
+                        <div className="absolute top-3 left-3">
+                            <span className="bg-blue-600 text-white px-2 py-1 rounded-full text-xs font-medium">
+                                Featured
+                            </span>
+                        </div>
+                    )}
+                </div>
+            )}
+
+            <CardHeader>
+                <div className="flex items-start justify-between">
+                    <CardTitle as={featured ? 'h2' : 'h3'} className={featured ? 'text-lg' : 'text-base'}>
+                        {event.title}
+                    </CardTitle>
+                    <div className="flex gap-2">
+                        {event.is_paid && (
+                            <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
+                                {hasPrice ? formatPrice(lowestPrice) : 'Paid'}
+                            </span>
+                        )}
+                        {!isUpcoming && (
+                            <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">
+                                Past
+                            </span>
+                        )}
+                    </div>
+                </div>
+                <CardDescription>
+                    {event.short_description || truncateText(event.description, 100)}
+                </CardDescription>
+            </CardHeader>
+
+            <CardContent>
+                <div className="space-y-2 text-sm">
+                    <div className="flex items-center gap-2 text-gray-600">
+                        <Calendar className="w-4 h-4 flex-shrink-0" />
+                        <span>{formatDateTime(event.start_time)}</span>
+                    </div>
+
+                    <div className="flex items-center gap-2 text-gray-600">
+                        <MapPin className="w-4 h-4 flex-shrink-0" />
+                        <span>{event.location}</span>
+                    </div>
+
+                    <div className="flex items-center gap-2 text-gray-600">
+                        <Users className="w-4 h-4 flex-shrink-0" />
+                        <span>
+                            {event.rsvp_count} attending
+                            {spotsRemaining && spotsRemaining > 0 && ` • ${spotsRemaining} spots left`}
+                        </span>
+                    </div>
+
+                    <div className="flex items-center gap-2 text-gray-600">
+                        <Tag className="w-4 h-4 flex-shrink-0" />
+                        <span className="capitalize">{event.category}</span>
+                    </div>
+                </div>
+            </CardContent>
+
+            <CardFooter className="flex items-center justify-between">
+                <span className="text-sm text-gray-500">
+                    by {event.organizer.display_name}
+                </span>
+                <button className="text-blue-600 hover:text-blue-800 font-medium text-sm group-hover:underline flex items-center gap-1">
+                    View Details
+                    <ExternalLink className="w-3 h-3" />
+                </button>
+            </CardFooter>
+        </Card>
+    );
+}
+
+// Preview List Style - Compact horizontal layout for list views
+function PreviewListCard({ event, className, onClick, isUpcoming, hasPrice, lowestPrice }: CardComponentProps) {
+    return (
+        <Card
+            variant="outlined"
+            className={`hover:shadow-md transition-shadow cursor-pointer group ${className}`}
+            onClick={onClick}
+        >
+            <div className="flex items-start gap-4 p-4">
+                {event.image_url && (
+                    <div className="relative w-20 h-20 flex-shrink-0 overflow-hidden rounded-lg">
+                        <Image
+                            src={event.image_url}
+                            alt={event.image_alt_text || event.title}
+                            fill
+                            className="object-cover"
+                        />
+                    </div>
+                )}
+
+                <div className="flex-1 min-w-0">
+                    <div className="flex items-start justify-between mb-2">
+                        <h3 className="font-semibold text-base text-gray-900 truncate pr-2">
+                            {event.title}
+                        </h3>
+                        <div className="flex gap-1 flex-shrink-0">
+                            {event.is_paid && (
+                                <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
+                                    {hasPrice ? formatPrice(lowestPrice) : 'Paid'}
+                                </span>
+                            )}
+                            {!isUpcoming && (
+                                <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">
+                                    Past
+                                </span>
+                            )}
+                        </div>
+                    </div>
+
+                    <p className="text-sm text-gray-600 mb-3 line-clamp-2">
+                        {event.short_description || truncateText(event.description, 120)}
+                    </p>
+
+                    <div className="flex items-center gap-4 text-xs text-gray-500">
+                        <span className="flex items-center gap-1">
+                            <Calendar className="w-3 h-3" />
+                            {new Date(event.start_time).toLocaleDateString()}
+                        </span>
+                        <span className="flex items-center gap-1">
+                            <MapPin className="w-3 h-3" />
+                            {truncateText(event.location, 25)}
+                        </span>
+                        <span className="flex items-center gap-1">
+                            <Users className="w-3 h-3" />
+                            {event.rsvp_count}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </Card>
+    );
+}
+
+// Full List Style - Detailed view with all information
+function FullListCard({ event, className, onClick, spotsRemaining, isUpcoming, hasPrice, lowestPrice }: CardComponentProps) {
+    return (
+        <Card
+            variant="default"
+            size="lg"
+            className={`hover:shadow-lg transition-shadow cursor-pointer group ${className}`}
+            onClick={onClick}
+        >
+            {event.image_url && (
+                <div className="relative w-full h-56 overflow-hidden rounded-t-lg">
+                    <Image
+                        src={event.image_url}
+                        alt={event.image_alt_text || event.title}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-200"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                    <div className="absolute bottom-4 left-4 text-white">
+                        <span className="bg-black/50 px-2 py-1 rounded text-sm">
+                            {event.category}
+                        </span>
+                    </div>
+                </div>
+            )}
+
+            <CardHeader>
+                <div className="flex items-start justify-between">
+                    <CardTitle as="h2" className="text-xl">
+                        {event.title}
+                    </CardTitle>
+                    <div className="flex gap-2">
+                        {event.is_paid && (
+                            <span className="text-sm bg-blue-100 text-blue-800 px-3 py-1 rounded-full font-medium">
+                                {hasPrice ? formatPrice(lowestPrice) : 'Paid Event'}
+                            </span>
+                        )}
+                        {!isUpcoming && (
+                            <span className="text-sm bg-gray-100 text-gray-600 px-3 py-1 rounded-full">
+                                Past Event
+                            </span>
+                        )}
+                    </div>
+                </div>
+                <CardDescription className="text-base">
+                    {event.description}
+                </CardDescription>
+            </CardHeader>
+
+            <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                    <div className="space-y-3">
+                        <div className="flex items-center gap-3 text-gray-700">
+                            <Calendar className="w-5 h-5 flex-shrink-0 text-blue-600" />
+                            <div>
+                                <div className="font-medium">{formatDateTime(event.start_time)}</div>
+                                <div className="text-gray-500">
+                                    Duration: {Math.round((new Date(event.end_time).getTime() - new Date(event.start_time).getTime()) / (1000 * 60 * 60))} hours
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="flex items-center gap-3 text-gray-700">
+                            <MapPin className="w-5 h-5 flex-shrink-0 text-blue-600" />
+                            <div>
+                                <div className="font-medium">{event.location}</div>
+                                <div className="text-gray-500">View on map</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="space-y-3">
+                        <div className="flex items-center gap-3 text-gray-700">
+                            <Users className="w-5 h-5 flex-shrink-0 text-blue-600" />
+                            <div>
+                                <div className="font-medium">{event.rsvp_count} attending</div>
+                                {spotsRemaining && spotsRemaining > 0 && (
+                                    <div className="text-gray-500">{spotsRemaining} spots remaining</div>
+                                )}
+                                {event.capacity && spotsRemaining === 0 && (
+                                    <div className="text-red-500">Event is full</div>
+                                )}
+                            </div>
+                        </div>
+
+                        <div className="flex items-center gap-3 text-gray-700">
+                            <Tag className="w-5 h-5 flex-shrink-0 text-blue-600" />
+                            <div>
+                                <div className="font-medium capitalize">{event.category}</div>
+                                <div className="text-gray-500">Category</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </CardContent>
+
+            <CardFooter className="flex items-center justify-between pt-6 border-t">
+                <div>
+                    <div className="font-medium text-gray-900">Organized by</div>
+                    <div className="text-gray-600">{event.organizer.display_name}</div>
+                </div>
+                <div className="flex gap-3">
+                    <button className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium">
+                        {event.is_paid ? 'Buy Tickets' : 'RSVP'}
+                    </button>
+                    <button className="border border-gray-300 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-50 transition-colors">
+                        Share
+                    </button>
+                </div>
+            </CardFooter>
+        </Card>
+    );
+}
+
+// Compact Card Style - Minimal information for dense layouts
+function CompactCard({ event, className, onClick, hasPrice, lowestPrice }: CardComponentProps) {
+    return (
+        <Card
+            size="sm"
+            variant="ghost"
+            className={`hover:bg-gray-50 transition-colors cursor-pointer group border-l-4 border-l-blue-600 ${className}`}
+            onClick={onClick}
+        >
+            <div className="flex items-center justify-between p-3">
+                <div className="flex-1 min-w-0">
+                    <h4 className="font-medium text-sm text-gray-900 truncate">
+                        {event.title}
+                    </h4>
+                    <div className="flex items-center gap-3 text-xs text-gray-500 mt-1">
+                        <span>{new Date(event.start_time).toLocaleDateString()}</span>
+                        <span>•</span>
+                        <span>{truncateText(event.location, 20)}</span>
+                        <span>•</span>
+                        <span>{event.rsvp_count} attending</span>
+                    </div>
+                </div>
+                <div className="flex items-center gap-2 ml-3">
+                    {event.is_paid && (
+                        <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">
+                            {hasPrice ? formatPrice(lowestPrice) : 'Paid'}
+                        </span>
+                    )}
+                    <ExternalLink className="w-3 h-3 text-gray-400 group-hover:text-gray-600" />
+                </div>
+            </div>
+        </Card>
+    );
+}
+
+// Timeline Card Style - Vertical timeline layout
+function TimelineCard({ event, className, onClick, hasPrice, lowestPrice }: CardComponentProps) {
+    const eventDate = new Date(event.start_time);
+    const day = eventDate.getDate();
+    const month = eventDate.toLocaleDateString('en-US', { month: 'short' });
+
+    return (
+        <Card
+            variant="outlined"
+            className={`hover:shadow-md transition-shadow cursor-pointer group ${className}`}
+            onClick={onClick}
+        >
+            <div className="flex gap-4 p-4">
+                {/* Date Circle */}
+                <div className="flex-shrink-0 w-16 h-16 bg-blue-600 text-white rounded-full flex flex-col items-center justify-center">
+                    <div className="text-lg font-bold leading-none">{day}</div>
+                    <div className="text-xs uppercase leading-none">{month}</div>
+                </div>
+
+                {/* Event Details */}
+                <div className="flex-1 min-w-0">
+                    <div className="flex items-start justify-between mb-2">
+                        <h3 className="font-semibold text-base text-gray-900 group-hover:text-blue-600 transition-colors">
+                            {event.title}
+                        </h3>
+                        {event.is_paid && (
+                            <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full ml-2">
+                                {hasPrice ? formatPrice(lowestPrice) : 'Paid'}
+                            </span>
+                        )}
+                    </div>
+
+                    <p className="text-sm text-gray-600 mb-2 line-clamp-2">
+                        {event.short_description || truncateText(event.description, 80)}
+                    </p>
+
+                    <div className="flex items-center gap-4 text-xs text-gray-500">
+                        <span className="flex items-center gap-1">
+                            <Clock className="w-3 h-3" />
+                            {eventDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })}
+                        </span>
+                        <span className="flex items-center gap-1">
+                            <MapPin className="w-3 h-3" />
+                            {truncateText(event.location, 25)}
+                        </span>
+                        <span className="flex items-center gap-1">
+                            <Users className="w-3 h-3" />
+                            {event.rsvp_count}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </Card>
+    );
+}
+
+// Export all components
+export { EventCard as default }; 

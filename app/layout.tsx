@@ -6,16 +6,78 @@ import { AuthProvider } from "@/lib/auth-context";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: "swap",
+  preload: true,
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "LocalLoop - Community Events Platform",
-  description: "Discover and join local community events with seamless calendar integration",
+  title: {
+    default: "LocalLoop - Community Events Platform",
+    template: "%s | LocalLoop"
+  },
+  description: "Discover and join local community events with seamless calendar integration. Connect with your community through workshops, social gatherings, and local activities.",
+  keywords: ["local events", "community", "calendar", "meetups", "workshops", "social gatherings"],
+  authors: [{ name: "LocalLoop Team" }],
+  creator: "LocalLoop",
+  publisher: "LocalLoop",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://localloop.app",
+    title: "LocalLoop - Community Events Platform",
+    description: "Discover and join local community events with seamless calendar integration",
+    siteName: "LocalLoop",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "LocalLoop - Community Events Platform",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "LocalLoop - Community Events Platform",
+    description: "Discover and join local community events with seamless calendar integration",
+    images: ["/og-image.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  verification: {
+    google: process.env.GOOGLE_SITE_VERIFICATION,
+  },
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#000000" }
+  ],
 };
 
 export default function RootLayout({
@@ -24,9 +86,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="scroll-smooth">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="icon" href="/favicon.ico" sizes="32x32" />
+        <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="manifest" href="/manifest.json" />
+      </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-gray-50`}
       >
         <AuthProvider>
           {children}

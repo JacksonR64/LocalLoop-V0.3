@@ -1,0 +1,227 @@
+'use client';
+
+import React, { useState, useCallback, useMemo } from 'react';
+import { Search } from 'lucide-react';
+import { EventData } from '@/components/events';
+import {
+    EventFilters as EventFiltersType,
+    DEFAULT_FILTERS
+} from '@/lib/types/filters';
+import {
+    applyFilters,
+    getEventCategories,
+    getEventPriceCounts,
+    getActiveFilters,
+    hasActiveFilters,
+    getFilterSummary
+} from '@/lib/utils/eventFilters';
+import { CategoryFilter } from './CategoryFilter';
+import { DateFilter } from './DateFilter';
+import { PriceFilter } from './PriceFilter';
+import { SortControl } from './SortControl';
+import { ActiveFilters } from './ActiveFilters';
+
+interface EventFiltersProps {
+    events: EventData[];
+    onFilteredEventsChange: (filteredEvents: EventData[]) => void;
+    className?: string;
+    showSearch?: boolean;
+    showActiveFilters?: boolean;
+    layout?: 'horizontal' | 'vertical';
+}
+
+export function EventFilters({
+    events,
+    onFilteredEventsChange,
+    className = '',
+    showSearch = true,
+    showActiveFilters = true,
+    layout = 'horizontal'
+}: EventFiltersProps) {
+    const [filters, setFilters] = useState<EventFiltersType>(DEFAULT_FILTERS);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [isSearchFocused, setIsSearchFocused] = useState(false);
+    const [highlightedIndex, setHighlightedIndex] = useState<number>(-1);
+
+    // Memoized calculations
+    const categories = useMemo(() => getEventCategories(events), [events]);
+    const priceCounts = useMemo(() => getEventPriceCounts(events), [events]);
+
+    // Update filters helper
+    const updateFilters = useCallback((newFilters: Partial<EventFiltersType>) => {
+        setFilters(prev => ({ ...prev, ...newFilters }));
+    }, []);
+
+    // Autocomplete suggestions
+    const suggestions = useMemo(() => {
+        if (searchQuery.trim().length < 2) return [];
+        const query = searchQuery.toLowerCase();
+        const titleMatches = events
+            .map(e => e.title)
+            .filter(title => title.toLowerCase().includes(query));
+        const categoryMatches = categories
+            .map(c => c.label)
+            .filter(label => label.toLowerCase().includes(query));
+        const locationMatches = events
+            .map(e => e.location)
+            .filter(loc => loc && loc.toLowerCase().includes(query));
+        // Remove duplicates and empty
+        const all = Array.from(new Set([...titleMatches, ...categoryMatches, ...locationMatches].filter(Boolean)));
+        return all.slice(0, 8);
+    }, [searchQuery, events, categories]);
+
+    // Apply filters and get filtered events
+    const filteredEvents = useMemo(() => {
+        const filtersWithSearch = { ...filters, searchQuery };
+        return applyFilters(events, filtersWithSearch);
+    }, [events, filters, searchQuery]);
+
+    // Get active filters for display
+    const activeFilters = useMemo(() => {
+        const filtersWithSearch = { ...filters, searchQuery };
+        return getActiveFilters(filtersWithSearch, updateFilters);
+    }, [filters, searchQuery, updateFilters]);
+
+    // Update parent component when filtered events change
+    React.useEffect(() => {
+        onFilteredEventsChange(filteredEvents);
+    }, [filteredEvents, onFilteredEventsChange]);
+
+    // Handle search input
+    const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchQuery(e.target.value);
+        setHighlightedIndex(-1);
+    }, []);
+
+    // Handle suggestion selection
+    const handleSuggestionSelect = (suggestion: string) => {
+        setSearchQuery(suggestion);
+        setIsSearchFocused(false);
+        setHighlightedIndex(-1);
+    };
+
+    // Keyboard navigation for suggestions
+    const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (!suggestions.length) return;
+        if (e.key === 'ArrowDown') {
+            setHighlightedIndex(i => (i + 1) % suggestions.length);
+            e.preventDefault();
+        } else if (e.key === 'ArrowUp') {
+            setHighlightedIndex(i => (i - 1 + suggestions.length) % suggestions.length);
+            e.preventDefault();
+        } else if (e.key === 'Enter' && highlightedIndex >= 0) {
+            handleSuggestionSelect(suggestions[highlightedIndex]);
+            e.preventDefault();
+        }
+    };
+
+    // Clear all filters
+    const handleClearAll = useCallback(() => {
+        setFilters(DEFAULT_FILTERS);
+        setSearchQuery('');
+    }, []);
+
+    // Get filter summary text
+    const filterSummary = useMemo(() => {
+        return getFilterSummary(events.length, filteredEvents.length, { ...filters, searchQuery });
+    }, [events.length, filteredEvents.length, filters, searchQuery]);
+
+    const isHorizontal = layout === 'horizontal';
+
+    return (
+        <div className={`space-y-4 ${className}`}>
+            {/* Search Bar with Autocomplete */}
+            {showSearch && (
+                <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <Search className="h-4 w-4 text-gray-400" />
+                    </div>
+                    <input
+                        type="text"
+                        placeholder="Search events..."
+                        value={searchQuery}
+                        onChange={handleSearchChange}
+                        onFocus={() => setIsSearchFocused(true)}
+                        onBlur={() => setTimeout(() => setIsSearchFocused(false), 100)}
+                        onKeyDown={handleSearchKeyDown}
+                        className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                        aria-autocomplete="list"
+                        aria-controls="search-suggestions"
+                        aria-activedescendant={highlightedIndex >= 0 ? `suggestion-${highlightedIndex}` : undefined}
+                    />
+                    {/* Autocomplete Suggestions Dropdown */}
+                    {isSearchFocused && suggestions.length > 0 && (
+                        <ul
+                            id="search-suggestions"
+                            className="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto"
+                            role="listbox"
+                        >
+                            {suggestions.map((suggestion, idx) => (
+                                <li
+                                    key={suggestion}
+                                    id={`suggestion-${idx}`}
+                                    role="option"
+                                    aria-selected={highlightedIndex === idx}
+                                    className={`px-3 py-2 cursor-pointer hover:bg-blue-50 ${highlightedIndex === idx ? 'bg-blue-100' : ''}`}
+                                    onMouseDown={() => handleSuggestionSelect(suggestion)}
+                                >
+                                    {suggestion}
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+                </div>
+            )}
+
+            {/* Filter Controls */}
+            <div className={`${isHorizontal ? 'flex flex-col sm:flex-row sm:flex-wrap gap-3' : 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3'}`}>
+                <CategoryFilter
+                    selectedCategories={filters.categories}
+                    onChange={(categories) => updateFilters({ categories })}
+                    availableCategories={categories}
+                    className={isHorizontal ? 'w-full sm:min-w-[200px] sm:flex-1' : ''}
+                />
+
+                <DateFilter
+                    selectedRange={filters.dateRange}
+                    onRangeChange={(dateRange) => updateFilters({ dateRange })}
+                    className={isHorizontal ? 'w-full sm:min-w-[180px] sm:flex-1' : ''}
+                />
+
+                <PriceFilter
+                    selectedPrice={filters.priceType}
+                    onPriceChange={(priceType) => updateFilters({ priceType })}
+                    eventCounts={priceCounts}
+                    className={isHorizontal ? 'w-full sm:min-w-[140px] sm:flex-1' : ''}
+                />
+
+                <SortControl
+                    sortBy={filters.sortBy}
+                    onSortChange={(sortBy) => updateFilters({ sortBy })}
+                    className={isHorizontal ? 'w-full sm:min-w-[180px] sm:flex-1' : ''}
+                />
+            </div>
+
+            {/* Active Filters */}
+            {showActiveFilters && (
+                <ActiveFilters
+                    activeFilters={activeFilters}
+                    onClearAll={hasActiveFilters({ ...filters, searchQuery }) ? handleClearAll : undefined}
+                />
+            )}
+
+            {/* Filter Summary */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-sm text-gray-600">
+                <span>{filterSummary}</span>
+                {hasActiveFilters({ ...filters, searchQuery }) && (
+                    <button
+                        onClick={handleClearAll}
+                        className="text-blue-600 hover:text-blue-800 focus:outline-none focus:underline text-left sm:text-right"
+                    >
+                        Clear all filters
+                    </button>
+                )}
+            </div>
+        </div>
+    );
+} 
