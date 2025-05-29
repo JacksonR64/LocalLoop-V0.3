@@ -14,4 +14,17 @@ export {
     default as EventListDefault,
     type EventListStyle,
     type EventListGrid,
-} from './EventList'; 
+} from './EventList';
+
+export {
+    EventMap,
+} from './EventMap';
+
+export {
+    RSVPTicketSection,
+} from './RSVPTicketSection';
+
+export {
+    EventImageGallery,
+    type EventImage,
+} from './EventImageGallery'; 
