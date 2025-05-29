@@ -20,6 +20,7 @@ export interface EventData {
     featured?: boolean;
     capacity?: number;
     rsvp_count: number;
+    is_open_for_registration?: boolean;
     image_url?: string | null;
     image_alt_text?: string;
     organizer: {

@@ -23,6 +23,7 @@ const sampleEventDetails: EventData = {
     featured: true,
     capacity: 500,
     rsvp_count: 245,
+    is_open_for_registration: true,
     image_url: '/events/farmers-market.jpg',
     image_alt_text: 'Community farmers market with vendors and families',
     organizer: {
@@ -66,26 +67,6 @@ const sampleGalleryImages: EventImage[] = [
         url: '/events/farmers-market-6.jpg',
         alt: 'Food vendors at farmers market',
         caption: 'Local food vendors with fresh prepared meals'
-    }
-];
-
-// Sample ticket types for paid events (with IDs for RSVPTicketSection)
-const sampleTicketTypes = [
-    {
-        id: 'general',
-        name: 'General Admission',
-        price: 25,
-        description: 'Standard event access',
-        available_quantity: 100,
-        max_per_person: 4
-    },
-    {
-        id: 'vip',
-        name: 'VIP Access',
-        price: 50,
-        description: 'Premium access with reserved seating',
-        available_quantity: 25,
-        max_per_person: 2
     }
 ];
 
@@ -248,18 +229,12 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
                         <RSVPTicketSection
                             eventId={event.id}
                             eventTitle={event.title}
-                            isPaid={event.is_paid}
+                            eventDate={formatDate(event.start_time)}
+                            eventTime={`${formatTime(event.start_time)} - ${formatTime(event.end_time)}`}
+                            eventLocation={event.location}
                             capacity={event.capacity}
-                            currentRSVPCount={event.rsvp_count}
-                            ticketTypes={event.is_paid ? sampleTicketTypes : undefined}
-                            onRSVP={(data) => {
-                                console.log('RSVP submitted:', data);
-                                // TODO: Implement RSVP submission
-                            }}
-                            onTicketPurchase={(data) => {
-                                console.log('Ticket purchase:', data);
-                                // TODO: Implement ticket purchase
-                            }}
+                            currentRSVPs={event.rsvp_count}
+                            isRegistrationOpen={event.is_open_for_registration ?? true}
                         />
 
                         {/* Google Calendar Integration */}

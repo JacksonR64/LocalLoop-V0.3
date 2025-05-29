@@ -11,7 +11,6 @@ import {
     applyFilters,
     getEventCategories,
     getEventPriceCounts,
-    getActiveFilters,
     hasActiveFilters,
     getFilterSummary
 } from '@/lib/utils/eventFilters';

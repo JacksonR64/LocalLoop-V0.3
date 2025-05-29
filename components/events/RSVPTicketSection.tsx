@@ -1,471 +1,461 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Badge } from '@/components/ui/badge';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import {
-    CreditCard,
-    Check,
-    Plus,
-    Minus
+    CalendarDays,
+    Clock,
+    MapPin,
+    Users,
+    CheckCircle,
+    XCircle,
+    AlertTriangle,
+    Mail,
+    User,
+    Loader2
 } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui';
+import { createClient } from '@/lib/supabase';
+import { cn } from '@/lib/utils';
 
-interface TicketType {
-    id: string;
-    name: string;
-    price: number;
-    description?: string;
-    available_quantity?: number;
-    max_per_person?: number;
-}
-
+// Types
 interface RSVPTicketSectionProps {
     eventId: string;
     eventTitle: string;
-    isPaid: boolean;
+    eventDate: string;
+    eventTime: string;
+    eventLocation: string;
     capacity?: number;
-    currentRSVPCount: number;
-    ticketTypes?: TicketType[];
-    onRSVP?: (data: RSVPData) => void;
-    onTicketPurchase?: (data: TicketPurchaseData) => void;
+    currentRSVPs: number;
+    isRegistrationOpen: boolean;
+    className?: string;
+}
+
+interface RSVPFormData {
+    guestEmail?: string;
+    guestName?: string;
+    notes?: string;
+}
+
+interface User {
+    id: string;
+    email?: string;
+    user_metadata?: {
+        full_name?: string;
+        name?: string;
+    };
 }
 
 interface RSVPData {
-    firstName: string;
-    lastName: string;
-    email: string;
-    guestCount: number;
-    specialRequests?: string;
+    id: string;
+    event_id: string;
+    created_at: string;
+    status: string;
 }
 
-interface TicketPurchaseData {
-    ticketSelections: { [ticketId: string]: number };
-    buyerInfo: RSVPData;
-    paymentMethod: string;
-}
-
-type FormStep = 'selection' | 'details' | 'payment' | 'confirmation';
-
-export function RSVPTicketSection({
+// Main component
+const RSVPTicketSection: React.FC<RSVPTicketSectionProps> = ({
+    eventId,
     eventTitle,
-    isPaid,
-    ticketTypes = [],
-    onRSVP,
-    onTicketPurchase
-}: RSVPTicketSectionProps) {
-    const [currentStep, setCurrentStep] = useState<FormStep>('selection');
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const [ticketSelections, setTicketSelections] = useState<{ [key: string]: number }>({});
-    const [rsvpData, setRSVPData] = useState<RSVPData>({
-        firstName: '',
-        lastName: '',
-        email: '',
-        guestCount: 1,
-        specialRequests: ''
+    eventDate,
+    eventTime,
+    eventLocation,
+    capacity,
+    currentRSVPs,
+    isRegistrationOpen,
+    className
+}) => {
+    // State management
+    const [user, setUser] = useState<User | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [submitting, setSubmitting] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    const [success, setSuccess] = useState<string | null>(null);
+    const [existingRSVP, setExistingRSVP] = useState<RSVPData | null>(null);
+    const [formData, setFormData] = useState<RSVPFormData>({
+        guestEmail: '',
+        guestName: '',
+        notes: ''
     });
-    const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
-    const calculateTotal = () => {
-        return Object.entries(ticketSelections).reduce((total, [ticketId, quantity]) => {
-            const ticket = ticketTypes.find(t => t.id === ticketId);
-            return total + (ticket ? ticket.price * quantity : 0);
-        }, 0);
-    };
+    // Check if user already has an RSVP for this event
+    const checkExistingRSVP = useCallback(async () => {
+        if (!user) return;
 
-    const getTotalTickets = () => {
-        return Object.values(ticketSelections).reduce((sum, quantity) => sum + quantity, 0);
-    };
-
-    const updateTicketQuantity = (ticketId: string, change: number) => {
-        setTicketSelections(prev => {
-            const current = prev[ticketId] || 0;
-            const newQuantity = Math.max(0, current + change);
-            const ticket = ticketTypes.find(t => t.id === ticketId);
-            const maxAllowed = ticket?.max_per_person || 10;
-
-            return {
-                ...prev,
-                [ticketId]: Math.min(newQuantity, maxAllowed)
-            };
-        });
-    };
-
-    const validateForm = () => {
-        const newErrors: { [key: string]: string } = {};
-
-        if (!rsvpData.firstName.trim()) {
-            newErrors.firstName = 'First name is required';
-        }
-        if (!rsvpData.lastName.trim()) {
-            newErrors.lastName = 'Last name is required';
-        }
-        if (!rsvpData.email.trim()) {
-            newErrors.email = 'Email is required';
-        } else if (!/\S+@\S+\.\S+/.test(rsvpData.email)) {
-            newErrors.email = 'Please enter a valid email address';
-        }
-
-        if (isPaid && getTotalTickets() === 0) {
-            newErrors.tickets = 'Please select at least one ticket';
-        }
-
-        setErrors(newErrors);
-        return Object.keys(newErrors).length === 0;
-    };
-
-    const handleSubmit = async () => {
-        if (!validateForm()) return;
-
-        setIsSubmitting(true);
         try {
-            // Simulate API call
-            await new Promise(resolve => setTimeout(resolve, 2000));
-
-            if (isPaid) {
-                onTicketPurchase?.({
-                    ticketSelections,
-                    buyerInfo: rsvpData,
-                    paymentMethod: 'stripe' // placeholder
-                });
-            } else {
-                onRSVP?.(rsvpData);
+            const response = await fetch('/api/rsvps');
+            if (response.ok) {
+                const data = await response.json();
+                const eventRsvp = data.rsvps?.find((rsvp: RSVPData) =>
+                    rsvp.event_id === eventId && rsvp.status === 'confirmed'
+                );
+                setExistingRSVP(eventRsvp || null);
             }
-
-            setCurrentStep('confirmation');
         } catch (error) {
-            console.error('Submission error:', error);
-        } finally {
-            setIsSubmitting(false);
+            console.error('Error checking existing RSVP:', error);
         }
-    };
+    }, [user, eventId]);
 
-    const renderTicketSelection = () => (
-        <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-gray-900">Select Tickets</h3>
-            {ticketTypes.map(ticket => (
-                <div key={ticket.id} className="border border-gray-200 rounded-lg p-4">
-                    <div className="flex justify-between items-start mb-2">
-                        <div>
-                            <h4 className="font-medium text-gray-900">{ticket.name}</h4>
-                            {ticket.description && (
-                                <p className="text-sm text-gray-600">{ticket.description}</p>
-                            )}
-                        </div>
-                        <div className="text-lg font-semibold text-gray-900">
-                            ${ticket.price}
-                        </div>
-                    </div>
+    // Initialize Supabase client and check authentication
+    useEffect(() => {
+        const initializeAuth = async () => {
+            const supabase = createClient();
 
-                    <div className="flex items-center justify-between">
-                        <div className="text-sm text-gray-500">
-                            {ticket.available_quantity && (
-                                <span>{ticket.available_quantity} available</span>
-                            )}
-                        </div>
-                        <div className="flex items-center space-x-3">
-                            <button
-                                onClick={() => updateTicketQuantity(ticket.id, -1)}
-                                disabled={!ticketSelections[ticket.id]}
-                                className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center disabled:opacity-50"
-                            >
-                                <Minus className="w-4 h-4" />
-                            </button>
-                            <span className="w-8 text-center font-medium">
-                                {ticketSelections[ticket.id] || 0}
-                            </span>
-                            <button
-                                onClick={() => updateTicketQuantity(ticket.id, 1)}
-                                className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center"
-                            >
-                                <Plus className="w-4 h-4" />
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            ))}
+            try {
+                const { data: { user: currentUser } } = await supabase.auth.getUser();
+                setUser(currentUser);
 
-            {errors.tickets && (
-                <p className="text-red-600 text-sm">{errors.tickets}</p>
-            )}
-
-            {getTotalTickets() > 0 && (
-                <div className="bg-blue-50 p-4 rounded-lg">
-                    <div className="flex justify-between items-center">
-                        <span className="font-medium">Total: {getTotalTickets()} ticket(s)</span>
-                        <span className="text-xl font-bold">${calculateTotal()}</span>
-                    </div>
-                </div>
-            )}
-        </div>
-    );
-
-    const renderRSVPForm = () => (
-        <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-gray-900">RSVP Information</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                        First Name *
-                    </label>
-                    <input
-                        type="text"
-                        value={rsvpData.firstName}
-                        onChange={(e) => setRSVPData(prev => ({ ...prev, firstName: e.target.value }))}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="Enter your first name"
-                    />
-                    {errors.firstName && (
-                        <p className="text-red-600 text-sm mt-1">{errors.firstName}</p>
-                    )}
-                </div>
-
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Last Name *
-                    </label>
-                    <input
-                        type="text"
-                        value={rsvpData.lastName}
-                        onChange={(e) => setRSVPData(prev => ({ ...prev, lastName: e.target.value }))}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="Enter your last name"
-                    />
-                    {errors.lastName && (
-                        <p className="text-red-600 text-sm mt-1">{errors.lastName}</p>
-                    )}
-                </div>
-            </div>
-
-            <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Email Address *
-                </label>
-                <input
-                    type="email"
-                    value={rsvpData.email}
-                    onChange={(e) => setRSVPData(prev => ({ ...prev, email: e.target.value }))}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    placeholder="Enter your email address"
-                />
-                {errors.email && (
-                    <p className="text-red-600 text-sm mt-1">{errors.email}</p>
-                )}
-            </div>
-
-            {!isPaid && (
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Number of Guests (including yourself)
-                    </label>
-                    <select
-                        value={rsvpData.guestCount}
-                        onChange={(e) => setRSVPData(prev => ({ ...prev, guestCount: parseInt(e.target.value) }))}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    >
-                        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => (
-                            <option key={num} value={num}>{num}</option>
-                        ))}
-                    </select>
-                </div>
-            )}
-
-            <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Special Requests or Dietary Restrictions (Optional)
-                </label>
-                <textarea
-                    value={rsvpData.specialRequests}
-                    onChange={(e) => setRSVPData(prev => ({ ...prev, specialRequests: e.target.value }))}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    placeholder="Any special requests, dietary restrictions, or accessibility needs?"
-                    rows={3}
-                />
-            </div>
-        </div>
-    );
-
-    const renderPaymentSection = () => (
-        <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-gray-900">Payment</h3>
-            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                <div className="flex items-start space-x-2">
-                    <CreditCard className="w-5 h-5 text-yellow-600 mt-0.5" />
-                    <div>
-                        <p className="text-sm text-yellow-800 font-medium">Payment Integration Placeholder</p>
-                        <p className="text-sm text-yellow-700">
-                            In production, this would integrate with Stripe, PayPal, or similar payment processor.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div className="bg-gray-50 p-4 rounded-lg">
-                <h4 className="font-medium text-gray-900 mb-2">Order Summary</h4>
-                {Object.entries(ticketSelections).map(([ticketId, quantity]) => {
-                    const ticket = ticketTypes.find(t => t.id === ticketId);
-                    if (!ticket || quantity === 0) return null;
-
-                    return (
-                        <div key={ticketId} className="flex justify-between items-center py-2">
-                            <span className="text-gray-700">
-                                {ticket.name} × {quantity}
-                            </span>
-                            <span className="font-medium">${(ticket.price * quantity).toFixed(2)}</span>
-                        </div>
-                    );
-                })}
-                <div className="border-t border-gray-200 pt-2 mt-2">
-                    <div className="flex justify-between items-center font-semibold text-lg">
-                        <span>Total:</span>
-                        <span>${calculateTotal().toFixed(2)}</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
-
-    const renderConfirmation = () => (
-        <div className="text-center space-y-4">
-            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto">
-                <Check className="w-8 h-8 text-green-600" />
-            </div>
-            <h3 className="text-xl font-semibold text-gray-900">
-                {isPaid ? 'Payment Successful!' : 'RSVP Confirmed!'}
-            </h3>
-            <p className="text-gray-600">
-                {isPaid
-                    ? 'Your tickets have been purchased successfully. You should receive a confirmation email shortly.'
-                    : 'Your RSVP has been confirmed. You should receive a confirmation email shortly.'
+                // If user is logged in, check for existing RSVP
+                if (currentUser) {
+                    await checkExistingRSVP();
                 }
-            </p>
-            <div className="bg-blue-50 p-4 rounded-lg text-left">
-                <h4 className="font-medium text-gray-900 mb-2">Event Details</h4>
-                <p className="text-sm text-gray-700">{eventTitle}</p>
-                <p className="text-sm text-gray-600">
-                    {isPaid ? `${getTotalTickets()} ticket(s) purchased` : `RSVP for ${rsvpData.guestCount} guest(s)`}
-                </p>
-            </div>
-        </div>
-    );
+            } catch (error) {
+                console.error('Error checking authentication:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-    const getStepContent = () => {
-        switch (currentStep) {
-            case 'selection':
-                return isPaid ? renderTicketSelection() : renderRSVPForm();
-            case 'details':
-                return renderRSVPForm();
-            case 'payment':
-                return renderPaymentSection();
-            case 'confirmation':
-                return renderConfirmation();
-            default:
-                return null;
+        initializeAuth();
+        checkExistingRSVP();
+    }, [checkExistingRSVP]);
+
+    // Handle RSVP submission
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        if (submitting) return;
+
+        setSubmitting(true);
+        setError('');
+        setSuccess('');
+
+        try {
+            const formData = new FormData(e.currentTarget);
+            const notes = formData.get('notes') as string;
+
+            const rsvpData = user
+                ? { event_id: eventId, notes }
+                : {
+                    event_id: eventId,
+                    guest_email: formData.get('email') as string,
+                    guest_name: formData.get('name') as string,
+                    notes
+                };
+
+            const response = await fetch('/api/rsvps', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(rsvpData),
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(result.error || 'Failed to create RSVP');
+            }
+
+            setSuccess('RSVP confirmed successfully!');
+            setExistingRSVP(result.rsvp);
+
+            // Reset form for guest users
+            if (!user) {
+                (e.target as HTMLFormElement).reset();
+            }
+        } catch (err) {
+            setError(err instanceof Error ? err.message : 'An error occurred');
+        } finally {
+            setSubmitting(false);
         }
     };
 
-    const getNextStepLabel = () => {
-        if (currentStep === 'confirmation') return null;
-        if (currentStep === 'selection' && !isPaid) return 'Confirm RSVP';
-        if (currentStep === 'selection' && isPaid) return 'Continue';
-        if (currentStep === 'details') return isPaid ? 'Proceed to Payment' : 'Confirm RSVP';
-        if (currentStep === 'payment') return 'Complete Purchase';
-        return 'Continue';
-    };
+    // Handle RSVP cancellation
+    const handleCancel = async () => {
+        if (!existingRSVP || submitting) return;
 
-    const handleNext = () => {
-        if (currentStep === 'selection' && !isPaid) {
-            handleSubmit();
-        } else if (currentStep === 'selection' && isPaid) {
-            if (getTotalTickets() === 0) {
-                setErrors({ tickets: 'Please select at least one ticket' });
-                return;
+        setSubmitting(true);
+        setError('');
+
+        try {
+            const response = await fetch(`/api/rsvps/${existingRSVP.id}`, {
+                method: 'DELETE',
+            });
+
+            if (!response.ok) {
+                const result = await response.json();
+                throw new Error(result.error || 'Failed to cancel RSVP');
             }
-            setCurrentStep('details');
-        } else if (currentStep === 'details' && isPaid) {
-            if (validateForm()) {
-                setCurrentStep('payment');
-            }
-        } else if (currentStep === 'details' && !isPaid) {
-            handleSubmit();
-        } else if (currentStep === 'payment') {
-            handleSubmit();
+
+            setSuccess('RSVP cancelled successfully');
+            setExistingRSVP(null);
+        } catch (err) {
+            setError(err instanceof Error ? err.message : 'An error occurred');
+        } finally {
+            setSubmitting(false);
         }
     };
 
-    if (currentStep === 'confirmation') {
+    // Handle form input changes
+    const handleInputChange = (field: keyof RSVPFormData, value: string) => {
+        setFormData(prev => ({ ...prev, [field]: value }));
+    };
+
+    // Helper functions
+    const isAtCapacity = capacity ? currentRSVPs >= capacity : false;
+    const spotsLeft = capacity ? capacity - currentRSVPs : null;
+    const getUserDisplayName = () => {
+        if (!user) return '';
+        return user.user_metadata?.full_name ||
+            user.user_metadata?.name ||
+            user.email?.split('@')[0] ||
+            'User';
+    };
+
+    // Loading state
+    if (loading) {
         return (
-            <Card>
+            <Card className={cn("w-full", className)}>
                 <CardContent className="p-6">
-                    {renderConfirmation()}
+                    <div className="flex items-center justify-center space-x-2">
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        <span>Loading RSVP options...</span>
+                    </div>
                 </CardContent>
             </Card>
         );
     }
 
     return (
-        <Card>
-            <CardContent className="p-6">
-                <div className="space-y-6">
-                    {/* Progress Indicators for Paid Events */}
-                    {isPaid && (
-                        <div className="flex items-center space-x-2 mb-6">
-                            {['selection', 'details', 'payment'].map((step, index) => (
-                                <React.Fragment key={step}>
-                                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${currentStep === step
-                                        ? 'bg-blue-600 text-white'
-                                        : index < ['selection', 'details', 'payment'].indexOf(currentStep)
-                                            ? 'bg-green-600 text-white'
-                                            : 'bg-gray-200 text-gray-600'
-                                        }`}>
-                                        {index < ['selection', 'details', 'payment'].indexOf(currentStep) ? (
-                                            <Check className="w-4 h-4" />
-                                        ) : (
-                                            index + 1
-                                        )}
-                                    </div>
-                                    {index < 2 && (
-                                        <div className={`flex-1 h-1 ${index < ['selection', 'details', 'payment'].indexOf(currentStep)
-                                            ? 'bg-green-600'
-                                            : 'bg-gray-200'
-                                            }`} />
-                                    )}
-                                </React.Fragment>
-                            ))}
+        <Card className={cn("w-full", className)}>
+            <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                    <CalendarDays className="h-5 w-5" />
+                    Event RSVP
+                </CardTitle>
+            </CardHeader>
+
+            <CardContent className="space-y-6">
+                {/* Event Summary */}
+                <div className="bg-gray-50 p-4 rounded-lg space-y-2">
+                    <h3 className="font-medium text-lg">{eventTitle}</h3>
+                    <div className="space-y-1 text-sm text-gray-600">
+                        <div className="flex items-center gap-2">
+                            <CalendarDays className="h-4 w-4" />
+                            <span>{eventDate}</span>
                         </div>
-                    )}
-
-                    {getStepContent()}
-
-                    {/* Action Buttons */}
-                    <div className="flex space-x-3 pt-4">
-                        {currentStep !== 'selection' && (
-                            <button
-                                onClick={() => {
-                                    if (currentStep === 'details') setCurrentStep('selection');
-                                    if (currentStep === 'payment') setCurrentStep('details');
-                                }}
-                                className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors"
-                            >
-                                Back
-                            </button>
-                        )}
-
-                        {getNextStepLabel() && (
-                            <button
-                                onClick={handleNext}
-                                disabled={isSubmitting}
-                                className={`flex-1 px-4 py-3 rounded-lg font-medium transition-colors ${isPaid && currentStep === 'payment'
-                                    ? 'bg-green-600 text-white hover:bg-green-700'
-                                    : !isPaid
-                                        ? 'bg-green-600 text-white hover:bg-green-700'
-                                        : 'bg-blue-600 text-white hover:bg-blue-700'
-                                    } ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
-                            >
-                                {isSubmitting ? 'Processing...' : getNextStepLabel()}
-                            </button>
-                        )}
+                        <div className="flex items-center gap-2">
+                            <Clock className="h-4 w-4" />
+                            <span>{eventTime}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <MapPin className="h-4 w-4" />
+                            <span>{eventLocation}</span>
+                        </div>
                     </div>
                 </div>
+
+                {/* Registration Status */}
+                <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                        <Users className="h-4 w-4" />
+                        <span className="text-sm">
+                            {currentRSVPs} RSVP{currentRSVPs !== 1 ? 's' : ''}
+                            {capacity && ` / ${capacity} capacity`}
+                        </span>
+                    </div>
+
+                    {spotsLeft !== null && (
+                        <Badge variant={spotsLeft <= 5 ? "destructive" : "secondary"}>
+                            {spotsLeft === 0 ? 'Full' : `${spotsLeft} spots left`}
+                        </Badge>
+                    )}
+                </div>
+
+                {/* Status Messages */}
+                {error && (
+                    <Alert variant="destructive">
+                        <XCircle className="h-4 w-4" />
+                        <AlertDescription>{error}</AlertDescription>
+                    </Alert>
+                )}
+
+                {success && (
+                    <Alert className="border-green-200 bg-green-50">
+                        <CheckCircle className="h-4 w-4 text-green-600" />
+                        <AlertDescription className="text-green-700">{success}</AlertDescription>
+                    </Alert>
+                )}
+
+                {/* Registration Closed */}
+                {!isRegistrationOpen && (
+                    <Alert variant="destructive">
+                        <AlertTriangle className="h-4 w-4" />
+                        <AlertDescription>
+                            Registration for this event is currently closed.
+                        </AlertDescription>
+                    </Alert>
+                )}
+
+                {/* At Capacity */}
+                {isAtCapacity && isRegistrationOpen && (
+                    <Alert variant="destructive">
+                        <AlertTriangle className="h-4 w-4" />
+                        <AlertDescription>
+                            This event is at full capacity. Registration is currently unavailable.
+                        </AlertDescription>
+                    </Alert>
+                )}
+
+                {/* Existing RSVP - Show cancellation option */}
+                {existingRSVP && (
+                    <div className="bg-green-50 border border-green-200 p-4 rounded-lg">
+                        <div className="flex items-center gap-2 mb-3">
+                            <CheckCircle className="h-5 w-5 text-green-600" />
+                            <span className="font-medium text-green-800">You&apos;re attending this event!</span>
+                        </div>
+                        <p className="text-sm text-green-700 mb-3">
+                            RSVP confirmed on {new Date(existingRSVP.created_at).toLocaleDateString()}
+                        </p>
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={handleCancel}
+                            disabled={submitting}
+                            className="border-red-300 text-red-700 hover:bg-red-50"
+                        >
+                            {submitting ? (
+                                <>
+                                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                                    Cancelling...
+                                </>
+                            ) : (
+                                'Cancel RSVP'
+                            )}
+                        </Button>
+                    </div>
+                )}
+
+                {/* RSVP Form - Show if no existing RSVP and registration is open */}
+                {!existingRSVP && isRegistrationOpen && !isAtCapacity && (
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                        {/* User Info Section */}
+                        <div className="space-y-4">
+                            {user ? (
+                                <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg">
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <User className="h-4 w-4 text-blue-600" />
+                                        <span className="font-medium text-blue-800">
+                                            RSVPing as {getUserDisplayName()}
+                                        </span>
+                                    </div>
+                                    <p className="text-sm text-blue-700">{user.email}</p>
+                                </div>
+                            ) : (
+                                <div className="space-y-3">
+                                    <h4 className="font-medium flex items-center gap-2">
+                                        <Mail className="h-4 w-4" />
+                                        Guest Information
+                                    </h4>
+
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                        <div>
+                                            <label className="block text-sm font-medium mb-1">
+                                                Full Name *
+                                            </label>
+                                            <Input
+                                                type="text"
+                                                placeholder="Enter your full name"
+                                                value={formData.guestName || ''}
+                                                onChange={(e) => handleInputChange('guestName', e.target.value)}
+                                                required
+                                                disabled={submitting}
+                                            />
+                                        </div>
+
+                                        <div>
+                                            <label className="block text-sm font-medium mb-1">
+                                                Email Address *
+                                            </label>
+                                            <Input
+                                                type="email"
+                                                placeholder="Enter your email"
+                                                value={formData.guestEmail || ''}
+                                                onChange={(e) => handleInputChange('guestEmail', e.target.value)}
+                                                required
+                                                disabled={submitting}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Optional Notes */}
+                        <div>
+                            <label className="block text-sm font-medium mb-1">
+                                Additional Notes (Optional)
+                            </label>
+                            <Textarea
+                                placeholder="Any special requirements, dietary restrictions, or comments..."
+                                value={formData.notes || ''}
+                                onChange={(e) => handleInputChange('notes', e.target.value)}
+                                disabled={submitting}
+                                rows={3}
+                            />
+                        </div>
+
+                        {/* Submit Button */}
+                        <Button
+                            type="submit"
+                            disabled={submitting}
+                            className="w-full"
+                            size="lg"
+                        >
+                            {submitting ? (
+                                <>
+                                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                                    Submitting RSVP...
+                                </>
+                            ) : (
+                                'Confirm RSVP'
+                            )}
+                        </Button>
+                    </form>
+                )}
+
+                {/* Login Prompt for Better Experience */}
+                {!user && isRegistrationOpen && !existingRSVP && (
+                    <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg">
+                        <p className="text-sm text-blue-700 mb-2">
+                            <strong>Want to manage your RSVPs easily?</strong>
+                        </p>
+                        <p className="text-sm text-blue-600 mb-3">
+                            Create an account to view all your event RSVPs, get personalized recommendations,
+                            and never miss an update.
+                        </p>
+                        <div className="flex gap-2">
+                            <Button variant="outline" size="sm" asChild>
+                                <a href="/auth/signup">Sign Up</a>
+                            </Button>
+                            <Button variant="ghost" size="sm" asChild>
+                                <a href="/auth/login">Log In</a>
+                            </Button>
+                        </div>
+                    </div>
+                )}
+
+                {existingRSVP && (
+                    <p className="text-sm text-gray-600 mb-4">
+                        You&apos;re all set! We&apos;ve confirmed your RSVP for this event.
+                    </p>
+                )}
             </CardContent>
         </Card>
     );
-} 
+};
+
+export { RSVPTicketSection }; 
