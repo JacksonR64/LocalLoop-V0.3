@@ -1,5 +1,5 @@
 import { supabase } from './supabase'
-import { createServerSupabaseClient } from './supabase-server'
+import { createServerSupabaseClient } from '@/lib/supabase-server'
 import {
     GoogleCalendarService,
     GoogleCalendarTokens,
@@ -7,6 +7,7 @@ import {
     createGoogleCalendarService
 } from './google-calendar'
 import { User } from '@supabase/supabase-js'
+import crypto from 'crypto'
 
 /**
  * Interface for Google Calendar OAuth state
@@ -118,14 +119,23 @@ export class GoogleCalendarAuth {
     }
 
     /**
-     * Store Google Calendar tokens securely in Supabase
+     * Store user's Google Calendar tokens securely in database
      * @param userId - Supabase user ID
-     * @param tokens - Google Calendar tokens
+     * @param tokens - Google Calendar tokens to encrypt and store
      */
     async storeUserTokens(userId: string, tokens: GoogleCalendarTokens): Promise<void> {
         try {
-            // Simple encryption (in production, use proper encryption)
-            const encryptedTokens = Buffer.from(JSON.stringify(tokens)).toString('base64')
+            // Encrypt tokens using AES-256-GCM for security
+            const encryptedTokens = this.encryptTokens(tokens)
+
+            // Security audit log
+            console.log('Storing Google Calendar tokens for user', {
+                userId,
+                tokenTypes: Object.keys(tokens),
+                hasRefreshToken: !!tokens.refresh_token,
+                expiresAt: tokens.expiry_date ? new Date(tokens.expiry_date).toISOString() : null,
+                timestamp: new Date().toISOString()
+            })
 
             const supabaseServer = await createServerSupabaseClient()
 
@@ -135,7 +145,7 @@ export class GoogleCalendarAuth {
                     google_calendar_token: encryptedTokens,
                     google_calendar_connected: true,
                     google_calendar_connected_at: new Date().toISOString(),
-                    google_calendar_expires_at: new Date(tokens.expiry_date).toISOString(),
+                    google_calendar_expires_at: tokens.expiry_date ? new Date(tokens.expiry_date).toISOString() : null,
                     updated_at: new Date().toISOString(),
                 })
                 .eq('id', userId)
@@ -144,6 +154,12 @@ export class GoogleCalendarAuth {
                 console.error('Error storing Google Calendar tokens:', error)
                 throw new Error('Failed to store Google Calendar tokens')
             }
+
+            console.log('Successfully stored encrypted Google Calendar tokens', {
+                userId,
+                storedAt: new Date().toISOString()
+            })
+
         } catch (error) {
             console.error('Error in storeUserTokens:', error)
             throw error
@@ -169,15 +185,97 @@ export class GoogleCalendarAuth {
                 return null
             }
 
-            // Decrypt tokens (simple base64 decoding - use proper encryption in production)
-            const tokens: GoogleCalendarTokens = JSON.parse(
-                Buffer.from(data.google_calendar_token, 'base64').toString()
-            )
+            // Security audit log - token access
+            console.log('Accessing Google Calendar tokens for user', {
+                userId,
+                accessedAt: new Date().toISOString(),
+                hasStoredToken: !!data.google_calendar_token
+            })
+
+            // Decrypt tokens using AES-256-GCM
+            const tokens = this.decryptTokens(data.google_calendar_token)
 
             return tokens
         } catch (error) {
             console.error('Error getting user Google Calendar tokens:', error)
             return null
+        }
+    }
+
+    /**
+     * Encrypt tokens using AES-256-GCM
+     * @param tokens - Tokens to encrypt
+     * @returns Encrypted token string
+     */
+    private encryptTokens(tokens: GoogleCalendarTokens): string {
+        try {
+            const algorithm = 'aes-256-gcm'
+
+            // Use environment encryption key or generate one for development
+            const encryptionKey = process.env.GOOGLE_CALENDAR_ENCRYPTION_KEY ||
+                'default-dev-key-32-characters!!!' // In production, this MUST be set
+
+            // Ensure key is exactly 32 bytes for AES-256
+            const key = crypto.scryptSync(encryptionKey, 'salt', 32)
+
+            // Generate random IV for each encryption
+            const iv = crypto.randomBytes(16)
+
+            const cipher = crypto.createCipheriv(algorithm, key, iv)
+
+            let encrypted = cipher.update(JSON.stringify(tokens), 'utf8', 'hex')
+            encrypted += cipher.final('hex')
+
+            const authTag = cipher.getAuthTag()
+
+            // Combine IV, auth tag, and encrypted data
+            const result = {
+                iv: iv.toString('hex'),
+                authTag: authTag.toString('hex'),
+                encrypted: encrypted
+            }
+
+            return Buffer.from(JSON.stringify(result)).toString('base64')
+        } catch (error) {
+            console.error('Token encryption failed:', error)
+            throw new Error('Failed to encrypt tokens')
+        }
+    }
+
+    /**
+     * Decrypt tokens using AES-256-GCM
+     * @param encryptedData - Encrypted token string
+     * @returns Decrypted tokens
+     */
+    private decryptTokens(encryptedData: string): GoogleCalendarTokens {
+        try {
+            const algorithm = 'aes-256-gcm'
+
+            // Use environment encryption key or generate one for development
+            const encryptionKey = process.env.GOOGLE_CALENDAR_ENCRYPTION_KEY ||
+                'default-dev-key-32-characters!!!' // In production, this MUST be set
+
+            // Ensure key is exactly 32 bytes for AES-256
+            const key = crypto.scryptSync(encryptionKey, 'salt', 32)
+
+            // Parse encrypted data
+            const data = JSON.parse(Buffer.from(encryptedData, 'base64').toString())
+
+            const decipher = crypto.createDecipheriv(
+                algorithm,
+                key,
+                Buffer.from(data.iv, 'hex')
+            )
+
+            decipher.setAuthTag(Buffer.from(data.authTag, 'hex'))
+
+            let decrypted = decipher.update(data.encrypted, 'hex', 'utf8')
+            decrypted += decipher.final('utf8')
+
+            return JSON.parse(decrypted)
+        } catch (error) {
+            console.error('Token decryption failed:', error)
+            throw new Error('Failed to decrypt tokens')
         }
     }
 
