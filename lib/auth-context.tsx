@@ -4,6 +4,10 @@ import { createContext, useContext, useEffect, useState } from 'react'
 import { User, Session } from '@supabase/supabase-js'
 import { supabase } from './supabase'
 
+// Feature toggles for authentication providers
+const ENABLE_GOOGLE_AUTH = process.env.NEXT_PUBLIC_ENABLE_GOOGLE_AUTH !== 'false'
+const ENABLE_APPLE_AUTH = process.env.NEXT_PUBLIC_ENABLE_APPLE_AUTH === 'true'
+
 interface AuthContextType {
     user: User | null
     session: Session | null
@@ -15,6 +19,9 @@ interface AuthContextType {
     signInWithApple: () => Promise<void>
     resetPassword: (email: string) => Promise<void>
     updatePassword: (password: string) => Promise<void>
+    // Feature flags
+    isGoogleAuthEnabled: boolean
+    isAppleAuthEnabled: boolean
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -69,6 +76,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
 
     const signInWithGoogle = async () => {
+        if (!ENABLE_GOOGLE_AUTH) {
+            throw new Error('Google authentication is currently disabled')
+        }
+
         const { error } = await supabase.auth.signInWithOAuth({
             provider: 'google',
             options: {
@@ -79,6 +90,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
 
     const signInWithApple = async () => {
+        if (!ENABLE_APPLE_AUTH) {
+            throw new Error('Apple authentication is coming soon! An Apple Developer account is required.')
+        }
+
         const { error } = await supabase.auth.signInWithOAuth({
             provider: 'apple',
             options: {
@@ -113,6 +128,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         signInWithApple,
         resetPassword,
         updatePassword,
+        isGoogleAuthEnabled: ENABLE_GOOGLE_AUTH,
+        isAppleAuthEnabled: ENABLE_APPLE_AUTH,
     }
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

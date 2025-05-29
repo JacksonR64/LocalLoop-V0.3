@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/lib/auth-context'
 import Link from 'next/link'
+import { Lock } from 'lucide-react'
 
 export default function LoginPage() {
     const [email, setEmail] = useState('')
@@ -11,7 +12,13 @@ export default function LoginPage() {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
 
-    const { signIn, signInWithGoogle, signInWithApple } = useAuth()
+    const {
+        signIn,
+        signInWithGoogle,
+        signInWithApple,
+        isGoogleAuthEnabled,
+        isAppleAuthEnabled
+    } = useAuth()
     const router = useRouter()
 
     const handleEmailLogin = async (e: React.FormEvent) => {
@@ -30,6 +37,11 @@ export default function LoginPage() {
     }
 
     const handleGoogleLogin = async () => {
+        if (!isGoogleAuthEnabled) {
+            setError('Google authentication is currently disabled')
+            return
+        }
+
         try {
             await signInWithGoogle()
         } catch (error: unknown) {
@@ -38,6 +50,11 @@ export default function LoginPage() {
     }
 
     const handleAppleLogin = async () => {
+        if (!isAppleAuthEnabled) {
+            setError('Apple authentication is coming soon! We need an Apple Developer account to enable this feature.')
+            return
+        }
+
         try {
             await signInWithApple()
         } catch (error: unknown) {
@@ -117,22 +134,45 @@ export default function LoginPage() {
                         </div>
 
                         <div className="mt-6 grid grid-cols-2 gap-3">
+                            {/* Google Auth Button */}
                             <button
                                 onClick={handleGoogleLogin}
                                 type="button"
-                                className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+                                disabled={!isGoogleAuthEnabled}
+                                className={`w-full inline-flex justify-center py-2 px-4 border rounded-md shadow-sm text-sm font-medium transition-colors ${isGoogleAuthEnabled
+                                        ? 'border-gray-300 bg-white text-gray-500 hover:bg-gray-50'
+                                        : 'border-gray-200 bg-gray-100 text-gray-400 cursor-not-allowed'
+                                    }`}
                             >
                                 <span>Google</span>
                             </button>
 
+                            {/* Apple Auth Button */}
                             <button
                                 onClick={handleAppleLogin}
                                 type="button"
-                                className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+                                disabled={!isAppleAuthEnabled}
+                                className={`w-full inline-flex justify-center items-center py-2 px-4 border rounded-md shadow-sm text-sm font-medium transition-colors ${isAppleAuthEnabled
+                                        ? 'border-gray-300 bg-white text-gray-500 hover:bg-gray-50'
+                                        : 'border-gray-200 bg-gray-100 text-gray-400 cursor-not-allowed relative'
+                                    }`}
+                                title={!isAppleAuthEnabled ? 'Coming soon! Requires Apple Developer account' : ''}
                             >
+                                {!isAppleAuthEnabled && (
+                                    <Lock className="w-3 h-3 mr-1 text-gray-400" />
+                                )}
                                 <span>Apple</span>
+                                {!isAppleAuthEnabled && (
+                                    <span className="ml-1 text-xs text-gray-400">(Soon)</span>
+                                )}
                             </button>
                         </div>
+
+                        {!isAppleAuthEnabled && (
+                            <p className="mt-2 text-xs text-center text-gray-500">
+                                Apple Sign-in coming soon! We&apos;re working on getting an Apple Developer account.
+                            </p>
+                        )}
                     </div>
                 </form>
             </div>

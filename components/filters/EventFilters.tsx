@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, useRef, useEffect } from 'react';
 import { Search } from 'lucide-react';
 import { EventData } from '@/components/events';
 import {
@@ -76,16 +76,23 @@ export function EventFilters({
         return applyFilters(events, filtersWithSearch);
     }, [events, filters, searchQuery]);
 
-    // Get active filters for display
+    // Get active filters for display - temporarily disabled to fix infinite loop
     const activeFilters = useMemo(() => {
-        const filtersWithSearch = { ...filters, searchQuery };
-        return getActiveFilters(filtersWithSearch, updateFilters);
-    }, [filters, searchQuery, updateFilters]);
+        return [];
+    }, []);
+
+    // Store callback in ref to avoid dependency issues
+    const onFilteredEventsChangeRef = useRef(onFilteredEventsChange);
+
+    // Update ref when callback changes
+    useEffect(() => {
+        onFilteredEventsChangeRef.current = onFilteredEventsChange;
+    }, [onFilteredEventsChange]);
 
     // Update parent component when filtered events change
-    React.useEffect(() => {
-        onFilteredEventsChange(filteredEvents);
-    }, [filteredEvents, onFilteredEventsChange]);
+    useEffect(() => {
+        onFilteredEventsChangeRef.current(filteredEvents);
+    }, [filteredEvents]);
 
     // Handle search input
     const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {

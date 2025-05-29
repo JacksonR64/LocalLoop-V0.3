@@ -1,6 +1,8 @@
 "use client";
 
 import { Suspense } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Calendar, Menu, X } from 'lucide-react';
 import { Card, CardContent, LoadingSpinner } from '@/components/ui';
 import { EventCard, type EventData } from '@/components/events';
@@ -10,6 +12,7 @@ import { useInfiniteScroll } from '@/lib/hooks/useInfiniteScroll';
 import React from 'react';
 
 // Sample event data (will be replaced with real data from Supabase in future tasks)
+// Moved outside component to prevent recreation on every render
 const sampleEvents: EventData[] = [
   {
     id: '1',
@@ -69,9 +72,21 @@ const sampleEvents: EventData[] = [
 
 // Main Page Component
 export default function HomePage() {
+  const router = useRouter();
   const featuredEvents = sampleEvents.filter(event => event.featured);
-  const [filteredEvents, setFilteredEvents] = React.useState(sampleEvents.filter(event => !event.featured));
+
+  // Memoize non-featured events to prevent recreation on every render
+  const nonFeaturedEvents = React.useMemo(() =>
+    sampleEvents.filter(event => !event.featured), []
+  );
+
+  const [filteredEvents, setFilteredEvents] = React.useState(nonFeaturedEvents);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+
+  // Memoize the filtered events setter to prevent infinite re-renders
+  const handleFilteredEventsChange = React.useCallback((events: EventData[]) => {
+    setFilteredEvents(events);
+  }, []);
 
   // Pagination for upcoming events
   const {
@@ -91,6 +106,35 @@ export default function HomePage() {
     threshold: 300
   });
 
+  // Event click handler - navigate to event detail page
+  const handleEventClick = (eventId: string) => {
+    router.push(`/events/${eventId}`);
+  };
+
+  // Category filter handler for hero pills
+  const handleCategoryFilter = (category: string) => {
+    // Filter events by category and update filtered events
+    const categoryFiltered = sampleEvents.filter(event =>
+      !event.featured && event.category.toLowerCase() === category.toLowerCase()
+    );
+    handleFilteredEventsChange(categoryFiltered);
+
+    // Scroll to upcoming events section
+    const upcomingSection = document.getElementById('upcoming-events');
+    if (upcomingSection) {
+      upcomingSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  // View all events handler
+  const handleViewAll = () => {
+    handleFilteredEventsChange(sampleEvents.filter(event => !event.featured));
+    const upcomingSection = document.getElementById('upcoming-events');
+    if (upcomingSection) {
+      upcomingSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Navigation Header */}
@@ -98,21 +142,33 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
-            <div className="flex items-center gap-3">
+            <Link href="/" className="flex items-center gap-3">
               <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
                 <Calendar className="w-5 h-5 text-white" />
               </div>
               <h1 className="text-xl font-bold text-gray-900">LocalLoop</h1>
-            </div>
+            </Link>
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center gap-6">
-              <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">Browse Events</a>
-              <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">Create Event</a>
-              <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">My Events</a>
-              <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
-                Sign In
+              <button
+                onClick={() => handleViewAll()}
+                className="text-gray-600 hover:text-gray-900 transition-colors"
+              >
+                Browse Events
               </button>
+              <Link href="/create-event" className="text-gray-600 hover:text-gray-900 transition-colors">
+                Create Event
+              </Link>
+              <Link href="/my-events" className="text-gray-600 hover:text-gray-900 transition-colors">
+                My Events
+              </Link>
+              <Link
+                href="/auth/login"
+                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                Sign In
+              </Link>
             </nav>
 
             {/* Mobile Menu Button */}
@@ -133,12 +189,36 @@ export default function HomePage() {
           {isMobileMenuOpen && (
             <div className="md:hidden border-t border-gray-200 py-4">
               <nav className="flex flex-col space-y-4">
-                <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors py-2">Browse Events</a>
-                <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors py-2">Create Event</a>
-                <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors py-2">My Events</a>
-                <button className="bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700 transition-colors text-left">
-                  Sign In
+                <button
+                  onClick={() => {
+                    handleViewAll();
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className="text-gray-600 hover:text-gray-900 transition-colors py-2 text-left"
+                >
+                  Browse Events
                 </button>
+                <Link
+                  href="/create-event"
+                  className="text-gray-600 hover:text-gray-900 transition-colors py-2"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Create Event
+                </Link>
+                <Link
+                  href="/my-events"
+                  className="text-gray-600 hover:text-gray-900 transition-colors py-2"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  My Events
+                </Link>
+                <Link
+                  href="/auth/login"
+                  className="bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700 transition-colors text-left"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Sign In
+                </Link>
               </nav>
             </div>
           )}
@@ -158,19 +238,44 @@ export default function HomePage() {
             {/* EventFilters Integration */}
             <div className="max-w-3xl mx-auto mb-6 sm:mb-8">
               <EventFilters
-                events={sampleEvents.filter(event => !event.featured)}
-                onFilteredEventsChange={setFilteredEvents}
+                events={nonFeaturedEvents}
+                onFilteredEventsChange={handleFilteredEventsChange}
                 showSearch={true}
                 showActiveFilters={true}
                 layout="horizontal"
               />
             </div>
             <div className="flex flex-wrap justify-center gap-2 sm:gap-3 text-sm px-4">
-              <span className="bg-white/20 px-2 sm:px-3 py-1 rounded-full">Workshop</span>
-              <span className="bg-white/20 px-2 sm:px-3 py-1 rounded-full">Community</span>
-              <span className="bg-white/20 px-2 sm:px-3 py-1 rounded-full">Arts</span>
-              <span className="bg-white/20 px-2 sm:px-3 py-1 rounded-full">Business</span>
-              <span className="bg-white/20 px-2 sm:px-3 py-1 rounded-full">Family</span>
+              <button
+                onClick={() => handleCategoryFilter('workshop')}
+                className="bg-white/20 hover:bg-white/30 px-2 sm:px-3 py-1 rounded-full transition-colors cursor-pointer"
+              >
+                Workshop
+              </button>
+              <button
+                onClick={() => handleCategoryFilter('community')}
+                className="bg-white/20 hover:bg-white/30 px-2 sm:px-3 py-1 rounded-full transition-colors cursor-pointer"
+              >
+                Community
+              </button>
+              <button
+                onClick={() => handleCategoryFilter('arts')}
+                className="bg-white/20 hover:bg-white/30 px-2 sm:px-3 py-1 rounded-full transition-colors cursor-pointer"
+              >
+                Arts
+              </button>
+              <button
+                onClick={() => handleCategoryFilter('business')}
+                className="bg-white/20 hover:bg-white/30 px-2 sm:px-3 py-1 rounded-full transition-colors cursor-pointer"
+              >
+                Business
+              </button>
+              <button
+                onClick={() => handleCategoryFilter('family')}
+                className="bg-white/20 hover:bg-white/30 px-2 sm:px-3 py-1 rounded-full transition-colors cursor-pointer"
+              >
+                Family
+              </button>
             </div>
           </div>
         </div>
@@ -184,17 +289,26 @@ export default function HomePage() {
             <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6">Featured Events</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
               {featuredEvents.map((event) => (
-                <EventCard key={event.id} event={event} size="lg" featured={true} />
+                <EventCard
+                  key={event.id}
+                  event={event}
+                  size="lg"
+                  featured={true}
+                  onClick={() => handleEventClick(event.id)}
+                />
               ))}
             </div>
           </section>
         )}
 
         {/* Upcoming Events */}
-        <section>
+        <section id="upcoming-events">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 sm:mb-6 gap-2">
             <h3 className="text-xl sm:text-2xl font-bold text-gray-900">Upcoming Events</h3>
-            <button className="text-blue-600 hover:text-blue-800 font-medium text-left sm:text-right">
+            <button
+              onClick={handleViewAll}
+              className="text-blue-600 hover:text-blue-800 font-medium text-left sm:text-right"
+            >
               View All →
             </button>
           </div>
@@ -204,9 +318,9 @@ export default function HomePage() {
               <p className="mb-4 text-base sm:text-lg">No events match your search or filters.</p>
               <button
                 className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors mb-4"
-                onClick={() => window.location.reload()}
+                onClick={handleViewAll}
               >
-                Clear All Filters
+                Show All Events
               </button>
               <p className="text-sm">Try adjusting your search or filter criteria to find more events.</p>
             </div>
@@ -214,7 +328,12 @@ export default function HomePage() {
             <>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
                 {paginatedUpcomingEvents.map((event) => (
-                  <EventCard key={event.id} event={event} size="md" />
+                  <EventCard
+                    key={event.id}
+                    event={event}
+                    size="md"
+                    onClick={() => handleEventClick(event.id)}
+                  />
                 ))}
               </div>
 
@@ -262,20 +381,20 @@ export default function HomePage() {
       <footer className="bg-gray-900 text-white mt-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="text-center">
-            <div className="flex items-center justify-center gap-3 mb-4">
+            <Link href="/" className="flex items-center justify-center gap-3 mb-4">
               <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
                 <Calendar className="w-5 h-5 text-white" />
               </div>
               <h4 className="text-xl font-bold">LocalLoop</h4>
-            </div>
+            </Link>
             <p className="text-gray-400 mb-6">
               Connecting communities through local events
             </p>
             <div className="flex justify-center gap-6 text-sm">
-              <a href="#" className="text-gray-400 hover:text-white">About</a>
-              <a href="#" className="text-gray-400 hover:text-white">Privacy</a>
-              <a href="#" className="text-gray-400 hover:text-white">Terms</a>
-              <a href="#" className="text-gray-400 hover:text-white">Contact</a>
+              <Link href="/about" className="text-gray-400 hover:text-white">About</Link>
+              <Link href="/privacy" className="text-gray-400 hover:text-white">Privacy</Link>
+              <Link href="/terms" className="text-gray-400 hover:text-white">Terms</Link>
+              <Link href="/contact" className="text-gray-400 hover:text-white">Contact</Link>
             </div>
           </div>
         </div>
