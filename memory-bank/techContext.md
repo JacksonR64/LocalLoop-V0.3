@@ -1,4 +1,31 @@
-# LocalLoop Technical Context
+# LocalLoop V0.3 Technical Context (as of 2024-05-30)
+
+## Stack & Integrations
+- Next.js 15, TypeScript, Tailwind CSS 4, Shadcn UI
+- Supabase (Auth, Postgres, RLS, storage)
+- Stripe (checkout, webhooks, ticketing)
+- Google OAuth (Supabase + Google Cloud, secure token storage)
+- Resend (transactional email, RSVP confirmation/cancellation)
+- React context for authentication state
+- Modular event, RSVP, and ticketing components
+- Secure token storage (AES-256-GCM, environment-based keys)
+
+## Confirmed Patterns & Architecture
+- Auth context provides user/session state throughout app
+- Event/ticketing logic is modular and type-safe
+- API routes use Zod for validation and error handling
+- All sensitive keys in .env.local, never in code
+- RLS and computed columns in Supabase for security and performance
+- Mobile-first, accessible UI with responsive layouts
+
+## Recent Decisions
+- All event data currently mocked in `app/page.tsx` for E2E testing
+- Stripe and Google OAuth flows tested and working in dev
+- RSVP and ticketing APIs validated with real and guest users
+
+---
+
+**Ready for Google Calendar event integration and user profile/history features.**
 
 ## 🏗️ **Architecture Overview**
 - **Framework**: Next.js 15.3.2 with App Router

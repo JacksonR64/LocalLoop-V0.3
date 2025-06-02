@@ -4,6 +4,7 @@ const nextConfig: NextConfig = {
   // Enable experimental features for better performance
   experimental: {
     optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
+    reactCompiler: false,
   },
 
   // Image optimization
@@ -12,6 +13,7 @@ const nextConfig: NextConfig = {
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     minimumCacheTTL: 86400, // 24 hours
+    domains: [],
   },
 
   // Enable compression
@@ -54,6 +56,13 @@ const nextConfig: NextConfig = {
         ],
       },
     ];
+  },
+
+  // Force consistent port and set dynamic environment
+  env: {
+    NEXT_PUBLIC_APP_URL: process.env.NODE_ENV === 'production'
+      ? 'https://your-domain.com'
+      : 'http://localhost:3000',
   },
 };
 

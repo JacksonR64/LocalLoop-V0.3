@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "setup": "./scripts/comprehensive-setup-modern.sh",
-    "dev": "next dev",
+    "dev": "lsof -ti:3000 | xargs kill -9 2>/dev/null || true && next dev -p 3000",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -17,6 +17,8 @@
   "dependencies": {
     "@react-email/components": "^0.0.41",
     "@react-email/render": "^1.1.2",
+    "@stripe/react-stripe-js": "^3.7.0",
+    "@stripe/stripe-js": "^7.3.1",
     "@supabase/ssr": "^0.6.1",
     "@supabase/supabase-js": "^2.49.8",
     "@vercel/analytics": "^1.4.2",
@@ -30,6 +32,7 @@
     "react-dom": "19.0.0",
     "react-leaflet": "^5.0.0",
     "resend": "^4.5.1",
+    "stripe": "^18.2.0",
     "tailwind-merge": "^3.3.0",
     "zod": "^3.25.36"
   },

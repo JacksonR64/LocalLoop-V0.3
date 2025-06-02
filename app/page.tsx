@@ -9,6 +9,8 @@ import { EventCard, type EventData } from '@/components/events';
 import { EventFilters } from '@/components/filters/EventFilters';
 import { usePagination } from '@/lib/hooks/usePagination';
 import { useInfiniteScroll } from '@/lib/hooks/useInfiniteScroll';
+import { useAuth } from '@/lib/auth-context';
+import { ProfileDropdown } from '@/components/auth/ProfileDropdown';
 import React from 'react';
 
 // Sample event data (will be replaced with real data from Supabase in future tasks)
@@ -67,6 +69,166 @@ const sampleEvents: EventData[] = [
     organizer: {
       display_name: 'Arts Alliance'
     }
+  },
+  {
+    id: '4',
+    title: 'Tech Meetup: AI & Startups',
+    description: 'A networking and knowledge-sharing event for AI enthusiasts and startup founders.',
+    short_description: 'Meet local AI experts and startup founders.',
+    start_time: '2024-07-05T18:30:00.000Z',
+    end_time: '2024-07-05T21:00:00.000Z',
+    location: 'Innovation Hub',
+    category: 'tech',
+    is_paid: false,
+    featured: false,
+    capacity: 50,
+    rsvp_count: 30,
+    image_url: null,
+    organizer: { display_name: 'Tech Community' }
+  },
+  {
+    id: '5',
+    title: 'Yoga in the Park',
+    description: 'Outdoor yoga session for all levels. Bring your own mat!',
+    short_description: 'Morning yoga session in the city park.',
+    start_time: '2024-07-08T07:00:00.000Z',
+    end_time: '2024-07-08T08:30:00.000Z',
+    location: 'Central Park',
+    category: 'wellness',
+    is_paid: false,
+    featured: true,
+    capacity: 40,
+    rsvp_count: 22,
+    image_url: null,
+    organizer: { display_name: 'Wellness Group' }
+  },
+  {
+    id: '6',
+    title: 'Board Game Night',
+    description: 'Bring your favorite board games or try something new. Snacks provided!',
+    short_description: 'Casual board game night for all ages.',
+    start_time: '2024-07-12T19:00:00.000Z',
+    end_time: '2024-07-12T22:00:00.000Z',
+    location: 'Community Hall',
+    category: 'social',
+    is_paid: false,
+    featured: false,
+    capacity: 25,
+    rsvp_count: 10,
+    image_url: null,
+    organizer: { display_name: 'Fun Club' }
+  },
+  {
+    id: '7',
+    title: 'Startup Pitch Night',
+    description: 'Watch local startups pitch their ideas to a panel of investors and experts.',
+    short_description: 'Startup pitches and networking.',
+    start_time: '2024-07-15T18:00:00.000Z',
+    end_time: '2024-07-15T21:00:00.000Z',
+    location: 'Tech Auditorium',
+    category: 'business',
+    is_paid: true,
+    featured: true,
+    capacity: 100,
+    rsvp_count: 60,
+    image_url: null,
+    organizer: { display_name: 'Startup Society' }
+  },
+  {
+    id: '8',
+    title: 'Outdoor Movie Night',
+    description: 'Enjoy a family-friendly movie under the stars. Bring blankets and snacks!',
+    short_description: 'Movie screening in the park.',
+    start_time: '2024-07-20T20:00:00.000Z',
+    end_time: '2024-07-20T22:30:00.000Z',
+    location: 'Riverside Park',
+    category: 'entertainment',
+    is_paid: false,
+    featured: false,
+    capacity: 200,
+    rsvp_count: 80,
+    image_url: null,
+    organizer: { display_name: 'City Events' }
+  },
+  {
+    id: '9',
+    title: 'Food Truck Festival',
+    description: 'Sample delicious food from a variety of local food trucks. Live music and games!',
+    short_description: 'Food trucks, music, and fun.',
+    start_time: '2024-07-27T12:00:00.000Z',
+    end_time: '2024-07-27T18:00:00.000Z',
+    location: 'Market Square',
+    category: 'food',
+    is_paid: true,
+    featured: true,
+    capacity: 500,
+    rsvp_count: 200,
+    image_url: null,
+    organizer: { display_name: 'Foodies United' }
+  },
+  {
+    id: '10',
+    title: 'Photography Walk',
+    description: 'Join local photographers for a guided walk and photo session around the city.',
+    short_description: 'Explore the city through your lens.',
+    start_time: '2024-08-02T09:00:00.000Z',
+    end_time: '2024-08-02T12:00:00.000Z',
+    location: 'City Center',
+    category: 'arts',
+    is_paid: false,
+    featured: false,
+    capacity: 30,
+    rsvp_count: 18,
+    image_url: null,
+    organizer: { display_name: 'Photo Club' }
+  },
+  {
+    id: '11',
+    title: 'Coding Bootcamp Demo Day',
+    description: 'See what our bootcamp students have built and network with local tech companies.',
+    short_description: 'Bootcamp project demos and networking.',
+    start_time: '2024-08-10T15:00:00.000Z',
+    end_time: '2024-08-10T18:00:00.000Z',
+    location: 'Innovation Hub',
+    category: 'tech',
+    is_paid: false,
+    featured: false,
+    capacity: 80,
+    rsvp_count: 40,
+    image_url: null,
+    organizer: { display_name: 'Code Academy' }
+  },
+  {
+    id: '12',
+    title: 'Charity Fun Run',
+    description: '5K fun run to raise money for local charities. All ages welcome!',
+    short_description: 'Run, walk, or cheer for a good cause.',
+    start_time: '2024-08-17T08:00:00.000Z',
+    end_time: '2024-08-17T11:00:00.000Z',
+    location: 'River Trail',
+    category: 'community',
+    is_paid: true,
+    featured: true,
+    capacity: 300,
+    rsvp_count: 120,
+    image_url: null,
+    organizer: { display_name: 'Charity League' }
+  },
+  {
+    id: '13',
+    title: 'Makers Market',
+    description: 'Shop handmade goods from local makers and artists. Live demos and workshops.',
+    short_description: 'Handmade goods, demos, and workshops.',
+    start_time: '2024-08-24T10:00:00.000Z',
+    end_time: '2024-08-24T16:00:00.000Z',
+    location: 'Old Town Square',
+    category: 'market',
+    is_paid: false,
+    featured: false,
+    capacity: 100,
+    rsvp_count: 55,
+    image_url: null,
+    organizer: { display_name: 'Makers Guild' }
   }
 ];
 
@@ -82,6 +244,9 @@ export default function HomePage() {
 
   const [filteredEvents, setFilteredEvents] = React.useState(nonFeaturedEvents);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+
+  // Auth state
+  const { user, loading: authLoading } = useAuth();
 
   // Memoize the filtered events setter to prevent infinite re-renders
   const handleFilteredEventsChange = React.useCallback((events: EventData[]) => {
@@ -163,12 +328,20 @@ export default function HomePage() {
               <Link href="/my-events" className="text-gray-600 hover:text-gray-900 transition-colors">
                 My Events
               </Link>
-              <Link
-                href="/auth/login"
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-              >
-                Sign In
-              </Link>
+
+              {/* Auth state conditional rendering */}
+              {authLoading ? (
+                <div className="w-20 h-10 bg-gray-200 animate-pulse rounded-lg"></div>
+              ) : user ? (
+                <ProfileDropdown />
+              ) : (
+                <Link
+                  href="/auth/login"
+                  className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                  Sign In
+                </Link>
+              )}
             </nav>
 
             {/* Mobile Menu Button */}
@@ -212,13 +385,21 @@ export default function HomePage() {
                 >
                   My Events
                 </Link>
-                <Link
-                  href="/auth/login"
-                  className="bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700 transition-colors text-left"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Sign In
-                </Link>
+
+                {/* Auth state conditional rendering for mobile */}
+                {authLoading ? (
+                  <div className="w-full h-12 bg-gray-200 animate-pulse rounded-lg"></div>
+                ) : user ? (
+                  <ProfileDropdown />
+                ) : (
+                  <Link
+                    href="/auth/login"
+                    className="bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700 transition-colors text-left"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Sign In
+                  </Link>
+                )}
               </nav>
             </div>
           )}

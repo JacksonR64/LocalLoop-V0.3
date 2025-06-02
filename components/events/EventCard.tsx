@@ -24,6 +24,7 @@ export interface EventData {
     image_url?: string | null;
     image_alt_text?: string;
     organizer: {
+        id?: string;
         display_name: string;
     };
     ticket_types?: Array<{

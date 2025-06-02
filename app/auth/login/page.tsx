@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/lib/auth-context'
 import Link from 'next/link'
@@ -13,6 +13,8 @@ export default function LoginPage() {
     const [error, setError] = useState('')
 
     const {
+        user,
+        loading: authLoading,
         signIn,
         signInWithGoogle,
         signInWithApple,
@@ -21,6 +23,13 @@ export default function LoginPage() {
     } = useAuth()
     const router = useRouter()
 
+    // Auto-redirect when user becomes authenticated
+    useEffect(() => {
+        if (user && !authLoading) {
+            router.push('/')
+        }
+    }, [user, authLoading, router])
+
     const handleEmailLogin = async (e: React.FormEvent) => {
         e.preventDefault()
         setLoading(true)
@@ -28,10 +37,10 @@ export default function LoginPage() {
 
         try {
             await signIn(email, password)
-            router.push('/')
+            // Reset loading state after successful sign in
+            setLoading(false)
         } catch (error: unknown) {
             setError(error instanceof Error ? error.message : 'An unknown error occurred')
-        } finally {
             setLoading(false)
         }
     }
@@ -140,8 +149,8 @@ export default function LoginPage() {
                                 type="button"
                                 disabled={!isGoogleAuthEnabled}
                                 className={`w-full inline-flex justify-center py-2 px-4 border rounded-md shadow-sm text-sm font-medium transition-colors ${isGoogleAuthEnabled
-                                        ? 'border-gray-300 bg-white text-gray-500 hover:bg-gray-50'
-                                        : 'border-gray-200 bg-gray-100 text-gray-400 cursor-not-allowed'
+                                    ? 'border-gray-300 bg-white text-gray-500 hover:bg-gray-50'
+                                    : 'border-gray-200 bg-gray-100 text-gray-400 cursor-not-allowed'
                                     }`}
                             >
                                 <span>Google</span>
@@ -153,8 +162,8 @@ export default function LoginPage() {
                                 type="button"
                                 disabled={!isAppleAuthEnabled}
                                 className={`w-full inline-flex justify-center items-center py-2 px-4 border rounded-md shadow-sm text-sm font-medium transition-colors ${isAppleAuthEnabled
-                                        ? 'border-gray-300 bg-white text-gray-500 hover:bg-gray-50'
-                                        : 'border-gray-200 bg-gray-100 text-gray-400 cursor-not-allowed relative'
+                                    ? 'border-gray-300 bg-white text-gray-500 hover:bg-gray-50'
+                                    : 'border-gray-200 bg-gray-100 text-gray-400 cursor-not-allowed relative'
                                     }`}
                                 title={!isAppleAuthEnabled ? 'Coming soon! Requires Apple Developer account' : ''}
                             >

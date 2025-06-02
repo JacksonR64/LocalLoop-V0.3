@@ -1,13 +1,17 @@
 'use client';
 
-import React, { use } from 'react';
+import React, { use, useState } from 'react';
 import Link from 'next/link';
 import { Calendar, Clock, MapPin, User, DollarSign, Share2, Heart } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui';
 import { EventData, EventImageGallery, type EventImage } from '@/components/events';
 import { EventMap } from '@/components/events/EventMap';
 import { RSVPTicketSection } from '@/components/events/RSVPTicketSection';
+import TicketTypeManager from '@/components/events/TicketTypeManager';
+import TicketSelection from '@/components/events/TicketSelection';
+import CheckoutForm from '@/components/checkout/CheckoutForm';
 import GoogleCalendarConnect from '@/components/GoogleCalendarConnect';
+import { useAuth } from '@/lib/auth-context';
 
 // Sample event data matching the actual EventData interface
 const sampleEventDetails: EventData = {
@@ -27,6 +31,7 @@ const sampleEventDetails: EventData = {
     image_url: '/events/farmers-market.jpg',
     image_alt_text: 'Community farmers market with vendors and families',
     organizer: {
+        id: 'organizer-1',
         display_name: 'Downtown Community Association'
     },
     ticket_types: [
@@ -70,15 +75,60 @@ const sampleGalleryImages: EventImage[] = [
     }
 ];
 
+// Define proper types for ticket selections
+interface TicketSelection {
+    ticket_type_id: string
+    ticket_type: {
+        id: string
+        name: string
+        price: number
+    }
+    quantity: number
+    unit_price: number
+    total_price: number
+}
+
+interface GuestInfo {
+    email: string
+    name: string
+}
+
 interface EventDetailPageProps {
     params: Promise<{ id: string }>;
 }
 
 export default function EventDetailPage({ params }: EventDetailPageProps) {
     const { id } = use(params);
+    const { user } = useAuth();
+
+    // Checkout flow state
+    const [checkoutStep, setCheckoutStep] = useState<'tickets' | 'checkout' | 'success'>('tickets');
+    const [selectedTickets, setSelectedTickets] = useState<TicketSelection[]>([]);
+    const [guestInfo, setGuestInfo] = useState<GuestInfo | undefined>();
 
     // TODO: Fetch actual event data based on id
     const event = sampleEventDetails;
+
+    // TODO: Check if current user is the organizer of this event
+    const isOrganizer = user?.id === event.organizer?.id || (user?.user_metadata?.role === 'admin');
+
+    const handlePurchaseInitiated = (selections: TicketSelection[], guestData?: GuestInfo) => {
+        setSelectedTickets(selections);
+        setGuestInfo(guestData);
+        setCheckoutStep('checkout');
+    };
+
+    const handleCheckoutSuccess = (paymentIntentId: string) => {
+        console.log('Payment successful:', paymentIntentId);
+        setCheckoutStep('success');
+        // TODO: Redirect to success page or show success message
+    };
+
+    const handleCheckoutCancel = () => {
+        setCheckoutStep('tickets');
+        setSelectedTickets([]);
+        setGuestInfo(undefined);
+    };
 
     const formatDate = (dateString: string) => {
         const date = new Date(dateString);
@@ -192,6 +242,33 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
                                 </div>
                             </CardContent>
                         </Card>
+
+                        {/* Ticket Management - Only for Organizers */}
+                        {isOrganizer && (
+                            <TicketTypeManager
+                                eventId={event.id}
+                                isOrganizer={isOrganizer}
+                            />
+                        )}
+
+                        {/* Ticket Selection - For all users */}
+                        {event.is_paid && checkoutStep === 'tickets' && (
+                            <TicketSelection
+                                eventId={event.id}
+                                onPurchaseInitiated={handlePurchaseInitiated}
+                            />
+                        )}
+
+                        {/* Checkout Form */}
+                        {event.is_paid && checkoutStep === 'checkout' && (
+                            <CheckoutForm
+                                eventId={event.id}
+                                selectedTickets={selectedTickets}
+                                guestInfo={guestInfo}
+                                onSuccess={handleCheckoutSuccess}
+                                onCancel={handleCheckoutCancel}
+                            />
+                        )}
 
                         {/* Additional Information */}
                         <Card>
