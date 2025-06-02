@@ -101,16 +101,6 @@ CREATE TABLE events (
   metadata jsonb DEFAULT '{}'
 );
 
--- Add computed columns for events
-ALTER TABLE events ADD COLUMN status text GENERATED ALWAYS AS (
-  CASE 
-    WHEN cancelled THEN 'cancelled'
-    WHEN start_time > now() THEN 'upcoming'
-    WHEN start_time <= now() AND end_time >= now() THEN 'in_progress'
-    ELSE 'past'
-  END
-) STORED;
-
 -- RSVPs table with Google Calendar integration tracking
 CREATE TABLE rsvps (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -317,4 +307,15 @@ COMMENT ON COLUMN users.google_calendar_access_token IS 'Encrypted Google OAuth 
 COMMENT ON COLUMN users.google_calendar_refresh_token IS 'Encrypted Google OAuth refresh token for Calendar API';
 COMMENT ON COLUMN events.google_calendar_event_template IS 'Template data for consistent Google Calendar event creation';
 COMMENT ON COLUMN rsvps.google_calendar_event_id IS 'Google Calendar event ID for deletion if RSVP cancelled';
-COMMENT ON COLUMN orders.google_calendar_event_id IS 'Google Calendar event ID for deletion if order cancelled'; 
+COMMENT ON COLUMN orders.google_calendar_event_id IS 'Google Calendar event ID for deletion if order cancelled';
+
+-- View for event status (IMMUTABLE workaround)
+CREATE OR REPLACE VIEW events_with_status AS
+SELECT *,
+  CASE
+    WHEN cancelled THEN 'cancelled'
+    WHEN start_time > now() THEN 'upcoming'
+    WHEN start_time <= now() AND end_time >= now() THEN 'in_progress'
+    ELSE 'past'
+  END AS status
+FROM events; 

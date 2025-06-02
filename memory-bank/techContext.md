@@ -1,179 +1,243 @@
-# LocalLoop V0.3 Technical Context (as of 2024-05-30)
+# 🛠️ Technical Context - LocalLoop V0.3
 
-## Stack & Integrations
-- Next.js 15, TypeScript, Tailwind CSS 4, Shadcn UI
-- Supabase (Auth, Postgres, RLS, storage)
-- Stripe (checkout, webhooks, ticketing)
-- Google OAuth (Supabase + Google Cloud, secure token storage)
-- Resend (transactional email, RSVP confirmation/cancellation)
-- React context for authentication state
-- Modular event, RSVP, and ticketing components
-- Secure token storage (AES-256-GCM, environment-based keys)
+## 🏗️ **Current Architecture Status**
 
-## Confirmed Patterns & Architecture
-- Auth context provides user/session state throughout app
-- Event/ticketing logic is modular and type-safe
-- API routes use Zod for validation and error handling
-- All sensitive keys in .env.local, never in code
-- RLS and computed columns in Supabase for security and performance
-- Mobile-first, accessible UI with responsive layouts
-
-## Recent Decisions
-- All event data currently mocked in `app/page.tsx` for E2E testing
-- Stripe and Google OAuth flows tested and working in dev
-- RSVP and ticketing APIs validated with real and guest users
+### **✅ Production-Ready Tech Stack**
+- **Frontend**: Next.js 15 with App Router, TypeScript 5.0, Tailwind CSS 4.0
+- **Backend**: Supabase (PostgreSQL + Auth + Storage), Stripe payments
+- **Integrations**: Google Calendar API (OAuth 2.0), Resend emails
+- **Deployment**: Vercel with GitHub Actions CI/CD
+- **Development**: ESLint, TypeScript strict mode, responsive design
 
 ---
 
-**Ready for Google Calendar event integration and user profile/history features.**
+## 🔧 **Recent Technical Debugging Learnings**
 
-## 🏗️ **Architecture Overview**
-- **Framework**: Next.js 15.3.2 with App Router
-- **Language**: TypeScript with strict mode
-- **Styling**: Tailwind CSS + Shadcn UI components
-- **Database**: Supabase (PostgreSQL) with Row Level Security
-- **Authentication**: Supabase Auth with OAuth providers
-- **Deployment**: Vercel (configured)
+### **🐛 React useEffect Patterns - CRITICAL LEARNING**
+*From RSVP API infinite loop debugging session*
 
-## 🔧 **Confirmed Working Configurations**
-
-### **Environment Variables** ✅
-```bash
-# .env.local (Primary file for secrets)
-NEXT_PUBLIC_SUPABASE_URL=https://jbyuivzpetgbapisbnxy.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-NEXT_PUBLIC_ENABLE_GOOGLE_AUTH=true
-NEXT_PUBLIC_ENABLE_APPLE_AUTH=false
-GOOGLE_CLIENT_ID=729713375100-j6jjb5snk8bn2643kiev3su0jg6epedv.apps.googleusercontent.com
-GOOGLE_CLIENT_SECRET=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
-```
-
-### **Authentication System** ✅
-- **Supabase Integration**: Working with NEXT_PUBLIC_ prefixed variables
-- **Google OAuth**: Configured and functional
-- **Apple OAuth**: Code ready, disabled pending Apple Developer account
-- **Feature Toggles**: Environment-based provider enablement
-- **Middleware**: Handles auth state properly with correct env vars
-
-### **Feature Toggle Pattern** ✅
+#### **❌ ANTI-PATTERN: Dependency Cycle**
 ```typescript
-// lib/auth-context.tsx - Proven working pattern
-const ENABLE_GOOGLE_AUTH = process.env.NEXT_PUBLIC_ENABLE_GOOGLE_AUTH !== 'false'
-const ENABLE_APPLE_AUTH = process.env.NEXT_PUBLIC_ENABLE_APPLE_AUTH === 'true'
+// NEVER DO THIS - Creates infinite loop
+const checkExistingRSVP = useCallback(async () => {
+  // API call logic
+}, [user, eventId]);
 
-// Conditional UI rendering
-{!isAppleAuthEnabled && (
-    <Lock className="w-3 h-3 mr-1 text-gray-400" />
-)}
+useEffect(() => {
+  // ... initialization
+  checkExistingRSVP(); // Called in useEffect
+}, [checkExistingRSVP]); // Depends on useCallback function
+// This creates new function on every user/eventId change
 ```
 
-### **React Performance Patterns** ✅
+#### **✅ CORRECT PATTERN: Separated Effects**
 ```typescript
-// CORRECT: Move constants outside component
-const sampleEvents = [/* data */]
+// CORRECT - Separate initialization from user-triggered actions
+useEffect(() => {
+  // One-time initialization per eventId
+  if (eventId) {
+    initializeComponent();
+  }
+}, [eventId]); // Only depends on eventId
 
-// CORRECT: Memoize computed values
-const nonFeaturedEvents = useMemo(() => 
-  sampleEvents.filter(event => !event.featured), 
-  [sampleEvents]
-)
-
-// AVOID: Objects/arrays inside component body (causes re-renders)
+useEffect(() => {
+  // User-specific actions when user changes
+  if (user) {
+    checkExistingRSVP();
+  }
+}, [user]); // Only depends on user
 ```
 
-## 🗂️ **File Structure Confirmed**
+#### **🔑 Key Rules for useEffect**
+1. **Avoid useCallback in useEffect dependencies** - creates new functions on every render
+2. **Separate concerns** - initialization vs. user actions vs. data changes
+3. **Remove redundant calls** - don't call functions both inside and outside useEffect
+4. **Use minimal dependencies** - only include what actually triggers the effect
+
+---
+
+### **🎨 PWA Manifest Best Practices**
+*From apple-touch-icon 404 debugging session*
+
+#### **❌ PROBLEM: Missing Icon References**
+```json
+// NEVER reference non-existent files
+{
+  "icons": [
+    {"src": "/icon-192.png", "sizes": "192x192"}, // 404!
+    {"src": "/apple-touch-icon.png", "sizes": "180x180"} // 404!
+  ]
+}
 ```
-LocalLoop-V0.3/
-├── app/                     # Next.js App Router
-│   ├── auth/               # Authentication pages ✅
-│   ├── events/             # Event pages ✅  
-│   └── page.tsx            # Homepage ✅
-├── components/             # Reusable components ✅
-├── lib/                    # Utilities and configs ✅
-│   ├── auth-context.tsx    # Feature toggle auth ✅
-│   ├── config.ts          # Centralized config ✅
-│   └── supabase.ts        # DB client ✅
-├── docs/                   # Documentation ✅
-├── memory-bank/           # AI context files ✅
-├── .env.local             # Secrets (gitignored) ✅
-├── .env                   # Shared config ✅
-└── .env.example           # Template ✅
+
+#### **✅ SOLUTION: Clean Manifest**
+```json
+// CORRECT - Only include essential metadata without missing files
+{
+  "name": "LocalLoop - Community Events Platform",
+  "short_name": "LocalLoop",
+  "description": "Discover and join local community events",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2563eb"
+  // NO icons array if files don't exist
+}
 ```
 
-## 🎨 **UI/UX Patterns Working**
+#### **🔑 Key Rules for PWA Manifests**
+1. **Remove references to missing files** rather than creating placeholder files
+2. **Validate all icon paths** before adding to manifest
+3. **Use HTML meta tags sparingly** - only for files that actually exist
+4. **Clean console errors** improve developer experience and user trust
 
-### **Component Patterns**
-- **Client Components**: Use "use client" for interactivity
-- **Server Components**: Default for static content
-- **Conditional Rendering**: Based on feature flags
-- **Error Boundaries**: Graceful fallbacks
+---
 
-### **Styling Approach**
-- **Tailwind CSS**: Utility-first styling
-- **Responsive Design**: Mobile-first approach
-- **Component States**: Disabled, loading, error states
-- **Icons**: Lucide React for consistent iconography
+## 🔍 **Debugging Methodology Established**
 
-## 🔒 **Security Configurations**
+### **Sequential Thinking Process**
+1. **Problem Analysis**: Identify symptoms and potential root causes
+2. **Code Investigation**: Use tools like grep_search and read_file systematically  
+3. **Root Cause Identification**: Find the actual source, not just symptoms
+4. **Solution Implementation**: Fix with targeted edits and verify results
+5. **Documentation**: Update memory bank with learnings for future reference
 
-### **Environment Security** ✅
-- **Secrets**: Stored in .env.local (gitignored)
-- **Public Variables**: NEXT_PUBLIC_ prefix for client access
-- **Git Protection**: .env* in .gitignore
-- **API Keys**: Never committed to repository
+### **Browser Tools Integration**
+- **Terminal curl testing**: Quick API endpoint verification
+- **Console monitoring**: Identify 404s, infinite loops, and errors
+- **Network tab analysis**: Spot excessive requests and performance issues
 
-### **Authentication Security** ✅
-- **OAuth Flow**: Proper redirect handling
-- **Session Management**: Supabase handles securely
-- **Middleware**: Auth state protection
-- **Error Handling**: No sensitive data in client errors
+---
 
-## 📊 **Performance Optimizations**
+## 🚀 **Current System Status**
 
-### **React Optimizations** ✅
-- **Memoization**: useMemo for expensive computations
-- **Component Structure**: Constants outside render
-- **Dependency Arrays**: Properly configured useEffect
-- **Code Splitting**: Dynamic imports where needed
+### **✅ Working Components**
+- **Authentication**: Supabase Auth with Google OAuth, email/password
+- **Database**: PostgreSQL with RLS policies, proper schema applied
+- **RSVP System**: Free events with email confirmations (Resend + React Email)
+- **Payment System**: Stripe integration with webhooks and guest checkout
+- **Event Pages**: Discovery, filtering, search, detail pages with maps
+- **Google Calendar**: OAuth setup and "Add to Calendar" for RSVP users
 
-### **Build Optimizations** ✅
-- **Static Generation**: 25 pages pre-rendered
-- **Image Optimization**: Next.js Image component
-- **Bundle Size**: Optimized imports
-- **Performance**: No console errors or warnings
+### **🔧 Component Architecture**
+- **RSVPTicketSection**: ✅ Fixed infinite loop, proper lifecycle management
+- **EventImageGallery**: ✅ Lightbox with keyboard navigation
+- **FilterComponents**: ✅ Real-time filtering with URL persistence
+- **AuthProvider**: ✅ Context with session management
+- **Layout Components**: ✅ Responsive navigation with auth states
 
-## 🧪 **Testing & Quality**
+### **📦 Key Dependencies**
+```json
+{
+  "next": "^15.0.0",
+  "react": "^18.0.0", 
+  "typescript": "^5.0.0",
+  "@supabase/supabase-js": "^2.0.0",
+  "stripe": "^14.0.0",
+  "resend": "^3.0.0",
+  "@react-email/components": "^0.0.0",
+  "leaflet": "^1.9.0",
+  "react-leaflet": "^4.0.0"
+}
+```
 
-### **Current Status** ✅
-- **Console Errors**: None detected
-- **Network Errors**: None detected
-- **Build Status**: Successful
-- **TypeScript**: No compilation errors
-- **ESLint**: All issues resolved
+---
 
-### **Browser Compatibility** ✅
-- **Modern Browsers**: Chrome, Firefox, Safari, Edge
-- **Mobile Responsive**: Tested and working
-- **JavaScript**: ES2022+ features supported
-- **CSS**: Modern CSS features with fallbacks
+## 🐛 **Resolved Technical Challenges**
 
-## 🔄 **Development Workflow**
+### **Database Schema Issues**
+- **Problem**: Generated columns with `now()` function causing migration errors
+- **Solution**: Replaced with database views for computed status fields
+- **Pattern**: Use views for complex computed fields instead of generated columns
 
-### **Environment Setup**
-1. Use .env.local for local development
-2. Restart dev server after env changes
-3. Check git status before committing
-4. Test auth flows after changes
+### **useEffect Infinite Loops**
+- **Problem**: React dependency cycles causing constant API requests
+- **Solution**: Separate effects by concern, avoid useCallback in dependencies
+- **Pattern**: Minimal dependency arrays, separate initialization from user actions
 
-### **Feature Development**
-1. Check existing patterns in codebase
-2. Follow TypeScript strict mode
-3. Use feature toggles for new features
-4. Test both enabled/disabled states
+### **PWA Manifest Errors**
+- **Problem**: 404 errors for non-existent icon files
+- **Solution**: Remove missing file references, keep essential metadata only
+- **Pattern**: Validate all asset references before including in manifests
 
-## 🚀 **Ready for Next Phase**
-- **Foundation**: Solid and tested
-- **Authentication**: Professional implementation
-- **Environment**: Properly configured
-- **Performance**: Optimized and error-free
-- **Documentation**: Comprehensive guides created
+### **Build Configuration**
+- **Problem**: TypeScript strict mode and ESLint errors
+- **Solution**: Proper typing, unused parameter handling, import organization
+- **Pattern**: Maintain zero-error build policy for production readiness
+
+---
+
+## 📊 **Performance Optimizations Applied**
+
+### **Bundle Size Management**
+- **Code Splitting**: Dynamic imports for map components and heavy libraries
+- **Image Optimization**: Next.js Image with WebP conversion and lazy loading
+- **Font Optimization**: Display swap for faster loading
+
+### **API Performance**
+- **Eliminated Polling**: Fixed infinite RSVP API requests
+- **Proper Caching**: Browser cache headers and static generation
+- **Error Handling**: Graceful degradation and retry logic
+
+### **Database Performance**
+- **Indexes**: Strategic indexing for common queries
+- **RLS Policies**: Efficient row-level security without performance impact
+- **Computed Columns**: Database-level calculations for real-time data
+
+---
+
+## 🔐 **Security Implementation**
+
+### **Authentication Security**
+- **OAuth 2.0**: Proper state parameter for CSRF protection
+- **JWT Tokens**: Supabase-managed with automatic refresh
+- **Session Management**: Secure cookie handling and expiration
+
+### **Database Security**
+- **Row-Level Security**: Complete data isolation between users
+- **Input Validation**: Zod schemas for all API endpoints
+- **SQL Injection Prevention**: Parameterized queries only
+
+### **API Security**
+- **CORS Configuration**: Proper origin restrictions
+- **Rate Limiting**: Protection against abuse
+- **Error Handling**: No sensitive data exposure in error messages
+
+---
+
+## 🎯 **Next Technical Priorities**
+
+### **Task 10: Google Calendar for Paid Events**
+- **OAuth Scope**: Calendar write permissions for ticket purchasers
+- **Event Creation**: Automated calendar entries after payment
+- **Error Handling**: Fallback for calendar API failures
+
+### **Technical Debt**
+- **Automated Testing**: Unit tests for critical components
+- **Performance Monitoring**: Real user metrics and error tracking
+- **Accessibility**: WCAG 2.1 AA compliance audit and fixes
+
+---
+
+## 🧠 **Developer Experience Improvements**
+
+### **Debugging Tools**
+- **Sequential Thinking**: Systematic problem-solving methodology
+- **Memory Bank**: Comprehensive technical documentation
+- **Browser Tools**: Terminal integration for quick testing
+
+### **Code Quality**
+- **TypeScript Strict**: Zero compilation errors maintained
+- **ESLint Clean**: Consistent code standards enforced
+- **Build Validation**: All checks passing before commits
+
+### **Documentation Standards**
+- **Technical Context**: Architecture and patterns documented
+- **Debugging History**: Problem resolution patterns captured
+- **Future Reference**: Searchable technical knowledge base
+
+---
+
+**Last Updated**: Current debugging session - RSVP infinite loop and PWA manifest fixes
+**Status**: ✅ All core systems operational and optimized
+**Next Focus**: Google Calendar integration for paid events (Task 10)

@@ -121,8 +121,16 @@ const RSVPTicketSection: React.FC<RSVPTicketSectionProps> = ({
         };
 
         initializeAuth();
-        checkExistingRSVP();
-    }, [checkExistingRSVP]);
+    }, [eventId]);
+
+    // Separate effect to check RSVP when user changes
+    useEffect(() => {
+        if (user) {
+            checkExistingRSVP();
+        } else {
+            setExistingRSVP(null);
+        }
+    }, [user, eventId, checkExistingRSVP]);
 
     // Handle RSVP submission
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
