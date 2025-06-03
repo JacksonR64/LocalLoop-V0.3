@@ -15,6 +15,19 @@ import { GoogleCalendarConnectWithStatus } from '@/components/GoogleCalendarConn
 import type { Event, TicketType } from '@/lib/types';
 import EventImageGallery from '@/components/events/EventImageGallery';
 
+// Interface for selected tickets matching TicketSelection component
+interface TicketSelectionItem {
+    ticket_type_id: string;
+    ticket_type: {
+        id: string;
+        name: string;
+        price: number;
+    };
+    quantity: number;
+    unit_price: number;
+    total_price: number;
+}
+
 interface EventDetailClientProps {
     event: EventData;
 }
@@ -22,7 +35,7 @@ interface EventDetailClientProps {
 export function EventDetailClient({ event }: EventDetailClientProps) {
     const router = useRouter();
     const [ticketTypes, setTicketTypes] = useState<TicketType[]>([]);
-    const [selectedTickets, setSelectedTickets] = useState<{ [key: string]: number }>({});
+    const [selectedTickets, setSelectedTickets] = useState<TicketSelectionItem[]>([]);
     const [checkoutStep, setCheckoutStep] = useState<'tickets' | 'checkout'>('tickets');
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -68,22 +81,16 @@ export function EventDetailClient({ event }: EventDetailClientProps) {
         });
     };
 
-    const handleTicketSelection = (ticketTypeId: string, quantity: number) => {
-        setSelectedTickets(prev => ({
-            ...prev,
-            [ticketTypeId]: quantity
-        }));
+    const handleTicketsChange = (tickets: TicketSelectionItem[]) => {
+        setSelectedTickets(tickets);
     };
 
     const getTotalPrice = () => {
-        return Object.entries(selectedTickets).reduce((total, [ticketTypeId, quantity]) => {
-            const ticketType = ticketTypes.find(t => t.id === ticketTypeId);
-            return total + (ticketType?.price || 0) * quantity;
-        }, 0);
+        return selectedTickets.reduce((total, ticket) => total + ticket.total_price, 0);
     };
 
     const getTotalTickets = () => {
-        return Object.values(selectedTickets).reduce((total, quantity) => total + quantity, 0);
+        return selectedTickets.reduce((total, ticket) => total + ticket.quantity, 0);
     };
 
     const handleProceedToCheckout = () => {
@@ -92,6 +99,15 @@ export function EventDetailClient({ event }: EventDetailClientProps) {
 
     const handleBackToTickets = () => {
         setCheckoutStep('tickets');
+    };
+
+    // Convert selectedTickets array to object format for CheckoutForm compatibility
+    const getSelectedTicketsForCheckout = () => {
+        const ticketsObj: { [key: string]: number } = {};
+        selectedTickets.forEach(ticket => {
+            ticketsObj[ticket.ticket_type_id] = ticket.quantity;
+        });
+        return ticketsObj;
     };
 
     return (
@@ -231,9 +247,10 @@ export function EventDetailClient({ event }: EventDetailClientProps) {
                                         {checkoutStep === 'tickets' ? (
                                             <div className="space-y-4">
                                                 <TicketSelection
-                                                    ticketTypes={ticketTypes}
+                                                    eventId={event.id}
                                                     selectedTickets={selectedTickets}
-                                                    onTicketChange={handleTicketSelection}
+                                                    onTicketsChange={handleTicketsChange}
+                                                    onPurchaseClick={handleProceedToCheckout}
                                                 />
 
                                                 {getTotalTickets() > 0 && (
@@ -263,7 +280,7 @@ export function EventDetailClient({ event }: EventDetailClientProps) {
 
                                                 <CheckoutForm
                                                     eventId={event.id}
-                                                    selectedTickets={selectedTickets}
+                                                    selectedTickets={getSelectedTicketsForCheckout()}
                                                     ticketTypes={ticketTypes}
                                                     totalPrice={getTotalPrice()}
                                                 />

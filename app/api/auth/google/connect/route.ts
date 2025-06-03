@@ -16,7 +16,7 @@ import { createGoogleCalendarService } from '@/lib/google-calendar'
  * - CSRF protection via state parameter
  * - Validates user session before OAuth initiation
  */
-export async function GET(_request: NextRequest) {
+export async function GET(request: NextRequest) {
     try {
         // Create Supabase client for server-side auth
         const supabase = await createServerSupabaseClient()
@@ -32,7 +32,7 @@ export async function GET(_request: NextRequest) {
         }
 
         // Extract query parameters
-        const { searchParams } = new URL(_request.url)
+        const { searchParams } = new URL(request.url)
         const returnUrl = searchParams.get('returnUrl') || '/dashboard'
         const action = searchParams.get('action') as 'connect' | 'create_event' | 'sync' || 'connect'
 
@@ -110,4 +110,10 @@ export async function POST() {
         { error: 'Method not allowed. Use GET to initiate OAuth flow.' },
         { status: 405 }
     )
+}
+
+/**
+ * DELETE /api/auth/google/connect - Disconnect Google Calendar
+ */
+export async function DELETE() {
 } 

@@ -71,7 +71,7 @@ async function getEventData(eventId: string): Promise<EventData | null> {
         rsvp_count: event.rsvps?.length || 0,
         image_url: event.image_url,
         organizer: {
-            display_name: (event.users as any)?.display_name || 'Unknown Organizer'
+            display_name: (event.users as { display_name: string } | null)?.display_name || 'Unknown Organizer'
         }
     };
 }

@@ -1,10 +1,6 @@
 import { Suspense } from 'react';
-import Link from 'next/link';
-import { Calendar } from 'lucide-react';
-import { Card, CardContent, LoadingSpinner } from '@/components/ui';
-import { EventCard, type EventData } from '@/components/events';
-import { EventFilters } from '@/components/filters/EventFilters';
-import { ProfileDropdown } from '@/components/auth/ProfileDropdown';
+import { LoadingSpinner } from '@/components/ui';
+import { type EventData } from '@/components/events';
 import { createServerSupabaseClient } from '@/lib/supabase-server';
 import { HomePageClient } from '@/components/homepage/HomePageClient';
 
@@ -68,12 +64,10 @@ export default async function HomePage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Suspense fallback={<LoadingSpinner />}>
-        <HomePageClient
-          featuredEvents={featuredEvents}
-          nonFeaturedEvents={nonFeaturedEvents}
-        />
-      </Suspense>
+      <HomePageClient
+        featuredEvents={featuredEvents}
+        nonFeaturedEvents={nonFeaturedEvents}
+      />
     </div>
   );
 }

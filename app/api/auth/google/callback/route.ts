@@ -151,7 +151,7 @@ export async function GET(request: NextRequest) {
             console.log('[DEBUG] Creating Supabase session for user:', user.id)
 
             // Use admin auth to create a session for this user
-            const _sessionData = await supabase.auth.setSession({
+            await supabase.auth.setSession({
                 access_token: tokens.access_token,
                 refresh_token: tokens.refresh_token
             })

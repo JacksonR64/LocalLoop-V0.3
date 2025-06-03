@@ -75,11 +75,16 @@ export async function POST(request: NextRequest) {
         const body = await request.json()
         const supabase = await createServerSupabaseClient()
 
-        // Get current user (optional for guest RSVPs)
+        // Get current user BEFORE validation (important for validation logic)
         const { data: { user } } = await supabase.auth.getUser()
 
-        // Validate request body
-        const result = rsvpSchema.safeParse(body)
+        // If user is authenticated, add user_id to body for validation
+        const bodyWithAuth = user
+            ? { ...body, user_id: user.id }
+            : body
+
+        // Validate request body (now includes user_id if authenticated)
+        const result = rsvpSchema.safeParse(bodyWithAuth)
         if (!result.success) {
             return NextResponse.json(
                 { error: 'Invalid request data', details: result.error.format() },
@@ -115,36 +120,53 @@ export async function POST(request: NextRequest) {
                 start_time,
                 end_time,
                 location,
-                address,
+                location_details,
                 slug,
-                is_open_for_registration, 
-                capacity, 
-                rsvp_count,
+                published,
+                cancelled,
+                capacity,
                 users:organizer_id (
                     id,
                     email,
-                    full_name
+                    display_name
                 )
             `)
             .eq('id', rsvpData.event_id)
             .single()
 
         if (eventError || !event) {
+            console.error('Event lookup error:', eventError)
             return NextResponse.json(
                 { error: 'Event not found' },
                 { status: 404 }
             )
         }
 
-        if (!event.is_open_for_registration) {
+        // Check if event is published and not cancelled (instead of is_open_for_registration)
+        if (!event.published || event.cancelled) {
             return NextResponse.json(
                 { error: 'Event is not open for registration' },
                 { status: 400 }
             )
         }
 
+        // Get current RSVP count from the rsvps table
+        const { count: currentRSVPs, error: countError } = await supabase
+            .from('rsvps')
+            .select('*', { count: 'exact', head: true })
+            .eq('event_id', rsvpData.event_id)
+            .eq('status', 'confirmed')
+
+        if (countError) {
+            console.error('Error counting RSVPs:', countError)
+            return NextResponse.json(
+                { error: 'Failed to check event capacity' },
+                { status: 500 }
+            )
+        }
+
         // Check if event is at capacity
-        if (event.capacity && event.rsvp_count >= event.capacity) {
+        if (event.capacity && currentRSVPs !== null && currentRSVPs >= event.capacity) {
             return NextResponse.json(
                 { error: 'Event is at full capacity' },
                 { status: 400 }
@@ -195,7 +217,7 @@ export async function POST(request: NextRequest) {
 
             // Handle organizer data from Supabase join
             const organizer = Array.isArray(event.users) ? event.users[0] : event.users
-            const organizerData = organizer as { id: string; email: string; full_name: string } | null
+            const organizerData = organizer as { id: string; email: string; display_name: string } | null
 
             // Format date and time for email
             const eventDate = new Date(event.start_time).toLocaleDateString('en-US', {
@@ -231,8 +253,8 @@ export async function POST(request: NextRequest) {
                 eventDate,
                 eventTime,
                 eventLocation: event.location,
-                eventAddress: event.address || event.location,
-                organizerName: organizerData?.full_name || 'Event Organizer',
+                eventAddress: event.location_details || event.location,
+                organizerName: organizerData?.display_name || 'Event Organizer',
                 organizerEmail: organizerData?.email || 'organizer@localloop.app',
                 rsvpId: newRsvp.id,
                 guestCount: 1, // Default to 1, can be enhanced later for multiple guests
