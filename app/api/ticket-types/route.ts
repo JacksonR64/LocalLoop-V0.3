@@ -380,7 +380,16 @@ export async function GET(request: NextRequest) {
             );
         }
 
-        return NextResponse.json({ ticket_types: ticketTypes || [] });
+        // Add sold_count and tickets_remaining calculations for database ticket types
+        const ticketTypesWithCounts = (ticketTypes || []).map(ticketType => ({
+            ...ticketType,
+            sold_count: 0, // For now, no actual purchases yet (Stripe integration will handle this)
+            tickets_remaining: ticketType.capacity || 0,
+            tickets_available: true, // Always available for testing
+            sale_status: 'active' // Always active since we set sale dates to be current
+        }));
+
+        return NextResponse.json({ ticket_types: ticketTypesWithCounts });
 
     } catch (error) {
         console.error('Unexpected error in GET /api/ticket-types:', error);
