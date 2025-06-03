@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 import { createGoogleCalendarAuth } from '@/lib/google-auth'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 

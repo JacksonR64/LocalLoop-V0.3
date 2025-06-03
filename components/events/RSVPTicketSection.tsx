@@ -82,23 +82,20 @@ const RSVPTicketSection: React.FC<RSVPTicketSectionProps> = ({
         notes: ''
     });
 
-    // Check if user already has an RSVP for this event
+    // Check existing RSVP for the user
     const checkExistingRSVP = useCallback(async () => {
         if (!user) return;
 
         try {
-            const response = await fetch('/api/rsvps');
+            const response = await fetch(`/api/rsvps?eventId=${eventId}&userId=${user.id}`);
             if (response.ok) {
                 const data = await response.json();
-                const eventRsvp = data.rsvps?.find((rsvp: RSVPData) =>
-                    rsvp.event_id === eventId && rsvp.status === 'confirmed'
-                );
-                setExistingRSVP(eventRsvp || null);
+                setExistingRSVP(data.rsvp || null);
             }
         } catch (error) {
             console.error('Error checking existing RSVP:', error);
         }
-    }, [user, eventId]);
+    }, [eventId, user]);
 
     // Initialize Supabase client and check authentication
     useEffect(() => {

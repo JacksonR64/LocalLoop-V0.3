@@ -10,8 +10,15 @@ import { RSVPTicketSection } from '@/components/events/RSVPTicketSection';
 import TicketTypeManager from '@/components/events/TicketTypeManager';
 import TicketSelection from '@/components/events/TicketSelection';
 import CheckoutForm from '@/components/checkout/CheckoutForm';
-import GoogleCalendarConnect, { GoogleCalendarConnectWithStatus } from '@/components/GoogleCalendarConnect';
+import { GoogleCalendarConnectWithStatus } from '@/components/GoogleCalendarConnect';
 import { useAuth } from '@/lib/auth-context';
+import { createServerSupabaseClient } from '@/lib/supabase-server'
+import { createGoogleCalendarAuth } from '@/lib/google-auth'
+import type { Event, TicketType } from '@/lib/types'
+import EventImageGallery from '@/components/events/EventImageGallery'
+import { TicketFilterProvider } from '@/components/filters/TicketFilterContext'
+import { Suspense } from 'react'
+import { notFound } from 'next/navigation'
 
 // Sample event data matching the actual EventData interface
 const getSampleEventDetails = (eventId: string): EventData => {
@@ -316,7 +323,7 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
     // Checkout flow state
     const [checkoutStep, setCheckoutStep] = useState<'tickets' | 'checkout' | 'success'>('tickets');
     const [selectedTickets, setSelectedTickets] = useState<TicketSelection[]>([]);
-    const [guestInfo, setGuestInfo] = useState<GuestInfo | undefined>();
+    const [guestInfo, _setGuestInfo] = useState<GuestInfo | undefined>();
 
     // TODO: Fetch actual event data based on id
     const event = getSampleEventDetails(id);

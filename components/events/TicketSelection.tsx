@@ -251,7 +251,7 @@ export default function TicketSelection({
                                                     <Plus className="h-4 w-4" />
                                                 </Button>
                                             </div>
-            </div>
+                                        </div>
 
                                         {quantity > 0 && (
                                             <div className="text-right">
@@ -278,7 +278,7 @@ export default function TicketSelection({
                                     Total: {totalQuantity} ticket{totalQuantity !== 1 ? 's' : ''}
                                 </div>
                                 <div className="text-sm text-gray-600">
-                                    {(selectedTickets || []).map(ticket => 
+                                    {(selectedTickets || []).map(ticket =>
                                         `${ticket.quantity}x ${ticket.ticket_type.name}`
                                     ).join(', ')}
                                 </div>
@@ -296,7 +296,7 @@ export default function TicketSelection({
                                     Purchase Tickets
                                 </Button>
                             </div>
-            </div>
+                        </div>
                     </CardContent>
                 </Card>
             )}

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Calendar, CheckCircle, AlertCircle, Loader2 } from 'lucide-react'
 import { useSearchParams } from 'next/navigation'
+import type { EventData } from '@/lib/types'
 // import { useRouter } from 'next/navigation' // Will be used when disconnect functionality is implemented
 
 /**
@@ -143,7 +144,7 @@ export interface GoogleCalendarConnectProps {
     className?: string
     /** Callback when connection status changes */
     onStatusChange?: (connected: boolean) => void
-    eventData?: any // Add eventData prop for passing event information
+    eventData?: EventData // Add eventData prop for passing event information
 }
 
 export default function GoogleCalendarConnect({

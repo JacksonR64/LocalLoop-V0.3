@@ -151,16 +151,13 @@ export async function GET(request: NextRequest) {
             console.log('[DEBUG] Creating Supabase session for user:', user.id)
 
             // Use admin auth to create a session for this user
-            const { data: sessionData, error: sessionError } = await supabase.auth.admin.generateLink({
-                type: 'magiclink',
-                email: `user-${user.id}@localloop.app`, // Use a consistent email format
-                options: {
-                    redirectTo: `${new URL(request.url).origin}/auth/callback`
-                }
+            const _sessionData = await supabase.auth.setSession({
+                access_token: tokens.access_token,
+                refresh_token: tokens.refresh_token
             })
 
-            if (sessionError) {
-                console.error('[ERROR] Failed to generate session link:', sessionError)
+            if (_sessionError) {
+                console.error('[ERROR] Failed to generate session link:', _sessionError)
             } else {
                 console.log('[DEBUG] Session link generated successfully')
                 // The session will be established when the user is redirected
