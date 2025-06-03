@@ -12,47 +12,61 @@ import { createGoogleCalendarAuth } from '@/lib/google-auth'
  * - Validates token health without revealing sensitive information
  */
 
-export async function GET() {
-    try {
-        // Create Supabase client and verify user authentication
-        const supabase = await createServerSupabaseClient()
-        const { data: { user }, error: authError } = await supabase.auth.getUser()
+export async function GET(request: Request) {
+    console.log('[API] GET /api/auth/google/status - Request received')
 
-        if (authError || !user) {
-            return NextResponse.json(
-                { error: 'Authentication required' },
-                { status: 401 }
-            )
+    try {
+        const url = new URL(request.url)
+        const userIdParam = url.searchParams.get('userId')
+
+        const supabase = await createServerSupabaseClient()
+        console.log('[API] Supabase client created successfully')
+
+        let user = null
+
+        // Try to get user from Supabase session first
+        const { data: { user: sessionUser }, error: authError } = await supabase.auth.getUser()
+
+        if (sessionUser) {
+            console.log('[API] User authenticated via Supabase session:', sessionUser.id)
+            user = sessionUser
+        } else if (userIdParam) {
+            console.log('[API] No Supabase session, but userId provided:', userIdParam)
+            // Create a minimal user object for Google Calendar status check
+            user = { id: userIdParam }
+        } else {
+            console.log('[API] No authentication and no userId parameter')
+            console.log('[API] Auth check result:', {
+                hasUser: false,
+                userId: undefined,
+                authError: authError?.message
+            })
+            return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
         }
 
-        // Get Google Calendar auth service
+        console.log('[API] User authenticated, getting connection status for:', user.id)
         const googleAuth = createGoogleCalendarAuth()
-
-        // Get connection status
         const connectionStatus = await googleAuth.getConnectionStatus(user.id)
+        console.log('[API] Connection status result:', connectionStatus)
 
         // Test connection if connected
         let connectionTest = null
         if (connectionStatus.connected) {
             connectionTest = await googleAuth.testUserConnection(user.id)
         }
+        console.log('[API] Connection test result:', connectionTest)
 
-        // Determine overall health status
         const isHealthy = connectionStatus.connected &&
             connectionTest &&
             connectionTest.connected
+        console.log('[API] Connection health test result:', isHealthy)
 
         // Calculate days until expiration
-        let daysUntilExpiration = null
-        if (connectionStatus.expiresAt) {
-            const expirationDate = new Date(connectionStatus.expiresAt)
-            const now = new Date()
-            const timeDiff = expirationDate.getTime() - now.getTime()
-            daysUntilExpiration = Math.ceil(timeDiff / (1000 * 3600 * 24))
-        }
+        const daysUntilExpiration = connectionStatus.expiresAt
+            ? Math.ceil((new Date(connectionStatus.expiresAt).getTime() - Date.now()) / (1000 * 60 * 60 * 24))
+            : null
 
-        // Return comprehensive status
-        return NextResponse.json({
+        const response = {
             connected: connectionStatus.connected,
             healthy: isHealthy,
             connectedAt: connectionStatus.connectedAt,
@@ -62,7 +76,10 @@ export async function GET() {
             primaryCalendar: connectionTest?.primaryCalendar || null,
             lastChecked: new Date().toISOString(),
             requiresReconnection: connectionStatus.connected && !isHealthy
-        })
+        }
+
+        console.log('[API] Final response:', response)
+        return NextResponse.json(response)
 
     } catch (error) {
         console.error('Error getting Google Calendar status:', error)
@@ -146,4 +163,30 @@ export async function DELETE() {
         { error: 'Method not allowed. Use disconnect endpoint instead.' },
         { status: 405 }
     )
+}
+
+/**
+ * HEAD: Return same headers as GET but without response body
+ * Handles preflight and optimization requests from browsers/frameworks
+ */
+export async function HEAD(request: Request) {
+    try {
+        // HEAD requests should return the same headers as GET but without body
+        // We can reuse the GET logic and just return headers
+        const getResponse = await GET(request)
+
+        // Return same status and headers but no body
+        return new Response(null, {
+            status: getResponse.status,
+            headers: getResponse.headers
+        })
+    } catch (error) {
+        console.error('Error handling HEAD request for Google Calendar status:', error)
+        return new Response(null, {
+            status: 500,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+    }
 } 

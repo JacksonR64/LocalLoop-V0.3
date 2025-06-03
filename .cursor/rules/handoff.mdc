@@ -1,6 +1,6 @@
 ---
-description:
-globs:
+description: 
+globs: 
 alwaysApply: false
 ---
 # 🔄 Chat Session Handoff Protocol
@@ -13,7 +13,25 @@ When the user says **"handoff time"** (or variations like "time to handoff", "re
 
 ## 📋 **MANDATORY Handoff Checklist** 
 
-### **Step 1: Git Status & Commit Check ✅**
+### **Step 1: Build & Test Validation ✅**
+```bash
+# 1. Verify build passes
+npm run build
+
+# 2. Run type checking
+npm run type-check
+
+# 3. Run linting
+npm run lint
+
+# 4. Run available tests
+npm run test (if tests exist)
+
+# 5. Start dev server briefly to verify
+npm run dev & sleep 5 && curl -s http://localhost:3000 > /dev/null && kill %1
+```
+
+### **Step 2: Git Status & Commit Check ✅**
 ```bash
 # 1. Check git status for uncommitted changes
 git status
@@ -42,7 +60,7 @@ git push origin main
 Session handoff complete - Ready for continuation
 ```
 
-### **Step 2: Memory Bank Updates ✅**
+### **Step 3: Memory Bank Updates ✅**
 Update ALL relevant memory bank files:
 
 **`memory-bank/progress.md`:**
@@ -63,23 +81,6 @@ Update ALL relevant memory bank files:
 - Blockers or dependencies
 - Session summary
 
-### **Step 3: Build & Test Validation ✅**
-```bash
-# 1. Verify build passes
-npm run build
-
-# 2. Run type checking
-npm run type-check
-
-# 3. Run linting
-npm run lint
-
-# 4. Run available tests
-npm run test (if tests exist)
-
-# 5. Start dev server briefly to verify
-npm run dev & sleep 5 && curl -s http://localhost:3000 > /dev/null && kill %1
-```
 
 ### **Step 4: TaskMaster Status Update ✅**
 Using TaskMaster MCP tools:
@@ -101,7 +102,20 @@ next_task({ projectRoot })
 - ✅ Memory bank current
 - ✅ Git history clean
 
-### **Step 6: Handoff Prompt Generation ✅**
+### **Step 6: Completion Status Confirmation ✅**
+**REQUIRED**: Before generating final prompt, confirm completion status:
+
+```
+## ✅ **Handoff Checklist Status**
+
+- ✅/❌ **Build & Tests**: [Status with brief details]
+- ✅/❌ **Git & Commits**: [Status with brief details]  
+- ✅/❌ **Memory Bank**: [Status with brief details]
+- ✅/❌ **TaskMaster**: [Status with brief details]
+- ✅/❌ **Code Quality**: [Status with brief details]
+```
+
+### **Step 7: Handoff Prompt Generation ✅**
 Create comprehensive prompt with:
 
 **Context Section:**

@@ -1,4 +1,3 @@
-import { supabase } from './supabase'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import {
     GoogleCalendarService,
@@ -96,8 +95,9 @@ export class GoogleCalendarAuth {
             // Store tokens securely in database
             await this.storeUserTokens(authState.userId, tokens)
 
-            // Get user info for response
-            const { data: { user }, error: userError } = await supabase.auth.getUser()
+            // Get user info for response using server client
+            const supabaseServer = await createServerSupabaseClient()
+            const { data: { user }, error: userError } = await supabaseServer.auth.getUser()
 
             if (userError || !user) {
                 throw new Error('Failed to get user information after OAuth completion')
@@ -173,6 +173,8 @@ export class GoogleCalendarAuth {
      */
     async getUserTokens(userId: string): Promise<GoogleCalendarTokens | null> {
         try {
+            console.log('[DEBUG] getUserTokens - Starting token retrieval for user:', userId)
+
             const supabaseServer = await createServerSupabaseClient()
 
             const { data, error } = await supabaseServer
@@ -181,7 +183,20 @@ export class GoogleCalendarAuth {
                 .eq('id', userId)
                 .single()
 
+            console.log('[DEBUG] getUserTokens - Database query result:', {
+                hasData: !!data,
+                hasError: !!error,
+                hasToken: !!data?.google_calendar_token,
+                isConnected: data?.google_calendar_connected,
+                expiresAt: data?.google_calendar_expires_at,
+                error: error?.message
+            })
+
             if (error || !data?.google_calendar_token || !data.google_calendar_connected) {
+                console.log('[DEBUG] getUserTokens - Token retrieval failed:', {
+                    reason: error ? 'database_error' : !data?.google_calendar_token ? 'no_token' : 'not_connected',
+                    error: error?.message
+                })
                 return null
             }
 
@@ -192,12 +207,18 @@ export class GoogleCalendarAuth {
                 hasStoredToken: !!data.google_calendar_token
             })
 
+            console.log('[DEBUG] getUserTokens - Starting token decryption')
             // Decrypt tokens using AES-256-GCM
             const tokens = this.decryptTokens(data.google_calendar_token)
+            console.log('[DEBUG] getUserTokens - Token decryption successful:', {
+                hasAccessToken: !!tokens.access_token,
+                hasRefreshToken: !!tokens.refresh_token,
+                expiryDate: tokens.expiry_date
+            })
 
             return tokens
         } catch (error) {
-            console.error('Error getting user Google Calendar tokens:', error)
+            console.error('[ERROR] getUserTokens - Failed to get user Google Calendar tokens:', error)
             return null
         }
     }
@@ -364,6 +385,7 @@ export class GoogleCalendarAuth {
         syncEnabled?: boolean
     }> {
         try {
+            console.log('[DEBUG] getConnectionStatus - Starting for user:', userId)
             const supabaseServer = await createServerSupabaseClient()
 
             const { data, error } = await supabaseServer
@@ -371,24 +393,35 @@ export class GoogleCalendarAuth {
                 .select(`
           google_calendar_connected,
           google_calendar_connected_at,
-          google_calendar_expires_at,
-          google_calendar_sync_enabled
+          google_calendar_expires_at
         `)
                 .eq('id', userId)
                 .single()
 
+            console.log('[DEBUG] getConnectionStatus - Database query result:', {
+                hasData: !!data,
+                hasError: !!error,
+                error: error?.message,
+                data: data
+            })
+
             if (error || !data) {
+                console.log('[DEBUG] getConnectionStatus - No data or error, returning false')
                 return { connected: false }
             }
 
-            return {
+            const result = {
                 connected: data.google_calendar_connected || false,
                 connectedAt: data.google_calendar_connected_at,
                 expiresAt: data.google_calendar_expires_at,
-                syncEnabled: data.google_calendar_sync_enabled || false,
+                syncEnabled: false, // Default to false since column doesn't exist yet
             }
+
+            console.log('[DEBUG] getConnectionStatus - Final result:', result)
+            return result
         } catch (error) {
             console.error('Error getting Google Calendar connection status:', error)
+            console.log('[DEBUG] getConnectionStatus - Exception caught, returning false')
             return { connected: false }
         }
     }

@@ -65,6 +65,44 @@ export async function GET(request: NextRequest) {
 }
 
 /**
+ * HEAD: Return same headers as GET but without response body
+ * Handles preflight and optimization requests from browsers/frameworks
+ */
+export async function HEAD(request: NextRequest) {
+    try {
+        // For HEAD requests to the connect endpoint, we should return the status
+        // without actually initiating OAuth or redirecting
+        const supabase = await createServerSupabaseClient()
+        const { data: { user }, error: authError } = await supabase.auth.getUser()
+
+        if (authError || !user) {
+            return new Response(null, {
+                status: 401,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+        }
+
+        // User is authenticated, return 200 without redirect
+        return new Response(null, {
+            status: 200,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+    } catch (error) {
+        console.error('Error handling HEAD request for Google OAuth connect:', error)
+        return new Response(null, {
+            status: 500,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+    }
+}
+
+/**
  * Handle other HTTP methods with appropriate error
  */
 export async function POST() {

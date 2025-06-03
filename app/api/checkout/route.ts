@@ -18,9 +18,35 @@ const checkoutSchema = z.object({
     return_url: z.string().url().optional(),
 });
 
+// Define TicketType interface for type safety
+interface TicketType {
+    id: string;
+    event_id: string;
+    name: string;
+    description: string;
+    price: number;
+    capacity: number;
+    sold_count: number;
+    sort_order: number;
+    sale_start: string | null;
+    sale_end: string | null;
+    created_at: string;
+    updated_at: string;
+    events: {
+        id: string;
+        title: string;
+        description: string;
+        is_open_for_registration: boolean;
+        start_time: string;
+        end_time: string;
+        location: string;
+        timezone: string;
+    };
+}
+
 // Sample ticket types for development/demo events
 function getSampleTicketTypes(eventId: string) {
-    const sampleTickets: { [key: string]: any[] } = {
+    const sampleTickets: { [key: string]: TicketType[] } = {
         // Event 7: Startup Pitch Night (paid)
         'a0ddf64f-cf33-8a49-eccf-7379c9aab046': [
             {
@@ -164,7 +190,7 @@ export async function POST(request: NextRequest) {
         console.log('[DEBUG] Found sample ticket types:', sampleTicketTypes.length);
         console.log('[DEBUG] Sample ticket IDs:', sampleTicketTypes.map(tt => tt.id));
 
-        let ticketTypes: any[] = [];
+        let ticketTypes: TicketType[] = [];
         let ticketTypesError = null;
 
         if (sampleTicketTypes.length > 0) {
@@ -390,7 +416,7 @@ export async function POST(request: NextRequest) {
             // Don't fail the request for this
         }
         */
-        const pendingOrder = null; // Temporary fallback
+        // const pendingOrder = null; // Temporary fallback - removed as not used
 
         return NextResponse.json({
             client_secret: paymentIntent.client_secret,
@@ -414,7 +440,6 @@ export async function POST(request: NextRequest) {
                 location: event.location,
                 timezone: event.timezone
             },
-            order_id: pendingOrder?.id,
         });
 
     } catch (error) {

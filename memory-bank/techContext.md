@@ -11,7 +11,97 @@
 
 ---
 
-## 🔧 **Recent Technical Debugging Learnings**
+## 🖼️ **Recent Technical Fixes - Image Loading & Next.js Deprecation**
+
+### **🐛 Image Loading Error Resolution - CRITICAL LEARNING**
+*From farmers-market image debugging session*
+
+#### **❌ PROBLEM: Non-Existent Image References**
+```typescript
+// NEVER hardcode paths to non-existent images
+const sampleGalleryImages = [
+  { id: 1, src: '/images/farmers-market-1.jpg' }, // 404!
+  { id: 2, src: '/images/farmers-market-2.jpg' }  // Returns HTML instead
+];
+```
+
+#### **✅ SOLUTION: Placeholder or Conditional Rendering**
+```typescript
+// CORRECT - Use placeholders or conditional rendering
+{sampleGalleryImages.length > 0 ? (
+  <EventImageGallery images={sampleGalleryImages} />
+) : (
+  <div className="bg-gray-100 p-8 rounded-lg text-center">
+    <p className="text-gray-600">Event images will be displayed here</p>
+  </div>
+)}
+```
+
+#### **🔑 Key Rules for Image Management**
+1. **Validate image paths** before hardcoding in components
+2. **Use placeholder content** when images aren't available
+3. **Implement proper error handling** for missing or broken images
+4. **Clean up unused imports** when removing functionality
+
+---
+
+### **⚠️ Next.js Deprecation Updates - API COMPLIANCE**
+*From onLoadingComplete deprecation warnings*
+
+#### **❌ DEPRECATED: onLoadingComplete API**
+```typescript
+// DEPRECATED in Next.js - generates warnings
+<Image
+  src={image.src}
+  alt={image.alt}
+  onLoadingComplete={() => setImageLoaded(true)} // ❌ Deprecated
+  className="object-cover"
+/>
+```
+
+#### **✅ CURRENT: onLoad API**
+```typescript
+// CORRECT - Current Next.js Image API
+<Image
+  src={image.src}
+  alt={image.alt}
+  onLoad={() => setImageLoaded(true)} // ✅ Current API
+  className="object-cover"
+/>
+```
+
+#### **🔑 Key Rules for Next.js Compliance**
+1. **Stay current with API changes** - replace deprecated properties
+2. **Monitor console warnings** - proactively fix deprecation warnings
+3. **Clear build cache** when making API changes (delete `.next` directory)
+4. **Verify fixes** with fresh browser reload and console check
+
+---
+
+### **🎨 CSS Class Validation - STYLE FIXES**
+*From Tailwind CSS class typo debugging*
+
+#### **❌ TYPO: Duplicate Prefix**
+```typescript
+// INCORRECT - Duplicate prefix causing invalid styling
+className="bg-opacity-opacity-20 backdrop-blur-sm" // ❌ Double prefix
+```
+
+#### **✅ CORRECT: Single Prefix**
+```typescript
+// CORRECT - Proper Tailwind CSS class syntax
+className="bg-opacity-20 backdrop-blur-sm" // ✅ Single prefix
+```
+
+#### **🔑 Key Rules for CSS Class Management**
+1. **Double-check Tailwind syntax** - avoid duplicate prefixes
+2. **Use IDE autocomplete** to prevent typos
+3. **Validate classes** with browser inspector tools
+4. **Maintain consistent spacing** and organization in class lists
+
+---
+
+## 🔧 **Previous Technical Debugging Learnings**
 
 ### **🐛 React useEffect Patterns - CRITICAL LEARNING**
 *From RSVP API infinite loop debugging session*

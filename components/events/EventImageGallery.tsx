@@ -73,6 +73,11 @@ export function EventImageGallery({ images, eventTitle, className = '' }: EventI
         setIsLoading(prev => ({ ...prev, [index]: true }));
     };
 
+    const handleImageError = (index: number) => {
+        setIsLoading(prev => ({ ...prev, [index]: false }));
+        console.warn(`Failed to load image at index ${index}`);
+    };
+
     const downloadImage = async (imageUrl: string, fileName: string) => {
         try {
             const response = await fetch(imageUrl);
@@ -133,8 +138,9 @@ export function EventImageGallery({ images, eventTitle, className = '' }: EventI
                     className="object-cover transition-transform duration-300 group-hover:scale-105"
                     priority
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 66vw, 50vw"
-                    onLoadingComplete={() => handleImageLoad(0)}
+                    onLoad={() => handleImageLoad(0)}
                     onLoadStart={() => handleImageLoadStart(0)}
+                    onError={() => handleImageError(0)}
                 />
 
                 {/* Image overlay with actions */}
@@ -196,8 +202,9 @@ export function EventImageGallery({ images, eventTitle, className = '' }: EventI
                                     fill
                                     className="object-cover"
                                     sizes="80px"
-                                    onLoadingComplete={() => handleImageLoad(index)}
+                                    onLoad={() => handleImageLoad(index)}
                                     onLoadStart={() => handleImageLoadStart(index)}
+                                    onError={() => handleImageError(index)}
                                 />
                                 {isLoading[index] && (
                                     <div className="absolute inset-0 bg-gray-200 animate-pulse" />

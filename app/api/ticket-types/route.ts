@@ -27,7 +27,22 @@ const ticketTypeSchema = z.object({
 
 // Sample ticket types for development/demo events
 function getSampleTicketTypes(eventId: string) {
-    const sampleTickets: { [key: string]: any[] } = {
+    interface SampleTicketType {
+        id: string;
+        event_id: string;
+        name: string;
+        description: string;
+        price: number;
+        capacity: number;
+        sold_count: number;
+        sort_order: number;
+        sale_start: string | null;
+        sale_end: string | null;
+        created_at: string;
+        updated_at: string;
+    }
+
+    const sampleTickets: { [key: string]: SampleTicketType[] } = {
         // Event 2: Local Business Networking (paid)
         'b58bd20c-69dd-5483-b678-1f13c3d4e590': [
             {
