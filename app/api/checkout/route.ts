@@ -71,52 +71,52 @@ interface TicketType {
 // Sample ticket types for development/demo events
 function getSampleTicketTypes(eventId: string) {
     const sampleTickets: { [key: string]: TicketType[] } = {
-        // Event 7: Startup Pitch Night (paid)
+        // Event 7: Startup Pitch Night (paid) - Updated to match ticket-types API format
         'a0ddf64f-cf33-8a49-eccf-7379c9aab046': [
             {
-                id: 'a1b2c3d4-e5f6-4789-a123-456789abcdef',
+                id: 'ticket-7-1', // Changed from UUID to match ticket-types API
                 event_id: 'a0ddf64f-cf33-8a49-eccf-7379c9aab046',
                 name: 'General Admission',
-                description: 'Access to networking event, light refreshments included',
+                description: 'Access to presentations and networking session',
                 price: 2000, // $20.00 in cents
                 capacity: 100,
-                sold_count: 15,
-                sort_order: 1,
-                sale_start: null,
-                sale_end: null,
-                created_at: '2024-01-15T00:00:00Z',
-                updated_at: '2024-01-15T00:00:00Z',
+                sold_count: 67,
+                sort_order: 0,
+                sale_start: '2025-03-01T00:00:00.000Z', // Updated to match ticket-types API
+                sale_end: '2025-06-24T16:00:00.000Z', // Updated to match ticket-types API
+                created_at: '2025-02-15T00:00:00.000Z', // Updated to match ticket-types API
+                updated_at: '2025-02-15T00:00:00.000Z', // Updated to match ticket-types API
                 events: {
                     id: 'a0ddf64f-cf33-8a49-eccf-7379c9aab046',
                     title: 'Startup Pitch Night',
                     description: 'Local entrepreneurs present their startup ideas to a panel of investors and community members.',
                     is_open_for_registration: true,
-                    start_time: '2025-06-15T18:00:00.000Z',
-                    end_time: '2025-06-15T21:00:00.000Z',
+                    start_time: '2025-06-24T18:00:00.000Z', // Updated date to 2025
+                    end_time: '2025-06-24T21:00:00.000Z', // Updated date to 2025
                     location: 'Innovation Hub',
                     timezone: 'America/New_York'
                 }
             },
             {
-                id: 'b2c3d4e5-f6a7-4890-b234-567890abcdef',
+                id: 'ticket-7-2', // Changed from UUID to match ticket-types API
                 event_id: 'a0ddf64f-cf33-8a49-eccf-7379c9aab046',
                 name: 'Investor Pass',
-                description: 'Premium networking with dedicated investor meetup session and priority seating',
+                description: 'VIP seating, exclusive investor networking, and pitch deck access',
                 price: 7500, // $75.00 in cents
-                capacity: 25,
-                sold_count: 8,
-                sort_order: 2,
-                sale_start: null,
-                sale_end: null,
-                created_at: '2024-01-15T00:00:00Z',
-                updated_at: '2024-01-15T00:00:00Z',
+                capacity: 20,
+                sold_count: 12,
+                sort_order: 1,
+                sale_start: '2025-03-01T00:00:00.000Z', // Updated to match ticket-types API
+                sale_end: '2025-06-24T16:00:00.000Z', // Updated to match ticket-types API
+                created_at: '2025-02-15T00:00:00.000Z', // Updated to match ticket-types API
+                updated_at: '2025-02-15T00:00:00.000Z', // Updated to match ticket-types API
                 events: {
                     id: 'a0ddf64f-cf33-8a49-eccf-7379c9aab046',
                     title: 'Startup Pitch Night',
                     description: 'Local entrepreneurs present their startup ideas to a panel of investors and community members.',
                     is_open_for_registration: true,
-                    start_time: '2025-06-15T18:00:00.000Z',
-                    end_time: '2025-06-15T21:00:00.000Z',
+                    start_time: '2025-06-24T18:00:00.000Z', // Updated date to 2025
+                    end_time: '2025-06-24T21:00:00.000Z', // Updated date to 2025
                     location: 'Innovation Hub',
                     timezone: 'America/New_York'
                 }
