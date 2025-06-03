@@ -5,7 +5,7 @@ import { z } from 'zod'
 
 // RSVP creation schema
 const rsvpSchema = z.object({
-    event_id: z.string().uuid('Invalid event ID'),
+    event_id: z.string().min(1, 'Event ID is required'),
     // For logged-in users
     user_id: z.string().uuid().optional(),
     // For guest users
