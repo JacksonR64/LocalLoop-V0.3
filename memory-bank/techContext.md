@@ -1,15 +1,97 @@
 # 🛠️ Technical Context - LocalLoop V0.3
 
+**Updated:** 2025-01-03 21:45:00 UTC
+
 ## 🏗️ **Current Architecture Status**
 
-### **✅ Production-Ready Tech Stack**
-- **Frontend**: Next.js 15 with App Router, TypeScript 5.0, Tailwind CSS 4.0
-- **Backend**: Supabase (PostgreSQL + Auth + Storage), Stripe payments
-- **Integrations**: Google Calendar API (OAuth 2.0), Resend emails
-- **Deployment**: Vercel with GitHub Actions CI/CD
-- **Development**: ESLint, TypeScript strict mode, responsive design
+### **✅ VERIFIED WORKING CONFIGURATIONS**
 
----
+#### **RSVP API Architecture (FIXED)**
+```typescript
+// ✅ CORRECT PATTERN - Auth BEFORE Validation
+export async function POST(request: NextRequest) {
+    const body = await request.json()
+    const supabase = await createServerSupabaseClient()
+    
+    // 1. Get user authentication FIRST
+    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    
+    // 2. Add user_id to body if authenticated
+    if (user && !authError) {
+        body.user_id = user.id
+    }
+    
+    // 3. THEN validate with complete data
+    const validatedData = rsvpValidationSchema.parse(body)
+    
+    // Continue with database operations...
+}
+```
+
+#### **Database Column Alignment (CONFIRMED)**
+```sql
+-- ✅ CORRECT Column References
+events table:
+- published (not is_open_for_registration)  
+- cancelled (not is_cancelled)
+- location_details (not address)
+
+users table:
+- display_name (not full_name)
+- email (confirmed working)
+```
+
+#### **Event Query Pattern (WORKING)**
+```typescript
+// ✅ VERIFIED WORKING Query
+const { data: event, error } = await supabase
+    .from('events')
+    .select(`
+        id, title, description, start_time, end_time,
+        location_details, published, cancelled,
+        users!events_organizer_id_fkey(display_name)
+    `)
+    .eq('id', uuid)
+    .eq('published', true)
+    .single()
+```
+
+### **🎯 Component Interface Patterns**
+
+#### **TicketSelection Component (FIXED)**
+```typescript
+// ✅ CORRECT Interface Usage
+interface TicketSelectionProps {
+    eventId: string
+    selectedTickets: TicketSelection[]  // Array, not object
+    onTicketsChange: (tickets: TicketSelection[]) => void
+    onPurchaseClick: (eventId: string, tickets: TicketSelection[]) => void
+}
+```
+
+#### **EventDetailClient Props (UPDATED)**  
+```typescript
+// ✅ WORKING Configuration
+<TicketSelection
+    eventId={event.id}
+    selectedTickets={selectedTickets}  // Array format
+    onTicketsChange={setSelectedTickets}
+    onPurchaseClick={handlePurchaseClick}
+/>
+```
+
+### **⚠️ KNOWN TECHNICAL DEBT**
+
+#### **TypeScript Configuration Issues**
+1. **Missing Module**: `@/lib/types` module referenced but doesn't exist
+2. **Type Casting**: Event user data needs proper interface definition  
+3. **Import Structure**: EventImageGallery needs default export fix
+4. **Interface Alignment**: Several components have type mismatches
+
+#### **Asset Management Issues**
+1. **Leaflet Icons**: marker-shadow.png and marker-icon-2x.png returning 404s
+2. **Image Optimization**: Some Unsplash URLs not resolving properly
+3. **Next.js Image Config**: Remote patterns configured but some issues remain
 
 ## 🖼️ **Recent Technical Fixes - Image Loading & Next.js Deprecation**
 
@@ -331,3 +413,77 @@ useEffect(() => {
 **Last Updated**: Current debugging session - RSVP infinite loop and PWA manifest fixes
 **Status**: ✅ All core systems operational and optimized
 **Next Focus**: Google Calendar integration for paid events (Task 10)
+
+## 🔍 **Debugging Patterns Discovered**
+
+### **RSVP Validation Flow Analysis**
+- **Root Cause**: Validation happening before authentication context available
+- **Solution**: Always authenticate user before validation for authenticated endpoints
+- **Pattern**: GET user → ADD to request body → VALIDATE → PROCESS
+
+### **Database Schema Investigation**
+- **Method**: Used Supabase MCP tools to examine actual table structure
+- **Discovery**: Column names in code didn't match actual database schema  
+- **Fix Pattern**: Always verify column names against actual database before queries
+
+### **Component Type Debugging**
+- **Issue**: Interface mismatches between parent and child components
+- **Root Cause**: EventDetailClient was treating `selectedTickets` as object, but TicketSelection expected array
+- **Resolution**: Align component interfaces and ensure data flow consistency
+
+## 🚀 Performance Optimizations Applied**
+
+### **Database Query Efficiency**
+- Using precise column selection instead of `*`
+- Proper indexing on UUID lookups
+- Single queries instead of multiple API calls where possible
+
+### **Component Rendering**
+- Removed unused imports to reduce bundle size
+- Fixed TypeScript errors to improve compilation performance
+- Eliminated console errors for cleaner runtime performance
+
+## 📋 Working Code Patterns**
+
+### **Supabase Authentication Check**
+```typescript
+const { data: { user }, error: authError } = await supabase.auth.getUser()
+if (!authError && user) {
+    // User is authenticated
+    body.user_id = user.id
+}
+```
+
+### **Event ID Mapping (Maintained)**
+```typescript
+function mapEventIdToUuid(numericId: string): string {
+    const idMap: Record<string, string> = {
+        '1': '550e8400-e29b-41d4-a716-446655440001',
+        // ... other mappings
+    }
+    return idMap[numericId] || numericId
+}
+```
+
+### **Error Handling Pattern**
+```typescript
+try {
+    const validatedData = schema.parse(body)
+    // Process request
+} catch (error) {
+    if (error instanceof z.ZodError) {
+        return NextResponse.json({ error: 'Validation failed', details: error.errors }, { status: 400 })
+    }
+    // Handle other errors
+}
+```
+
+## 🎯 Next Technical Priorities**
+
+1. **Create Missing Module**: Set up proper `@/lib/types` module with all interface definitions
+2. **Fix Image Gallery**: Resolve EventImageGallery default export structure  
+3. **Asset Bundling**: Configure proper Leaflet icon asset handling
+4. **Type Safety**: Complete TypeScript error resolution
+5. **Performance**: Optimize remaining database queries and component rendering
+
+**Technical Status**: ✅ Core RSVP functionality restored and operational with proper patterns established

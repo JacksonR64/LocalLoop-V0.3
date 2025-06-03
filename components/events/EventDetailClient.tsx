@@ -14,6 +14,7 @@ import CheckoutForm from '@/components/checkout/CheckoutForm';
 import { GoogleCalendarConnectWithStatus } from '@/components/GoogleCalendarConnect';
 import type { Event, TicketType } from '@/lib/types';
 import EventImageGallery from '@/components/events/EventImageGallery';
+import { formatPrice } from '@/lib/utils/ticket-utils';
 
 // Interface for selected tickets matching TicketSelection component
 interface TicketSelectionItem {
@@ -257,7 +258,7 @@ export function EventDetailClient({ event }: EventDetailClientProps) {
                                                     <div className="border-t pt-4">
                                                         <div className="flex justify-between items-center mb-4">
                                                             <span className="font-medium">Total:</span>
-                                                            <span className="text-xl font-bold">${getTotalPrice().toFixed(2)}</span>
+                                                            <span className="text-xl font-bold">{formatPrice(getTotalPrice())}</span>
                                                         </div>
                                                         <button
                                                             onClick={handleProceedToCheckout}
@@ -280,9 +281,15 @@ export function EventDetailClient({ event }: EventDetailClientProps) {
 
                                                 <CheckoutForm
                                                     eventId={event.id}
-                                                    selectedTickets={getSelectedTicketsForCheckout()}
-                                                    ticketTypes={ticketTypes}
-                                                    totalPrice={getTotalPrice()}
+                                                    selectedTickets={selectedTickets}
+                                                    onSuccess={(paymentIntentId) => {
+                                                        console.log('Payment successful:', paymentIntentId)
+                                                        // Handle success - could redirect or show success message
+                                                        setCheckoutStep('tickets')
+                                                    }}
+                                                    onCancel={() => {
+                                                        setCheckoutStep('tickets')
+                                                    }}
                                                 />
                                             </div>
                                         )}

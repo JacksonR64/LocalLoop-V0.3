@@ -95,7 +95,7 @@ export default function TicketSelection({
         if (eventId) {
             fetchTicketTypes()
         }
-    }, [eventId, selectedTickets])
+    }, [eventId])
 
     // Update quantities and notify parent
     const updateQuantity = (ticketTypeId: string, newQuantity: number) => {
@@ -287,14 +287,6 @@ export default function TicketSelection({
                                 <div className="text-2xl font-bold">
                                     {formatPrice(totalPrice)}
                                 </div>
-                                <Button
-                                    onClick={onPurchaseClick}
-                                    className="mt-2"
-                                    size="lg"
-                                >
-                                    <CheckCircle className="h-4 w-4 mr-2" />
-                                    Purchase Tickets
-                                </Button>
                             </div>
                         </div>
                     </CardContent>
