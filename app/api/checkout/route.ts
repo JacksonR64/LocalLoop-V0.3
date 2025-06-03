@@ -60,7 +60,8 @@ interface TicketType {
         id: string;
         title: string;
         description: string;
-        is_open_for_registration: boolean;
+        published: boolean;
+        cancelled: boolean;
         start_time: string;
         end_time: string;
         location: string;
@@ -90,7 +91,8 @@ function getSampleTicketTypes(eventId: string) {
                     id: 'a0ddf64f-cf33-8a49-eccf-7379c9aab046',
                     title: 'Startup Pitch Night',
                     description: 'Local entrepreneurs present their startup ideas to a panel of investors and community members.',
-                    is_open_for_registration: true,
+                    published: true,
+                    cancelled: false,
                     start_time: '2025-06-24T18:00:00.000Z', // Updated date to 2025
                     end_time: '2025-06-24T21:00:00.000Z', // Updated date to 2025
                     location: 'Innovation Hub',
@@ -114,7 +116,8 @@ function getSampleTicketTypes(eventId: string) {
                     id: 'a0ddf64f-cf33-8a49-eccf-7379c9aab046',
                     title: 'Startup Pitch Night',
                     description: 'Local entrepreneurs present their startup ideas to a panel of investors and community members.',
-                    is_open_for_registration: true,
+                    published: true,
+                    cancelled: false,
                     start_time: '2025-06-24T18:00:00.000Z', // Updated date to 2025
                     end_time: '2025-06-24T21:00:00.000Z', // Updated date to 2025
                     location: 'Innovation Hub',
@@ -141,7 +144,8 @@ function getSampleTicketTypes(eventId: string) {
                     id: 'c2fff861-e155-ac6b-0eda-959ba1bcd268',
                     title: 'Food Truck Festival',
                     description: 'Annual food truck festival featuring 15+ local food vendors, live music, and family activities.',
-                    is_open_for_registration: true,
+                    published: true,
+                    cancelled: false,
                     start_time: '2025-06-15T16:00:00.000Z',
                     end_time: '2025-06-15T23:00:00.000Z',
                     location: 'Downtown Square',
@@ -165,7 +169,8 @@ function getSampleTicketTypes(eventId: string) {
                     id: 'c2fff861-e155-ac6b-0eda-959ba1bcd268',
                     title: 'Food Truck Festival',
                     description: 'Annual food truck festival featuring 15+ local food vendors, live music, and family activities.',
-                    is_open_for_registration: true,
+                    published: true,
+                    cancelled: false,
                     start_time: '2025-06-15T16:00:00.000Z',
                     end_time: '2025-06-15T23:00:00.000Z',
                     location: 'Downtown Square',
@@ -237,7 +242,8 @@ export async function POST(request: NextRequest) {
                         id,
                         title,
                         description,
-                        is_open_for_registration,
+                        published,
+                        cancelled,
                         start_time,
                         end_time,
                         location,
@@ -245,7 +251,7 @@ export async function POST(request: NextRequest) {
                     )
                 `)
                 .in('id', ticketTypeIds)
-                .eq('event_id', mappedEventId);
+                .eq('event_id', event_id);
 
             ticketTypes = data || [];
             ticketTypesError = error;
@@ -264,24 +270,13 @@ export async function POST(request: NextRequest) {
 
         console.log('[DEBUG] ✅ Ticket validation passed, proceeding with event validation...');
 
-        // Check if event is open for registration
+        // Check if event is published and not cancelled
         const event = ticketTypes[0]?.events;
         console.log('[DEBUG] Event data:', event);
-        if (!event?.is_open_for_registration) {
-            console.log('[DEBUG] ❌ Event registration is closed');
+        if (!event?.published || event?.cancelled) {
+            console.log('[DEBUG] ❌ Event is not available (not published or cancelled)');
             return NextResponse.json(
-                { error: 'Event registration is closed' },
-                { status: 400 }
-            );
-        }
-
-        console.log('[DEBUG] ✅ Event registration is open, checking start time...');
-
-        // Check if event hasn't started
-        if (new Date(event.start_time) <= new Date()) {
-            console.log('[DEBUG] ❌ Event has already started');
-            return NextResponse.json(
-                { error: 'Cannot purchase tickets for events that have already started' },
+                { error: 'Event is not available for registration' },
                 { status: 400 }
             );
         }
