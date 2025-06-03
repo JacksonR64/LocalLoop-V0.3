@@ -14,30 +14,262 @@ import GoogleCalendarConnect from '@/components/GoogleCalendarConnect';
 import { useAuth } from '@/lib/auth-context';
 
 // Sample event data matching the actual EventData interface
-const sampleEventDetails: EventData = {
-    id: '1',
-    title: 'Community Farmers Market & Art Fair',
-    description: 'Join us for our monthly community farmers market featuring local produce, artisan crafts, live music, and family-friendly activities. This is a wonderful opportunity to support local businesses, meet your neighbors, and enjoy the vibrant community atmosphere.',
-    short_description: 'Monthly farmers market with local produce, crafts, and live music',
-    start_time: '2024-02-15T09:00:00',
-    end_time: '2024-02-15T15:00:00',
-    location: 'Downtown Community Square, 123 Main Street',
-    category: 'Community',
+const getSampleEventDetails = (eventId: string): EventData => {
+    // Map all homepage event IDs (1-13) to their correct details
+    switch (eventId) {
+        case '1':
+            return {
+                id: 'a47ac10b-58cc-4372-a567-0e02b2c3d479', // Valid UUID
+                title: 'Community Garden Cleanup',
+                description: 'Join us for a morning of community service cleaning up the local garden. We\'ll be removing weeds, planting new flowers, and maintaining the compost area. All tools and refreshments will be provided. This is a great opportunity to meet your neighbors and contribute to our local environment.',
+                short_description: 'Free community garden cleanup volunteer event',
+                start_time: '2024-02-15T09:00:00.000Z',
+                end_time: '2024-02-15T12:00:00.000Z',
+                timezone: 'America/New_York',
+                location: 'Community Garden on Elm Street',
+                is_paid: false,
+                capacity: 30,
+                current_rsvps: 12,
+                organizer: 'Green Neighborhood Initiative',
+                category: 'Community Service',
+                accessibility_info: 'Outdoor event, uneven terrain, gloves provided'
+            };
+
+        case '2':
+            return {
+                id: 'b58bd20c-69dd-5483-b678-1f13c3d4e590', // Valid UUID
+                title: 'Local Business Networking',
+                description: 'Monthly networking event for local business owners and entrepreneurs. Join us for an evening of connections, collaboration, and community building. Featuring guest speakers from successful local businesses and interactive breakout sessions.',
+                short_description: 'Professional networking for local business owners',
+                start_time: '2024-02-22T18:00:00.000Z',
+                end_time: '2024-02-22T21:00:00.000Z',
+                timezone: 'America/New_York',
+                location: 'Downtown Conference Center',
+                is_paid: true,
+                capacity: 100,
+                current_rsvps: 45,
+                organizer: 'Local Business Alliance',
+                category: 'Professional',
+                accessibility_info: 'Wheelchair accessible, sign language interpreter available upon request'
+            };
+
+        case '3':
+            return {
+                id: 'c69de41e-8bff-4605-a89a-3f35e5f6d702', // Valid UUID (fixed 'g' and 'd' characters)
+                title: 'Kids Art Workshop',
+                description: 'Creative art workshop designed specifically for children ages 6-12. Professional art instructors will guide kids through painting techniques, craft projects, and creative expression. All materials included. Parents welcome to stay and watch.',
+                short_description: 'Fun art workshop for kids with painting and crafts',
+                start_time: '2024-05-20T15:00:00.000Z',
+                end_time: '2024-05-20T17:00:00.000Z',
+                timezone: 'America/New_York',
+                location: 'Community Center',
+                is_paid: true,
+                capacity: 20,
+                current_rsvps: 8,
+                organizer: 'Arts Alliance',
+                category: 'Arts',
+                accessibility_info: 'Wheelchair accessible, service animals welcome'
+            };
+
+        case '4':
+            return {
+                id: 'd7afe31f-9c00-5716-b9bb-4046f6e7e813', // Valid UUID
+                title: 'Tech Meetup: AI & Startups',
+                description: 'Monthly tech meetup focusing on artificial intelligence applications in startup environments. Features presentations from local tech entrepreneurs, networking opportunities, and hands-on demos of cutting-edge AI tools.',
+                short_description: 'Free tech meetup exploring AI and startup innovation',
+                start_time: '2024-03-08T19:00:00.000Z',
+                end_time: '2024-03-08T22:00:00.000Z',
+                timezone: 'America/New_York',
+                location: 'Tech Hub Co-working Space',
+                is_paid: false,
+                capacity: 80,
+                current_rsvps: 23,
+                organizer: 'Local Tech Community',
+                category: 'Technology',
+                accessibility_info: 'Fully accessible venue, live streaming available'
+            };
+
+        case '5':
+            return {
+                id: 'e8bdf42d-ad11-6827-cacc-5157a7f8f924', // Valid UUID (fixed invalid character)
+                title: 'Yoga in the Park',
+                description: 'Outdoor yoga session suitable for all skill levels. Bring your own mat and water bottle. Led by certified yoga instructor with 10+ years of experience. Rain cancellation policy applies.',
+                short_description: 'Free outdoor yoga for all levels',
+                start_time: '2024-03-15T08:00:00.000Z',
+                end_time: '2024-03-15T09:30:00.000Z',
+                timezone: 'America/New_York',
+                location: 'Central Park Pavilion',
+                is_paid: false,
+                capacity: 40,
+                current_rsvps: 18,
+                organizer: 'Wellness Community Group',
+                category: 'Health & Wellness',
+                accessibility_info: 'Outdoor event on grass, modifications available for all abilities'
+            };
+
+        case '6':
+            return {
+                id: 'f9cef53e-be22-7938-dbdd-6268a8b9ca35', // Valid UUID (fixed invalid characters)
+                title: 'Board Game Night',
+                description: 'Weekly board game gathering featuring classic and modern games. All games provided, from strategy games to party games. Food and drinks available for purchase. Perfect for meeting new people and having fun.',
+                short_description: 'Weekly social board game gathering',
+                start_time: '2024-02-28T18:30:00.000Z',
+                end_time: '2024-02-28T22:00:00.000Z',
+                timezone: 'America/New_York',
+                location: 'The Game Cafe',
+                is_paid: false,
+                capacity: 50,
+                current_rsvps: 22,
+                organizer: 'Board Game Society',
+                category: 'Entertainment',
+                accessibility_info: 'Wheelchair accessible, large print games available'
+            };
+
+        case '7':
+            return {
+                id: 'a0ddf64f-cf33-8a49-eccf-7379c9aab046', // Valid UUID (fixed invalid characters)
+                title: 'Startup Pitch Night',
+                description: 'Local entrepreneurs present their startup ideas to a panel of investors and community members. Networking session follows presentations. Great opportunity for aspiring entrepreneurs and potential investors.',
+                short_description: 'Entrepreneurs pitch startup ideas to investors',
+                start_time: '2024-04-10T18:00:00.000Z',
+                end_time: '2024-04-10T21:00:00.000Z',
+                timezone: 'America/New_York',
+                location: 'Innovation Hub',
+                is_paid: true,
+                capacity: 120,
+                current_rsvps: 67,
+                organizer: 'Startup Community',
+                category: 'Business',
+                accessibility_info: 'Full accessibility, presentation materials available digitally'
+            };
+
+        case '8':
+            return {
+                id: 'b1eef750-d044-9b5a-fddf-848aa0abc157', // Valid UUID (fixed invalid characters)
+                title: 'Outdoor Movie Night',
+                description: 'Family-friendly outdoor movie screening under the stars. Bring blankets and chairs. Concessions available for purchase. This month featuring a classic adventure film suitable for all ages.',
+                short_description: 'Free family movie night under the stars',
+                start_time: '2024-06-14T20:00:00.000Z',
+                end_time: '2024-06-14T23:00:00.000Z',
+                timezone: 'America/New_York',
+                location: 'Riverside Park Amphitheater',
+                is_paid: false,
+                capacity: 200,
+                current_rsvps: 89,
+                organizer: 'Parks & Recreation Department',
+                category: 'Entertainment',
+                accessibility_info: 'Accessible seating area available, audio description available'
+            };
+
+        case '9':
+            return {
+                id: 'c2fff861-e155-ac6b-0eda-959ba1bcd268', // Valid UUID (fixed invalid characters)
+                title: 'Food Truck Festival',
+                description: 'Annual food truck festival featuring 15+ local food vendors, live music, and family activities. Sample diverse cuisines and support local food businesses. Live entertainment throughout the day.',
+                short_description: 'Annual food truck festival with local vendors',
+                start_time: '2024-05-25T11:00:00.000Z',
+                end_time: '2024-05-25T18:00:00.000Z',
+                timezone: 'America/New_York',
+                location: 'Downtown Square',
     is_paid: true,
-    featured: true,
     capacity: 500,
-    rsvp_count: 245,
-    is_open_for_registration: true,
-    image_url: '/events/farmers-market.jpg',
-    image_alt_text: 'Community farmers market with vendors and families',
-    organizer: {
-        id: 'organizer-1',
-        display_name: 'Downtown Community Association'
-    },
-    ticket_types: [
-        { name: 'General Admission', price: 25 },
-        { name: 'VIP Access', price: 50 }
-    ]
+                current_rsvps: 234,
+                organizer: 'Downtown Business Association',
+                category: 'Food & Drink',
+                accessibility_info: 'Wheelchair accessible, sensory-friendly hours 11am-1pm'
+            };
+
+        case '10':
+            return {
+                id: 'd300f972-f266-bd7c-1feb-a6ac2a2de379', // Valid UUID (fixed invalid characters)
+                title: 'Photography Walk',
+                description: 'Guided photography walk through historic downtown area. Learn composition techniques and discover hidden photogenic spots. All skill levels welcome. Bring your camera or smartphone.',
+                short_description: 'Free guided photography walk downtown',
+                start_time: '2024-04-20T09:00:00.000Z',
+                end_time: '2024-04-20T12:00:00.000Z',
+                timezone: 'America/New_York',
+                location: 'Historic Downtown District',
+                is_paid: false,
+                capacity: 25,
+                current_rsvps: 15,
+                organizer: 'Photography Club',
+                category: 'Arts',
+                accessibility_info: 'Walking event, shorter route options available'
+            };
+
+        case '11':
+            return {
+                id: 'e411fa83-0377-ce8d-20fc-b7bd3a3ef48a', // Valid UUID (fixed invalid characters)
+                title: 'Coding Bootcamp Demo Day',
+                description: 'Local coding bootcamp students present their final projects. Witness the next generation of developers showcase web applications, mobile apps, and innovative solutions to real-world problems.',
+                short_description: 'Free coding bootcamp student project presentations',
+                start_time: '2024-03-30T14:00:00.000Z',
+                end_time: '2024-03-30T17:00:00.000Z',
+                timezone: 'America/New_York',
+                location: 'Tech Learning Center',
+                is_paid: false,
+                capacity: 100,
+                current_rsvps: 42,
+                organizer: 'Code Academy',
+                category: 'Technology',
+                accessibility_info: 'Fully accessible, projects demonstrated with screen readers'
+            };
+
+        case '12':
+            return {
+                id: 'f522fb94-1488-df9e-31fd-c8ce4a4f559b', // Valid UUID (fixed invalid characters)
+                title: 'Charity Fun Run',
+                description: '5K fun run and 1-mile family walk to raise funds for local food bank. Registration includes race t-shirt and post-race refreshments. Prizes for various categories and age groups.',
+                short_description: 'Charity 5K run and family walk fundraiser',
+                start_time: '2024-04-07T08:00:00.000Z',
+                end_time: '2024-04-07T11:00:00.000Z',
+                timezone: 'America/New_York',
+                location: 'Lakeside Trail',
+                is_paid: true,
+                capacity: 300,
+                current_rsvps: 178,
+                organizer: 'Community Athletics Club',
+                category: 'Sports',
+                accessibility_info: 'Accessible 1-mile route, wheelchair racing category available'
+            };
+
+        case '13':
+            return {
+                id: 'a633fca5-2599-e0af-42fe-d9df5a5f66ac', // Valid UUID (fixed invalid characters)
+                title: 'Makers Market',
+                description: 'Monthly artisan market featuring local crafters, artists, and makers. Discover handmade goods, unique gifts, and creative works from talented community members. Support local artisans.',
+                short_description: 'Free monthly market for local artisans and makers',
+                start_time: '2024-03-16T10:00:00.000Z',
+                end_time: '2024-03-16T16:00:00.000Z',
+                timezone: 'America/New_York',
+                location: 'Community Center Courtyard',
+                is_paid: false,
+                capacity: 150,
+                current_rsvps: 67,
+                organizer: 'Local Artisans Guild',
+                category: 'Arts',
+                accessibility_info: 'Outdoor/indoor hybrid event, wheelchair accessible'
+            };
+
+        default:
+            // Default fallback
+            return {
+                id: 'a47ac10b-58cc-4372-a567-0e02b2c3d479',
+                title: 'Community Garden Cleanup',
+                description: 'Default event description',
+                short_description: 'Default event',
+                start_time: '2024-02-15T09:00:00.000Z',
+                end_time: '2024-02-15T12:00:00.000Z',
+                timezone: 'America/New_York',
+                location: 'Community Garden',
+                is_paid: false,
+                capacity: 30,
+                current_rsvps: 12,
+                organizer: 'Community Group',
+                category: 'Community',
+                accessibility_info: 'Contact organizer for accessibility information'
+            };
+    }
 };
 
 // Sample gallery images for the event
@@ -107,7 +339,7 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
     const [guestInfo, setGuestInfo] = useState<GuestInfo | undefined>();
 
     // TODO: Fetch actual event data based on id
-    const event = sampleEventDetails;
+    const event = getSampleEventDetails(id);
 
     // TODO: Check if current user is the organizer of this event
     const isOrganizer = user?.id === event.organizer?.id || (user?.user_metadata?.role === 'admin');
@@ -256,6 +488,7 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
                             <TicketSelection
                                 eventId={event.id}
                                 onPurchaseInitiated={handlePurchaseInitiated}
+                                showGuestForm={true}
                             />
                         )}
 
@@ -293,7 +526,7 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
                                     )}
                                     <div className="flex flex-col sm:flex-row sm:items-start">
                                         <span className="font-medium text-gray-900 min-w-0 sm:min-w-[100px]">Accessibility:</span>
-                                        <span className="text-gray-700 mt-1 sm:mt-0 sm:ml-2">Wheelchair accessible, service animals welcome</span>
+                                        <span className="text-gray-700 mt-1 sm:mt-0 sm:ml-2">{event.accessibility_info}</span>
                                     </div>
                                 </div>
                             </CardContent>
@@ -302,7 +535,8 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
 
                     {/* Sidebar - Right Column */}
                     <div className="space-y-6 order-1 lg:order-2">
-                        {/* RSVP/Ticket Card */}
+                        {/* RSVP/Ticket Card - Only show for FREE events */}
+                        {!event.is_paid && (
                         <RSVPTicketSection
                             eventId={event.id}
                             eventTitle={event.title}
@@ -310,9 +544,10 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
                             eventTime={`${formatTime(event.start_time)} - ${formatTime(event.end_time)}`}
                             eventLocation={event.location}
                             capacity={event.capacity}
-                            currentRSVPs={event.rsvp_count}
-                            isRegistrationOpen={event.is_open_for_registration ?? true}
+                                currentRSVPs={event.current_rsvps}
+                                isRegistrationOpen={true}
                         />
+                        )}
 
                         {/* Google Calendar Integration */}
                         <GoogleCalendarConnect

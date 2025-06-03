@@ -15,11 +15,11 @@ if grep -q "$KEY_NAME" "$MCP_CONFIG"; then
   exit 0
 fi
 
-# Load API key from .env
-SUPABASE_ACCESS_TOKEN=$(grep SUPABASE_ACCESS_TOKEN .env | cut -d '=' -f2)
+# Load API key from .env.local
+SUPABASE_ACCESS_TOKEN=$(grep SUPABASE_ACCESS_TOKEN .env.local | cut -d '=' -f2)
 
 if [ -z "$SUPABASE_ACCESS_TOKEN" ]; then
-  echo "❌ No SUPABASE_ACCESS_TOKEN found in .env. Cannot continue."
+  echo "❌ No SUPABASE_ACCESS_TOKEN found in .env.local. Cannot continue."
   exit 1
 fi
 

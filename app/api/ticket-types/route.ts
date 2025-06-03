@@ -25,6 +25,173 @@ const ticketTypeSchema = z.object({
     }
 );
 
+// Sample ticket types for development/demo events
+function getSampleTicketTypes(eventId: string) {
+    const sampleTickets: { [key: string]: any[] } = {
+        // Event 2: Local Business Networking (paid)
+        'b58bd20c-69dd-5483-b678-1f13c3d4e590': [
+            {
+                id: 'ticket-2-1',
+                event_id: 'b58bd20c-69dd-5483-b678-1f13c3d4e590',
+                name: 'Standard Admission',
+                description: 'Includes networking session, refreshments, and welcome packet',
+                price: 2500, // $25.00 in cents
+                capacity: 80,
+                sold_count: 45,
+                sort_order: 0,
+                sale_start: '2024-01-15T00:00:00.000Z',
+                sale_end: '2024-02-22T16:00:00.000Z',
+                created_at: '2024-01-10T00:00:00.000Z',
+                updated_at: '2024-01-10T00:00:00.000Z'
+            },
+            {
+                id: 'ticket-2-2',
+                event_id: 'b58bd20c-69dd-5483-b678-1f13c3d4e590',
+                name: 'VIP Package',
+                description: 'Priority networking, private speaker meet & greet, premium refreshments',
+                price: 5000, // $50.00 in cents
+                capacity: 20,
+                sold_count: 8,
+                sort_order: 1,
+                sale_start: '2024-01-15T00:00:00.000Z',
+                sale_end: '2024-02-22T16:00:00.000Z',
+                created_at: '2024-01-10T00:00:00.000Z',
+                updated_at: '2024-01-10T00:00:00.000Z'
+            }
+        ],
+
+        // Event 3: Kids Art Workshop (paid)
+        'c69de41e-8bff-4605-a89a-3f35e5f6d702': [
+            {
+                id: 'ticket-3-1',
+                event_id: 'c69de41e-8bff-4605-a89a-3f35e5f6d702',
+                name: 'Child Participant',
+                description: 'Workshop participation for one child (ages 6-12), includes all materials',
+                price: 1500, // $15.00 in cents
+                capacity: 18,
+                sold_count: 8,
+                sort_order: 0,
+                sale_start: '2024-04-15T00:00:00.000Z',
+                sale_end: '2024-05-20T13:00:00.000Z',
+                created_at: '2024-04-01T00:00:00.000Z',
+                updated_at: '2024-04-01T00:00:00.000Z'
+            },
+            {
+                id: 'ticket-3-2',
+                event_id: 'c69de41e-8bff-4605-a89a-3f35e5f6d702',
+                name: 'Family Package',
+                description: 'Workshop for up to 2 children plus 1 adult companion',
+                price: 2500, // $25.00 in cents
+                capacity: 5,
+                sold_count: 2,
+                sort_order: 1,
+                sale_start: '2024-04-15T00:00:00.000Z',
+                sale_end: '2024-05-20T13:00:00.000Z',
+                created_at: '2024-04-01T00:00:00.000Z',
+                updated_at: '2024-04-01T00:00:00.000Z'
+            }
+        ],
+
+        // Event 7: Startup Pitch Night (paid)
+        'a0ddf64f-cf33-8a49-eccf-7379c9aab046': [
+            {
+                id: 'ticket-7-1',
+                event_id: 'a0ddf64f-cf33-8a49-eccf-7379c9aab046',
+                name: 'General Admission',
+                description: 'Access to presentations and networking session',
+                price: 2000, // $20.00 in cents
+                capacity: 100,
+                sold_count: 67,
+                sort_order: 0,
+                sale_start: '2024-03-01T00:00:00.000Z',
+                sale_end: '2024-04-10T16:00:00.000Z',
+                created_at: '2024-02-15T00:00:00.000Z',
+                updated_at: '2024-02-15T00:00:00.000Z'
+            },
+            {
+                id: 'ticket-7-2',
+                event_id: 'a0ddf64f-cf33-8a49-eccf-7379c9aab046',
+                name: 'Investor Pass',
+                description: 'VIP seating, exclusive investor networking, and pitch deck access',
+                price: 7500, // $75.00 in cents
+                capacity: 20,
+                sold_count: 12,
+                sort_order: 1,
+                sale_start: '2024-03-01T00:00:00.000Z',
+                sale_end: '2024-04-10T16:00:00.000Z',
+                created_at: '2024-02-15T00:00:00.000Z',
+                updated_at: '2024-02-15T00:00:00.000Z'
+            }
+        ],
+
+        // Event 9: Food Truck Festival (paid)
+        'c2fff861-e155-ac6b-0eda-959ba1bcd268': [
+            {
+                id: 'a1b2c3d4-e5f6-4789-a123-456789abcdef',
+                event_id: 'c2fff861-e155-ac6b-0eda-959ba1bcd268',
+                name: 'Festival Entry',
+                description: 'Access to festival grounds and all activities',
+                price: 1500, // $15.00 in cents
+                capacity: 200,
+                sold_count: 25,
+                sort_order: 1,
+                sale_start: null,
+                sale_end: null,
+                created_at: '2024-01-15T00:00:00Z',
+                updated_at: '2024-01-15T00:00:00Z'
+            },
+            {
+                id: 'b2c3d4e5-f6a7-4890-b234-567890abcdef',
+                event_id: 'c2fff861-e155-ac6b-0eda-959ba1bcd268',
+                name: 'VIP Package',
+                description: 'Premium access with reserved seating and complimentary drinks',
+                price: 3500, // $35.00 in cents
+                capacity: 50,
+                sold_count: 25,
+                sort_order: 2,
+                sale_start: null,
+                sale_end: null,
+                created_at: '2024-01-15T00:00:00Z',
+                updated_at: '2024-01-15T00:00:00Z'
+            }
+        ],
+
+        // Event 12: Charity Fun Run (paid)
+        'f522fb94-1488-df9e-31fd-c8ce4a4f559b': [
+            {
+                id: 'ticket-12-1',
+                event_id: 'f522fb94-1488-df9e-31fd-c8ce4a4f559b',
+                name: '5K Registration',
+                description: 'Includes race bib, timing chip, t-shirt, and post-race refreshments',
+                price: 3000, // $30.00 in cents
+                capacity: 250,
+                sold_count: 178,
+                sort_order: 0,
+                sale_start: '2024-02-01T00:00:00.000Z',
+                sale_end: '2024-04-07T06:00:00.000Z',
+                created_at: '2024-01-15T00:00:00.000Z',
+                updated_at: '2024-01-15T00:00:00.000Z'
+            },
+            {
+                id: 'ticket-12-2',
+                event_id: 'f522fb94-1488-df9e-31fd-c8ce4a4f559b',
+                name: '1-Mile Family Walk',
+                description: 'Family-friendly walk includes t-shirt and refreshments',
+                price: 1500, // $15.00 in cents
+                capacity: 50,
+                sold_count: 32,
+                sort_order: 1,
+                sale_start: '2024-02-01T00:00:00.000Z',
+                sale_end: '2024-04-07T06:00:00.000Z',
+                created_at: '2024-01-15T00:00:00.000Z',
+                updated_at: '2024-01-15T00:00:00.000Z'
+            }
+        ]
+    };
+
+    return sampleTickets[eventId] || null;
+}
+
 // GET /api/ticket-types - List ticket types for an event
 export async function GET(request: NextRequest) {
     try {
@@ -50,6 +217,12 @@ export async function GET(request: NextRequest) {
         }
 
         const supabase = await createServerSupabaseClient();
+
+        // For development/demo: Return sample ticket types for sample events
+        const sampleEventTickets = getSampleTicketTypes(eventId);
+        if (sampleEventTickets) {
+            return NextResponse.json({ ticket_types: sampleEventTickets });
+        }
 
         // Get ticket types for the specified event
         const { data: ticketTypes, error } = await supabase

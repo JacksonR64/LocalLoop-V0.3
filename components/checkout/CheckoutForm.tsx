@@ -23,6 +23,7 @@ import {
     User,
     Receipt
 } from 'lucide-react'
+import GoogleCalendarAddButton from './GoogleCalendarAddButton'
 
 // Initialize Stripe
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!)
@@ -66,6 +67,11 @@ interface CheckoutResponse {
     event: {
         id: string
         title: string
+        description?: string
+        start_time: string
+        end_time: string
+        location?: string
+        timezone: string
     }
     order_id?: string
 }
@@ -262,10 +268,12 @@ function PaymentForm({
 function PaymentSuccess({
     paymentIntentId,
     orderDetails,
+    customerEmail,
     onContinue
 }: {
     paymentIntentId: string
     orderDetails: CheckoutResponse
+    customerEmail: string
     onContinue: () => void
 }) {
     return (
@@ -297,6 +305,13 @@ function PaymentSuccess({
                     A confirmation email with your tickets has been sent to your email address.
                     Please save this email as it contains important information for event entry.
                 </div>
+
+                <GoogleCalendarAddButton
+                    paymentIntentId={paymentIntentId}
+                    eventDetails={orderDetails.event}
+                    customerEmail={customerEmail}
+                    className="mb-6"
+                />
 
                 <Button onClick={onContinue} className="w-full">
                     <CheckCircle className="h-4 w-4 mr-2" />
@@ -425,6 +440,7 @@ export default function CheckoutForm({
             <PaymentSuccess
                 paymentIntentId={paymentIntentId}
                 orderDetails={orderDetails}
+                customerEmail={customerInfo.email}
                 onContinue={handleContinue}
             />
         )

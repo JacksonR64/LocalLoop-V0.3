@@ -584,3 +584,141 @@ Develop comprehensive event detail page with full event information, interactive
 ---
 
 **Project is ready to move to the next major features.**
+
+# 🎯 Active Development Context - LocalLoop V0.3
+
+## 🚨 **CRITICAL ISSUE - NEXT ITERATION FOCUS**
+
+### **🐛 Google Calendar Connection Error (Task 19)**
+- **Status**: HIGH PRIORITY - Blocking paid event calendar integration
+- **Issue**: Users get "Google cal not connected" error when adding events to calendar
+- **Infrastructure**: Complete (Task 10 done) but connection failing
+- **API Response**: Getting correct OAuth response `{"success":false,"oauth_required":true}`
+
+---
+
+## 📋 **Current Session Status**
+
+### **✅ COMPLETED: Environment File Consolidation**
+- **Task 10**: Google Calendar for Paid Events - Infrastructure ✅ 
+- **Environment Structure**: Fully cleaned up and standardized
+- **Stripe Integration**: Fully functional with proper keys
+- **Next.js Standards**: Implemented `.env.local` / `.env.example` pattern
+
+### **🎯 NEXT SESSION PRIORITIES**
+
+#### **1. Google Calendar OAuth Debug (Task 19) - IMMEDIATE**
+**Critical Investigation Areas:**
+- **OAuth Flow**: Test Google Calendar OAuth consent process end-to-end
+- **Token Storage**: Verify Google tokens are being stored in database correctly
+- **Database Field**: Check `users.google_calendar_token` field structure and data
+- **API Scopes**: Confirm Google Calendar API scopes and permissions are correct
+- **Error Logging**: Add detailed debugging to calendar API endpoints
+
+#### **2. Environment Details Available**
+**Google Calendar Credentials (Confirmed Working):**
+```bash
+GOOGLE_CLIENT_ID=729713375100-j6jjb5snk8bn2643kiev3su0jg6epedv.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=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
+GOOGLE_REDIRECT_URI=http://localhost:3000/auth/google/callback
+```
+
+**All Environment Variables Properly Set:**
+- ✅ Supabase (URL, Anon Key, Service Role Key)
+- ✅ Stripe (Secret & Publishable Keys)
+- ✅ NextAuth (Secret, URL)
+- ✅ Google Calendar (Client ID, Secret, Redirect URI)
+
+---
+
+## 🔍 **Investigation Strategy for Google Calendar**
+
+### **Phase 1: OAuth Flow Analysis**
+1. **Test OAuth URL**: Verify `/api/auth/google/connect` response
+2. **Follow Redirect**: Test complete OAuth consent flow
+3. **Token Exchange**: Check if authorization code → access token working
+4. **Database Storage**: Verify token storage in users table
+
+### **Phase 2: Database Schema Verification**
+1. **Field Structure**: Check `users.google_calendar_token` field type/structure
+2. **Data Inspection**: Look at actual stored token data
+3. **RLS Policies**: Verify Row Level Security isn't blocking token access
+4. **API Retrieval**: Test token retrieval in calendar API
+
+### **Phase 3: API Testing & Error Handling**
+1. **Google Calendar API**: Test actual calendar event creation with stored tokens
+2. **Permission Scopes**: Verify calendar write permissions
+3. **Error Logging**: Add comprehensive error logging to all calendar endpoints
+4. **User Feedback**: Improve error messages for better debugging
+
+### **Phase 4: User Experience**
+1. **Connection Status**: Add UI to show Google Calendar connection status
+2. **Reconnection Flow**: Allow users to reconnect if token invalid
+3. **Fallback Options**: Provide manual calendar file download if API fails
+
+---
+
+## 📂 **Key Files for Next Session**
+
+### **Calendar Integration Files**
+- `app/api/calendar/add-to-calendar/route.ts` - Main calendar API endpoint
+- `app/api/auth/google/connect/route.ts` - OAuth initiation
+- `app/api/auth/google/callback/route.ts` - OAuth token exchange
+- `components/events/TicketSelection.tsx` - UI with calendar integration
+
+### **Database Schema**
+- Supabase `users` table - google_calendar_token field
+- RLS policies for users table
+- Migration files for calendar-related schema
+
+### **Environment & Config**
+- `.env.local` - All working credentials confirmed
+- `lib/supabase/client.ts` - Database connection
+- Google Calendar API configuration
+
+---
+
+## 🧠 **Context from Previous Sessions**
+
+### **✅ Working Integrations**
+- **Authentication**: Google OAuth, email/password working
+- **Payments**: Stripe checkout flow fully functional  
+- **Database**: All operations working correctly
+- **Free Event Calendar**: "Add to Calendar" working for RSVP users
+
+### **🔧 Recent Technical Fixes**
+- **Environment Structure**: Consolidated to Next.js standards
+- **Script Updates**: All scripts now reference `.env.local`
+- **Stripe Recovery**: All payment keys restored and working
+- **API Error Handling**: Comprehensive error handling in place
+
+### **📊 Progress Stats**
+- **Overall**: 55% complete (10/18 tasks done)
+- **Core Platform**: 100% complete
+- **Current Blocker**: Google Calendar connection for paid events
+
+---
+
+## 💡 **Debugging Approach Recommendations**
+
+### **Start with Browser Dev Tools**
+1. **Network Tab**: Monitor OAuth flow requests/responses
+2. **Console**: Check for JavaScript errors during calendar integration
+3. **Application Tab**: Verify authentication tokens and session data
+
+### **Backend API Testing**
+1. **Terminal curl**: Test calendar API endpoints directly
+2. **Database Queries**: Check actual stored token data
+3. **Log Analysis**: Add debug logging to trace request flow
+
+### **Sequential Thinking Process**
+1. **Problem Analysis**: Break down OAuth flow into discrete steps
+2. **Hypothesis Testing**: Test each component individually
+3. **Error Reproduction**: Create minimal test case for the error
+4. **Solution Implementation**: Fix identified issues systematically
+
+---
+
+**Last Updated**: End of environment consolidation session
+**Ready for**: Google Calendar connection debugging session
+**Priority**: HIGH - Blocking Task 19 and paid event calendar integration

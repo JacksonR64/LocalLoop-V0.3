@@ -15,11 +15,11 @@ if grep -q "$KEY_NAME" "$MCP_CONFIG"; then
   exit 0
 fi
 
-# Load API keys from .env
-ANTHROPIC_API_KEY=$(grep ANTHROPIC_API_KEY .env | cut -d '=' -f2)
+# Load API keys from .env.local
+ANTHROPIC_API_KEY=$(grep ANTHROPIC_API_KEY .env.local | cut -d '=' -f2)
 
 if [ -z "$ANTHROPIC_API_KEY" ]; then
-  echo "❌ No ANTHROPIC_API_KEY found in .env. Cannot continue."
+  echo "❌ No ANTHROPIC_API_KEY found in .env.local. Cannot continue."
   exit 1
 fi
 

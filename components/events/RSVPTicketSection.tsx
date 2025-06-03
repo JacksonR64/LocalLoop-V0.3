@@ -150,8 +150,8 @@ const RSVPTicketSection: React.FC<RSVPTicketSectionProps> = ({
                 ? { event_id: eventId, notes }
                 : {
                     event_id: eventId,
-                    guest_email: formData.get('email') as string,
-                    guest_name: formData.get('name') as string,
+                    guest_email: formData.get('guest_email') as string,
+                    guest_name: formData.get('guest_name') as string,
                     notes
                 };
 
@@ -376,6 +376,7 @@ const RSVPTicketSection: React.FC<RSVPTicketSectionProps> = ({
                                             </label>
                                             <Input
                                                 type="text"
+                                                name="guest_name"
                                                 placeholder="Enter your full name"
                                                 value={formData.guestName || ''}
                                                 onChange={(e) => handleInputChange('guestName', e.target.value)}
@@ -390,6 +391,7 @@ const RSVPTicketSection: React.FC<RSVPTicketSectionProps> = ({
                                             </label>
                                             <Input
                                                 type="email"
+                                                name="guest_email"
                                                 placeholder="Enter your email"
                                                 value={formData.guestEmail || ''}
                                                 onChange={(e) => handleInputChange('guestEmail', e.target.value)}
@@ -408,6 +410,7 @@ const RSVPTicketSection: React.FC<RSVPTicketSectionProps> = ({
                                 Additional Notes (Optional)
                             </label>
                             <Textarea
+                                name="notes"
                                 placeholder="Any special requirements, dietary restrictions, or comments..."
                                 value={formData.notes || ''}
                                 onChange={(e) => handleInputChange('notes', e.target.value)}
