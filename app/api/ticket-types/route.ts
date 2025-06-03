@@ -44,6 +44,134 @@ function getSampleTicketTypes(eventId: string) {
 
     const sampleTickets: { [key: string]: SampleTicketType[] } = {
         // Event 2: Local Business Networking (paid)
+        '2': [
+            {
+                id: 'ticket-2-1',
+                event_id: '2',
+                name: 'Standard Admission',
+                description: 'Includes networking session, refreshments, and welcome packet',
+                price: 2500, // $25.00 in cents
+                capacity: 80,
+                sold_count: 45,
+                sort_order: 0,
+                sale_start: '2025-01-15T00:00:00.000Z',
+                sale_end: '2025-05-12T16:00:00.000Z',
+                created_at: '2025-01-10T00:00:00.000Z',
+                updated_at: '2025-01-10T00:00:00.000Z'
+            },
+            {
+                id: 'ticket-2-2',
+                event_id: '2',
+                name: 'VIP Package',
+                description: 'Priority networking, private speaker meet & greet, premium refreshments',
+                price: 5000, // $50.00 in cents
+                capacity: 20,
+                sold_count: 8,
+                sort_order: 1,
+                sale_start: '2025-01-15T00:00:00.000Z',
+                sale_end: '2025-05-12T16:00:00.000Z',
+                created_at: '2025-01-10T00:00:00.000Z',
+                updated_at: '2025-01-10T00:00:00.000Z'
+            }
+        ],
+
+        // Event 3: Kids Art Workshop (paid)
+        '3': [
+            {
+                id: 'ticket-3-1',
+                event_id: '3',
+                name: 'Child Participant',
+                description: 'Workshop participation for one child (ages 6-12), includes all materials',
+                price: 1500, // $15.00 in cents
+                capacity: 18,
+                sold_count: 8,
+                sort_order: 0,
+                sale_start: '2025-04-15T00:00:00.000Z',
+                sale_end: '2025-05-20T13:00:00.000Z',
+                created_at: '2025-04-01T00:00:00.000Z',
+                updated_at: '2025-04-01T00:00:00.000Z'
+            },
+            {
+                id: 'ticket-3-2',
+                event_id: '3',
+                name: 'Family Package',
+                description: 'Workshop for up to 2 children plus 1 adult companion',
+                price: 2500, // $25.00 in cents
+                capacity: 5,
+                sold_count: 2,
+                sort_order: 1,
+                sale_start: '2025-04-15T00:00:00.000Z',
+                sale_end: '2025-05-20T13:00:00.000Z',
+                created_at: '2025-04-01T00:00:00.000Z',
+                updated_at: '2025-04-01T00:00:00.000Z'
+            }
+        ],
+
+        // Event 7: Startup Pitch Night (paid) - FIXED TO MATCH NUMERIC ID
+        '7': [
+            {
+                id: 'ticket-7-1',
+                event_id: '7',
+                name: 'General Admission',
+                description: 'Access to presentations and networking session',
+                price: 2000, // $20.00 in cents
+                capacity: 100,
+                sold_count: 67,
+                sort_order: 0,
+                sale_start: '2025-03-01T00:00:00.000Z',
+                sale_end: '2025-06-24T16:00:00.000Z',
+                created_at: '2025-02-15T00:00:00.000Z',
+                updated_at: '2025-02-15T00:00:00.000Z'
+            },
+            {
+                id: 'ticket-7-2',
+                event_id: '7',
+                name: 'Investor Pass',
+                description: 'VIP seating, exclusive investor networking, and pitch deck access',
+                price: 7500, // $75.00 in cents
+                capacity: 20,
+                sold_count: 12,
+                sort_order: 1,
+                sale_start: '2025-03-01T00:00:00.000Z',
+                sale_end: '2025-06-24T16:00:00.000Z',
+                created_at: '2025-02-15T00:00:00.000Z',
+                updated_at: '2025-02-15T00:00:00.000Z'
+            }
+        ],
+
+        // Event 9: Food Truck Festival (paid)
+        '9': [
+            {
+                id: 'a1b2c3d4-e5f6-4789-a123-456789abcdef',
+                event_id: '9',
+                name: 'Festival Entry',
+                description: 'Access to festival grounds and all activities',
+                price: 1500, // $15.00 in cents
+                capacity: 200,
+                sold_count: 25,
+                sort_order: 1,
+                sale_start: null,
+                sale_end: null,
+                created_at: '2025-01-15T00:00:00Z',
+                updated_at: '2025-01-15T00:00:00Z'
+            },
+            {
+                id: 'b2c3d4e5-f6a7-4890-b234-567890abcdef',
+                event_id: '9',
+                name: 'VIP Package',
+                description: 'Premium access with reserved seating and complimentary drinks',
+                price: 3500, // $35.00 in cents
+                capacity: 50,
+                sold_count: 25,
+                sort_order: 2,
+                sale_start: null,
+                sale_end: null,
+                created_at: '2025-01-15T00:00:00Z',
+                updated_at: '2025-01-15T00:00:00Z'
+            }
+        ],
+
+        // Legacy UUID-based events for backward compatibility
         'b58bd20c-69dd-5483-b678-1f13c3d4e590': [
             {
                 id: 'ticket-2-1',
@@ -75,7 +203,6 @@ function getSampleTicketTypes(eventId: string) {
             }
         ],
 
-        // Event 3: Kids Art Workshop (paid)
         'c69de41e-8bff-4605-a89a-3f35e5f6d702': [
             {
                 id: 'ticket-3-1',
@@ -107,7 +234,6 @@ function getSampleTicketTypes(eventId: string) {
             }
         ],
 
-        // Event 7: Startup Pitch Night (paid)
         'a0ddf64f-cf33-8a49-eccf-7379c9aab046': [
             {
                 id: 'ticket-7-1',
@@ -139,7 +265,6 @@ function getSampleTicketTypes(eventId: string) {
             }
         ],
 
-        // Event 9: Food Truck Festival (paid)
         'c2fff861-e155-ac6b-0eda-959ba1bcd268': [
             {
                 id: 'a1b2c3d4-e5f6-4789-a123-456789abcdef',
@@ -171,7 +296,6 @@ function getSampleTicketTypes(eventId: string) {
             }
         ],
 
-        // Event 12: Charity Fun Run (paid)
         'f522fb94-1488-df9e-31fd-c8ce4a4f559b': [
             {
                 id: 'ticket-12-1',
@@ -220,26 +344,27 @@ export async function GET(request: NextRequest) {
             );
         }
 
-        // Validate event ID format
+        // For development/demo: Check for sample event tickets first (supports both numeric and UUID formats)
+        const sampleEventTickets = getSampleTicketTypes(eventId);
+        if (sampleEventTickets) {
+            return NextResponse.json({ ticket_types: sampleEventTickets });
+        }
+
+        // For real database events: Validate UUID format and query database
         const eventIdSchema = z.string().uuid();
         const validationResult = eventIdSchema.safeParse(eventId);
 
         if (!validationResult.success) {
+            // If it's not a UUID and not a sample event, it's invalid
             return NextResponse.json(
-                { error: 'Invalid event ID format' },
+                { error: 'Invalid event ID format or event not found' },
                 { status: 400 }
             );
         }
 
         const supabase = await createServerSupabaseClient();
 
-        // For development/demo: Return sample ticket types for sample events
-        const sampleEventTickets = getSampleTicketTypes(eventId);
-        if (sampleEventTickets) {
-            return NextResponse.json({ ticket_types: sampleEventTickets });
-        }
-
-        // Get ticket types for the specified event
+        // Get ticket types for the specified event from database
         const { data: ticketTypes, error } = await supabase
             .from('ticket_types')
             .select('*')

@@ -3,10 +3,34 @@ import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { stripe } from '@/lib/stripe'
 import { z } from 'zod'
 
-// Checkout request schema
+// Mapping between numeric event IDs (used in frontend) and UUID event IDs (used in sample data)
+function mapEventIdToUuid(eventId: string): string {
+    const eventIdMapping: { [key: string]: string } = {
+        '2': 'b1e2f3c4-d5a6-4789-b123-456789abcdef', // Local Business Networking
+        '3': 'c1e2f3c4-d5a6-4789-b123-456789abcdef', // Kids Art Workshop
+        '7': 'a0ddf64f-cf33-8a49-eccf-7379c9aab046', // Startup Pitch Night
+        '9': 'c2fff861-e155-ac6b-0eda-959ba1bcd268'  // Food Truck Festival
+    };
+
+    // If it's already a UUID or mapped, return the UUID
+    if (eventIdMapping[eventId]) {
+        return eventIdMapping[eventId];
+    }
+
+    // Check if it's already a UUID
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    if (uuidRegex.test(eventId)) {
+        return eventId;
+    }
+
+    // Return original if no mapping found (will be handled by sample data check)
+    return eventId;
+}
+
+// Updated checkout request schema - accept either numeric string or UUID for event_id
 const checkoutSchema = z.object({
     tickets: z.array(z.object({
-        ticket_type_id: z.string().uuid(),
+        ticket_type_id: z.string(), // Accept any string for ticket type ID
         quantity: z.number().int().min(1).max(10),
     })),
     customer_info: z.object({
@@ -14,7 +38,7 @@ const checkoutSchema = z.object({
         name: z.string().min(1).max(100),
         phone: z.string().optional(),
     }).optional(),
-    event_id: z.string().uuid(),
+    event_id: z.string(), // Accept any string for event ID (will be mapped)
     return_url: z.string().url().optional(),
 });
 
@@ -177,6 +201,11 @@ export async function POST(request: NextRequest) {
         const { tickets, customer_info, event_id } = validationResult.data;
         const supabase = await createServerSupabaseClient();
 
+        // Map event ID to UUID for sample data lookup
+        const mappedEventId = mapEventIdToUuid(event_id);
+        console.log('[DEBUG] Original event ID:', event_id);
+        console.log('[DEBUG] Mapped event ID:', mappedEventId);
+
         // Get user if authenticated
         const { data: { user } } = await supabase.auth.getUser();
 
@@ -185,8 +214,8 @@ export async function POST(request: NextRequest) {
         console.log('[DEBUG] Requested ticket type IDs:', ticketTypeIds);
         console.log('[DEBUG] Event ID:', event_id);
 
-        // Try to get sample data first (for demo events)
-        const sampleTicketTypes = getSampleTicketTypes(event_id);
+        // Try to get sample data first (for demo events) using the mapped event ID
+        const sampleTicketTypes = getSampleTicketTypes(mappedEventId);
         console.log('[DEBUG] Found sample ticket types:', sampleTicketTypes.length);
         console.log('[DEBUG] Sample ticket IDs:', sampleTicketTypes.map(tt => tt.id));
 
@@ -216,7 +245,7 @@ export async function POST(request: NextRequest) {
                     )
                 `)
                 .in('id', ticketTypeIds)
-                .eq('event_id', event_id);
+                .eq('event_id', mappedEventId);
 
             ticketTypes = data || [];
             ticketTypesError = error;
