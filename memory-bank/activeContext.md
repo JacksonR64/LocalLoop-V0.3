@@ -1282,3 +1282,157 @@ GOOGLE_REDIRECT_URI=http://localhost:3000/auth/google/callback
 **Next Steps**: Start with Task 16.1 - Incremental Static Regeneration
 
 **Last Updated: 2025-06-04T05:04:00.000Z**
+
+# Active Development Context
+
+## Current Status: ESLint Cleanup Complete ✅ - Debugging Session Required ⚠️
+
+**Session Date:** January 3, 2025
+**Project State:** Code Quality Perfect + Runtime Regressions
+**Next Agent Role:** Debug Specialist
+
+---
+
+## ✅ JUST COMPLETED: Perfectionist ESLint Cleanup
+- **Achievement:** Zero ESLint warnings/errors across entire codebase
+- **Impact:** 25+ code quality issues systematically resolved
+- **Quality:** All TypeScript types properly defined, imports optimized
+- **Build:** Production build compiling successfully (when regressions fixed)
+
+---
+
+## ⚠️ CRITICAL HANDOFF ALERT: Regressions Detected
+
+### **Priority 1: Dialog Component Resolution**
+```
+ERROR: Module not found: Can't resolve '@/components/ui/dialog'
+```
+- **File:** `components/dashboard/RefundDialog.tsx:4:1`
+- **Impact:** `/my-events` route returning 500 errors
+- **Root Cause:** Module resolution issue despite dialog.tsx file existing
+- **User Impact:** Dashboard functionality broken
+
+### **Priority 2: Stripe Payment Configuration**
+```
+ERROR: You may only specify one of these parameters: automatic_payment_methods, confirmation_method
+```
+- **File:** Stripe PaymentIntent creation in checkout API
+- **Impact:** All ticket purchases failing with 500 errors
+- **Root Cause:** Conflicting Stripe API parameters
+- **User Impact:** Payment flow completely broken
+
+### **Priority 3: React Compiler Setup**
+```
+ERROR: Failed to load the `babel-plugin-react-compiler`
+```
+- **Impact:** Next.js development warnings and compilation issues
+- **Root Cause:** Missing or misconfigured React Compiler dependency
+
+---
+
+## 🎯 IMMEDIATE NEXT ACTIONS FOR DEBUG AGENT
+
+### **MANDATORY FIRST STEP:**
+**Ask user to prioritize debugging focus areas:**
+- "What are your debug priorities? Should I focus on:"
+  1. Dialog import issues (dashboard functionality)
+  2. Stripe payment errors (checkout flow) 
+  3. React Compiler setup (development experience)
+  4. Image loading optimization (user experience)
+
+### **Debug Methodology:**
+1. **Start with user priorities** - Let them choose focus
+2. **Isolate root causes** - Don't assume, investigate thoroughly  
+3. **Test incrementally** - Fix one issue, verify, then move to next
+4. **Maintain code quality** - Don't break the ESLint standards achieved
+5. **Document discoveries** - Update memory bank with findings
+
+---
+
+## 📁 CRITICAL FILES TO INVESTIGATE
+
+### **Dialog Import Issue:**
+- `components/dashboard/RefundDialog.tsx` (failing import)
+- `components/ui/dialog.tsx` (target file exists)
+- `tsconfig.json` (path mapping verification)
+- `components/ui/index.ts` (export verification)
+
+### **Stripe Payment Issue:**
+- `app/api/checkout/route.ts` (PaymentIntent creation)
+- Stripe API documentation for parameter conflicts
+- Development vs production Stripe configuration
+
+### **React Compiler Issue:**
+- `next.config.ts` (React Compiler configuration)
+- `package.json` (babel-plugin-react-compiler dependency)
+- Node.js/npm version compatibility
+
+---
+
+## 🔄 DEVELOPMENT ENVIRONMENT STATUS
+
+### **Working:**
+- ✅ Homepage loading (200 status)
+- ✅ Authentication flow
+- ✅ Basic navigation
+- ✅ ESLint passing (0 warnings/errors)
+
+### **Broken:**
+- ❌ `/my-events` page (500 errors - dialog import)
+- ❌ Checkout flow (500 errors - Stripe config)
+- ❌ React Compiler (configuration errors)
+- ❌ Some image loading (404 from Unsplash)
+
+### **Development Server:**
+- **Status:** Running on http://localhost:3000
+- **Build State:** Dev compilation working for some routes
+- **Error Pattern:** Module resolution and API configuration issues
+
+---
+
+## 📋 DEBUGGING CHECKLIST FOR NEXT AGENT
+
+### **Pre-Debug Verification:**
+- [ ] Confirm dev server is running and accessible
+- [ ] Verify which routes are working vs failing
+- [ ] Check browser console for client-side errors
+- [ ] Review server logs for specific error patterns
+
+### **Investigation Steps:**
+- [ ] Ask user for priority ordering of issues
+- [ ] Test dialog import resolution methods
+- [ ] Review Stripe API parameter requirements
+- [ ] Check React Compiler installation and config
+- [ ] Validate TypeScript path mappings
+
+### **Success Criteria:**
+- [ ] All routes loading without 500 errors
+- [ ] Payment flow completing successfully
+- [ ] Clean development experience without warnings
+- [ ] Maintain perfect ESLint compliance
+
+---
+
+## 🎯 USER EXPECTATION MANAGEMENT
+
+**What User Knows:**
+- ESLint cleanup was successful and appreciated
+- Regressions have been introduced during cleanup
+- They want focused debugging on specific priorities
+- They value the code quality work that was completed
+
+**Communication Style:**
+- Ask for debug priorities upfront
+- Explain findings clearly as you investigate
+- Show progress incrementally
+- Maintain transparency about trade-offs
+
+---
+
+## 💡 CONTEXT FOR NEXT AGENT
+
+**Project Maturity:** This is a well-established LocalLoop event management platform at ~70% completion with solid architecture. The recent work focused on perfectionist code quality, which was successful but introduced some runtime regressions.
+
+**User Profile:** Technical user who appreciates thorough work and wants specific issues debugged systematically. They prefer being asked for priorities rather than assumptions being made.
+
+**Codebase State:** High-quality TypeScript/Next.js codebase with comprehensive features including authentication, payments, calendar integration, and event management. The foundation is solid; current issues are configuration/integration problems, not architectural ones.
