@@ -366,9 +366,9 @@ function PaymentSuccess({
                 </div>
 
                 <GoogleCalendarAddButton
-                    paymentIntentId={paymentIntentId}
-                    eventDetails={orderDetails.event}
-                    customerEmail={customerEmail}
+                    eventTitle={orderDetails.event.title}
+                    eventTime={orderDetails.event.start_time}
+                    eventLocation={orderDetails.event.location || 'Online Event'}
                     className="mb-6"
                 />
 

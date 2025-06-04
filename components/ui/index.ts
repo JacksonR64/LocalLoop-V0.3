@@ -1,4 +1,4 @@
-// UI Components Export Index
+// UI Components Export Index - Only components that actually exist
 export {
     Card,
     CardHeader,
@@ -11,14 +11,34 @@ export {
 } from './Card';
 
 export { LoadingSpinner } from './LoadingSpinner';
-
 export { Button, type ButtonProps } from './button';
 export { Input, type InputProps } from './input';
 export { Textarea, type TextareaProps } from './textarea';
 export { Badge, type BadgeProps } from './badge';
 export { Alert, AlertDescription, type AlertProps } from './alert';
-
-// Dialog components
+export { Label } from './label';
+export { Switch } from './switch';
+export {
+    Select,
+    SelectGroup,
+    SelectValue,
+    SelectTrigger,
+    SelectContent,
+    SelectLabel,
+    SelectItem,
+} from './select';
+export { Checkbox } from './checkbox';
+export {
+    Table,
+    TableHeader,
+    TableBody,
+    TableFooter,
+    TableHead,
+    TableRow,
+    TableCell,
+    TableCaption,
+} from './table';
+export { Tabs, TabsList, TabsTrigger, TabsContent } from './tabs';
 export {
     Dialog,
     DialogContent,
