@@ -411,6 +411,8 @@ export async function POST(request: NextRequest) {
             automatic_payment_methods: {
                 enabled: true,
             },
+            // Use automatic confirmation method for better compatibility
+            confirmation_method: 'automatic',
         });
 
         console.log('[DEBUG] ✅ Stripe PaymentIntent created successfully:', paymentIntent.id);

@@ -1,10 +1,113 @@
 # 🛠️ Technical Context - LocalLoop V0.3
 
-**Updated:** 2025-01-03 21:45:00 UTC
+**Updated:** 2025-01-04 03:55:00 UTC
 
 ## 🏗️ **Current Architecture Status**
 
 ### **✅ VERIFIED WORKING CONFIGURATIONS**
+
+#### **🎫 Stripe Webhook Configuration (COMPLETE & WORKING)**
+*Email notification system for ticket confirmations*
+
+**STATUS**: ✅ **FULLY FUNCTIONAL** - Automatic ticket confirmation emails working
+
+**SETUP PROCESS** (for future sessions):
+```bash
+# 1. Start Stripe CLI webhook listener (REQUIRED for ticket confirmation emails)
+stripe listen --forward-to localhost:3000/api/webhooks/stripe
+
+# Expected output: webhook secret like: whsec_660afb7ae9af3f5c52cf81425e6439e5508487f4bafa83778ce8bff038d57810
+```
+
+**ENVIRONMENT CONFIGURATION**:
+```bash
+# .env.local (CONFIRMED WORKING)
+STRIPE_WEBHOOK_SECRET=whsec_660afb7ae9af3f5c52cf81425e6439e5508487f4bafa83778ce8bff038d57810
+STRIPE_SECRET_KEY=sk_test_51RVfDF04jm6... (existing)
+STRIPE_PUBLISHABLE_KEY=pk_test_51RVfDF04jm6... (existing)
+```
+
+**WHEN WEBHOOK LISTENER IS NEEDED**:
+- ✅ **Ticket confirmation emails** (automatic after purchase)
+- ✅ **End-to-end payment testing** (full flow validation)
+- ✅ **Webhook-triggered functionality** (refunds, payment updates)
+
+**WHEN WEBHOOK LISTENER IS NOT NEEDED**:
+- ❌ **RSVP emails** (work via direct API calls)
+- ❌ **Welcome emails** (work via direct API calls)
+- ❌ **Event reminder emails** (work via direct API calls)
+- ❌ **Frontend development** (UI changes, styling)
+- ❌ **Basic payment creation** (PaymentIntent creation only)
+
+**QUICK START COMMANDS** (for new sessions):
+```bash
+# Check if Stripe CLI is authenticated
+stripe login  # If needed, will give pairing code and URL
+
+# Start webhook listener (run in background or separate terminal)
+stripe listen --forward-to localhost:3000/api/webhooks/stripe
+
+# Copy the webhook secret (whsec_...) to .env.local as STRIPE_WEBHOOK_SECRET
+
+# Restart dev server to pick up new env variable (if needed)
+npm run dev
+```
+
+**VERIFIED WORKING FLOW**:
+1. User purchases tickets on frontend
+2. Stripe PaymentIntent created successfully
+3. Payment completed in Stripe
+4. Stripe sends webhook to CLI listener  
+5. CLI forwards to localhost:3000/api/webhooks/stripe
+6. Webhook endpoint processes payment_intent.succeeded
+7. Ticket confirmation email sent automatically to jackson_rhoden@outlook.com (dev override)
+
+#### **📧 Email Service Configuration (RESEND - WORKING)**
+*Complete email notification system*
+
+**STATUS**: ✅ **FULLY FUNCTIONAL** with development mode override
+
+**CONFIGURATION**:
+```bash
+# .env.local (CONFIRMED WORKING)
+RESEND_API_KEY=re_... (actual key configured)
+RESEND_FROM_EMAIL=onboarding@resend.dev
+```
+
+**DEVELOPMENT MODE OVERRIDE** (IN CODE):
+```typescript
+// Automatically redirects all emails to verified address in development
+const isDevelopment = process.env.NODE_ENV === 'development'
+const devOverrideEmail = 'jackson_rhoden@outlook.com' // Verified Resend address
+
+// All emails in dev automatically go to jackson_rhoden@outlook.com
+```
+
+**EMAIL TYPES WORKING**:
+- ✅ **Welcome emails** (sendWelcomeEmail)
+- ✅ **RSVP confirmation emails** (sendRSVPConfirmationEmail)  
+- ✅ **RSVP cancellation emails** (sendRSVPCancellationEmail)
+- ✅ **Event reminder emails** (sendEventReminderEmail)
+- ✅ **Event cancellation emails** (sendEventCancellationEmail)
+- ✅ **Ticket confirmation emails** (sendTicketConfirmationEmail)
+
+**MANUAL EMAIL TESTING COMMANDS**:
+```bash
+# Test welcome email
+curl -X POST http://localhost:3000/api/auth/welcome \
+  -H "Content-Type: application/json" \
+  -d '{"user_id": "4d705c67-97eb-4343-a700-fa4b1aea37ed", "user_email": "test@example.com", "user_name": "Test User"}'
+
+# Test RSVP email (as guest)
+curl -X POST http://localhost:3000/api/rsvps \
+  -H "Content-Type: application/json" \
+  -d '{"event_id": "00000000-0000-0000-0000-000000000010", "guest_email": "test@example.com", "guest_name": "Test User"}'
+
+# Test event reminder  
+curl -X POST http://localhost:3000/api/events/reminders \
+  -H "Content-Type: application/json" \
+  -d '{"event_id": "00000000-0000-0000-0000-000000000003", "reminder_type": "1h", "recipients": "all"}'
+```
 
 #### **RSVP API Architecture (FIXED)**
 ```typescript
@@ -487,3 +590,206 @@ try {
 5. **Performance**: Optimize remaining database queries and component rendering
 
 **Technical Status**: ✅ Core RSVP functionality restored and operational with proper patterns established
+
+## **✅ CONFIRMED WORKING CONFIGURATIONS**
+
+### **💳 Stripe Integration (VERIFIED WORKING)**
+- **Environment**: Stripe Test Mode with `sk_test_51RVfDF04jm6...` key
+- **PaymentIntent Creation**: Successfully creating intents with correct pricing and metadata
+- **Webhook Endpoint**: `/api/webhooks/stripe` configured for payment processing
+- **Customer Creation**: Automatic Stripe customer creation for checkout flow
+- **Fee Calculation**: Platform fees correctly calculated and applied
+
+### **🎫 Ticket System (FULLY FUNCTIONAL)**
+- **Database Storage**: Prices stored in cents (1200 = $12.00) for Stripe compatibility
+- **Frontend Display**: `formatPrice()` utility correctly converts cents to dollar display
+- **Validation Flow**: Database ticket type validation working with UUID-based IDs
+- **API Responses**: `/api/ticket-types` returning proper `sold_count` and `tickets_remaining` fields
+
+### **🔄 API Architecture (PROVEN PATTERNS)**
+- **Database vs Sample Data**: Checkout API properly handles both database and sample ticket types
+- **Event Validation**: Uses `published` and `cancelled` database fields (not `is_open_for_registration`)
+- **Ticket Type IDs**: Database UUIDs (e.g., `00000002-0001-0000-0000-000000000000`) properly validated
+- **Error Handling**: Comprehensive validation with helpful debug logging
+
+## Current Tech Stack Status: **✅ OPERATIONAL**
+
+### **Database System: Supabase PostgreSQL**
+- **Status**: ✅ HEALTHY
+- **Recent Updates**: Refund-aware inventory functions successfully deployed
+- **Key Features**:
+  - Row-Level Security (RLS) policies active
+  - Real-time subscriptions configured
+  - **NEW**: Helper functions for refund inventory calculations
+  - **NEW**: `get_tickets_sold()`, `get_tickets_refunded()`, `get_tickets_remaining()` functions
+  - Computed columns for order eligibility and status
+
+### **Payment Processing: Stripe Integration**
+- **Status**: ✅ FULLY OPERATIONAL
+- **Features Implemented**:
+  - **Checkout Flow**: Complete payment processing with validation
+  - **Refund System**: Full Stripe refunds API integration ✨ **NEW**
+  - **Error Handling**: Comprehensive Stripe error management
+  - **Fee Calculation**: Smart fee handling for different refund types
+  - **Webhook Handling**: Stripe event processing
+- **Recent Fixes**: 
+  - ✅ Missing return_url parameter resolved
+  - ✅ Refund processing with database synchronization
+
+### **Email System: Resend Integration**
+- **Status**: ✅ CONFIGURED AND TESTED
+- **Templates Available**:
+  - RSVP Confirmation/Cancellation
+  - Event Reminders/Cancellations
+  - Ticket Confirmations
+  - Welcome Emails
+  - **NEW**: Refund Confirmation Emails ✨
+- **Recent Additions**:
+  - Professional refund email template with responsive design
+  - Multi-scenario support (cancellations vs customer requests)
+  - Comprehensive plain-text fallbacks
+
+### **Authentication: Supabase Auth**
+- **Status**: ✅ OPERATIONAL
+- **Features**:
+  - Email/password authentication
+  - Google OAuth integration
+  - Password reset functionality
+  - Guest order support
+
+### **API Architecture: Next.js App Router**
+- **Status**: ✅ ROBUST
+- **Key Endpoints**:
+  - `/api/auth/*` - Authentication flows
+  - `/api/events/*` - Event management
+  - `/api/rsvps/*` - RSVP handling
+  - `/api/checkout` - Payment processing
+  - **NEW**: `/api/refunds` - Comprehensive refund processing ✨
+  - `/api/orders` - Order management and history
+  - `/api/calendar/*` - Google Calendar integration
+
+### **Frontend Framework: Next.js 15**
+- **Status**: ✅ OPTIMIZED
+- **Key Features**:
+  - App Router with server components
+  - TypeScript throughout
+  - Tailwind CSS for styling
+  - Shadcn/ui component library
+  - **NEW**: UserDashboard with refund management ✨
+  - **NEW**: RefundDialog with multi-step flow ✨
+
+---
+
+## **Recent Technical Implementations**
+
+### **🎉 Refund System (Task 14) - COMPLETED**
+
+#### **Database Layer**
+- **Helper Functions**: PostgreSQL functions for refund-aware calculations
+- **Inventory Logic**: Refunded tickets properly excluded from "sold" count
+- **Revenue Tracking**: Net revenue calculations after refunds
+- **Migration Applied**: Successfully deployed via Supabase MCP tools
+
+#### **API Layer** 
+- **Refunds Endpoint**: `/app/api/refunds/route.ts`
+  - Zod validation for request data
+  - Authentication and authorization checks
+  - Stripe refund processing
+  - Database synchronization
+  - Error handling for all Stripe scenarios
+  - Email notification integration
+
+#### **Frontend Components**
+- **UserDashboard**: Complete order history and refund management
+- **RefundDialog**: Multi-step refund process with policy explanations
+- **Order Management**: Real-time status updates and eligibility checks
+
+#### **Email Integration**
+- **RefundConfirmationEmail**: Professional template with responsive design
+- **Email Service**: `sendRefundConfirmationEmail()` function
+- **Multi-scenario Support**: Different messaging for different refund types
+
+---
+
+## **Database Schema Updates**
+
+### **Helper Functions Added**
+```sql
+-- Refund-aware inventory calculations
+get_tickets_sold(uuid) - excludes fully refunded tickets
+get_tickets_refunded(uuid) - tracks refunded ticket count  
+get_tickets_remaining(uuid) - available inventory
+get_is_available(uuid) - sales availability status
+get_total_revenue_after_refunds(uuid) - net revenue
+```
+
+### **Computed Columns Status**
+- `orders.is_refundable` - 24-hour refund eligibility
+- `orders.net_amount` - amount after refunds
+- `events.status` - dynamic event status
+- `users.has_valid_google_calendar` - OAuth status
+
+---
+
+## **Performance Optimizations Applied**
+
+### **Database Optimizations**
+- **Function-based Calculations**: Stable PostgreSQL functions instead of complex computed columns
+- **Atomic Operations**: Database-level consistency for refund operations
+- **Indexed Queries**: Optimized for frequent order/ticket lookups
+
+### **API Optimizations**
+- **Error Handling**: Comprehensive error boundaries
+- **Validation**: Zod schema validation for type safety
+- **Async Processing**: Non-blocking email sending
+
+---
+
+## **Working Configurations**
+
+### **Environment Variables (Confirmed Working)**
+```bash
+# Database
+NEXT_PUBLIC_SUPABASE_URL=✅ Configured
+SUPABASE_SERVICE_ROLE_KEY=✅ Configured
+
+# Payment Processing  
+STRIPE_SECRET_KEY=✅ Configured
+STRIPE_WEBHOOK_SECRET=✅ Configured
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=✅ Configured
+
+# Email Service
+RESEND_API_KEY=✅ Configured
+
+# Google Calendar Integration
+GOOGLE_CLIENT_ID=✅ Configured
+GOOGLE_CLIENT_SECRET=✅ Configured
+
+# Application
+NEXT_PUBLIC_SITE_URL=✅ Configured
+```
+
+### **Database Functions (Production Deployed)**
+- ✅ `get_tickets_sold()` - Working correctly
+- ✅ `get_tickets_refunded()` - Validated with test data
+- ✅ `get_tickets_remaining()` - Inventory calculations accurate
+- ✅ `get_is_available()` - Sales status logic confirmed
+- ✅ `get_total_revenue_after_refunds()` - Revenue tracking operational
+
+---
+
+## **Next Focus Area: Performance Optimization (Task 16)**
+
+### **Planned Implementations**
+1. **ISR Setup**: Next.js Incremental Static Regeneration
+2. **Image Optimization**: WebP/AVIF formats, lazy loading
+3. **Database Indexing**: Strategic indexes for frequent queries
+4. **Monitoring**: Core Web Vitals tracking
+5. **Load Testing**: Performance validation under load
+
+---
+
+**Last Updated: 2025-06-04T05:04:00.000Z**
+**Database Status**: ✅ Healthy (Refund functions deployed)
+**API Status**: ✅ Operational (Refunds endpoint validated)
+**Build Status**: ✅ Passing

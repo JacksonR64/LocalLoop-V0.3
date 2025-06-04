@@ -3,6 +3,19 @@ import { TicketConfirmationEmail } from './templates/TicketConfirmationEmail';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+// ✨ DEVELOPMENT MODE: Override email for testing with Resend free tier
+const isDevelopment = process.env.NODE_ENV === 'development';
+const devOverrideEmail = 'jackson_rhoden@outlook.com'; // Your verified email
+
+// Helper function to get the actual recipient email
+function getRecipientEmail(originalEmail: string): string {
+    if (isDevelopment && originalEmail !== devOverrideEmail) {
+        console.log(`🔧 DEV MODE: Redirecting email from ${originalEmail} to ${devOverrideEmail}`);
+        return devOverrideEmail;
+    }
+    return originalEmail;
+}
+
 interface TicketItem {
     ticketType: string;
     quantity: number;
@@ -37,7 +50,7 @@ export async function sendTicketConfirmationEmail({
     try {
         const { data, error } = await resend.emails.send({
             from: 'LocalLoop Events <tickets@localloop.com>',
-            to: [to],
+            to: [getRecipientEmail(to)],
             subject: `Ticket Confirmation - ${eventTitle}`,
             react: TicketConfirmationEmail({
                 customerName,

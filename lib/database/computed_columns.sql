@@ -37,14 +37,15 @@ ALTER TABLE events ADD COLUMN is_open_for_registration boolean GENERATED ALWAYS 
   AND (capacity IS NULL OR (SELECT COUNT(*) FROM rsvps WHERE event_id = events.id AND status = 'confirmed') < capacity)
 ) STORED;
 
--- Calculate total revenue for paid events
+-- Calculate net revenue for paid events (after refunds)
 ALTER TABLE events ADD COLUMN total_revenue integer GENERATED ALWAYS AS (
   CASE 
     WHEN is_paid = false THEN 0
     ELSE (
-      SELECT COALESCE(SUM(total_amount), 0) 
+      SELECT COALESCE(SUM(orders.total_amount - orders.refund_amount), 0)
       FROM orders 
-      WHERE event_id = events.id AND status = 'completed'
+      WHERE orders.event_id = events.id 
+      AND orders.status = 'completed'
     )
   END
 ) STORED;
@@ -69,7 +70,7 @@ ALTER TABLE users ADD COLUMN has_valid_google_calendar boolean GENERATED ALWAYS 
 -- TICKET_TYPES TABLE COMPUTED COLUMNS
 -- ================================
 
--- Calculate tickets sold for this ticket type
+-- Calculate tickets sold for this ticket type (excluding fully refunded tickets)
 ALTER TABLE ticket_types ADD COLUMN tickets_sold integer GENERATED ALWAYS AS (
   (
     SELECT COALESCE(SUM(tickets.quantity), 0)
@@ -77,10 +78,12 @@ ALTER TABLE ticket_types ADD COLUMN tickets_sold integer GENERATED ALWAYS AS (
     INNER JOIN orders ON tickets.order_id = orders.id
     WHERE tickets.ticket_type_id = ticket_types.id 
     AND orders.status = 'completed'
+    -- Exclude fully refunded orders from inventory count
+    AND (orders.refund_amount = 0 OR orders.refund_amount < orders.total_amount)
   )
 ) STORED;
 
--- Calculate tickets remaining (NULL if no capacity limit)
+-- Calculate tickets remaining (NULL if no capacity limit, accounting for refunds)
 ALTER TABLE ticket_types ADD COLUMN tickets_remaining integer GENERATED ALWAYS AS (
   CASE 
     WHEN capacity IS NULL THEN NULL
@@ -90,11 +93,13 @@ ALTER TABLE ticket_types ADD COLUMN tickets_remaining integer GENERATED ALWAYS A
       INNER JOIN orders ON tickets.order_id = orders.id
       WHERE tickets.ticket_type_id = ticket_types.id 
       AND orders.status = 'completed'
+      -- Exclude fully refunded orders from inventory count
+      AND (orders.refund_amount = 0 OR orders.refund_amount < orders.total_amount)
     )
   END
 ) STORED;
 
--- Boolean flag for if ticket type is available for purchase
+-- Boolean flag for if ticket type is available for purchase (accounting for refunds)
 ALTER TABLE ticket_types ADD COLUMN is_available boolean GENERATED ALWAYS AS (
   (sale_start IS NULL OR sale_start <= now())
   AND (sale_end IS NULL OR sale_end >= now())
@@ -104,17 +109,47 @@ ALTER TABLE ticket_types ADD COLUMN is_available boolean GENERATED ALWAYS AS (
     INNER JOIN orders ON tickets.order_id = orders.id
     WHERE tickets.ticket_type_id = ticket_types.id 
     AND orders.status = 'completed'
+    -- Exclude fully refunded orders from inventory count
+    AND (orders.refund_amount = 0 OR orders.refund_amount < orders.total_amount)
   ) < capacity)
 ) STORED;
 
--- Calculate total revenue for this ticket type
+-- Calculate net revenue for this ticket type (after refunds)
 ALTER TABLE ticket_types ADD COLUMN total_revenue integer GENERATED ALWAYS AS (
   (
-    SELECT COALESCE(SUM(tickets.quantity * tickets.unit_price), 0)
+    SELECT COALESCE(SUM(
+      tickets.quantity * tickets.unit_price * 
+      -- Calculate the non-refunded portion of each order
+      CASE 
+        WHEN orders.refund_amount = 0 THEN 1
+        WHEN orders.refund_amount >= orders.total_amount THEN 0
+        ELSE (orders.total_amount - orders.refund_amount)::decimal / orders.total_amount
+      END
+    ), 0)::integer
     FROM tickets 
     INNER JOIN orders ON tickets.order_id = orders.id
     WHERE tickets.ticket_type_id = ticket_types.id 
     AND orders.status = 'completed'
+  )
+) STORED;
+
+-- Track refunded tickets for this ticket type (new column)
+ALTER TABLE ticket_types ADD COLUMN tickets_refunded integer GENERATED ALWAYS AS (
+  (
+    SELECT COALESCE(SUM(
+      tickets.quantity * 
+      -- Calculate refunded portion
+      CASE 
+        WHEN orders.refund_amount = 0 THEN 0
+        WHEN orders.refund_amount >= orders.total_amount THEN 1
+        ELSE (orders.refund_amount::decimal / orders.total_amount)
+      END
+    ), 0)::integer
+    FROM tickets 
+    INNER JOIN orders ON tickets.order_id = orders.id
+    WHERE tickets.ticket_type_id = ticket_types.id 
+    AND orders.status = 'completed'
+    AND orders.refund_amount > 0
   )
 ) STORED;
 
@@ -219,17 +254,18 @@ COMMENT ON COLUMN events.rsvp_count IS 'Real-time count of confirmed RSVPs for d
 COMMENT ON COLUMN events.spots_remaining IS 'Remaining capacity for event registration, NULL if unlimited';
 COMMENT ON COLUMN events.is_full IS 'Boolean flag indicating if event has reached capacity';
 COMMENT ON COLUMN events.is_open_for_registration IS 'Boolean flag for if event accepts new registrations';
-COMMENT ON COLUMN events.total_revenue IS 'Total revenue from completed orders for this event';
+COMMENT ON COLUMN events.total_revenue IS 'Net revenue after refunds for this event';
 
 -- Users computed columns  
 COMMENT ON COLUMN users.display_name_or_email IS 'Display name with email fallback for consistent UI display';
 COMMENT ON COLUMN users.has_valid_google_calendar IS 'Boolean flag for valid Google Calendar API access';
 
 -- Ticket types computed columns
-COMMENT ON COLUMN ticket_types.tickets_sold IS 'Count of tickets sold from completed orders';
-COMMENT ON COLUMN ticket_types.tickets_remaining IS 'Remaining ticket capacity, NULL if unlimited';
-COMMENT ON COLUMN ticket_types.is_available IS 'Boolean flag for if tickets can be purchased now';
-COMMENT ON COLUMN ticket_types.total_revenue IS 'Total revenue generated by this ticket type';
+COMMENT ON COLUMN ticket_types.tickets_sold IS 'Count of tickets sold from completed orders, excluding fully refunded tickets';
+COMMENT ON COLUMN ticket_types.tickets_remaining IS 'Remaining ticket capacity accounting for refunds, NULL if unlimited';
+COMMENT ON COLUMN ticket_types.is_available IS 'Boolean flag for if tickets can be purchased now, accounting for refunds';
+COMMENT ON COLUMN ticket_types.total_revenue IS 'Net revenue after refunds for this ticket type';
+COMMENT ON COLUMN ticket_types.tickets_refunded IS 'Count of tickets that have been refunded (full or partial)';
 
 -- Orders computed columns
 COMMENT ON COLUMN orders.tickets_count IS 'Total number of tickets in this order';

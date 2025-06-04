@@ -93,6 +93,12 @@ function PaymentForm({
     const [processing, setProcessing] = useState(false)
     const [paymentError, setPaymentError] = useState<string | null>(null)
 
+    // Customer information state - start with provided info but allow editing
+    const [customerDetails, setCustomerDetails] = useState({
+        email: customerInfo.email,
+        name: customerInfo.name
+    })
+
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault()
 
@@ -104,18 +110,49 @@ function PaymentForm({
         setPaymentError(null)
 
         try {
+            // Ensure we have a valid return URL with proper fallback for production
+            const baseUrl = typeof window !== 'undefined'
+                ? window.location.origin
+                : process.env.NEXT_PUBLIC_SITE_URL || 'https://localloop.app';
+            const returnUrl = `${baseUrl}/events/${orderDetails.event.id}?payment=success`;
+
+            console.log('Confirming payment with return URL:', returnUrl);
+
             const { error, paymentIntent } = await stripe.confirmPayment({
                 elements,
                 confirmParams: {
-                    return_url: `${window.location.origin}/events/${orderDetails.event.id}?payment=success`,
-                    receipt_email: customerInfo.email,
+                    return_url: returnUrl,
+                    receipt_email: customerDetails.email,
                 },
                 redirect: 'if_required'
             })
 
             if (error) {
+                console.error('Stripe payment error:', error);
+                console.error('Error type:', error.type);
+                console.error('Error code:', error.code);
                 setPaymentError(error.message || 'An error occurred during payment processing')
             } else if (paymentIntent) {
+                // Update customer information in our system if it changed
+                if (customerDetails.email !== customerInfo.email || customerDetails.name !== customerInfo.name) {
+                    try {
+                        await fetch('/api/update-customer-info', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                payment_intent_id: paymentIntent.id,
+                                customer_email: customerDetails.email,
+                                customer_name: customerDetails.name
+                            })
+                        })
+                    } catch (updateError) {
+                        console.warn('Failed to update customer information:', updateError)
+                        // Don't fail the payment for this
+                    }
+                }
+
                 // Payment succeeded
                 onSuccess(paymentIntent.id)
             }
@@ -179,22 +216,44 @@ function PaymentForm({
                 <CardContent className="space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label className="block text-sm font-medium mb-1">
-                                Email Address
+                            <label className="block text-sm font-medium mb-1" htmlFor="customer-email">
+                                Email Address *
                             </label>
-                            <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-md">
-                                <Mail className="h-4 w-4 text-gray-500" />
-                                <span className="text-sm">{customerInfo.email}</span>
+                            <div className="relative">
+                                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                                <input
+                                    id="customer-email"
+                                    type="email"
+                                    value={customerDetails.email}
+                                    onChange={(e) => setCustomerDetails(prev => ({ ...prev, email: e.target.value }))}
+                                    className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                    placeholder="your@email.com"
+                                    required
+                                />
                             </div>
+                            <p className="text-xs text-gray-500 mt-1">
+                                Your ticket confirmation will be sent to this email
+                            </p>
                         </div>
                         <div>
-                            <label className="block text-sm font-medium mb-1">
-                                Full Name
+                            <label className="block text-sm font-medium mb-1" htmlFor="customer-name">
+                                Full Name *
                             </label>
-                            <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-md">
-                                <User className="h-4 w-4 text-gray-500" />
-                                <span className="text-sm">{customerInfo.name}</span>
+                            <div className="relative">
+                                <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                                <input
+                                    id="customer-name"
+                                    type="text"
+                                    value={customerDetails.name}
+                                    onChange={(e) => setCustomerDetails(prev => ({ ...prev, name: e.target.value }))}
+                                    className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                    placeholder="Your full name"
+                                    required
+                                />
                             </div>
+                            <p className="text-xs text-gray-500 mt-1">
+                                Name as it should appear on your ticket
+                            </p>
                         </div>
                     </div>
                 </CardContent>
@@ -214,8 +273,8 @@ function PaymentForm({
                             layout: 'tabs',
                             defaultValues: {
                                 billingDetails: {
-                                    email: customerInfo.email,
-                                    name: customerInfo.name,
+                                    email: customerDetails.email,
+                                    name: customerDetails.name,
                                 }
                             }
                         }}
@@ -242,7 +301,7 @@ function PaymentForm({
 
                         <Button
                             type="submit"
-                            disabled={!stripe || processing}
+                            disabled={!stripe || processing || !customerDetails.email || !customerDetails.name}
                             className="flex-1"
                         >
                             {processing ? (
