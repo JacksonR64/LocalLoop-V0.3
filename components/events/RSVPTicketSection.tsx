@@ -105,11 +105,6 @@ const RSVPTicketSection: React.FC<RSVPTicketSectionProps> = ({
             try {
                 const { data: { user: currentUser } } = await supabase.auth.getUser();
                 setUser(currentUser);
-
-                // If user is logged in, check for existing RSVP
-                if (currentUser) {
-                    await checkExistingRSVP();
-                }
             } catch (error) {
                 console.error('Error checking authentication:', error);
             } finally {
@@ -118,7 +113,7 @@ const RSVPTicketSection: React.FC<RSVPTicketSectionProps> = ({
         };
 
         initializeAuth();
-    }, [eventId, checkExistingRSVP]);
+    }, [eventId]);
 
     // Separate effect to check RSVP when user changes
     useEffect(() => {
@@ -127,7 +122,7 @@ const RSVPTicketSection: React.FC<RSVPTicketSectionProps> = ({
         } else {
             setExistingRSVP(null);
         }
-    }, [user, eventId, checkExistingRSVP]);
+    }, [user, eventId]);
 
     // Handle RSVP submission
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {

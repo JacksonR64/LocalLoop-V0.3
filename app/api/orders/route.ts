@@ -78,10 +78,6 @@ export async function GET() {
                 currency,
                 refunded_at,
                 refund_amount,
-                is_refundable,
-                net_amount,
-                tickets_count,
-                calendar_integration_status,
                 stripe_payment_intent_id,
                 events (
                     id,
@@ -97,12 +93,10 @@ export async function GET() {
                     id,
                     quantity,
                     unit_price,
-                    total_price,
                     attendee_name,
                     attendee_email,
                     confirmation_code,
                     check_in_time,
-                    is_valid,
                     ticket_types (
                         id,
                         name,
@@ -122,7 +116,7 @@ export async function GET() {
         }
 
         // Also get guest orders by email if user has email
-        let guestOrders: OrderWithRelations[] = []
+        let guestOrders: any[] = []
         if (user.email) {
             const { data: guestOrdersData, error: guestOrdersError } = await supabase
                 .from('orders')
@@ -136,10 +130,6 @@ export async function GET() {
                     currency,
                     refunded_at,
                     refund_amount,
-                    is_refundable,
-                    net_amount,
-                    tickets_count,
-                    calendar_integration_status,
                     stripe_payment_intent_id,
                     guest_email,
                     guest_name,
@@ -157,12 +147,10 @@ export async function GET() {
                         id,
                         quantity,
                         unit_price,
-                        total_price,
                         attendee_name,
                         attendee_email,
                         confirmation_code,
                         check_in_time,
-                        is_valid,
                         ticket_types (
                             id,
                             name,
@@ -175,29 +163,44 @@ export async function GET() {
                 .order('created_at', { ascending: false })
 
             if (!guestOrdersError && guestOrdersData) {
-                // Transform the data to match OrderWithRelations interface
-                guestOrders = guestOrdersData.map(order => ({
-                    ...order,
-                    events: Array.isArray(order.events) ? order.events[0] : order.events,
-                    tickets: order.tickets.map(ticket => ({
-                        ...ticket,
-                        ticket_types: Array.isArray(ticket.ticket_types) ? ticket.ticket_types[0] : ticket.ticket_types
-                    }))
-                })) as OrderWithRelations[]
+                guestOrders = guestOrdersData
             }
         }
 
-        // Combine and deduplicate orders
-        const transformedOrders = (orders || []).map(order => ({
-            ...order,
-            events: Array.isArray(order.events) ? order.events[0] : order.events,
-            tickets: order.tickets.map(ticket => ({
+        // Helper function to calculate computed values for orders
+        const enrichOrderData = (order: any): OrderWithRelations => {
+            const tickets = order.tickets || []
+            
+            // Calculate computed values
+            const tickets_count = tickets.reduce((sum: number, ticket: any) => sum + (ticket.quantity || 0), 0)
+            const is_refundable = order.status === 'completed' && !order.refunded_at && order.refund_amount === 0
+            const net_amount = order.total_amount - (order.refund_amount || 0)
+            const calendar_integration_status = order.added_to_google_calendar ? 'added' : 'pending'
+            
+            // Enrich tickets with computed values
+            const enrichedTickets = tickets.map((ticket: any) => ({
                 ...ticket,
+                total_price: (ticket.unit_price || 0) * (ticket.quantity || 0),
+                is_valid: !ticket.check_in_time && order.status === 'completed',
                 ticket_types: Array.isArray(ticket.ticket_types) ? ticket.ticket_types[0] : ticket.ticket_types
             }))
-        })) as OrderWithRelations[]
 
-        const allOrders = [...transformedOrders, ...guestOrders]
+            return {
+                ...order,
+                is_refundable,
+                net_amount,
+                tickets_count,
+                calendar_integration_status,
+                events: Array.isArray(order.events) ? order.events[0] : order.events,
+                tickets: enrichedTickets
+            }
+        }
+
+        // Transform and enrich both user orders and guest orders
+        const transformedOrders = (orders || []).map(enrichOrderData)
+        const transformedGuestOrders = guestOrders.map(enrichOrderData)
+
+        const allOrders = [...transformedOrders, ...transformedGuestOrders]
         const uniqueOrders = allOrders.reduce((unique, order) => {
             const exists = unique.find((o: OrderWithRelations) => o.id === order.id)
             if (!exists) {

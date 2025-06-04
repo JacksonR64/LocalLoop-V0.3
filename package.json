@@ -15,6 +15,7 @@
     "secrets:push": "scripts/push-secrets.sh"
   },
   "dependencies": {
+    "@radix-ui/react-tabs": "^1.1.12",
     "@react-email/components": "^0.0.41",
     "@react-email/render": "^1.1.2",
     "@stripe/react-stripe-js": "^3.7.0",

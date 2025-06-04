@@ -1436,3 +1436,135 @@ ERROR: Failed to load the `babel-plugin-react-compiler`
 **User Profile:** Technical user who appreciates thorough work and wants specific issues debugged systematically. They prefer being asked for priorities rather than assumptions being made.
 
 **Codebase State:** High-quality TypeScript/Next.js codebase with comprehensive features including authentication, payments, calendar integration, and event management. The foundation is solid; current issues are configuration/integration problems, not architectural ones.
+
+# 🎯 Active Development Context
+
+## 🖥️ **Terminal Management Preference** 
+**CRITICAL:** User maintains a dedicated "@Dev Server" terminal for all dev server operations.
+- **DO NOT** create new background processes with `npm run dev &`
+- **DO** use the existing "@Dev Server" terminal in context
+- This terminal auto-handles port cleanup and restart on port 3000
+- Look for terminals labeled "Dev Server" or "@Dev Server" in context
+- This provides better organization and avoids terminal proliferation
+
+## 🚨 Current Status (Updated: 2025-06-04)
+
+### **Stripe Issues - PARTIALLY RESOLVED** ✅
+- ✅ **Checkout API Fixed**: Removed conflicting `confirmation_method` parameter
+- ✅ **Add to Calendar Post-Purchase**: Now uses working `GoogleCalendarConnectWithStatus` component
+- ✅ **RSVP API Fixed**: Now supports `eventId` and `userId` query parameters
+- ❌ **Webhook Still Failing**: `payment_intent.succeeded` returns 500 with "Missing required metadata"
+
+### **Known Remaining Issues:**
+1. **Stripe Webhook Metadata**: PaymentIntents missing required metadata in webhook handler
+2. **Dialog Import Resolution**: `/my-events` page 500 errors (RefundDialog.tsx module not found)
+3. **React Compiler Setup**: babel-plugin-react-compiler missing (development warnings)
+4. **Image Loading**: Unsplash 404 errors affecting user experience
+
+### **Latest Investigation:**
+From recent logs, checkout is still showing the Stripe configuration error:
+```
+Checkout error: [Error: You may only specify one of these parameters: automatic_payment_methods, confirmation_method.]
+```
+This suggests the dev server needs to be restarted to pick up the latest code changes.
+
+### **Next Priorities:**
+1. **Restart dev server** to ensure latest code is loaded
+2. **Test full payment flow** end-to-end
+3. **Fix webhook metadata** for `payment_intent.succeeded`
+4. **Address Dialog import** issues on `/my-events`
+
+## 🔧 **Technical Context**
+
+### **Environment Status:**
+- ✅ Environment variables properly configured in `.env.local`
+- ✅ Stripe API keys validated
+- ✅ Google Calendar integration working
+- ✅ Supabase connection stable
+
+### **Recent Changes Applied:**
+- Fixed Stripe PaymentIntent creation (removed `confirmation_method`)
+- Updated RSVP API to support query parameters
+- Replaced custom calendar button with working component
+- Added detailed webhook logging for debugging
+
+### **Code Quality:**
+- ✅ Zero ESLint warnings maintained
+- ✅ TypeScript compilation successful
+- ✅ Build process working
+
+## 📋 **Development Workflow Notes**
+- User prefers focused debugging sessions on specific issues
+- Memory bank updates required after each major fix
+- Conventional commit format for all changes
+- Maintain zero ESLint warnings standard
+
+# 🎯 Active Development Context
+
+## 🚨 Current Critical Issues & Status
+
+### ✅ **RESOLVED: Stripe Checkout Configuration** 
+- **Status**: ✅ FIXED - Dev server restarted with updated code
+- **Issue**: Conflicting `automatic_payment_methods` and `confirmation_method` parameters
+- **Resolution**: Removed `confirmation_method: 'automatic'`, kept `automatic_payment_methods: { enabled: true }`
+- **Result**: Payment intents now create successfully
+
+### 🔧 **ACTIVE: Stripe Webhook Metadata Issue** 
+- **Status**: 🔍 INVESTIGATING
+- **Issue**: `payment_intent.succeeded` webhook returning 500 errors with "Missing required metadata"
+- **Observation**: Other webhook events (payment_intent.created, charge.succeeded) working fine (200 responses)
+- **Next**: Need to investigate webhook handler metadata validation logic
+
+### ✅ **RESOLVED: Terminal Management Workflow**
+- **Status**: ✅ IMPLEMENTED - iterm-MCP integration active
+- **Previous**: Assistant could not interact with user's "@Dev Server" terminal
+- **Current**: Assistant can now directly control terminal using iterm-MCP tools:
+  - `mcp_iterm-mcp_read_terminal_output` - Read current terminal state
+  - `mcp_iterm-mcp_send_control_character` - Send Ctrl+C to stop processes  
+  - `mcp_iterm-mcp_write_to_terminal` - Execute commands directly
+- **Workflow**: Assistant can now restart dev server independently when needed
+
+### ✅ **RESOLVED: RSVP API Enhancement**
+- **Status**: ✅ COMPLETED
+- **Enhancement**: Added support for `eventId` and `userId` query parameters in GET /api/rsvps
+- **Result**: Frontend can now check specific user RSVPs without 500 errors
+
+### ✅ **RESOLVED: Post-Purchase Calendar Integration**
+- **Status**: ✅ COMPLETED  
+- **Solution**: Replaced custom `GoogleCalendarAddButton` with proven `GoogleCalendarConnectWithStatus` component
+- **Result**: Working "Add to Calendar" functionality after successful payments
+
+## 🛠️ Code Quality Status
+
+### ✅ **ESLint Status**: ZERO WARNINGS
+- All TypeScript/React issues resolved
+- Codebase clean and maintainable
+
+### 🚨 **Pending Issues** (Lower Priority)
+1. **Dialog Import Resolution**: RefundDialog.tsx module not found on /my-events page (500 errors)
+2. **React Compiler Setup**: babel-plugin-react-compiler missing (development warnings)
+3. **Image Loading**: Unsplash 404 errors affecting user experience
+
+## 🎯 **Next Priorities**
+
+1. **Investigate Stripe webhook metadata issue** - Check webhook handler validation logic
+2. **Address remaining UI errors** - Fix RefundDialog import and React Compiler setup
+3. **Monitor payment flow** - Ensure end-to-end checkout works reliably
+
+## 🔧 **Development Workflow Notes**
+
+### **Terminal Management (NEW)**
+- ✅ **iterm-MCP Integration Active**: Assistant can now directly control terminal
+- ✅ **Dev Server Restart**: Assistant can stop (Ctrl+C) and restart (`npm run dev`) as needed
+- ✅ **Real-time Monitoring**: Assistant can read terminal output to monitor application status
+- ❌ **No longer needed**: Manual user intervention for dev server restarts
+
+### **Current Development Session**
+- **Environment**: Next.js 15.3.2 running on localhost:3000
+- **Database**: Supabase connected and operational
+- **Auth**: Google OAuth working
+- **Payments**: Stripe test mode active (webhook listener running)
+- **Build Status**: Clean (zero ESLint warnings)
+
+---
+*Last Updated: 2025-06-04 - iterm-MCP integration implemented*

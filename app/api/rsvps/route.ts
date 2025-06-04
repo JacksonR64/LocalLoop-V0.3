@@ -21,8 +21,8 @@ const rsvpSchema = z.object({
     }
 )
 
-// GET /api/rsvps - Get RSVPs for current user
-export async function GET() {
+// GET /api/rsvps - Get RSVPs for current user or check specific RSVP
+export async function GET(request: NextRequest) {
     try {
         const supabase = await createServerSupabaseClient()
         const { data: { user } } = await supabase.auth.getUser()
@@ -34,6 +34,53 @@ export async function GET() {
             )
         }
 
+        const { searchParams } = new URL(request.url)
+        const eventId = searchParams.get('eventId')
+        const userId = searchParams.get('userId')
+
+        // If specific eventId and userId are provided, check for specific RSVP
+        if (eventId && userId) {
+            // Ensure the requesting user can only check their own RSVPs
+            if (userId !== user.id) {
+                return NextResponse.json(
+                    { error: 'Unauthorized to check other users\' RSVPs' },
+                    { status: 403 }
+                )
+            }
+
+            const { data: rsvp, error } = await supabase
+                .from('rsvps')
+                .select(`
+                    *,
+                    events:event_id (
+                        id,
+                        title,
+                        start_time,
+                        end_time,
+                        location,
+                        image_url
+                    )
+                `)
+                .eq('event_id', eventId)
+                .eq('user_id', userId)
+                .eq('status', 'confirmed')
+                .maybeSingle()
+
+            if (error) {
+                console.error('Error checking specific RSVP:', error)
+                return NextResponse.json(
+                    { error: 'Failed to check RSVP' },
+                    { status: 500 }
+                )
+            }
+
+            return NextResponse.json({
+                hasRSVP: !!rsvp,
+                rsvp: rsvp || null
+            })
+        }
+
+        // Default behavior: get all RSVPs for current user
         const { data: rsvps, error } = await supabase
             .from('rsvps')
             .select(`

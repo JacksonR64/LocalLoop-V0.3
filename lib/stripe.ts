@@ -34,13 +34,36 @@ export function getStripePublishableKey(): string {
 
 // Stripe webhook signature verification
 export function verifyWebhookSignature(
-    payload: string | Buffer,
+    payload: string,
     signature: string,
     secret: string
 ): Stripe.Event {
     try {
+        console.log('[DEBUG] Webhook signature verification:', {
+            payload_length: payload.length,
+            signature_present: !!signature,
+            signature_prefix: signature?.substring(0, 20) + '...',
+            secret_present: !!secret
+        });
+
+        // Check if signature header is present and properly formatted
+        if (!signature) {
+            throw new Error('No signature header provided');
+        }
+
+        // Check if signature contains the expected format (t=timestamp,v1=hash)
+        if (!signature.includes('t=') || !signature.includes('v1=')) {
+            console.log('[DEBUG] Malformed signature header:', signature);
+            throw new Error(`Malformed signature header: ${signature.substring(0, 50)}...`);
+        }
+
         return stripe.webhooks.constructEvent(payload, signature, secret);
     } catch (error) {
+        console.error('[ERROR] Webhook signature verification failed:', {
+            error: error instanceof Error ? error.message : 'Unknown error',
+            signature_header: signature?.substring(0, 100) + '...',
+            payload_length: payload.length
+        });
         throw new Error(`Webhook signature verification failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
 }

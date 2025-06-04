@@ -49,7 +49,7 @@ export async function sendTicketConfirmationEmail({
 }: SendTicketConfirmationEmailProps) {
     try {
         const { data, error } = await resend.emails.send({
-            from: 'LocalLoop Events <tickets@localloop.com>',
+            from: 'LocalLoop Events <onboarding@resend.dev>',
             to: [getRecipientEmail(to)],
             subject: `Ticket Confirmation - ${eventTitle}`,
             react: TicketConfirmationEmail({

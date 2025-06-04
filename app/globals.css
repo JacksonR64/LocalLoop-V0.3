@@ -4,7 +4,10 @@
   --background: #ffffff;
   --foreground: #171717;
   --border: #e5e7eb;
+  --muted: #f9fafb;
   --muted-foreground: #6b7280;
+  --ring: #3b82f6;
+  --ring-offset-background: #ffffff;
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
@@ -14,7 +17,10 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-border: var(--border);
+  --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--ring-offset-background);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -24,7 +30,10 @@
     --background: #0a0a0a;
     --foreground: #ededed;
     --border: #374151;
+    --muted: #1f2937;
     --muted-foreground: #9ca3af;
+    --ring: #3b82f6;
+    --ring-offset-background: #0a0a0a;
     --foreground-rgb: 255, 255, 255;
     --background-start-rgb: 0, 0, 0;
     --background-end-rgb: 0, 0, 0;
