@@ -32,7 +32,7 @@ function getEventPrice(event: EventData): number {
  */
 function filterByCategories(events: EventData[], categories: string[]): EventData[] {
     if (categories.length === 0) return events;
-    return events.filter(event => categories.includes(event.category));
+    return events.filter(event => event.category && categories.includes(event.category));
 }
 
 /**
@@ -145,7 +145,9 @@ export function getEventCategories(events: EventData[]): FilterOption[] {
 
     events.forEach(event => {
         const category = event.category;
-        categoryMap.set(category, (categoryMap.get(category) || 0) + 1);
+        if (category) {
+            categoryMap.set(category, (categoryMap.get(category) || 0) + 1);
+        }
     });
 
     return Array.from(categoryMap.entries())

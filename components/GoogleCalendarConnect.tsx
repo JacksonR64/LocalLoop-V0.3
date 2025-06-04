@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Calendar, CheckCircle, AlertCircle, Loader2 } from 'lucide-react'
 import { useSearchParams } from 'next/navigation'
-import type { EventData } from '@/lib/types'
+import type { EventData } from '@/components/events/EventCard'
 // import { useRouter } from 'next/navigation' // Will be used when disconnect functionality is implemented
 
 /**
@@ -304,8 +304,7 @@ export default function GoogleCalendarConnect({
                                                         description: eventData.description,
                                                         start_time: eventData.start_time,
                                                         end_time: eventData.end_time,
-                                                        location: eventData.location,
-                                                        timezone: eventData.timezone || 'UTC'
+                                                        location: eventData.location
                                                     }
                                                 }),
                                             })

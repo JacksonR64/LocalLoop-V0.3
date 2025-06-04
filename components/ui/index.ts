@@ -16,4 +16,14 @@ export { Button, type ButtonProps } from './button';
 export { Input, type InputProps } from './input';
 export { Textarea, type TextareaProps } from './textarea';
 export { Badge, type BadgeProps } from './badge';
-export { Alert, AlertDescription, type AlertProps } from './alert'; 
+export { Alert, AlertDescription, type AlertProps } from './alert';
+
+// Dialog components
+export {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogDescription,
+    DialogFooter
+} from './dialog'; 

@@ -1,12 +1,58 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
+
+// Define proper types for the orders response
+interface OrderWithRelations {
+    id: string
+    created_at: string
+    updated_at: string
+    event_id: string
+    status: string
+    total_amount: number
+    currency: string
+    refunded_at: string | null
+    refund_amount: number | null
+    is_refundable: boolean
+    net_amount: number
+    tickets_count: number
+    calendar_integration_status: string | null
+    stripe_payment_intent_id: string | null
+    guest_email?: string
+    guest_name?: string
+    events: {
+        id: string
+        title: string
+        description: string | null
+        start_time: string
+        end_time: string
+        location: string
+        slug: string
+        cancelled: boolean
+    } | null
+    tickets: Array<{
+        id: string
+        quantity: number
+        unit_price: number
+        total_price: number
+        attendee_name: string
+        attendee_email: string
+        confirmation_code: string
+        check_in_time: string | null
+        is_valid: boolean
+        ticket_types: {
+            id: string
+            name: string
+            description: string | null
+        } | null
+    }>
+}
 
 /**
  * GET /api/orders
  * Fetch orders for the authenticated user
  * Returns orders with tickets, event details, and refund eligibility
  */
-export async function GET(request: NextRequest) {
+export async function GET() {
     try {
         const supabase = await createServerSupabaseClient()
 
@@ -76,7 +122,7 @@ export async function GET(request: NextRequest) {
         }
 
         // Also get guest orders by email if user has email
-        let guestOrders: any[] = []
+        let guestOrders: OrderWithRelations[] = []
         if (user.email) {
             const { data: guestOrdersData, error: guestOrdersError } = await supabase
                 .from('orders')
@@ -129,22 +175,39 @@ export async function GET(request: NextRequest) {
                 .order('created_at', { ascending: false })
 
             if (!guestOrdersError && guestOrdersData) {
-                guestOrders = guestOrdersData
+                // Transform the data to match OrderWithRelations interface
+                guestOrders = guestOrdersData.map(order => ({
+                    ...order,
+                    events: Array.isArray(order.events) ? order.events[0] : order.events,
+                    tickets: order.tickets.map(ticket => ({
+                        ...ticket,
+                        ticket_types: Array.isArray(ticket.ticket_types) ? ticket.ticket_types[0] : ticket.ticket_types
+                    }))
+                })) as OrderWithRelations[]
             }
         }
 
         // Combine and deduplicate orders
-        const allOrders = [...(orders || []), ...guestOrders]
+        const transformedOrders = (orders || []).map(order => ({
+            ...order,
+            events: Array.isArray(order.events) ? order.events[0] : order.events,
+            tickets: order.tickets.map(ticket => ({
+                ...ticket,
+                ticket_types: Array.isArray(ticket.ticket_types) ? ticket.ticket_types[0] : ticket.ticket_types
+            }))
+        })) as OrderWithRelations[]
+
+        const allOrders = [...transformedOrders, ...guestOrders]
         const uniqueOrders = allOrders.reduce((unique, order) => {
-            const exists = unique.find(o => o.id === order.id)
+            const exists = unique.find((o: OrderWithRelations) => o.id === order.id)
             if (!exists) {
                 unique.push(order)
             }
             return unique
-        }, [] as any[])
+        }, [] as OrderWithRelations[])
 
         // Sort by creation date (newest first)
-        uniqueOrders.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+        uniqueOrders.sort((a: OrderWithRelations, b: OrderWithRelations) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
 
         return NextResponse.json({
             orders: uniqueOrders,

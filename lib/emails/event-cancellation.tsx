@@ -30,7 +30,6 @@ interface EventCancellationEmailProps {
     isTicketHolder?: boolean;
     refundAmount?: number;
     refundTimeframe?: string;
-    eventSlug?: string;
 }
 
 export const EventCancellationEmail = ({
@@ -49,10 +48,8 @@ export const EventCancellationEmail = ({
     isTicketHolder = false,
     refundAmount,
     refundTimeframe,
-    eventSlug,
 }: EventCancellationEmailProps) => {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
-    const eventUrl = `${baseUrl}/events/${eventSlug}`;
 
     return (
         <Html>
@@ -144,13 +141,13 @@ export const EventCancellationEmail = ({
                                             <strong>Processing Time:</strong> {refundTimeframe || '5-10 business days'}
                                         </Text>
                                         <Text style={refundText}>
-                                            Your refund will be processed automatically to your original payment method. 
+                                            Your refund will be processed automatically to your original payment method.
                                             You should see the refund in your account within the specified timeframe.
                                         </Text>
                                     </>
                                 ) : (
                                     <Text style={refundText}>
-                                        Since you purchased tickets for this event, a full refund will be processed automatically. 
+                                        Since you purchased tickets for this event, a full refund will be processed automatically.
                                         Please allow {refundTimeframe || '5-10 business days'} for the refund to appear in your account.
                                     </Text>
                                 )}
@@ -198,7 +195,7 @@ export const EventCancellationEmail = ({
                             <Text style={suggestionText}>
                                 We understand this cancellation is disappointing. Browse our events page to discover similar events in your area that might interest you.
                             </Text>
-                            
+
                             <Button style={exploreButton} href={`${baseUrl}/events`}>
                                 🎉 Explore Other Events
                             </Button>
@@ -212,7 +209,7 @@ export const EventCancellationEmail = ({
                         <Text style={footerText}>
                             <strong>Questions about this cancellation?</strong>
                         </Text>
-                        
+
                         <Text style={footerText}>
                             Contact the event organizer: <Link href={`mailto:${organizerEmail}`} style={link}>{organizerName}</Link>
                         </Text>

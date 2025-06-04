@@ -176,12 +176,32 @@ export const validateTicketPrice = (price: number): { isValid: boolean; error?: 
 /**
  * Calculate refund amount after Stripe fees
  * @param originalAmount - Original charge amount in cents
- * @returns Net refund amount in cents
+ * @param refundType - Type of refund ('full_cancellation' or 'customer_request')
+ * @returns Refund calculation breakdown
  */
-export const calculateRefundAmount = (originalAmount: number): number => {
-    // Stripe refunds the processing fee but keeps the fixed fee ($0.30)
+export const calculateRefundAmount = (originalAmount: number, refundType: 'full_cancellation' | 'customer_request' = 'customer_request'): {
+    originalAmount: number;
+    stripeFee: number;
+    netRefund: number;
+} => {
+    // For event cancellations, full refund with no fees
+    if (refundType === 'full_cancellation') {
+        return {
+            originalAmount,
+            stripeFee: 0,
+            netRefund: originalAmount
+        };
+    }
+
+    // For customer requests, Stripe keeps the fixed fee ($0.30)
     const stripeFixedFee = 30;
-    return Math.max(0, originalAmount - stripeFixedFee);
+    const netRefund = Math.max(0, originalAmount - stripeFixedFee);
+
+    return {
+        originalAmount,
+        stripeFee: stripeFixedFee,
+        netRefund
+    };
 };
 
 /**

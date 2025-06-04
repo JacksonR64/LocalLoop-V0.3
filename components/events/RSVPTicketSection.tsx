@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import {
@@ -118,7 +118,7 @@ const RSVPTicketSection: React.FC<RSVPTicketSectionProps> = ({
         };
 
         initializeAuth();
-    }, [eventId]);
+    }, [eventId, checkExistingRSVP]);
 
     // Separate effect to check RSVP when user changes
     useEffect(() => {

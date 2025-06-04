@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
         const { order_id, refund_type, reason } = validationResult.data
 
         // Create Supabase client
-        const supabase = createServerSupabaseClient()
+        const supabase = await createServerSupabaseClient()
 
         // Get order details with tickets, customer info, and event details
         const { data: orderData, error: orderError } = await supabase
@@ -133,10 +133,12 @@ export async function POST(request: NextRequest) {
 
         if (refund_type === 'full_cancellation') {
             // Full refund for cancelled events (no fees)
-            refundAmount = remainingAmount
+            const refundCalc = calculateRefundAmount(remainingAmount, 'full_cancellation')
+            refundAmount = refundCalc.netRefund
         } else {
             // Customer request - calculate with fees
-            refundAmount = calculateRefundAmount(remainingAmount)
+            const refundCalc = calculateRefundAmount(remainingAmount, 'customer_request')
+            refundAmount = refundCalc.netRefund
         }
 
         if (refundAmount <= 0) {
@@ -160,11 +162,12 @@ export async function POST(request: NextRequest) {
                     event_id: orderData.events.id
                 }
             })
-        } catch (stripeError: any) {
+        } catch (stripeError: unknown) {
             console.error('Stripe refund error:', stripeError)
 
             // Handle specific Stripe errors
-            if (stripeError.code === 'charge_already_refunded') {
+            const error = stripeError as { code?: string; message?: string }
+            if (error.code === 'charge_already_refunded') {
                 return NextResponse.json(
                     { error: 'This payment has already been refunded' },
                     { status: 400 }
@@ -172,7 +175,7 @@ export async function POST(request: NextRequest) {
             }
 
             return NextResponse.json(
-                { error: 'Refund processing failed', details: stripeError.message },
+                { error: 'Refund processing failed', details: error.message },
                 { status: 500 }
             )
         }
@@ -215,7 +218,13 @@ export async function POST(request: NextRequest) {
         })
 
         // Prepare refunded tickets data for email
-        const refundedTickets = orderData.tickets.map((ticket: any) => {
+        interface TicketData {
+            ticket_types: { name: string }
+            quantity: number
+            unit_price: number
+        }
+
+        const refundedTickets = orderData.tickets.map((ticket: TicketData) => {
             const ticketRefundAmount = refund_type === 'full_cancellation'
                 ? ticket.quantity * ticket.unit_price
                 : Math.round((ticket.quantity * ticket.unit_price) * (refundAmount / remainingAmount))

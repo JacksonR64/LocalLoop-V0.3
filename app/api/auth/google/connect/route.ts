@@ -68,7 +68,7 @@ export async function GET(request: NextRequest) {
  * HEAD: Return same headers as GET but without response body
  * Handles preflight and optimization requests from browsers/frameworks
  */
-export async function HEAD(request: NextRequest) {
+export async function HEAD() {
     try {
         // For HEAD requests to the connect endpoint, we should return the status
         // without actually initiating OAuth or redirecting

@@ -5,7 +5,6 @@ import RSVPCancellationEmail from './emails/rsvp-cancellation';
 import WelcomeEmail from './emails/welcome-email';
 import EventReminderEmail from './emails/event-reminder';
 import EventCancellationEmail from './emails/event-cancellation';
-import { TicketConfirmationEmail } from './emails/ticket-confirmation';
 import RefundConfirmationEmail from './emails/templates/RefundConfirmationEmail';
 
 // Initialize Resend with API key

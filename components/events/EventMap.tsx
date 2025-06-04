@@ -26,18 +26,19 @@ const Popup = dynamic(
 );
 
 // Fix Leaflet marker icon paths
-let DefaultIcon: any;
-let L: any;
+let DefaultIcon: typeof import('leaflet').Icon.Default | undefined;
 
 if (typeof window !== 'undefined') {
-    L = require('leaflet');
-    DefaultIcon = L.Icon.Default;
+    // Use dynamic import instead of require
+    import('leaflet').then((leaflet) => {
+        DefaultIcon = leaflet.Icon.Default;
 
-    // Configure marker icons to use CDN instead of local paths
-    DefaultIcon.mergeOptions({
-        iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png',
-        iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
-        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
+        // Configure marker icons to use CDN instead of local paths
+        DefaultIcon.mergeOptions({
+            iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png',
+            iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
+            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
+        });
     });
 }
 

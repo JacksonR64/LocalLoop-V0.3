@@ -1,28 +1,27 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { LoadingSpinner } from '@/components/ui/LoadingSpinner'
 import { formatPrice } from '@/lib/utils/ticket-utils'
 import RefundDialog from './RefundDialog'
 import {
     CalendarDays,
     MapPin,
-    CreditCard,
     RefreshCw,
     AlertTriangle,
     CheckCircle,
     Clock,
     XCircle,
     ExternalLink,
-    Receipt,
     Download,
-    User,
-    Ticket
+    Ticket,
+    AlertCircle,
+    CheckCircle2,
+    ChevronRight,
+    DollarSign
 } from 'lucide-react'
 
 interface OrderData {
@@ -71,64 +70,96 @@ interface OrderData {
 }
 
 interface UserDashboardProps {
-    userEmail?: string
-    userName?: string
+    user: {
+        id: string
+        email?: string
+        full_name?: string
+    } | null
 }
 
-export default function UserDashboard({ userEmail, userName }: UserDashboardProps) {
+// Define the transformed order type for RefundDialog
+interface TransformedOrderForRefund {
+    id: string
+    status: string
+    total_amount: number
+    created_at: string
+    refund_amount: number
+    refunded_at: string | null
+    is_refundable: boolean
+    net_amount: number
+    tickets: Array<{
+        id: string
+        ticket_type: {
+            name: string
+            price: number
+        }
+        quantity: number
+        confirmation_code: string
+    }>
+    event: {
+        id: string
+        title: string
+        start_date: string
+        start_time: string
+        location_name: string
+        status: string
+    }
+}
+
+export default function UserDashboard({ user }: UserDashboardProps) {
     const [orders, setOrders] = useState<OrderData[]>([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
     const [refreshing, setRefreshing] = useState(false)
     const [refundDialogOpen, setRefundDialogOpen] = useState(false)
-    const [selectedOrder, setSelectedOrder] = useState<OrderData | null>(null)
+    const [selectedOrder, setSelectedOrder] = useState<TransformedOrderForRefund | null>(null)
 
-    const fetchOrders = async () => {
+    const fetchOrders = useCallback(async () => {
+        if (!user) return
+
         try {
             setRefreshing(true)
-            const response = await fetch('/api/orders')
+            const response = await fetch('/api/orders', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${user.id}`, // Using user ID as auth
+                }
+            })
 
             if (!response.ok) {
-                if (response.status === 401) {
-                    throw new Error('Please sign in to view your orders')
-                }
                 throw new Error('Failed to fetch orders')
             }
 
             const data = await response.json()
             setOrders(data.orders || [])
             setError(null)
-        } catch (err) {
-            console.error('Error fetching orders:', err)
-            setError(err instanceof Error ? err.message : 'Failed to load orders')
+        } catch (error) {
+            console.error('Error fetching orders:', error)
+            setError(error instanceof Error ? error.message : 'Failed to load orders')
         } finally {
             setLoading(false)
             setRefreshing(false)
         }
-    }
+    }, [user])
 
     useEffect(() => {
         fetchOrders()
-    }, [])
+    }, [user, fetchOrders])
 
-    const formatDate = (dateString: string) => {
-        return new Date(dateString).toLocaleDateString('en-US', {
-            year: 'numeric',
+    const formatDateTime = (dateString: string, timeString?: string) => {
+        const date = new Date(dateString)
+        const dateStr = date.toLocaleDateString('en-US', {
+            weekday: 'short',
             month: 'short',
-            day: 'numeric'
-        })
-    }
-
-    const formatDateTime = (dateString: string) => {
-        return new Date(dateString).toLocaleDateString('en-US', {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
             day: 'numeric',
-            hour: 'numeric',
-            minute: '2-digit',
-            hour12: true
+            year: 'numeric'
         })
+
+        if (timeString) {
+            return `${dateStr} at ${timeString}`
+        }
+
+        return dateStr
     }
 
     const getOrderStatusBadge = (order: OrderData) => {
@@ -180,47 +211,79 @@ export default function UserDashboard({ userEmail, userName }: UserDashboardProp
     }
 
     const getRefundEligibilityInfo = (order: OrderData) => {
-        if (order.events.cancelled) {
+        const isEventCancelled = order.events.cancelled
+        const isFullyRefunded = order.refund_amount >= order.total_amount
+
+        if (isFullyRefunded) {
+            return {
+                eligible: false,
+                icon: <CheckCircle2 className="w-4 h-4 text-green-600" />,
+                text: 'Fully refunded',
+                variant: 'success' as const
+            }
+        }
+
+        if (isEventCancelled) {
             return {
                 eligible: true,
-                reason: 'Event cancelled - full refund available',
-                className: 'text-blue-600'
-            }
-        }
-
-        if (order.status !== 'completed') {
-            return {
-                eligible: false,
-                reason: 'Order not completed',
-                className: 'text-gray-500'
-            }
-        }
-
-        if (order.refunded_at && order.refund_amount >= order.total_amount) {
-            return {
-                eligible: false,
-                reason: 'Already fully refunded',
-                className: 'text-gray-500'
+                icon: <AlertCircle className="w-4 h-4 text-orange-600" />,
+                text: 'Event cancelled - refund available',
+                variant: 'warning' as const
             }
         }
 
         if (order.is_refundable) {
             return {
                 eligible: true,
-                reason: 'Eligible for refund (24h policy)',
-                className: 'text-green-600'
+                icon: <CheckCircle2 className="w-4 h-4 text-green-600" />,
+                text: 'Refund available (24h policy)',
+                variant: 'success' as const
             }
         }
 
         return {
             eligible: false,
-            reason: 'Refund window expired (24h before event)',
-            className: 'text-red-600'
+            icon: <XCircle className="w-4 h-4 text-red-600" />,
+            text: 'Refund window closed',
+            variant: 'error' as const
         }
     }
 
     const handleRefundClick = (order: OrderData) => {
-        setSelectedOrder(order)
+        // Transform OrderData to OrderWithTickets format for RefundDialog
+        const transformedOrder = {
+            id: order.id,
+            status: order.status,
+            total_amount: order.total_amount,
+            created_at: order.created_at,
+            refund_amount: order.refund_amount,
+            refunded_at: order.refunded_at || null,
+            is_refundable: order.is_refundable,
+            net_amount: order.net_amount,
+            tickets: order.tickets.map(ticket => ({
+                id: ticket.id,
+                ticket_type: {
+                    name: ticket.ticket_types.name,
+                    price: ticket.unit_price
+                },
+                quantity: ticket.quantity,
+                confirmation_code: ticket.confirmation_code
+            })),
+            event: {
+                id: order.events.id,
+                title: order.events.title,
+                start_date: order.events.start_time.split('T')[0], // Extract date part
+                start_time: new Date(order.events.start_time).toLocaleTimeString('en-US', {
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    hour12: true
+                }),
+                location_name: order.events.location || 'TBD',
+                status: order.events.cancelled ? 'cancelled' : 'active'
+            }
+        }
+
+        setSelectedOrder(transformedOrder as TransformedOrderForRefund)
         setRefundDialogOpen(true)
     }
 
@@ -230,12 +293,23 @@ export default function UserDashboard({ userEmail, userName }: UserDashboardProp
         setSelectedOrder(null)
     }
 
+    if (!user) {
+        return (
+            <div className="max-w-4xl mx-auto p-6">
+                <div className="text-center">
+                    <h1 className="text-2xl font-bold text-gray-900 mb-4">Please Sign In</h1>
+                    <p className="text-gray-600">You need to be signed in to view your dashboard.</p>
+                </div>
+            </div>
+        )
+    }
+
     if (loading) {
         return (
-            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div className="max-w-4xl mx-auto p-6">
                 <div className="flex items-center justify-center py-12">
-                    <LoadingSpinner size="lg" />
-                    <span className="ml-3 text-gray-600">Loading your events...</span>
+                    <RefreshCw className="w-6 h-6 animate-spin mr-2" />
+                    <span className="text-gray-600">Loading your orders...</span>
                 </div>
             </div>
         )
@@ -262,197 +336,158 @@ export default function UserDashboard({ userEmail, userName }: UserDashboardProp
     }
 
     return (
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="max-w-4xl mx-auto p-6">
             {/* Header */}
             <div className="mb-8">
-                <div className="flex items-center justify-between">
-                    <div>
-                        <h1 className="text-3xl font-bold text-gray-900">My Events</h1>
-                        <p className="text-lg text-gray-600 mt-2">
-                            Manage your tickets, orders, and event attendance
-                        </p>
-                    </div>
-                    <Button
-                        onClick={fetchOrders}
-                        variant="outline"
-                        disabled={refreshing}
-                        className="flex items-center gap-2"
-                    >
-                        <RefreshCw className={`h-4 w-4 ${refreshing ? 'animate-spin' : ''}`} />
-                        Refresh
-                    </Button>
-                </div>
+                <h1 className="text-3xl font-bold text-gray-900 mb-2">My Dashboard</h1>
+                <p className="text-gray-600">
+                    Welcome back! Here are your recent orders and tickets.
+                </p>
             </div>
 
-            {/* Orders */}
+            {/* Orders List */}
             {orders.length === 0 ? (
-                <Card>
-                    <CardContent className="py-12 text-center">
-                        <Ticket className="h-12 w-12 mx-auto mb-4 text-gray-300" />
-                        <h3 className="text-lg font-medium text-gray-900 mb-2">No orders yet</h3>
-                        <p className="text-gray-600 mb-6">
-                            When you purchase tickets for events, they'll appear here.
-                        </p>
-                        <Link href="/events">
-                            <Button>
-                                Browse Events
-                                <ExternalLink className="w-4 h-4 ml-2" />
-                            </Button>
-                        </Link>
-                    </CardContent>
-                </Card>
+                <div className="text-center py-12">
+                    <Ticket className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                    <h3 className="text-lg font-medium text-gray-900 mb-2">No orders yet</h3>
+                    <p className="text-gray-600 mb-6">
+                        When you purchase tickets, they&apos;ll appear here.
+                    </p>
+                    <Button asChild>
+                        <Link href="/">Browse Events</Link>
+                    </Button>
+                </div>
             ) : (
                 <div className="space-y-6">
                     {orders.map((order) => {
                         const refundInfo = getRefundEligibilityInfo(order)
 
                         return (
-                            <Card key={order.id} className="overflow-hidden">
-                                <CardHeader>
-                                    <div className="flex items-start justify-between">
-                                        <div className="flex-1">
-                                            <div className="flex items-center gap-3 mb-2">
-                                                <CardTitle className="text-xl">
-                                                    <Link
-                                                        href={`/events/${order.events.slug}`}
-                                                        className="hover:text-blue-600 transition-colors"
-                                                    >
-                                                        {order.events.title}
-                                                    </Link>
-                                                </CardTitle>
-                                                {getOrderStatusBadge(order)}
-                                                {order.events.cancelled && (
-                                                    <Badge variant="destructive">
-                                                        Event Cancelled
-                                                    </Badge>
-                                                )}
+                            <div key={order.id} className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
+                                {/* Order Header */}
+                                <div className="bg-gray-50 px-6 py-4 border-b border-gray-200">
+                                    <div className="flex items-center justify-between">
+                                        <div className="flex items-center gap-4">
+                                            <div>
+                                                <h3 className="text-lg font-semibold text-gray-900">
+                                                    {order.events.title}
+                                                </h3>
+                                                <p className="text-sm text-gray-600">
+                                                    Order #{order.id.slice(-8)} • {formatDateTime(order.created_at)}
+                                                </p>
                                             </div>
-
-                                            <div className="flex items-center gap-4 text-sm text-gray-600">
-                                                <span className="flex items-center gap-1">
-                                                    <CalendarDays className="w-4 h-4" />
-                                                    {formatDateTime(order.events.start_time)}
-                                                </span>
-                                                {order.events.location && (
-                                                    <span className="flex items-center gap-1">
-                                                        <MapPin className="w-4 h-4" />
-                                                        {order.events.location}
-                                                    </span>
-                                                )}
-                                            </div>
+                                            {getOrderStatusBadge(order)}
                                         </div>
-
                                         <div className="text-right">
-                                            <div className="text-lg font-semibold">
+                                            <div className="text-lg font-semibold text-gray-900">
                                                 {formatPrice(order.net_amount)}
                                             </div>
                                             {order.refund_amount > 0 && (
-                                                <div className="text-sm text-orange-600">
+                                                <div className="text-sm text-green-600">
                                                     -{formatPrice(order.refund_amount)} refunded
                                                 </div>
                                             )}
-                                            <div className="text-xs text-gray-500 mt-1">
-                                                Order #{order.id.slice(-8)}
-                                            </div>
                                         </div>
                                     </div>
-                                </CardHeader>
+                                </div>
 
-                                <CardContent>
+                                {/* Event Details */}
+                                <div className="px-6 py-4">
+                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                                        <div className="flex items-center gap-2 text-sm text-gray-600">
+                                            <CalendarDays className="w-4 h-4" />
+                                            <span>{formatDateTime(order.events.start_time)}</span>
+                                        </div>
+                                        <div className="flex items-center gap-2 text-sm text-gray-600">
+                                            <MapPin className="w-4 h-4" />
+                                            {order.events.location && (
+                                                <span>{order.events.location}</span>
+                                            )}
+                                        </div>
+                                        <div className="flex items-center gap-2 text-sm">
+                                            {refundInfo.icon}
+                                            <span className={
+                                                refundInfo.variant === 'success' ? 'text-green-600' :
+                                                    refundInfo.variant === 'warning' ? 'text-orange-600' :
+                                                        'text-red-600'
+                                            }>
+                                                {refundInfo.text}
+                                            </span>
+                                        </div>
+                                    </div>
+
                                     {/* Tickets */}
-                                    <div className="space-y-3 mb-4">
+                                    <div className="space-y-2">
+                                        <h4 className="text-sm font-medium text-gray-700">Tickets</h4>
                                         {order.tickets.map((ticket) => (
-                                            <div
-                                                key={ticket.id}
-                                                className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
-                                            >
-                                                <div className="flex-1">
-                                                    <div className="font-medium">
-                                                        {ticket.quantity}x {ticket.ticket_types.name}
-                                                    </div>
-                                                    <div className="text-sm text-gray-600">
-                                                        Confirmation: {ticket.confirmation_code}
-                                                        {ticket.check_in_time && (
-                                                            <span className="ml-2 text-green-600">
-                                                                ✓ Checked in
-                                                            </span>
-                                                        )}
+                                            <div key={ticket.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                                <div className="flex items-center gap-3">
+                                                    <Ticket className="w-4 h-4 text-gray-500" />
+                                                    <div>
+                                                        <div className="font-medium text-gray-900">
+                                                            {ticket.quantity}x {ticket.ticket_types.name}
+                                                        </div>
+                                                        <div className="text-sm text-gray-600">
+                                                            Confirmation: {ticket.confirmation_code}
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div className="text-right">
-                                                    <div className="font-medium">
+                                                    <div className="font-medium text-gray-900">
                                                         {formatPrice(ticket.total_price)}
                                                     </div>
-                                                    <div className="text-xs text-gray-500">
+                                                    <div className="text-sm text-gray-600">
                                                         {formatPrice(ticket.unit_price)} each
                                                     </div>
                                                 </div>
                                             </div>
                                         ))}
                                     </div>
+                                </div>
 
-                                    {/* Order Details & Actions */}
-                                    <div className="flex items-center justify-between pt-4 border-t">
-                                        <div className="flex items-center gap-4 text-sm text-gray-600">
-                                            <span>Ordered {formatDate(order.created_at)}</span>
-                                            <span>{order.tickets_count} ticket{order.tickets_count !== 1 ? 's' : ''}</span>
-
-                                            {/* Refund Eligibility */}
-                                            <span className={`flex items-center gap-1 ${refundInfo.className}`}>
-                                                {refundInfo.eligible ? (
-                                                    <CheckCircle className="w-3 h-3" />
-                                                ) : (
-                                                    <XCircle className="w-3 h-3" />
-                                                )}
-                                                {refundInfo.reason}
-                                            </span>
-                                        </div>
-
-                                        <div className="flex items-center gap-2">
-                                            {/* Download Receipt */}
-                                            <Button variant="outline" size="sm">
-                                                <Download className="w-4 h-4 mr-1" />
-                                                Receipt
-                                            </Button>
-
-                                            {/* Refund Button */}
-                                            {refundInfo.eligible && order.status === 'completed' && (
-                                                <Button
-                                                    variant="outline"
-                                                    size="sm"
-                                                    className="text-red-600 border-red-200 hover:bg-red-50"
-                                                    onClick={() => handleRefundClick(order)}
-                                                >
-                                                    <RefreshCw className="w-4 h-4 mr-1" />
-                                                    Request Refund
-                                                </Button>
-                                            )}
-
-                                            {/* View Event */}
-                                            <Link href={`/events/${order.events.slug}`}>
-                                                <Button variant="outline" size="sm">
-                                                    <ExternalLink className="w-4 h-4 mr-1" />
+                                {/* Actions */}
+                                <div className="bg-gray-50 px-6 py-4 border-t border-gray-200">
+                                    <div className="flex items-center justify-between">
+                                        <div className="flex items-center gap-3">
+                                            <Button variant="outline" size="sm" asChild>
+                                                <Link href={`/events/${order.events.slug}`}>
+                                                    <ExternalLink className="w-4 h-4 mr-2" />
                                                     View Event
-                                                </Button>
-                                            </Link>
+                                                </Link>
+                                            </Button>
+                                            <Button variant="outline" size="sm">
+                                                <Download className="w-4 h-4 mr-2" />
+                                                Download Receipt
+                                            </Button>
                                         </div>
+
+                                        {refundInfo.eligible && (
+                                            <Button
+                                                variant="outline"
+                                                size="sm"
+                                                onClick={() => handleRefundClick(order)}
+                                                className="text-red-600 border-red-200 hover:bg-red-50"
+                                            >
+                                                <DollarSign className="w-4 h-4 mr-2" />
+                                                Request Refund
+                                                <ChevronRight className="w-4 h-4 ml-1" />
+                                            </Button>
+                                        )}
                                     </div>
-                                </CardContent>
-                            </Card>
+                                </div>
+                            </div>
                         )
                     })}
                 </div>
             )}
 
             {/* Refund Dialog */}
-            {selectedOrder && (
-                <RefundDialog
-                    open={refundDialogOpen}
-                    onOpenChange={setRefundDialogOpen}
-                    order={selectedOrder}
-                    onRefundSuccess={handleRefundSuccess}
-                />
-            )}
+            <RefundDialog
+                open={refundDialogOpen}
+                onOpenChange={setRefundDialogOpen}
+                order={selectedOrder}
+                onRefundSuccess={handleRefundSuccess}
+            />
         </div>
     )
 } 

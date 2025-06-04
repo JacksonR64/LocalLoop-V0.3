@@ -63,9 +63,9 @@ export function EventFilters({
             .filter(label => label.toLowerCase().includes(query));
         const locationMatches = events
             .map(e => e.location)
-            .filter(loc => loc && loc.toLowerCase().includes(query));
+            .filter((loc): loc is string => loc != null && loc.toLowerCase().includes(query));
         // Remove duplicates and empty
-        const all = Array.from(new Set([...titleMatches, ...categoryMatches, ...locationMatches].filter(Boolean)));
+        const all = Array.from(new Set([...titleMatches, ...categoryMatches, ...locationMatches]));
         return all.slice(0, 8);
     }, [searchQuery, events, categories]);
 

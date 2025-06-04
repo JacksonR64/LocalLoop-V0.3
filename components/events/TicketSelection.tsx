@@ -13,8 +13,7 @@ import {
     Minus,
     Calendar,
     Users,
-    AlertCircle,
-    CheckCircle
+    AlertCircle
 } from 'lucide-react'
 
 interface TicketType {
@@ -48,14 +47,12 @@ interface TicketSelectionProps {
     eventId: string
     selectedTickets: TicketSelection[]
     onTicketsChange: (tickets: TicketSelection[]) => void
-    onPurchaseClick: () => void
 }
 
 export default function TicketSelection({
     eventId,
     selectedTickets = [],
-    onTicketsChange,
-    onPurchaseClick
+    onTicketsChange
 }: TicketSelectionProps) {
     const [ticketTypes, setTicketTypes] = useState<TicketType[]>([])
     const [loading, setLoading] = useState(true)
@@ -95,7 +92,7 @@ export default function TicketSelection({
         if (eventId) {
             fetchTicketTypes()
         }
-    }, [eventId])
+    }, [eventId, selectedTickets])
 
     // Update quantities and notify parent
     const updateQuantity = (ticketTypeId: string, newQuantity: number) => {
@@ -113,7 +110,7 @@ export default function TicketSelection({
 
         // Update selected tickets
         const updatedSelections = Object.entries(newQuantities)
-            .filter(([_, qty]) => qty > 0)
+            .filter(([, qty]) => qty > 0)
             .map(([ticketId, qty]) => {
                 const ticket = ticketTypes.find(t => t.id === ticketId)!
                 return {

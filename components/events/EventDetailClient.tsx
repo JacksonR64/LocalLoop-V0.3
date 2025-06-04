@@ -2,19 +2,18 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Calendar, Clock, MapPin, User, DollarSign, Share2, Heart, ArrowLeft } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui';
 import { EventData } from '@/components/events';
 import { EventMap } from '@/components/events/EventMap';
 import { RSVPTicketSection } from '@/components/events/RSVPTicketSection';
-import TicketTypeManager from '@/components/events/TicketTypeManager';
 import TicketSelection from '@/components/events/TicketSelection';
 import CheckoutForm from '@/components/checkout/CheckoutForm';
 import { GoogleCalendarConnectWithStatus } from '@/components/GoogleCalendarConnect';
-import type { Event, TicketType } from '@/lib/types';
-import EventImageGallery from '@/components/events/EventImageGallery';
 import { formatPrice } from '@/lib/utils/ticket-utils';
+import type { TicketType } from '@/lib/types';
 
 // Interface for selected tickets matching TicketSelection component
 interface TicketSelectionItem {
@@ -38,8 +37,6 @@ export function EventDetailClient({ event }: EventDetailClientProps) {
     const [ticketTypes, setTicketTypes] = useState<TicketType[]>([]);
     const [selectedTickets, setSelectedTickets] = useState<TicketSelectionItem[]>([]);
     const [checkoutStep, setCheckoutStep] = useState<'tickets' | 'checkout'>('tickets');
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
 
     // Fetch ticket types for paid events
     useEffect(() => {
@@ -55,13 +52,9 @@ export function EventDetailClient({ event }: EventDetailClientProps) {
                     }
                 } catch (error) {
                     console.error('Error fetching ticket types:', error);
-                } finally {
-                    setLoading(false);
                 }
             };
             fetchTicketTypes();
-        } else {
-            setLoading(false);
         }
     }, [event.id, event.is_paid]);
 
@@ -102,15 +95,6 @@ export function EventDetailClient({ event }: EventDetailClientProps) {
         setCheckoutStep('tickets');
     };
 
-    // Convert selectedTickets array to object format for CheckoutForm compatibility
-    const getSelectedTicketsForCheckout = () => {
-        const ticketsObj: { [key: string]: number } = {};
-        selectedTickets.forEach(ticket => {
-            ticketsObj[ticket.ticket_type_id] = ticket.quantity;
-        });
-        return ticketsObj;
-    };
-
     return (
         <div className="min-h-screen bg-gray-50">
             {/* Header */}
@@ -144,10 +128,13 @@ export function EventDetailClient({ event }: EventDetailClientProps) {
                         <div>
                             {event.image_url && (
                                 <div className="mb-6">
-                                    <img
+                                    <Image
                                         src={event.image_url}
                                         alt={event.title}
+                                        width={800}
+                                        height={256}
                                         className="w-full h-64 object-cover rounded-lg"
+                                        priority
                                     />
                                 </div>
                             )}
@@ -181,7 +168,7 @@ export function EventDetailClient({ event }: EventDetailClientProps) {
                                 </div>
                                 <div className="flex items-center gap-3">
                                     <MapPin className="w-5 h-5 text-gray-500" />
-                                    <span className="text-gray-900">{event.location}</span>
+                                    <span className="text-gray-900">{event.location || 'Location TBD'}</span>
                                 </div>
                                 <div className="flex items-center gap-3">
                                     <User className="w-5 h-5 text-gray-500" />
@@ -212,7 +199,7 @@ export function EventDetailClient({ event }: EventDetailClientProps) {
                             <Card>
                                 <CardContent className="p-6">
                                     <h2 className="text-xl font-semibold mb-4">Location</h2>
-                                    <EventMap address={event.location} />
+                                    <EventMap location={event.location || 'Location TBD'} eventTitle={event.title} />
                                 </CardContent>
                             </Card>
                         )}
@@ -225,11 +212,15 @@ export function EventDetailClient({ event }: EventDetailClientProps) {
                                     action="create_event"
                                     returnUrl={`/events/${event.id}`}
                                     eventData={{
+                                        id: event.id,
                                         title: event.title,
                                         description: event.description,
                                         start_time: event.start_time,
                                         end_time: event.end_time,
-                                        location: event.location
+                                        location: event.location,
+                                        is_paid: event.is_paid,
+                                        rsvp_count: event.rsvp_count,
+                                        organizer: event.organizer
                                     }}
                                 />
                             </CardContent>
@@ -251,7 +242,6 @@ export function EventDetailClient({ event }: EventDetailClientProps) {
                                                     eventId={event.id}
                                                     selectedTickets={selectedTickets}
                                                     onTicketsChange={handleTicketsChange}
-                                                    onPurchaseClick={handleProceedToCheckout}
                                                 />
 
                                                 {getTotalTickets() > 0 && (
@@ -304,7 +294,7 @@ export function EventDetailClient({ event }: EventDetailClientProps) {
                                             eventTitle={event.title}
                                             eventDate={formatDate(event.start_time)}
                                             eventTime={formatTime(event.start_time)}
-                                            eventLocation={event.location}
+                                            eventLocation={event.location || 'Location TBD'}
                                             capacity={event.capacity}
                                             currentRSVPs={event.rsvp_count}
                                             isRegistrationOpen={true}

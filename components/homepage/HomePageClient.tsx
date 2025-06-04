@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Calendar, Menu, X } from 'lucide-react';
-import { Card, CardContent, LoadingSpinner } from '@/components/ui';
+import { LoadingSpinner } from '@/components/ui';
 import { EventCard, type EventData } from '@/components/events';
 import { EventFilters } from '@/components/filters/EventFilters';
 import { usePagination } from '@/lib/hooks/usePagination';
@@ -58,7 +58,7 @@ export function HomePageClient({ featuredEvents, nonFeaturedEvents }: HomePageCl
     // Filter events by category and update filtered events
     const allEvents = [...featuredEvents, ...nonFeaturedEvents];
     const categoryFiltered = allEvents.filter(event =>
-      !event.featured && event.category.toLowerCase() === category.toLowerCase()
+      !event.featured && event.category && event.category.toLowerCase() === category.toLowerCase()
     );
     handleFilteredEventsChange(categoryFiltered);
 

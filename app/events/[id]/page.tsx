@@ -56,6 +56,10 @@ async function getEventData(eventId: string): Promise<EventData | null> {
     }
 
     // Transform data to match EventData interface
+    interface UserData {
+        display_name: string
+    }
+
     return {
         id: eventId, // Keep the numeric ID for routing
         title: event.title,
@@ -71,7 +75,9 @@ async function getEventData(eventId: string): Promise<EventData | null> {
         rsvp_count: event.rsvps?.length || 0,
         image_url: event.image_url,
         organizer: {
-            display_name: (event.users as { display_name: string } | null)?.display_name || 'Unknown Organizer'
+            display_name: (Array.isArray(event.users)
+                ? (event.users[0] as UserData)?.display_name
+                : (event.users as UserData)?.display_name) || 'Unknown Organizer'
         }
     };
 }

@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
             )
         }
 
-        const { event_id, reminder_type, custom_message, recipient_filter } = result.data
+        const { event_id, reminder_type, recipient_filter } = result.data
 
         // Get event details with organizer info
         const { data: event, error: eventError } = await supabase
@@ -88,6 +88,7 @@ export async function POST(request: NextRequest) {
         }
 
         // Get attendees based on filter
+        // eslint-disable-next-line prefer-const
         let attendees: Array<{
             email: string
             name: string
@@ -117,9 +118,10 @@ export async function POST(request: NextRequest) {
                 console.error('Error fetching RSVP attendees:', rsvpError)
             } else if (rsvpAttendees) {
                 for (const rsvp of rsvpAttendees) {
-                    const email = rsvp.user_id ? rsvp.users?.email : rsvp.guest_email
-                    const name = rsvp.user_id 
-                        ? (rsvp.users?.display_name || rsvp.users?.email?.split('@')[0] || 'User')
+                    const userInfo = Array.isArray(rsvp.users) ? rsvp.users[0] : rsvp.users
+                    const email = rsvp.user_id ? userInfo?.email : rsvp.guest_email
+                    const name = rsvp.user_id
+                        ? (userInfo?.display_name || userInfo?.email?.split('@')[0] || 'User')
                         : (rsvp.guest_name || 'Guest')
 
                     if (email) {
@@ -155,9 +157,10 @@ export async function POST(request: NextRequest) {
             } else if (ticketHolders) {
                 // Group tickets by email to get ticket count
                 const ticketGroups = ticketHolders.reduce((groups, ticket) => {
-                    const email = ticket.user_id ? ticket.users?.email : ticket.customer_email
-                    const name = ticket.user_id 
-                        ? (ticket.users?.display_name || ticket.users?.email?.split('@')[0] || 'User')
+                    const userInfo = Array.isArray(ticket.users) ? ticket.users[0] : ticket.users
+                    const email = ticket.user_id ? userInfo?.email : ticket.customer_email
+                    const name = ticket.user_id
+                        ? (userInfo?.display_name || userInfo?.email?.split('@')[0] || 'User')
                         : (ticket.customer_name || 'Customer')
 
                     if (email) {
@@ -303,10 +306,10 @@ export async function POST(request: NextRequest) {
 function getTimeUntilEvent(eventStartTime: Date, reminderType: string): string {
     const now = new Date()
     const timeDiff = eventStartTime.getTime() - now.getTime()
-    
+
     const hours = Math.floor(timeDiff / (1000 * 60 * 60))
     const days = Math.floor(hours / 24)
-    
+
     if (reminderType === '24h') {
         return 'tomorrow'
     } else if (reminderType === '1h') {

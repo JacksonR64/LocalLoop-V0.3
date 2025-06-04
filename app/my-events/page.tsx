@@ -20,8 +20,7 @@ export default async function MyEventsPage() {
 
     return (
         <UserDashboard
-            userEmail={user.email}
-            userName={user.user_metadata?.full_name || user.email}
+            user={user}
         />
     )
 } 

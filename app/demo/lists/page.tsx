@@ -151,12 +151,13 @@ export default function EventListDemoPage() {
 
     // Group events by category for grouped demo
     const groupedEvents = demoEvents.reduce((acc, event) => {
-        if (!acc[event.category]) {
-            acc[event.category] = [];
+        const category = event.category || 'General'
+        if (!acc[category]) {
+            acc[category] = [];
         }
-        acc[event.category].push(event);
+        acc[category].push(event);
         return acc;
-    }, {} as Record<string, EventData[]>);
+    }, {} as Record<string, typeof demoEvents>);
 
     return (
         <div className="min-h-screen bg-gray-50">

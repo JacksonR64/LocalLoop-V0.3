@@ -151,13 +151,13 @@ export async function GET(request: NextRequest) {
             console.log('[DEBUG] Creating Supabase session for user:', user.id)
 
             // Use admin auth to create a session for this user
-            await supabase.auth.setSession({
+            const { error: sessionError } = await supabase.auth.setSession({
                 access_token: tokens.access_token,
-                refresh_token: tokens.refresh_token
+                refresh_token: tokens.refresh_token || ''
             })
 
-            if (_sessionError) {
-                console.error('[ERROR] Failed to generate session link:', _sessionError)
+            if (sessionError) {
+                console.error('[ERROR] Failed to generate session link:', sessionError)
             } else {
                 console.log('[DEBUG] Session link generated successfully')
                 // The session will be established when the user is redirected

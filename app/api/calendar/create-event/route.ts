@@ -78,7 +78,7 @@ export async function POST(request: Request) {
         if (calendarEvent.success) {
             return NextResponse.json({
                 success: true,
-                event: calendarEvent.event,
+                eventId: calendarEvent.eventId,
                 message: 'Event successfully added to your Google Calendar'
             })
         } else {

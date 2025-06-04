@@ -1,8 +1,24 @@
-import { Suspense } from 'react';
-import { LoadingSpinner } from '@/components/ui';
-import { type EventData } from '@/components/events';
-import { createServerSupabaseClient } from '@/lib/supabase-server';
-import { HomePageClient } from '@/components/homepage/HomePageClient';
+import { createServerSupabaseClient } from '@/lib/supabase-server'
+import { HomePageClient } from '@/components/homepage/HomePageClient'
+
+interface EventData {
+  id: string
+  title: string
+  description?: string
+  short_description?: string
+  start_time: string
+  end_time: string
+  location?: string
+  category?: string
+  is_paid: boolean
+  featured: boolean
+  capacity?: number
+  rsvp_count: number
+  image_url?: string
+  organizer: {
+    display_name: string
+  }
+}
 
 // Server Component to fetch data from database
 async function getEventsData(): Promise<EventData[]> {
@@ -51,7 +67,7 @@ async function getEventsData(): Promise<EventData[]> {
     rsvp_count: event.rsvps?.length || 0,
     image_url: event.image_url,
     organizer: {
-      display_name: (event.users as any)?.display_name || 'Unknown Organizer'
+      display_name: (event.users as { display_name?: string })?.display_name || 'Unknown Organizer'
     }
   })) || [];
 }
