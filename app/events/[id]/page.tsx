@@ -25,13 +25,34 @@ function mapEventIdToUuid(numericId: string): string {
 // Server function to fetch event data from database
 async function getEventData(eventId: string): Promise<EventData | null> {
     const supabase = await createServerSupabaseClient();
-    const uuid = mapEventIdToUuid(eventId);
+
+    // Try to determine if this is a UUID, numeric ID, or slug
+    let queryValue = eventId;
+    let queryField = 'id';
+
+    // Check if it's a UUID format
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    if (uuidRegex.test(eventId)) {
+        queryField = 'id';
+        queryValue = eventId;
+    }
+    // Check if it's a numeric ID (convert to UUID)
+    else if (/^\d+$/.test(eventId)) {
+        queryField = 'id';
+        queryValue = mapEventIdToUuid(eventId);
+    }
+    // Otherwise treat it as a slug
+    else {
+        queryField = 'slug';
+        queryValue = eventId;
+    }
 
     const { data: event, error } = await supabase
         .from('events')
         .select(`
       id,
       title,
+      slug,
       description,
       short_description,
       start_time,
@@ -46,7 +67,7 @@ async function getEventData(eventId: string): Promise<EventData | null> {
       users!events_organizer_id_fkey(display_name),
       rsvps(user_id)
     `)
-        .eq('id', uuid)
+        .eq(queryField, queryValue)
         .eq('published', true)
         .single();
 
@@ -61,7 +82,8 @@ async function getEventData(eventId: string): Promise<EventData | null> {
     }
 
     return {
-        id: eventId, // Keep the numeric ID for routing
+        id: event.slug || eventId, // Use slug if available, otherwise the provided ID
+        database_id: event.id, // Real database UUID for API calls
         title: event.title,
         description: event.description,
         short_description: event.short_description,

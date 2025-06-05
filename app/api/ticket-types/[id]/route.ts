@@ -2,15 +2,41 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { z } from 'zod'
 
+// Custom datetime validation for datetime-local inputs (same as in main route)
+const dateTimeLocalSchema = z
+    .string()
+    .optional()
+    .nullable()
+    .transform((val) => {
+        if (!val || val === '') return null;
+        // If it's already in ISO format, return as is
+        if (val.includes('Z') || val.includes('+') || val.includes('-', 10)) {
+            return val;
+        }
+        // Convert datetime-local format (YYYY-MM-DDTHH:mm) to ISO
+        // Assume local timezone for datetime-local inputs
+        try {
+            const date = new Date(val);
+            return date.toISOString();
+        } catch {
+            throw new Error('Invalid date format');
+        }
+    })
+    .refine((val) => {
+        if (val === null) return true;
+        const date = new Date(val);
+        return !isNaN(date.getTime());
+    }, 'Invalid date');
+
 // Ticket type update schema (partial of the create schema)
 const ticketTypeUpdateSchema = z.object({
     name: z.string().min(1, 'Ticket type name is required').max(100, 'Name must be 100 characters or less').optional(),
-    description: z.string().optional(),
+    description: z.string().optional().nullable(),
     price: z.number().int().min(0, 'Price must be non-negative').optional(), // in cents
-    capacity: z.number().int().min(1, 'Capacity must be at least 1').optional(),
+    capacity: z.number().int().min(1, 'Capacity must be at least 1').nullable().optional(),
     sort_order: z.number().int().min(0).optional(),
-    sale_start: z.string().datetime().optional(),
-    sale_end: z.string().datetime().optional(),
+    sale_start: dateTimeLocalSchema,
+    sale_end: dateTimeLocalSchema,
 }).refine(
     (data) => {
         if (data.sale_start && data.sale_end) {

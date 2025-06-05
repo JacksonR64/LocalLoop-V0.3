@@ -78,6 +78,18 @@ interface AttendeesResponse {
     summary: AttendeeSummary
 }
 
+// Helper function to safely format dates
+const formatDate = (dateString: string | null | undefined, formatString: string = 'MMM d, yyyy'): string => {
+    if (!dateString) return 'N/A'
+    try {
+        const date = new Date(dateString)
+        if (isNaN(date.getTime())) return 'N/A'
+        return format(date, formatString)
+    } catch (error) {
+        return 'N/A'
+    }
+}
+
 export default function AttendeeManagement() {
     const [attendees, setAttendees] = useState<Attendee[]>([])
     const [summary, setSummary] = useState<AttendeeSummary | null>(null)
@@ -137,7 +149,9 @@ export default function AttendeeManagement() {
             // Extract unique events for filter dropdown
             const uniqueEvents = Array.from(
                 new Map(
-                    data.attendees.map(a => [a.eventId, { id: a.eventId, title: a.eventTitle }])
+                    data.attendees
+                        .filter(a => a.eventId && a.eventTitle) // Only include attendees with valid event data
+                        .map(a => [a.eventId, { id: a.eventId, title: a.eventTitle }])
                 ).values()
             )
             setEvents(uniqueEvents)
@@ -384,8 +398,8 @@ export default function AttendeeManagement() {
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="all">All Events</SelectItem>
-                                    {events.map((event) => (
-                                        <SelectItem key={event.id} value={event.id}>
+                                    {events.map((event, index) => (
+                                        <SelectItem key={event.id || `event-${index}`} value={event.id}>
                                             {event.title}
                                         </SelectItem>
                                     ))}
@@ -530,7 +544,7 @@ export default function AttendeeManagement() {
                                                 <div className="font-medium">{attendee.eventTitle}</div>
                                                 <div className="text-xs text-muted-foreground flex items-center">
                                                     <CalendarDays className="h-3 w-3 mr-1" />
-                                                    {format(new Date(attendee.eventStartTime), 'MMM d, h:mm a')}
+                                                    {formatDate(attendee.eventStartTime, 'MMM d, h:mm a')}
                                                 </div>
                                                 {attendee.eventLocation && (
                                                     <div className="text-xs text-muted-foreground flex items-center">
@@ -557,7 +571,7 @@ export default function AttendeeManagement() {
                                                 <div className="flex items-center text-green-600">
                                                     <CheckCircle className="h-4 w-4 mr-1" />
                                                     <span className="text-xs">
-                                                        {format(new Date(attendee.checkedInAt), 'MMM d, h:mm a')}
+                                                        {formatDate(attendee.checkedInAt, 'MMM d, h:mm a')}
                                                     </span>
                                                 </div>
                                             ) : (
@@ -568,7 +582,7 @@ export default function AttendeeManagement() {
                                             )}
                                         </TableCell>
                                         <TableCell className="text-xs text-muted-foreground">
-                                            {format(new Date(attendee.createdAt), 'MMM d, yyyy')}
+                                            {formatDate(attendee.createdAt)}
                                         </TableCell>
                                         <TableCell>
                                             <Button variant="ghost" size="sm">

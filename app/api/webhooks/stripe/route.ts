@@ -4,6 +4,32 @@ import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { verifyWebhookSignature } from '@/lib/stripe'
 import { sendTicketConfirmationEmail } from '@/lib/emails/send-ticket-confirmation'
 
+// Helper function to resolve event slug/ID to UUID (same as checkout API)
+function getEventIdFromSlugOrId(eventIdOrSlug: string): string {
+    const slugToIdMap: { [key: string]: string } = {
+        'local-business-networking': '00000000-0000-0000-0000-000000000002',
+        'kids-art-workshop': '00000000-0000-0000-0000-000000000003',
+        'startup-pitch-night': '00000000-0000-0000-0000-000000000007',
+        'food-truck-festival': '00000000-0000-0000-0000-000000000009',
+        // Add more mappings as needed
+    };
+
+    // If it's already a UUID, return as is
+    if (/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(eventIdOrSlug)) {
+        return eventIdOrSlug;
+    }
+
+    // If it's a numeric ID, convert to UUID format
+    if (/^\d+$/.test(eventIdOrSlug)) {
+        const num = parseInt(eventIdOrSlug);
+        return `00000000-0000-0000-0000-${num.toString().padStart(12, '0')}`;
+    }
+
+    // If it's a sample event slug, map it to the full UUID
+    // Otherwise, return the original slug to allow database lookup
+    return slugToIdMap[eventIdOrSlug] || eventIdOrSlug;
+}
+
 export async function POST(request: NextRequest) {
     const webhookId = `wh_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
     const startTime = Date.now()
@@ -99,9 +125,34 @@ export async function POST(request: NextRequest) {
                     }
 
                     // Extract metadata values
-                    const { event_id, user_id, ticket_items, customer_email, customer_name } = paymentIntent.metadata
+                    const { event_id: rawEventId, user_id, ticket_items, customer_email, customer_name } = paymentIntent.metadata
+
+                    // Convert slug/ID to UUID format (fixes UUID constraint errors)
+                    let event_id = getEventIdFromSlugOrId(rawEventId)
+
+                    // If it's still not a UUID format, try to find it in database by slug
+                    if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(event_id)) {
+                        console.log(`🔍 [${webhookId}] Looking up event by slug: ${event_id}`)
+                        const { data: eventBySlug } = await supabase
+                            .from('events')
+                            .select('id')
+                            .eq('slug', event_id)
+                            .single()
+
+                        if (eventBySlug) {
+                            event_id = eventBySlug.id
+                            console.log(`✅ [${webhookId}] Resolved slug to UUID: ${rawEventId} -> ${event_id}`)
+                        } else {
+                            console.error(`❌ [${webhookId}] Could not resolve event slug to UUID: ${event_id}`)
+                            return NextResponse.json({
+                                error: 'Invalid event identifier',
+                                event_id: rawEventId
+                            }, { status: 400 })
+                        }
+                    }
+
                     console.log('Extracted metadata values:', {
-                        event_id,
+                        event_id: `${rawEventId} -> ${event_id}`,
                         user_id,
                         ticket_items: ticket_items ? 'Present' : 'Missing',
                         customer_email,
@@ -333,6 +384,255 @@ export async function POST(request: NextRequest) {
                     console.error('❌ Error stack:', error instanceof Error ? error.stack : 'No stack trace')
                     return NextResponse.json(
                         { error: 'Webhook handler failed', details: error instanceof Error ? error.message : 'Unknown error' },
+                        { status: 500 }
+                    )
+                }
+            }
+
+            case 'charge.succeeded': {
+                try {
+                    const charge = event.data.object
+                    console.log(`💰 [${webhookId}] Charge succeeded: ${charge.id} for PaymentIntent: ${charge.payment_intent}`)
+
+                    // Get the PaymentIntent to access metadata
+                    if (!charge.payment_intent) {
+                        console.error('❌ No payment_intent found in charge object')
+                        return NextResponse.json({ error: 'Missing payment_intent in charge' }, { status: 400 })
+                    }
+
+                    // Fetch the PaymentIntent from Stripe to get metadata
+                    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+                        apiVersion: '2025-05-28.basil'
+                    })
+
+                    const paymentIntent = await stripe.paymentIntents.retrieve(charge.payment_intent as string)
+                    console.log(`📊 [${webhookId}] Retrieved PaymentIntent metadata:`, JSON.stringify(paymentIntent.metadata, null, 2))
+
+                    // Check if metadata exists at all
+                    if (!paymentIntent.metadata || Object.keys(paymentIntent.metadata).length === 0) {
+                        console.error('❌ No metadata found in PaymentIntent')
+                        return NextResponse.json({ error: 'Missing metadata in payment intent' }, { status: 400 })
+                    }
+
+                    // Validate all required metadata fields exist
+                    const requiredFields = ['event_id', 'user_id', 'ticket_items', 'customer_email', 'customer_name']
+                    const missingFields = requiredFields.filter(field => !paymentIntent.metadata[field])
+
+                    if (missingFields.length > 0) {
+                        console.error('❌ Missing required metadata fields:', missingFields)
+                        return NextResponse.json({
+                            error: 'Missing required metadata fields',
+                            missing_fields: missingFields
+                        }, { status: 400 })
+                    }
+
+                    // Extract metadata values
+                    const { event_id: rawEventId, user_id, ticket_items, customer_email, customer_name } = paymentIntent.metadata
+
+                    // Convert slug/ID to UUID format (fixes UUID constraint errors)
+                    let event_id = getEventIdFromSlugOrId(rawEventId)
+
+                    // If it's still not a UUID format, try to find it in database by slug
+                    if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(event_id)) {
+                        console.log(`🔍 [${webhookId}] Looking up event by slug: ${event_id}`)
+                        const { data: eventBySlug } = await supabase
+                            .from('events')
+                            .select('id')
+                            .eq('slug', event_id)
+                            .single()
+
+                        if (eventBySlug) {
+                            event_id = eventBySlug.id
+                            console.log(`✅ [${webhookId}] Resolved slug to UUID: ${rawEventId} -> ${event_id}`)
+                        } else {
+                            console.error(`❌ [${webhookId}] Could not resolve event slug to UUID: ${event_id}`)
+                            return NextResponse.json({
+                                error: 'Invalid event identifier',
+                                event_id: rawEventId
+                            }, { status: 400 })
+                        }
+                    }
+
+                    console.log('Extracted metadata values:', {
+                        event_id: `${rawEventId} -> ${event_id}`,
+                        user_id,
+                        ticket_items: ticket_items ? 'Present' : 'Missing',
+                        customer_email,
+                        customer_name
+                    })
+
+                    // Parse ticket items from JSON string
+                    let parsedTicketItems: Array<{
+                        ticket_type_id: string
+                        quantity: number
+                        unit_price: number
+                    }>
+                    try {
+                        parsedTicketItems = JSON.parse(ticket_items)
+                        console.log('✅ Parsed ticket items:', parsedTicketItems)
+                    } catch (error) {
+                        console.error('❌ Failed to parse ticket_items JSON:', error)
+                        return NextResponse.json({ error: 'Invalid ticket_items format in metadata' }, { status: 400 })
+                    }
+
+                    console.log('🔄 Creating order record...')
+
+                    // Check if order already exists for this payment intent (duplicate prevention)
+                    const { data: existingOrder, error: checkError } = await supabase
+                        .from('orders')
+                        .select('id, status, created_at')
+                        .eq('stripe_payment_intent_id', paymentIntent.id)
+                        .single()
+
+                    if (checkError && checkError.code !== 'PGRST116') {
+                        console.error('❌ Error checking for existing order:', checkError)
+                        return NextResponse.json(
+                            { error: 'Failed to check existing order', details: checkError.message },
+                            { status: 500 }
+                        )
+                    }
+
+                    if (existingOrder) {
+                        console.log(`🔄 [${webhookId}] Order already exists for payment intent ${paymentIntent.id}:`, {
+                            orderId: existingOrder.id,
+                            status: existingOrder.status,
+                            createdAt: existingOrder.created_at
+                        })
+
+                        const processingTime = Date.now() - startTime
+                        console.log(`⏱️ [${webhookId}] Duplicate processing avoided in ${processingTime}ms`)
+
+                        // Return success since order already exists (idempotent behavior)
+                        return NextResponse.json({
+                            received: true,
+                            message: 'Order already processed',
+                            webhookId,
+                            processingTime,
+                            orderId: existingOrder.id
+                        })
+                    }
+
+                    // Create order record first
+                    const { data: orderData, error: orderError } = await supabase
+                        .from('orders')
+                        .insert({
+                            event_id,
+                            user_id: user_id && user_id !== 'guest' ? user_id : null,
+                            guest_email: user_id === 'guest' ? customer_email : null,
+                            guest_name: user_id === 'guest' ? customer_name : null,
+                            total_amount: paymentIntent.amount,
+                            currency: paymentIntent.currency,
+                            stripe_payment_intent_id: paymentIntent.id,
+                            status: 'completed'
+                        })
+                        .select()
+                        .single()
+
+                    if (orderError) {
+                        console.error('❌ Failed to create order:', orderError)
+                        console.error('❌ Order error details:', JSON.stringify(orderError, null, 2))
+
+                        // Specific handling for constraint violations
+                        if (orderError.code === '23514') {
+                            console.error('💡 Database constraint violation - likely duplicate webhook processing')
+                            console.error('💡 Payment Intent ID:', paymentIntent.id)
+                            console.error('💡 Attempted status:', 'completed')
+
+                            // Check if order was created by another webhook call
+                            const { data: duplicateCheck } = await supabase
+                                .from('orders')
+                                .select('id, status')
+                                .eq('stripe_payment_intent_id', paymentIntent.id)
+                                .single()
+
+                            if (duplicateCheck) {
+                                console.log('💡 Found existing order after constraint violation:', duplicateCheck)
+                                return NextResponse.json({
+                                    received: true,
+                                    message: 'Order created by concurrent webhook',
+                                    orderId: duplicateCheck.id
+                                })
+                            }
+                        }
+
+                        return NextResponse.json(
+                            { error: 'Failed to create order record', details: orderError.message },
+                            { status: 500 }
+                        )
+                    }
+
+                    console.log('✅ Created order:', orderData.id)
+
+                    console.log('🔄 Creating tickets...')
+                    // Create tickets in database
+                    const ticketsToCreate = []
+                    for (const item of parsedTicketItems) {
+                        for (let i = 0; i < item.quantity; i++) {
+                            ticketsToCreate.push({
+                                order_id: orderData.id,
+                                ticket_type_id: item.ticket_type_id,
+                                event_id,
+                                user_id: user_id && user_id !== 'guest' ? user_id : null,
+                                customer_email: customer_email || null,
+                                customer_name: customer_name || null,
+                                attendee_email: customer_email || null,
+                                attendee_name: customer_name || null,
+                                unit_price: item.unit_price,
+                                purchase_price: item.unit_price, // Keep both for compatibility
+                                quantity: 1, // Each ticket is quantity 1
+                                status: 'active',
+                                confirmation_code: `TKT-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`
+                            })
+                        }
+                    }
+
+                    console.log('🔄 Inserting tickets into database:', ticketsToCreate.length, 'tickets')
+                    const { data: createdTickets, error: ticketError } = await supabase
+                        .from('tickets')
+                        .insert(ticketsToCreate)
+                        .select(`
+                            *,
+                            ticket_types (
+                                name,
+                                description,
+                                events (
+                                    title,
+                                    start_time,
+                                    end_time,
+                                    location
+                                )
+                            )
+                        `)
+
+                    if (ticketError) {
+                        console.error('❌ Failed to create tickets:', ticketError)
+                        console.error('❌ Ticket error details:', JSON.stringify(ticketError, null, 2))
+                        console.error('❌ Tickets data that failed:', JSON.stringify(ticketsToCreate, null, 2))
+                        return NextResponse.json(
+                            { error: 'Failed to create tickets', details: ticketError.message },
+                            { status: 500 }
+                        )
+                    }
+
+                    console.log(`✅ Created ${createdTickets?.length || 0} tickets for order ${orderData.id}`)
+
+                    console.log(`✅ [${webhookId}] Successfully processed charge ${charge.id} for payment ${paymentIntent.id}: created order ${orderData.id} with ${createdTickets?.length || 0} tickets`)
+
+                    const processingTime = Date.now() - startTime
+                    console.log(`⏱️ [${webhookId}] Processing completed in ${processingTime}ms`)
+
+                    return NextResponse.json({
+                        received: true,
+                        webhookId,
+                        processingTime,
+                        orderId: orderData.id,
+                        ticketCount: createdTickets?.length || 0
+                    })
+                } catch (error) {
+                    console.error('❌ Charge webhook processing error:', error)
+                    console.error('❌ Error stack:', error instanceof Error ? error.stack : 'No stack trace')
+                    return NextResponse.json(
+                        { error: 'Charge webhook handler failed', details: error instanceof Error ? error.message : 'Unknown error' },
                         { status: 500 }
                     )
                 }

@@ -214,7 +214,7 @@ export default function StaffDashboard({ user }: StaffDashboardProps) {
                             Refresh
                         </Button>
                         <Button asChild>
-                            <Link href="/create-event">
+                            <Link href="/staff/events/create">
                                 <Plus className="w-4 h-4 mr-2" />
                                 Create Event
                             </Link>
@@ -343,7 +343,7 @@ export default function StaffDashboard({ user }: StaffDashboardProps) {
                             <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
                             <div className="space-y-3">
                                 <Button variant="outline" className="w-full justify-start" asChild>
-                                    <Link href="/create-event">
+                                    <Link href="/staff/events/create">
                                         <Plus className="w-4 h-4 mr-2" />
                                         Create New Event
                                     </Link>
@@ -427,8 +427,8 @@ export default function StaffDashboard({ user }: StaffDashboardProps) {
                                 <p className="text-gray-600 mb-6">
                                     Get started by creating your first event.
                                 </p>
-                                <Button asChild>
-                                    <Link href="/create-event">
+                                <Button asChild className="bg-blue-600 hover:bg-blue-700 text-white">
+                                    <Link href="/staff/events/create">
                                         <Plus className="w-4 h-4 mr-2" />
                                         Create Event
                                     </Link>
@@ -472,7 +472,7 @@ export default function StaffDashboard({ user }: StaffDashboardProps) {
                                                 </Link>
                                             </Button>
                                             <Button variant="outline" size="sm" asChild>
-                                                <Link href={`/events/${event.slug}/edit`}>
+                                                <Link href={`/staff/events/${event.id}/edit`}>
                                                     <Edit className="w-4 h-4 mr-2" />
                                                     Edit
                                                 </Link>

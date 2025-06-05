@@ -200,3 +200,56 @@
 - **Performance**: Ready for optimization phase
 
 **Handoff Status**: ✅ Staff dashboard fully implemented, ready for performance optimization
+
+# Development Progress - LocalLoop V0.3
+
+## Current Session: 2025-06-05
+
+### ✅ RESOLVED: Customer-Side Ticket Loading Issue (Issue #1)
+**Problem**: Customers couldn't see tickets on paid event pages (e.g., "Local Business Networking" event)
+- Getting 400 Bad Request errors from `GET /api/ticket-types?event_id=local-business-networking`
+- Frontend was passing event slugs but API only accepted numeric IDs
+
+**Solution Implemented**:
+- Added `getEventIdFromSlugOrId()` mapping function in `/api/ticket-types/route.ts`
+- Created slug-to-ID mappings for sample events:
+  - `'local-business-networking' → '2'`
+  - `'kids-art-workshop' → '3'`
+  - `'startup-pitch-night' → '7'`
+  - `'food-truck-festival' → '9'`
+- Updated GET endpoint to handle both slugs and numeric IDs
+
+**Verification**: `GET /api/ticket-types?event_id=local-business-networking` now returns proper ticket data ✅
+
+### 🔄 IN PROGRESS: Staff Dashboard Ticket Editing Issue (Issue #2)
+**Problem**: When staff try to edit existing ticket types (e.g., change price from £10 to £15), the PATCH request returns 400 Bad Request with "Validation failed"
+
+**Analysis**: 
+- Frontend correctly converts prices to cents (`Math.round(priceValue * 100)`)
+- Issue likely in PATCH endpoint validation schema in `/api/ticket-types/[id]/route.ts`
+- Need to identify specific validation rule causing failures
+
+**Next Steps**:
+- Test PATCH endpoint directly to get detailed validation errors
+- Fix validation schema or logic
+- Test complete staff workflow: create event → add ticket types → edit ticket types
+
+### Previous Session Summary
+- Fixed multiple database schema mismatches in staff analytics, attendees, and dashboard APIs
+- Updated column references (status→cancelled, total→total_amount, etc.)
+- Resolved authentication issues in staff routes
+- All staff dashboard APIs now working correctly for displaying data
+
+### Environment Status
+- ✅ Dev server running on localhost:3000
+- ✅ Database connectivity working
+- ✅ Authentication flows operational
+- ✅ Customer event viewing functional
+- 🔄 Staff ticket editing needs completion
+
+## Overall Project Status
+- **Core Features**: Event creation, user auth, RSVP system ✅
+- **Payment Integration**: Stripe checkout implemented ✅  
+- **Staff Dashboard**: Data display working, editing needs fixes
+- **Customer Experience**: Event browsing and ticket viewing ✅
+- **Next Major Milestone**: Complete ticket purchase workflow testing

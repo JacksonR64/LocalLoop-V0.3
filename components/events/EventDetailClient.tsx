@@ -43,7 +43,9 @@ export function EventDetailClient({ event }: EventDetailClientProps) {
         if (event.is_paid) {
             const fetchTicketTypes = async () => {
                 try {
-                    const response = await fetch(`/api/ticket-types?event_id=${event.id}`);
+                    // Use database_id for API calls, fallback to id if not available
+                    const eventId = event.database_id || event.id;
+                    const response = await fetch(`/api/ticket-types?event_id=${eventId}`);
                     if (response.ok) {
                         const data = await response.json();
                         setTicketTypes(data.ticket_types || []);
@@ -56,7 +58,7 @@ export function EventDetailClient({ event }: EventDetailClientProps) {
             };
             fetchTicketTypes();
         }
-    }, [event.id, event.is_paid]);
+    }, [event.id, event.database_id, event.is_paid]);
 
     const formatDate = (dateString: string) => {
         return new Date(dateString).toLocaleDateString('en-US', {
@@ -290,7 +292,7 @@ export function EventDetailClient({ event }: EventDetailClientProps) {
                                     <CardContent className="p-6">
                                         <h2 className="text-xl font-semibold mb-4">RSVP</h2>
                                         <RSVPTicketSection
-                                            eventId={event.id}
+                                            eventId={event.database_id || event.id}
                                             eventTitle={event.title}
                                             eventDate={formatDate(event.start_time)}
                                             eventTime={formatTime(event.start_time)}

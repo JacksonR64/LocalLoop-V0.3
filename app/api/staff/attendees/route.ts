@@ -1,20 +1,32 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
-import { authenticateStaff } from '@/lib/auth'
 
 export async function GET(request: NextRequest) {
     try {
-        // Authenticate and authorize staff access
-        const authResult = await authenticateStaff()
-        if (!authResult.success) {
-            return NextResponse.json(
-                { error: authResult.error },
-                { status: authResult.statusCode }
-            )
+        // Authenticate and authorize staff access using session-based auth
+        const supabase = await createServerSupabaseClient()
+
+        // Get the current user from the session
+        const { data: { user }, error: authError } = await supabase.auth.getUser()
+        if (authError || !user) {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
         }
 
-        const { user } = authResult
-        const supabase = await createServerSupabaseClient()
+        // Get user role from the database
+        const { data: userDetails, error: userError } = await supabase
+            .from('users')
+            .select('id, email, display_name, role')
+            .eq('id', user.id)
+            .single()
+
+        if (userError || !userDetails) {
+            return NextResponse.json({ error: 'User not found' }, { status: 404 })
+        }
+
+        // Check if user has organizer or admin role
+        if (userDetails.role !== 'organizer' && userDetails.role !== 'admin') {
+            return NextResponse.json({ error: 'Insufficient permissions' }, { status: 403 })
+        }
 
         // Parse query parameters
         const { searchParams } = new URL(request.url)
@@ -38,7 +50,7 @@ export async function GET(request: NextRequest) {
         attendee_email,
         attendee_name,
         status,
-        checked_in_at,
+        check_in_time,
         confirmation_code,
         created_at,
         ticket_types (
@@ -58,7 +70,7 @@ export async function GET(request: NextRequest) {
           status,
           users (
             id,
-            name,
+            display_name,
             email
           )
         )
@@ -73,8 +85,6 @@ export async function GET(request: NextRequest) {
         guest_name,
         status,
         check_in_time,
-        attendee_count,
-        attendee_names,
         created_at,
         events!inner (
           id,
@@ -85,15 +95,15 @@ export async function GET(request: NextRequest) {
         ),
         users (
           id,
-          name,
+          display_name,
           email
         )
       `)
 
         // Role-based filtering: organizers can only see their own events
-        if (user?.role === 'organizer') {
-            ticketsQuery = ticketsQuery.eq('events.organizer_id', user.id)
-            rsvpsQuery = rsvpsQuery.eq('events.organizer_id', user.id)
+        if (userDetails.role === 'organizer') {
+            ticketsQuery = ticketsQuery.eq('events.organizer_id', userDetails.id)
+            rsvpsQuery = rsvpsQuery.eq('events.organizer_id', userDetails.id)
         }
         // Admins can see all events (no additional filtering needed)
 
@@ -109,10 +119,10 @@ export async function GET(request: NextRequest) {
         }
 
         if (checkedIn === 'true') {
-            ticketsQuery = ticketsQuery.not('checked_in_at', 'is', null)
+            ticketsQuery = ticketsQuery.not('check_in_time', 'is', null)
             rsvpsQuery = rsvpsQuery.not('check_in_time', 'is', null)
         } else if (checkedIn === 'false') {
-            ticketsQuery = ticketsQuery.is('checked_in_at', null)
+            ticketsQuery = ticketsQuery.is('check_in_time', null)
             rsvpsQuery = rsvpsQuery.is('check_in_time', null)
         }
 
@@ -140,14 +150,14 @@ export async function GET(request: NextRequest) {
         const ticketAttendees = tickets.map(ticket => ({
             id: `ticket_${ticket.id}`,
             type: 'ticket' as const,
-            name: ticket.attendee_name || ticket.customer_name || ticket.orders?.[0]?.users?.[0]?.name || 'Unknown',
+            name: ticket.attendee_name || ticket.customer_name || ticket.orders?.[0]?.users?.[0]?.display_name || 'Unknown',
             email: ticket.attendee_email || ticket.customer_email || ticket.orders?.[0]?.users?.[0]?.email || '',
             eventId: ticket.events?.[0]?.id,
             eventTitle: ticket.events?.[0]?.title,
             eventStartTime: ticket.events?.[0]?.start_time,
             eventLocation: ticket.events?.[0]?.location,
             status: ticket.status,
-            checkedInAt: ticket.checked_in_at,
+            checkedInAt: ticket.check_in_time,
             createdAt: ticket.created_at,
             ticketType: ticket.ticket_types?.[0]?.name,
             ticketPrice: ticket.ticket_types?.[0]?.price,
@@ -160,28 +170,22 @@ export async function GET(request: NextRequest) {
         }))
 
         // Convert RSVPs to attendee format
-        const rsvpAttendees = rsvps.flatMap(rsvp => {
-            const attendeeNames = rsvp.attendee_names || [rsvp.guest_name || rsvp.users?.[0]?.name || 'Unknown']
-            const attendeeCount = rsvp.attendee_count || 1
-
-            // Create an entry for each attendee in the RSVP
-            return attendeeNames.slice(0, attendeeCount).map((name: string, index: number) => ({
-                id: `rsvp_${rsvp.id}_${index}`,
-                type: 'rsvp' as const,
-                name: name || 'Unknown',
-                email: rsvp.guest_email || rsvp.users?.[0]?.email || '',
-                eventId: rsvp.events?.[0]?.id,
-                eventTitle: rsvp.events?.[0]?.title,
-                eventStartTime: rsvp.events?.[0]?.start_time,
-                eventLocation: rsvp.events?.[0]?.location,
-                status: rsvp.status,
-                checkedInAt: rsvp.check_in_time,
-                createdAt: rsvp.created_at,
-                attendeeCount: attendeeCount,
-                userId: rsvp.users?.[0]?.id,
-                isMainAttendee: index === 0
-            }))
-        })
+        const rsvpAttendees = rsvps.map(rsvp => ({
+            id: `rsvp_${rsvp.id}`,
+            type: 'rsvp' as const,
+            name: rsvp.guest_name || rsvp.users?.[0]?.display_name || 'Unknown',
+            email: rsvp.guest_email || rsvp.users?.[0]?.email || '',
+            eventId: rsvp.events?.[0]?.id,
+            eventTitle: rsvp.events?.[0]?.title,
+            eventStartTime: rsvp.events?.[0]?.start_time,
+            eventLocation: rsvp.events?.[0]?.location,
+            status: rsvp.status,
+            checkedInAt: rsvp.check_in_time,
+            createdAt: rsvp.created_at,
+            attendeeCount: 1, // Each RSVP is for one person
+            userId: rsvp.users?.[0]?.id,
+            isMainAttendee: true // Always true for RSVPs since they are individual
+        }))
 
         // Combine all attendees
         let allAttendees = [...ticketAttendees, ...rsvpAttendees]
@@ -193,7 +197,7 @@ export async function GET(request: NextRequest) {
                 attendee.name.toLowerCase().includes(searchLower) ||
                 attendee.email.toLowerCase().includes(searchLower) ||
                 attendee.eventTitle?.toLowerCase().includes(searchLower) ||
-                attendee.confirmationCode?.toLowerCase().includes(searchLower)
+                (attendee.type === 'ticket' && (attendee as any).confirmationCode?.toLowerCase().includes(searchLower))
             )
         }
 

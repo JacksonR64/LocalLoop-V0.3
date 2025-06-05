@@ -1,8 +1,8 @@
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { redirect, notFound } from 'next/navigation'
-import EventForm from '@/components/events/EventForm'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
+import StaffEventEditClient from './StaffEventEditClient'
 
 export default async function EditEventPage({ params }: { params: Promise<{ id: string }> }) {
     const supabase = await createServerSupabaseClient()
@@ -89,17 +89,7 @@ export default async function EditEventPage({ params }: { params: Promise<{ id: 
             {/* Main Content */}
             <main className="py-8">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <EventForm
-                        eventId={eventId}
-                        isEdit={true}
-                        onSuccess={(eventId) => {
-                            // Redirect to the event page or back to staff dashboard
-                            window.location.href = `/staff/events/${eventId}`
-                        }}
-                        onCancel={() => {
-                            window.location.href = '/staff'
-                        }}
-                    />
+                    <StaffEventEditClient eventId={eventId} />
                 </div>
             </main>
         </div>

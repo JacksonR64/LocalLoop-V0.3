@@ -111,8 +111,13 @@ export default function TicketTypeManager({ eventId, isOrganizer }: TicketTypeMa
         }
 
         // Capacity validation
-        if (data.capacity && parseInt(data.capacity) < 1) {
-            errors.capacity = 'Capacity must be at least 1'
+        if (data.capacity) {
+            const capacity = parseInt(data.capacity)
+            if (capacity < 1) {
+                errors.capacity = 'Capacity must be at least 1'
+            } else if (capacity > 1000) {
+                errors.capacity = 'Capacity cannot exceed 1000'
+            }
         }
 
         // Date validation
@@ -168,31 +173,46 @@ export default function TicketTypeManager({ eventId, isOrganizer }: TicketTypeMa
             }
 
             // Prepare payload
-            const priceInCents = Math.round((parseFloat(formData.price) || 0) * 100)
-            const payload = {
-                event_id: eventId,
-                name: formData.name.trim(),
-                description: formData.description.trim() || null,
-                price: priceInCents,
-                capacity: formData.capacity ? parseInt(formData.capacity) : null,
-                sale_start: formData.sale_start || null,
-                sale_end: formData.sale_end || null
+            const priceValue = parseFloat(formData.price) || 0
+            const priceInCents = Math.round(priceValue * 100)
+
+            // Validate that price conversion resulted in a valid number
+            if (isNaN(priceInCents) || priceInCents < 0) {
+                setError('Please enter a valid price')
+                return
             }
 
             let response: Response
             if (editingId) {
-                // Update existing ticket type
+                // Update existing ticket type - don't include event_id in PATCH
+                const patchPayload = {
+                    name: formData.name.trim(),
+                    description: formData.description.trim() || null,
+                    price: priceInCents,
+                    capacity: formData.capacity ? parseInt(formData.capacity) : 1000,
+                    sale_start: formData.sale_start.trim() || null,
+                    sale_end: formData.sale_end.trim() || null
+                }
                 response = await fetch(`/api/ticket-types/${editingId}`, {
                     method: 'PATCH',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload as UpdateTicketTypePayload)
+                    body: JSON.stringify(patchPayload as UpdateTicketTypePayload)
                 })
             } else {
-                // Create new ticket type
+                // Create new ticket type - include event_id for POST
+                const postPayload = {
+                    event_id: eventId,
+                    name: formData.name.trim(),
+                    description: formData.description.trim() || null,
+                    price: priceInCents,
+                    capacity: formData.capacity ? parseInt(formData.capacity) : 1000,
+                    sale_start: formData.sale_start.trim() || null,
+                    sale_end: formData.sale_end.trim() || null
+                }
                 response = await fetch('/api/ticket-types', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload as CreateTicketTypePayload)
+                    body: JSON.stringify(postPayload as CreateTicketTypePayload)
                 })
             }
 
@@ -343,14 +363,18 @@ export default function TicketTypeManager({ eventId, isOrganizer }: TicketTypeMa
                                         <Input
                                             type="number"
                                             min="1"
+                                            max="1000"
                                             value={formData.capacity}
                                             onChange={(e) => setFormData(prev => ({ ...prev, capacity: e.target.value }))}
-                                            placeholder="Unlimited"
+                                            placeholder="1000 (default)"
                                             className={validationErrors.capacity ? 'border-red-500' : ''}
                                         />
                                         {validationErrors.capacity && (
                                             <p className="text-red-500 text-sm mt-1">{validationErrors.capacity}</p>
                                         )}
+                                        <p className="text-gray-500 text-xs mt-1">
+                                            If blank, defaults to 1000 tickets maximum
+                                        </p>
                                     </div>
 
                                     <div>
@@ -362,6 +386,9 @@ export default function TicketTypeManager({ eventId, isOrganizer }: TicketTypeMa
                                             value={formData.sale_start}
                                             onChange={(e) => setFormData(prev => ({ ...prev, sale_start: e.target.value }))}
                                         />
+                                        <p className="text-gray-500 text-xs mt-1">
+                                            If blank, tickets can be purchased immediately
+                                        </p>
                                     </div>
 
                                     <div className="md:col-span-2">
@@ -377,6 +404,9 @@ export default function TicketTypeManager({ eventId, isOrganizer }: TicketTypeMa
                                         {validationErrors.sale_end && (
                                             <p className="text-red-500 text-sm mt-1">{validationErrors.sale_end}</p>
                                         )}
+                                        <p className="text-gray-500 text-xs mt-1">
+                                            If blank, tickets remain available until the event starts
+                                        </p>
                                     </div>
 
                                     <div className="md:col-span-2">

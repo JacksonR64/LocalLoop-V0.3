@@ -8,7 +8,8 @@ import { formatDateTime, formatPrice, truncateText } from '@/lib/utils';
 
 // Event interface (simplified from database types)
 export interface EventData {
-    id: string;
+    id: string; // Display ID (slug or original ID)
+    database_id?: string; // Real database UUID for API calls
     title: string;
     description?: string;
     short_description?: string;

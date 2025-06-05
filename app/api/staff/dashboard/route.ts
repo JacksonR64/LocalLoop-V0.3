@@ -38,14 +38,12 @@ export async function GET(request: NextRequest) {
         id,
         title,
         slug,
-        status,
         start_time,
         end_time,
         published,
+        cancelled,
         capacity,
         organizer_id,
-        rsvp_count,
-        total_revenue,
         created_at
       `)
             .order('created_at', { ascending: false })
@@ -70,11 +68,45 @@ export async function GET(request: NextRequest) {
             new Date(event.start_time) > now
         ).length || 0
         const draftEvents = events?.filter(event => !event.published).length || 0
-        const totalAttendees = events?.reduce((sum, event) => sum + (event.rsvp_count || 0), 0) || 0
-        const totalRevenue = events?.reduce((sum, event) => sum + (event.total_revenue || 0), 0) || 0
+
+        // Calculate attendee counts and revenue manually
+        const eventIds = events?.map(event => event.id) || []
+        let rsvpCounts: { [key: string]: number } = {}
+        let revenueAmounts: { [key: string]: number } = {}
+
+        if (eventIds.length > 0) {
+            // Get RSVP counts
+            const { data: rsvpData, error: rsvpError } = await supabase
+                .from('rsvps')
+                .select('event_id')
+                .in('event_id', eventIds)
+                .eq('status', 'confirmed')
+
+            if (!rsvpError && rsvpData) {
+                rsvpData.forEach(rsvp => {
+                    rsvpCounts[rsvp.event_id] = (rsvpCounts[rsvp.event_id] || 0) + 1
+                })
+            }
+
+            // Get revenue amounts
+            const { data: orderData, error: orderError } = await supabase
+                .from('orders')
+                .select('event_id, total_amount, refund_amount')
+                .in('event_id', eventIds)
+                .eq('status', 'completed')
+
+            if (!orderError && orderData) {
+                orderData.forEach(order => {
+                    const netAmount = (order.total_amount || 0) - (order.refund_amount || 0)
+                    revenueAmounts[order.event_id] = (revenueAmounts[order.event_id] || 0) + netAmount
+                })
+            }
+        }
+
+        const totalAttendees = Object.values(rsvpCounts).reduce((sum, count) => sum + count, 0)
+        const totalRevenue = Object.values(revenueAmounts).reduce((sum, amount) => sum + amount, 0)
 
         // Fetch ticket sales for each event
-        const eventIds = events?.map(event => event.id) || []
         let ticketSales: { [key: string]: number } = {}
 
         if (eventIds.length > 0) {
@@ -92,11 +124,30 @@ export async function GET(request: NextRequest) {
         }
 
         // Add ticket sales data to events
-        const eventsWithTicketSales = events?.map(event => ({
-            ...event,
-            ticket_sales: ticketSales[event.id] || 0,
-            pending_rsvps: 0 // TODO: Implement pending RSVP calculation
-        })) || []
+        const eventsWithTicketSales = events?.map(event => {
+            // Calculate status based on cancelled flag and time
+            let status = 'past'
+            const now = new Date()
+            const startTime = new Date(event.start_time)
+            const endTime = new Date(event.end_time)
+
+            if (event.cancelled) {
+                status = 'cancelled'
+            } else if (startTime > now) {
+                status = 'upcoming'
+            } else if (startTime <= now && endTime >= now) {
+                status = 'in_progress'
+            }
+
+            return {
+                ...event,
+                status,
+                rsvp_count: rsvpCounts[event.id] || 0,
+                total_revenue: revenueAmounts[event.id] || 0,
+                ticket_sales: ticketSales[event.id] || 0,
+                pending_rsvps: 0 // TODO: Implement pending RSVP calculation
+            }
+        }) || []
 
         const metrics = {
             total_events: totalEvents,

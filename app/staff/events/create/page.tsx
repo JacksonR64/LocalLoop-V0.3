@@ -1,31 +1,27 @@
-import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { redirect } from 'next/navigation'
-import EventForm from '@/components/events/EventForm'
-import Link from 'next/link'
+import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { ArrowLeft } from 'lucide-react'
+import Link from 'next/link'
+import StaffEventCreateClient from './StaffEventCreateClient'
 
-export default async function CreateEventPage() {
+export default async function StaffEventCreatePage() {
     const supabase = await createServerSupabaseClient()
 
-    // Get the current user
-    const {
-        data: { user },
-    } = await supabase.auth.getUser()
-
-    if (!user) {
+    // Check authentication and role
+    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    if (authError || !user) {
         redirect('/auth/login')
     }
 
-    // Get user details including role
-    const { data: userDetails } = await supabase
+    // Get user role
+    const { data: userData, error: userError } = await supabase
         .from('users')
-        .select('id, email, display_name, role')
+        .select('role, display_name, email')
         .eq('id', user.id)
         .single()
 
-    // Check if user has organizer or admin role
-    if (!userDetails || !['organizer', 'admin'].includes(userDetails.role)) {
-        redirect('/auth/login?error=insufficient_permissions')
+    if (userError || !userData || (userData.role !== 'organizer' && userData.role !== 'admin')) {
+        redirect('/')
     }
 
     return (
@@ -47,12 +43,17 @@ export default async function CreateEventPage() {
                         </div>
 
                         <div className="flex items-center gap-3">
-                            <span className="text-sm text-gray-600">
-                                Welcome, {userDetails.display_name || userDetails.email}
-                            </span>
+                            <div className="text-right">
+                                <div className="text-sm text-gray-900 font-medium">
+                                    {userData.display_name || userData.email}
+                                </div>
+                                <div className="text-xs text-gray-500 capitalize">
+                                    {userData.role}
+                                </div>
+                            </div>
                             <div className="h-8 w-8 bg-blue-600 rounded-full flex items-center justify-center">
                                 <span className="text-white text-sm font-medium">
-                                    {(userDetails.display_name || userDetails.email || 'U').charAt(0).toUpperCase()}
+                                    {(userData.display_name || userData.email || 'U').charAt(0).toUpperCase()}
                                 </span>
                             </div>
                         </div>
@@ -63,15 +64,7 @@ export default async function CreateEventPage() {
             {/* Main Content */}
             <main className="py-8">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <EventForm
-                        onSuccess={(eventId) => {
-                            // Redirect to the event page or back to staff dashboard
-                            window.location.href = `/staff/events/${eventId}`
-                        }}
-                        onCancel={() => {
-                            window.location.href = '/staff'
-                        }}
-                    />
+                    <StaffEventCreateClient />
                 </div>
             </main>
         </div>

@@ -2,6 +2,32 @@ import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 
+// Helper function to resolve event slug/ID to UUID (updated to return full UUIDs)
+function getEventIdFromSlugOrId(eventIdOrSlug: string): string {
+    const slugToIdMap: { [key: string]: string } = {
+        'local-business-networking': '00000000-0000-0000-0000-000000000002',
+        'kids-art-workshop': '00000000-0000-0000-0000-000000000003',
+        'startup-pitch-night': '00000000-0000-0000-0000-000000000007',
+        'food-truck-festival': '00000000-0000-0000-0000-000000000009',
+        // Add more mappings as needed
+    };
+
+    // If it's already a UUID, return as is
+    if (/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(eventIdOrSlug)) {
+        return eventIdOrSlug;
+    }
+
+    // If it's a numeric ID, convert to UUID format
+    if (/^\d+$/.test(eventIdOrSlug)) {
+        const num = parseInt(eventIdOrSlug);
+        return `00000000-0000-0000-0000-${num.toString().padStart(12, '0')}`;
+    }
+
+    // If it's a sample event slug, map it to the full UUID
+    // Otherwise, return the original slug to allow database lookup
+    return slugToIdMap[eventIdOrSlug] || eventIdOrSlug;
+}
+
 // Initialize Stripe with proper error handling
 const getStripeInstance = () => {
     const secretKey = process.env.STRIPE_SECRET_KEY
@@ -61,12 +87,40 @@ export async function POST(request: NextRequest) {
         // Get current user
         const { data: { user } } = await supabase.auth.getUser()
 
+        // Resolve event ID from slug if needed (same logic as ticket-types API)
+        const mappedEventId = getEventIdFromSlugOrId(event_id)
+        let actualEventId = mappedEventId
+
+        // If it's not a UUID format, try to find it in database by slug
+        if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(mappedEventId)) {
+            const { data: eventBySlug } = await supabase
+                .from('events')
+                .select('id')
+                .eq('slug', mappedEventId)
+                .single()
+
+            if (eventBySlug) {
+                actualEventId = eventBySlug.id
+                console.log('[DEBUG] Resolved slug to UUID:', mappedEventId, '->', actualEventId)
+            }
+        }
+
+        console.log('[DEBUG] Final actualEventId:', actualEventId)
+        console.log('[DEBUG] Requested ticket IDs:', ticketItems.map(item => item.ticket_type_id))
+
         // Validate and fetch ticket types from database
         const { data: ticketTypes, error: ticketTypesError } = await supabase
             .from('ticket_types')
             .select('*')
             .in('id', ticketItems.map(item => item.ticket_type_id))
-            .eq('event_id', event_id)
+            .eq('event_id', actualEventId)
+
+        console.log('[DEBUG] Query filters:', {
+            ticket_ids: ticketItems.map(item => item.ticket_type_id),
+            event_id: actualEventId
+        })
+        console.log('[DEBUG] Found ticket types:', ticketTypes?.length || 0)
+        console.log('[DEBUG] ticketTypes data:', ticketTypes)
 
         if (ticketTypesError) {
             console.error('Database error fetching ticket types:', ticketTypesError)
@@ -83,7 +137,7 @@ export async function POST(request: NextRequest) {
         const { data: eventData, error: eventError } = await supabase
             .from('events')
             .select('*')
-            .eq('id', event_id)
+            .eq('id', actualEventId)
             .eq('published', true)
             .eq('cancelled', false)
             .single()
@@ -185,7 +239,7 @@ export async function POST(request: NextRequest) {
                 enabled: true,
             },
             metadata: {
-                event_id,
+                event_id: getEventIdFromSlugOrId(event_id),
                 user_id: user?.id || 'guest',
                 ticket_items: JSON.stringify(ticketItems.map(item => {
                     const ticketType = (ticketTypes as TicketType[]).find((tt: TicketType) => tt.id === item.ticket_type_id)

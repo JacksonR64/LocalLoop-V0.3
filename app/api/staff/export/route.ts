@@ -87,23 +87,15 @@ async function exportAttendees(supabase: any, filters: any, userRole: string) {
         .select(`
       id,
       status,
-      attendee_count,
-      guest_email,
-      guest_name,
       check_in_time,
       created_at,
-      events!inner(
-        id,
-        title,
-        start_time,
-        location
-      ),
-      users(
-        id,
-        email,
-        full_name
-      )
+      guest_name,
+      guest_email,
+      attendee_names,
+      events!inner(id, title, start_time, organizer_id),
+      users(id, email, display_name)
     `)
+        .order('created_at', { ascending: false })
 
     // Apply filters
     if (eventId) query = query.eq('event_id', eventId)
@@ -116,10 +108,10 @@ async function exportAttendees(supabase: any, filters: any, userRole: string) {
         query = query.eq('events.organizer_id', userRole)
     }
 
-    const { data: rsvps, error: rsvpError } = await query
+    const { data: rsvps, error: rsvpsError } = await query
 
-    if (rsvpError) {
-        console.error('RSVP fetch error:', rsvpError)
+    if (rsvpsError) {
+        console.error('RSVP fetch error:', rsvpsError)
         throw new Error('Failed to fetch RSVP data')
     }
 
@@ -129,7 +121,7 @@ async function exportAttendees(supabase: any, filters: any, userRole: string) {
         .select(`
       id,
       status,
-      checked_in_at,
+      check_in_time,
       created_at,
       attendee_name,
       attendee_email,
@@ -172,7 +164,7 @@ async function exportAttendees(supabase: any, filters: any, userRole: string) {
     // Add RSVP attendees
     rsvps?.forEach((rsvp: any) => {
         attendeeData.push({
-            'Name': rsvp.users?.full_name || rsvp.guest_name || 'Unknown',
+            'Name': rsvp.users?.display_name || rsvp.guest_name || 'Unknown',
             'Email': rsvp.users?.email || rsvp.guest_email || 'Unknown',
             'Type': 'Free RSVP',
             'Event': rsvp.events.title,
@@ -188,7 +180,7 @@ async function exportAttendees(supabase: any, filters: any, userRole: string) {
             'Order ID': '',
             'Order Total': '',
             'Order Status': '',
-            'Attendee Count': rsvp.attendee_count || 1,
+            'Attendee Count': 1,
             'User ID': rsvp.users?.id || '',
             'Event ID': rsvp.events.id
         })
@@ -207,8 +199,8 @@ async function exportAttendees(supabase: any, filters: any, userRole: string) {
             'Ticket Type': ticket.ticket_types.name,
             'Ticket Price': `$${(ticket.ticket_types.price / 100).toFixed(2)}`,
             'Registration Date': new Date(ticket.created_at).toLocaleDateString(),
-            'Check-in Status': ticket.checked_in_at ? 'Checked In' : 'Not Checked In',
-            'Check-in Time': ticket.checked_in_at ? new Date(ticket.checked_in_at).toLocaleDateString() : '',
+            'Check-in Status': ticket.check_in_time ? 'Checked In' : 'Not Checked In',
+            'Check-in Time': ticket.check_in_time ? new Date(ticket.check_in_time).toLocaleDateString() : '',
             'Confirmation Code': ticket.confirmation_code || '',
             'Order ID': ticket.orders.id,
             'Order Total': `$${(ticket.orders.total / 100).toFixed(2)}`,
@@ -253,8 +245,8 @@ async function exportAnalytics(supabase: any, filters: any, userRole: string) {
       title,
       start_time,
       capacity,
-      rsvps(id, status, attendee_count, check_in_time),
-      orders(id, total, status, tickets(id, status, checked_in_at))
+      rsvps(id, status, check_in_time),
+      orders(id, total, status, tickets(id, status, check_in_time))
     `)
         .gte('created_at', startDate.toISOString())
 
@@ -269,19 +261,12 @@ async function exportAnalytics(supabase: any, filters: any, userRole: string) {
     }
 
     const analyticsData = events?.map((event: any) => {
-        const rsvpAttendees = event.rsvps
-            ?.filter((rsvp: any) => rsvp.status === 'confirmed')
-            ?.reduce((sum: number, rsvp: any) => sum + (rsvp.attendee_count || 1), 0) || 0
+        const totalAttendees = (event.rsvps?.filter((rsvp: any) => rsvp.status === 'confirmed').length || 0) +
+            (event.orders?.filter((order: any) => order.status === 'completed').length || 0)
 
-        const ticketAttendees = event.orders
-            ?.filter((order: any) => order.status === 'completed')
-            ?.reduce((sum: number, order: any) =>
-                sum + (order.tickets?.filter((ticket: any) => ticket.status === 'active').length || 0), 0) || 0
-
-        const totalAttendees = rsvpAttendees + ticketAttendees
         const checkedInCount = (event.rsvps?.filter((rsvp: any) => rsvp.check_in_time).length || 0) +
             (event.orders?.reduce((sum: number, order: any) =>
-                sum + (order.tickets?.filter((ticket: any) => ticket.checked_in_at).length || 0), 0) || 0)
+                sum + (order.tickets?.filter((ticket: any) => ticket.check_in_time).length || 0), 0) || 0)
 
         const revenue = event.orders
             ?.filter((order: any) => order.status === 'completed')
@@ -295,8 +280,8 @@ async function exportAnalytics(supabase: any, filters: any, userRole: string) {
             'Total Revenue': `$${(revenue / 100).toFixed(2)}`,
             'Capacity': event.capacity || 0,
             'Capacity Utilization': event.capacity ? `${((totalAttendees / event.capacity) * 100).toFixed(1)}%` : 'N/A',
-            'RSVP Count': rsvpAttendees,
-            'Ticket Count': ticketAttendees,
+            'RSVP Count': (event.rsvps?.filter((rsvp: any) => rsvp.status === 'confirmed').length || 0),
+            'Ticket Count': (event.orders?.filter((order: any) => order.status === 'completed').length || 0),
             'Check-in Rate': totalAttendees > 0 ? `${((checkedInCount / totalAttendees) * 100).toFixed(1)}%` : '0%',
             'Revenue Per Attendee': totalAttendees > 0 ? `$${(revenue / 100 / totalAttendees).toFixed(2)}` : '$0.00'
         }
@@ -320,7 +305,7 @@ async function exportEvents(supabase: any, filters: any, userRole: string) {
       published,
       created_at,
       ticket_types(name, price),
-      rsvps(id, status, attendee_count),
+      rsvps(id, status),
       orders(id, total, status)
     `)
 
@@ -335,8 +320,7 @@ async function exportEvents(supabase: any, filters: any, userRole: string) {
     }
 
     const eventData = events?.map((event: any) => {
-        const totalAttendees = (event.rsvps?.reduce((sum: number, rsvp: any) =>
-            sum + (rsvp.status === 'confirmed' ? (rsvp.attendee_count || 1) : 0), 0) || 0) +
+        const totalAttendees = (event.rsvps?.filter((rsvp: any) => rsvp.status === 'confirmed').length || 0) +
             (event.orders?.filter((order: any) => order.status === 'completed').length || 0)
 
         const totalRevenue = event.orders

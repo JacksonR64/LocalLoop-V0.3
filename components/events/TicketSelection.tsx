@@ -179,11 +179,26 @@ export default function TicketSelection({
                 </CardHeader>
                 <CardContent className="space-y-4">
                     {ticketTypes.map((ticket) => {
-                        const available = Math.max(0, ticket.capacity - ticket.sold_count)
+                        // Handle undefined sold_count gracefully
+                        const soldCount = ticket.sold_count || 0
+                        const capacity = ticket.capacity || 1000
+                        const available = Math.max(0, capacity - soldCount)
                         const quantity = quantities[ticket.id] || 0
                         const isAvailable = available > 0
-                        const saleActive = new Date() >= new Date(ticket.sale_start) &&
-                            new Date() <= new Date(ticket.sale_end)
+
+                        // Fix sale period validation - handle null dates properly
+                        const now = new Date()
+                        let saleActive = true // Default to active if no sale dates set
+
+                        if (ticket.sale_start) {
+                            const saleStart = new Date(ticket.sale_start)
+                            if (now < saleStart) saleActive = false
+                        }
+
+                        if (ticket.sale_end) {
+                            const saleEnd = new Date(ticket.sale_end)
+                            if (now > saleEnd) saleActive = false
+                        }
 
                         return (
                             <div
@@ -197,7 +212,7 @@ export default function TicketSelection({
                                         <div className="flex items-center gap-4 text-sm text-gray-500">
                                             <span className="flex items-center gap-1">
                                                 <Users className="h-4 w-4" />
-                                                {available} / {ticket.capacity} available
+                                                {`${available} / ${capacity} available`}
                                             </span>
                                             <span className="font-semibold text-lg text-gray-900">
                                                 {formatPrice(ticket.price)}

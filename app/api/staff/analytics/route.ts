@@ -51,7 +51,7 @@ export async function GET(request: NextRequest) {
         end_time,
         capacity,
         published,
-        status,
+        cancelled,
         created_at,
         organizer_id,
         ticket_types!inner(
@@ -62,19 +62,17 @@ export async function GET(request: NextRequest) {
         rsvps(
           id,
           status,
-          attendee_count,
           check_in_time,
           created_at
         ),
         orders(
           id,
-          total,
+          total_amount,
           status,
           created_at,
           tickets(
             id,
-            status,
-            checked_in_at
+            check_in_time
           )
         )
       `)
@@ -143,18 +141,18 @@ export async function GET(request: NextRequest) {
                 // Count attendees from RSVPs
                 const rsvpAttendees = event.rsvps
                     ?.filter((rsvp: any) => rsvp.status === 'confirmed')
-                    ?.reduce((sum: number, rsvp: any) => sum + (rsvp.attendee_count || 1), 0) || 0
+                    ?.length || 0 // Count each RSVP as 1 attendee since attendee_count doesn't exist
 
                 // Count ticket holders
                 const ticketAttendees = event.orders
                     ?.filter((order: any) => order.status === 'completed')
                     ?.reduce((sum: number, order: any) =>
-                        sum + (order.tickets?.filter((ticket: any) => ticket.status === 'active').length || 0), 0) || 0
+                        sum + (order.tickets?.length || 0), 0) || 0
 
                 // Calculate revenue from completed orders
                 const eventRevenue = event.orders
                     ?.filter((order: any) => order.status === 'completed')
-                    ?.reduce((sum: number, order: any) => sum + (order.total || 0), 0) || 0
+                    ?.reduce((sum: number, order: any) => sum + (order.total_amount || 0), 0) || 0
 
                 const eventTotalAttendees = rsvpAttendees + ticketAttendees
                 totalAttendees += eventTotalAttendees
