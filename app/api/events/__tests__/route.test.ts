@@ -60,11 +60,12 @@ import { NextRequest } from 'next/server'
 import { GET } from '../route'
 
 describe('/api/events', () => {
-    let mockCreateServerSupabaseClient: any
-    let mockAuth: any
-    let mockQuery: any
+    let mockCreateServerSupabaseClient: jest.MockedFunction<() => unknown>
+    let mockAuth: { getUser: jest.MockedFunction<() => Promise<{ data: { user: unknown }, error: unknown }>> }
+    let mockQuery: Record<string, jest.MockedFunction<unknown>>
 
     beforeEach(() => {
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
         const { createServerSupabaseClient } = require('@/lib/supabase-server')
         mockCreateServerSupabaseClient = createServerSupabaseClient
 

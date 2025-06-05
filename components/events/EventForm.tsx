@@ -15,7 +15,6 @@ import { LoadingSpinner } from '@/components/ui/LoadingSpinner'
 import TicketTypeManager from '@/components/events/TicketTypeManager'
 import {
     Calendar,
-    Clock,
     MapPin,
     DollarSign,
     Users,
@@ -186,17 +185,17 @@ export default function EventForm({ eventId, isEdit = false, onSuccess, onCancel
             .replace(/^-|-$/g, '')
     }
 
-    const handleInputChange = (field: keyof EventFormData, value: any) => {
+    const handleInputChange = (field: keyof EventFormData, value: string | boolean | string[]) => {
         setFormData(prev => {
             const updated = { ...prev, [field]: value }
 
             // Auto-generate slug from title
-            if (field === 'title' && !isEdit) {
+            if (field === 'title' && !isEdit && typeof value === 'string') {
                 updated.slug = generateSlug(value)
             }
 
             // Auto-generate alt text from title
-            if (field === 'title' && updated.image_url && !updated.image_alt_text) {
+            if (field === 'title' && updated.image_url && !updated.image_alt_text && typeof value === 'string') {
                 updated.image_alt_text = `${value} event image`
             }
 
@@ -206,7 +205,8 @@ export default function EventForm({ eventId, isEdit = false, onSuccess, onCancel
         // Clear validation error for this field
         if (validationErrors[field]) {
             setValidationErrors(prev => {
-                const { [field]: removed, ...rest } = prev
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                const { [field]: _, ...rest } = prev
                 return rest
             })
         }

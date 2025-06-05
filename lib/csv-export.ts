@@ -91,7 +91,7 @@ class CSVExporter {
         }).format(amount / 100)
     }
 
-    private escapeCSVValue(value: any): string {
+    private escapeCSVValue(value: unknown): string {
         if (value === null || value === undefined) {
             return ''
         }
@@ -104,7 +104,7 @@ class CSVExporter {
         return str
     }
 
-    private generateCSVContent(data: any[], headers: string[]): string {
+    private generateCSVContent(data: Record<string, unknown>[], headers: string[]): string {
         const rows = [headers]
 
         data.forEach(item => {
@@ -136,7 +136,6 @@ class CSVExporter {
     ): Promise<void> {
         const {
             filename = `attendees-export-${new Date().toISOString().split('T')[0]}.csv`,
-            includeHeaders = true,
             dateFormat = 'short',
             currencyFormat = 'usd',
             customFields,
@@ -245,7 +244,7 @@ class CSVExporter {
 
     // Export summary data from analytics overview
     async exportSummary(
-        overviewData: any,
+        overviewData: Record<string, unknown>,
         timeRange: string,
         options: CSVExportOptions = {}
     ): Promise<void> {
@@ -259,10 +258,10 @@ class CSVExporter {
             'Time Range': timeRange,
             'Total Events': overviewData.totalEvents,
             'Total Attendees': overviewData.totalAttendees,
-            'Total Revenue': this.formatCurrency(overviewData.totalRevenue * 100, currencyFormat),
-            'Average Attendance': overviewData.averageAttendance.toFixed(1),
-            'Conversion Rate': `${overviewData.conversionRate.toFixed(1)}%`,
-            'Growth Rate': `${overviewData.growthRate.toFixed(1)}%`
+            'Total Revenue': this.formatCurrency((overviewData.totalRevenue as number || 0) * 100, currencyFormat),
+            'Average Attendance': (overviewData.averageAttendance as number || 0).toFixed(1),
+            'Conversion Rate': `${(overviewData.conversionRate as number || 0).toFixed(1)}%`,
+            'Growth Rate': `${(overviewData.growthRate as number || 0).toFixed(1)}%`
         }]
 
         const headers = Object.keys(exportData[0])
@@ -275,26 +274,26 @@ class CSVExporter {
 export const csvExporter = new CSVExporter()
 
 // Helper function to transform attendees API response to export format
-export function transformAttendeesForExport(attendees: any[]): AttendeeExportData[] {
+export function transformAttendeesForExport(attendees: Record<string, unknown>[]): AttendeeExportData[] {
     return attendees.map(attendee => ({
-        id: attendee.id,
-        type: attendee.type,
-        name: attendee.name,
-        email: attendee.email,
-        eventId: attendee.eventId,
-        eventTitle: attendee.eventTitle,
-        eventStartTime: attendee.eventStartTime,
-        eventLocation: attendee.eventLocation,
-        status: attendee.status,
-        checkedInAt: attendee.checkedInAt,
-        createdAt: attendee.createdAt,
-        ticketType: attendee.ticketType,
-        ticketPrice: attendee.ticketPrice,
-        confirmationCode: attendee.confirmationCode,
-        orderId: attendee.orderId,
-        orderTotal: attendee.orderTotal,
-        orderStatus: attendee.orderStatus,
-        userId: attendee.userId,
-        attendeeCount: attendee.attendeeCount
+        id: attendee.id as string,
+        type: attendee.type as 'ticket' | 'rsvp',
+        name: attendee.name as string,
+        email: attendee.email as string,
+        eventId: attendee.eventId as string,
+        eventTitle: attendee.eventTitle as string,
+        eventStartTime: attendee.eventStartTime as string,
+        eventLocation: attendee.eventLocation as string,
+        status: attendee.status as string,
+        checkedInAt: attendee.checkedInAt as string | null,
+        createdAt: attendee.createdAt as string,
+        ticketType: attendee.ticketType as string,
+        ticketPrice: attendee.ticketPrice as number,
+        confirmationCode: attendee.confirmationCode as string | null,
+        orderId: attendee.orderId as string | null,
+        orderTotal: attendee.orderTotal as number | null,
+        orderStatus: attendee.orderStatus as string | null,
+        userId: attendee.userId as string | null,
+        attendeeCount: attendee.attendeeCount as number
     }))
 } 

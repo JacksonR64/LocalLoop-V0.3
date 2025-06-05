@@ -71,8 +71,8 @@ export async function GET(request: NextRequest) {
 
         // Calculate attendee counts and revenue manually
         const eventIds = events?.map(event => event.id) || []
-        let rsvpCounts: { [key: string]: number } = {}
-        let revenueAmounts: { [key: string]: number } = {}
+        const rsvpCounts: { [key: string]: number } = {}
+        const revenueAmounts: { [key: string]: number } = {}
 
         if (eventIds.length > 0) {
             // Get RSVP counts
@@ -107,7 +107,7 @@ export async function GET(request: NextRequest) {
         const totalRevenue = Object.values(revenueAmounts).reduce((sum, amount) => sum + amount, 0)
 
         // Fetch ticket sales for each event
-        let ticketSales: { [key: string]: number } = {}
+        const ticketSales: { [key: string]: number } = {}
 
         if (eventIds.length > 0) {
             const { data: ticketCounts, error: ticketError } = await supabase

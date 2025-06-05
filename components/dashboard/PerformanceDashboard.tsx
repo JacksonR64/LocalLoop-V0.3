@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { RefreshCw, TrendingUp, TrendingDown, AlertCircle, CheckCircle, Clock } from 'lucide-react'
@@ -14,7 +14,7 @@ interface PerformanceMetric {
     rating?: string
     url?: string
     created_at: string
-    additional_data?: any
+    additional_data?: Record<string, unknown>
 }
 
 interface MetricSummary {

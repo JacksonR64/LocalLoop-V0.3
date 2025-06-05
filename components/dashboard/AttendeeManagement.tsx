@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+
 import { Checkbox } from '@/components/ui/checkbox'
 import {
     Table,
@@ -19,7 +19,6 @@ import {
 import {
     Users,
     Search,
-    Filter,
     Mail,
     Download,
     CheckCircle,
@@ -85,7 +84,7 @@ const formatDate = (dateString: string | null | undefined, formatString: string 
         const date = new Date(dateString)
         if (isNaN(date.getTime())) return 'N/A'
         return format(date, formatString)
-    } catch (error) {
+    } catch {
         return 'N/A'
     }
 }
@@ -102,8 +101,8 @@ export default function AttendeeManagement() {
     const [eventFilter, setEventFilter] = useState('all')
     const [statusFilter, setStatusFilter] = useState('all')
     const [checkedInFilter, setCheckedInFilter] = useState('all')
-    const [sortBy, setSortBy] = useState('created_at')
-    const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc')
+    const [sortBy] = useState('created_at')
+    const [sortOrder] = useState<'asc' | 'desc'>('desc')
 
     // Pagination
     const [currentPage, setCurrentPage] = useState(1)
@@ -210,7 +209,7 @@ export default function AttendeeManagement() {
     const handleExportAttendees = async (selectedOnly: boolean = false) => {
         try {
             // Prepare filters for export
-            const filters: any = {}
+            const filters: Record<string, string> = {}
 
             if (eventFilter !== 'all') filters.eventId = eventFilter
             if (statusFilter !== 'all') filters.status = statusFilter
@@ -218,11 +217,7 @@ export default function AttendeeManagement() {
             if (search) filters.search = search
 
             // If exporting selected only, we'll filter the current attendees data
-            let exportData = attendees
-
-            if (selectedOnly) {
-                exportData = attendees.filter(attendee => selectedAttendees.has(attendee.id))
-            }
+            // If exporting selected only, we'll filter the current attendees data
 
             // Call the export API
             const response = await fetch('/api/staff/export', {
@@ -268,7 +263,7 @@ export default function AttendeeManagement() {
         }
     }
 
-    const getStatusBadge = (status: string, type: 'ticket' | 'rsvp') => {
+    const getStatusBadge = (status: string) => {
         const statusColors = {
             active: 'bg-green-100 text-green-800',
             cancelled: 'bg-red-100 text-red-800',
@@ -564,7 +559,7 @@ export default function AttendeeManagement() {
                                             </div>
                                         </TableCell>
                                         <TableCell>
-                                            {getStatusBadge(attendee.status, attendee.type)}
+                                            {getStatusBadge(attendee.status)}
                                         </TableCell>
                                         <TableCell>
                                             {attendee.checkedInAt ? (

@@ -62,7 +62,7 @@ export default async function TestAuthPage() {
                 <p>Staff access requirements:</p>
                 <ul className="list-disc pl-6">
                     <li>Must be authenticated ✅</li>
-                    <li>Must have role 'organizer' or 'admin' {userDetails?.role === 'organizer' || userDetails?.role === 'admin' ? '✅' : '❌'}</li>
+                    <li>Must have role &apos;organizer&apos; or &apos;admin&apos; {userDetails?.role === 'organizer' || userDetails?.role === 'admin' ? '✅' : '❌'}</li>
                 </ul>
             </div>
 
@@ -77,7 +77,7 @@ export default async function TestAuthPage() {
                 </div>
             ) : (
                 <div className="mt-4 text-red-600">
-                    <p>❌ You don't have staff access. Your role is: {userDetails?.role || 'unknown'}</p>
+                    <p>❌ You don&apos;t have staff access. Your role is: {userDetails?.role || 'unknown'}</p>
                 </div>
             )}
         </div>

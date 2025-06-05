@@ -1,7 +1,7 @@
 // Simple in-memory cache for API responses
 // Helps reduce database load and improve response times
 
-interface CacheEntry<T = any> {
+interface CacheEntry<T = unknown> {
   data: T;
   timestamp: number;
   ttl: number; // Time to live in milliseconds
@@ -21,7 +21,7 @@ class MemoryCache {
 
   get<T>(key: string): T | null {
     const entry = this.cache.get(key);
-    
+
     if (!entry) {
       return null;
     }
@@ -119,7 +119,7 @@ export function getCacheStats() {
 // Cache key generators
 export const cacheKeys = {
   events: {
-    list: (filters?: Record<string, any>) => 
+    list: (filters?: Record<string, unknown>) =>
       `events:list:${JSON.stringify(filters || {})}`,
     detail: (id: string) => `events:detail:${id}`,
     userRsvps: (userId: string) => `events:user_rsvps:${userId}`,
@@ -143,7 +143,7 @@ export function invalidateEventCache(eventId?: string): void {
     deleteCached(cacheKeys.events.ticketTypes(eventId));
     deleteCached(cacheKeys.stats.eventAttendees(eventId));
   }
-  
+
   // Invalidate list caches (they might include the updated event)
   const stats = getCacheStats();
   stats.entries
@@ -172,10 +172,10 @@ export async function withCache<T>(
 
   // Fetch fresh data
   const data = await fetcher();
-  
+
   // Cache the result
   setCached(key, data, ttl);
-  
+
   return data;
 }
 

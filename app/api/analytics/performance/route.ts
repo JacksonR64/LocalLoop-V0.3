@@ -45,7 +45,8 @@ export async function POST(request: NextRequest) {
             .from('performance_metrics')
             .insert({
                 user_id: user?.id || null,
-                metric_type: data.type || 'unknown',
+                metric_type: ('type' in data) ? data.type || 'unknown' :
+                    ('endpoint' in data) ? 'api' : 'web-vitals',
                 metric_name: 'metric_name' in data ? data.metric_name :
                     'endpoint' in data ? data.endpoint :
                         'page' in data ? data.page :
@@ -94,7 +95,7 @@ export async function GET(request: NextRequest) {
 
         // Calculate time range
         const now = new Date()
-        let fromTime = new Date()
+        const fromTime = new Date()
         switch (timeRange) {
             case '1h':
                 fromTime.setHours(now.getHours() - 1)
@@ -163,7 +164,12 @@ export async function GET(request: NextRequest) {
 }
 
 // Generate summary statistics for metrics
-function generateSummary(metrics: any[]) {
+function generateSummary(metrics: Array<{
+    metric_name: string;
+    value: number;
+    created_at: string;
+    [key: string]: unknown;
+}>) {
     const grouped = metrics.reduce((acc, metric) => {
         const key = metric.metric_name
         if (!acc[key]) {
@@ -171,16 +177,17 @@ function generateSummary(metrics: any[]) {
         }
         acc[key].push(metric)
         return acc
-    }, {} as Record<string, any[]>)
+    }, {} as Record<string, typeof metrics>)
 
     return Object.entries(grouped).map(([name, values]) => {
-        const numericValues = values.map(v => v.value).filter(v => !isNaN(v))
+        const metricsArray = values
+        const numericValues = metricsArray.map(v => v.value).filter(v => !isNaN(v))
         const average = numericValues.length > 0
             ? numericValues.reduce((sum, val) => sum + val, 0) / numericValues.length
             : 0
 
-        const lastValue = values[0]?.value || 0
-        const previousValue = values[1]?.value || lastValue
+        const lastValue = metricsArray[0]?.value || 0
+        const previousValue = metricsArray[1]?.value || lastValue
 
         // Determine trend
         let trend: 'up' | 'down' | 'stable' = 'stable'
@@ -207,7 +214,7 @@ function generateSummary(metrics: any[]) {
         return {
             name,
             average,
-            count: values.length,
+            count: metricsArray.length,
             rating,
             trend,
             lastValue

@@ -236,7 +236,7 @@ export async function canAccessEvent(userId: string, userRole: UserRole, eventId
 /**
  * Apply role-based filtering to a Supabase query for events
  */
-export function applyEventRoleFilter(query: any, userRole: UserRole, userId: string) {
+export function applyEventRoleFilter(query: { eq: (field: string, value: string) => unknown }, userRole: UserRole, userId: string) {
     if (userRole === 'organizer') {
         return query.eq('organizer_id', userId)
     }
@@ -247,7 +247,7 @@ export function applyEventRoleFilter(query: any, userRole: UserRole, userId: str
 /**
  * Apply role-based filtering to events data in code
  */
-export function filterEventsByRole(events: any[], userRole: UserRole, userId: string): any[] {
+export function filterEventsByRole(events: Array<{ organizer_id: string }>, userRole: UserRole, userId: string): Array<{ organizer_id: string }> {
     if (userRole === 'admin') {
         return events
     }

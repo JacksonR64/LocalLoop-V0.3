@@ -22,7 +22,7 @@ export function withPerformanceTracking(handler: (req: NextRequest) => Promise<N
         success: response.status < 400,
         timestamp: Date.now(),
         userAgent: req.headers.get('user-agent') || 'unknown',
-        ip: req.ip || req.headers.get('x-forwarded-for') || 'unknown',
+        ip: req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'unknown',
       })
 
       // Add performance headers to response
@@ -44,7 +44,7 @@ export function withPerformanceTracking(handler: (req: NextRequest) => Promise<N
         timestamp: Date.now(),
         error: error instanceof Error ? error.message : 'Unknown error',
         userAgent: req.headers.get('user-agent') || 'unknown',
-        ip: req.ip || req.headers.get('x-forwarded-for') || 'unknown',
+        ip: req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'unknown',
       })
 
       throw error
@@ -112,11 +112,11 @@ async function trackAPIPerformance(data: APIPerformanceData) {
 }
 
 // Simple performance decorator for individual functions
-export function withFunctionPerformanceTracking<T extends (...args: any[]) => any>(
+export function withFunctionPerformanceTracking<T extends (...args: unknown[]) => unknown>(
   fn: T,
   functionName: string
 ): T {
-  return ((...args: any[]) => {
+  return ((...args: Parameters<T>) => {
     const startTime = performance.now()
 
     try {
@@ -132,7 +132,7 @@ export function withFunctionPerformanceTracking<T extends (...args: any[]) => an
           })
           .catch((error) => {
             const duration = performance.now() - startTime
-            logFunctionPerformance(functionName, duration, false, error)
+            logFunctionPerformance(functionName, duration, false, error instanceof Error ? error : undefined)
             throw error
           })
       } else {
@@ -143,13 +143,13 @@ export function withFunctionPerformanceTracking<T extends (...args: any[]) => an
       }
     } catch (error) {
       const duration = performance.now() - startTime
-      logFunctionPerformance(functionName, duration, false, error)
+      logFunctionPerformance(functionName, duration, false, error instanceof Error ? error : undefined)
       throw error
     }
   }) as T
 }
 
-function logFunctionPerformance(functionName: string, duration: number, success: boolean, error?: any) {
+function logFunctionPerformance(functionName: string, duration: number, success: boolean, error?: Error) {
   if (process.env.NODE_ENV === 'development' && duration > 100) { // Only log slow functions
     console.log(`🔧 Function Performance: ${functionName} took ${duration.toFixed(2)}ms`,
       success ? '✅' : '❌', error ? `Error: ${error.message}` : '')

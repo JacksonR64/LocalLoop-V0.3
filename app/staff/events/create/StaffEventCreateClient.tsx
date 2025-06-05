@@ -6,7 +6,7 @@ import EventForm from '@/components/events/EventForm'
 export default function StaffEventCreateClient() {
     const router = useRouter()
 
-    const handleSuccess = (eventId: string) => {
+    const handleSuccess = () => {
         // Redirect to the staff dashboard after successful creation
         router.push('/staff?tab=events')
     }

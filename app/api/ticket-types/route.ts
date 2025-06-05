@@ -73,7 +73,7 @@ const ticketTypeSchema = z.object({
 
 // Sample ticket types for development/demo events
 function getSampleTicketTypes(eventId: string) {
-    const sampleTickets: { [key: string]: any[] } = {
+    const sampleTickets: { [key: string]: Record<string, unknown>[] } = {
         '2': [ // Local Business Networking Mixer
             {
                 id: '00000002-0001-0000-0000-000000000000',

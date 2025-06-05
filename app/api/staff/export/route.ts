@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
         }
 
         const body = await request.json()
-        const { type, filters = {}, options = {} } = body
+        const { type, filters = {} } = body
 
         // Validate export type
         if (!['attendees', 'analytics', 'events', 'summary'].includes(type)) {
@@ -34,22 +34,22 @@ export async function POST(request: NextRequest) {
 
         switch (type) {
             case 'attendees':
-                csvData = await exportAttendees(supabase, filters, user.role)
+                csvData = await exportAttendees(supabase, filters, user.role, user.id)
                 filename = `attendees-export-${new Date().toISOString().split('T')[0]}.csv`
                 break
 
             case 'analytics':
-                csvData = await exportAnalytics(supabase, filters, user.role)
+                csvData = await exportAnalytics(supabase, filters, user.role, user.id)
                 filename = `analytics-export-${new Date().toISOString().split('T')[0]}.csv`
                 break
 
             case 'events':
-                csvData = await exportEvents(supabase, filters, user.role)
+                csvData = await exportEvents(supabase, filters, user.role, user.id)
                 filename = `events-export-${new Date().toISOString().split('T')[0]}.csv`
                 break
 
             case 'summary':
-                csvData = await exportSummary(supabase, filters, user.role)
+                csvData = await exportSummary(supabase, filters)
                 filename = `summary-export-${new Date().toISOString().split('T')[0]}.csv`
                 break
 
@@ -58,7 +58,7 @@ export async function POST(request: NextRequest) {
         }
 
         // Generate CSV content
-        const csvContent = generateCSV(csvData, options)
+        const csvContent = generateCSV(csvData)
 
         // Return CSV content with appropriate headers
         return new NextResponse(csvContent, {
@@ -79,8 +79,8 @@ export async function POST(request: NextRequest) {
     }
 }
 
-async function exportAttendees(supabase: any, filters: any, userRole: string) {
-    const { eventId, status, checkedIn, search, dateRange } = filters
+async function exportAttendees(supabase: any, filters: Record<string, unknown>, userRole: string, userId: string) {
+    const { eventId, status, checkedIn } = filters
 
     let query = supabase
         .from('rsvps')
@@ -105,7 +105,7 @@ async function exportAttendees(supabase: any, filters: any, userRole: string) {
 
     // Role-based filtering for organizers
     if (userRole === 'organizer') {
-        query = query.eq('events.organizer_id', userRole)
+        query = query.eq('events.organizer_id', userId)
     }
 
     const { data: rsvps, error: rsvpsError } = await query
@@ -148,7 +148,7 @@ async function exportAttendees(supabase: any, filters: any, userRole: string) {
 
     if (eventId) ticketQuery = ticketQuery.eq('events.id', eventId)
     if (userRole === 'organizer') {
-        ticketQuery = ticketQuery.eq('events.organizer_id', userRole)
+        ticketQuery = ticketQuery.eq('events.organizer_id', userId)
     }
 
     const { data: tickets, error: ticketError } = await ticketQuery
@@ -159,7 +159,7 @@ async function exportAttendees(supabase: any, filters: any, userRole: string) {
     }
 
     // Transform and combine data
-    const attendeeData: any[] = []
+    const attendeeData: Record<string, unknown>[] = []
 
     // Add RSVP attendees
     rsvps?.forEach((rsvp: any) => {
@@ -214,12 +214,12 @@ async function exportAttendees(supabase: any, filters: any, userRole: string) {
     return attendeeData
 }
 
-async function exportAnalytics(supabase: any, filters: any, userRole: string) {
+async function exportAnalytics(supabase: any, filters: Record<string, unknown>, userRole: string, userId: string) {
     const { timeRange = '30d' } = filters
 
     // Calculate date range
     const now = new Date()
-    let startDate = new Date()
+    const startDate = new Date()
 
     switch (timeRange) {
         case '7d':
@@ -251,7 +251,7 @@ async function exportAnalytics(supabase: any, filters: any, userRole: string) {
         .gte('created_at', startDate.toISOString())
 
     if (userRole === 'organizer') {
-        query = query.eq('organizer_id', userRole)
+        query = query.eq('organizer_id', userId)
     }
 
     const { data: events, error } = await query
@@ -290,7 +290,7 @@ async function exportAnalytics(supabase: any, filters: any, userRole: string) {
     return analyticsData
 }
 
-async function exportEvents(supabase: any, filters: any, userRole: string) {
+async function exportEvents(supabase: any, filters: Record<string, unknown>, userRole: string, userId: string) {
     let query = supabase
         .from('events')
         .select(`
@@ -310,7 +310,7 @@ async function exportEvents(supabase: any, filters: any, userRole: string) {
     `)
 
     if (userRole === 'organizer') {
-        query = query.eq('organizer_id', userRole)
+        query = query.eq('organizer_id', userId)
     }
 
     const { data: events, error } = await query
@@ -352,7 +352,7 @@ async function exportEvents(supabase: any, filters: any, userRole: string) {
     return eventData
 }
 
-async function exportSummary(supabase: any, filters: any, userRole: string) {
+async function exportSummary(supabase: any, filters: Record<string, unknown>) {
     const { timeRange = '30d' } = filters
 
     // This would typically aggregate data across all events
@@ -371,7 +371,7 @@ async function exportSummary(supabase: any, filters: any, userRole: string) {
     return summaryData
 }
 
-function generateCSV(data: any[], options: any = {}): string {
+function generateCSV(data: Record<string, unknown>[]): string {
     if (!data || data.length === 0) {
         return 'No data available for export'
     }

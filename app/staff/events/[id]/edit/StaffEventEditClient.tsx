@@ -10,7 +10,7 @@ interface StaffEventEditClientProps {
 export default function StaffEventEditClient({ eventId }: StaffEventEditClientProps) {
     const router = useRouter()
 
-    const handleSuccess = (eventId: string) => {
+    const handleSuccess = () => {
         // Redirect to the staff dashboard after successful edit
         router.push('/staff?tab=events')
     }

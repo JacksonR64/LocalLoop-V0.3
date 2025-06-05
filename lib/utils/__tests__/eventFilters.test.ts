@@ -2,7 +2,6 @@ import {
   applyFilters,
   getEventCategories,
   getEventPriceCounts,
-  getActiveFilters,
   hasActiveFilters,
   getFilterSummary,
   filtersToQueryParams,

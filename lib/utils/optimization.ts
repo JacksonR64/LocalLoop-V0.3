@@ -1,33 +1,14 @@
 import { lazy, ComponentType, LazyExoticComponent } from 'react'
 
 // Lazy loading utility with better error handling
-export function lazyLoad<T extends ComponentType<any>>(
-    importFunc: () => Promise<{ default: T }>,
-    fallback?: ComponentType<any>
+export function lazyLoad<T extends ComponentType<unknown>>(
+    importFunc: () => Promise<{ default: T }>
 ): LazyExoticComponent<T> {
-    return lazy(async () => {
-        try {
-            const component = await importFunc()
-            return component
-        } catch (error) {
-            console.error('Failed to load component:', error)
-            // Return fallback component or minimal error component
-            if (fallback) {
-                return { default: fallback }
-            }
-            return {
-                default: (() => (
-                    <div className= "p-4 text-center text-gray-500" >
-                    Failed to load component
-                    </ div >
-                )) as T
-}
-        }
-    })
+    return lazy(importFunc)
 }
 
 // Debounce utility for search and input optimization
-export function debounce<T extends (...args: any[]) => any>(
+export function debounce<T extends (...args: unknown[]) => unknown>(
     func: T,
     delay: number
 ): (...args: Parameters<T>) => void {
@@ -39,7 +20,7 @@ export function debounce<T extends (...args: any[]) => any>(
 }
 
 // Throttle utility for scroll and resize events
-export function throttle<T extends (...args: any[]) => any>(
+export function throttle<T extends (...args: unknown[]) => unknown>(
     func: T,
     limit: number
 ): (...args: Parameters<T>) => void {
@@ -111,11 +92,11 @@ export function getMemoryUsage(): {
     total: number;
     percentage: number;
 } | null {
-    if (typeof window === 'undefined' || !(performance as any).memory) {
+    if (typeof window === 'undefined' || !('memory' in performance)) {
         return null
     }
 
-    const memory = (performance as any).memory
+    const memory = (performance as { memory?: { usedJSHeapSize: number; totalJSHeapSize: number } }).memory!
     return {
         used: memory.usedJSHeapSize,
         total: memory.totalJSHeapSize,

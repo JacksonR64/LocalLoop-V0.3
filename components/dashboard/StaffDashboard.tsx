@@ -23,11 +23,8 @@ import {
     TrendingUp,
     Users,
     AlertTriangle,
-    CheckCircle,
-    ExternalLink,
     Eye,
-    Edit,
-    Trash2
+    Edit
 } from 'lucide-react'
 import AttendeeManagement from './AttendeeManagement'
 import Analytics from './Analytics'
@@ -398,7 +395,7 @@ export default function StaffDashboard({ user }: StaffDashboardProps) {
                             </h3>
                             {user.role === 'organizer' && (
                                 <p className="text-sm text-gray-600 mt-1">
-                                    Showing events you've created and manage
+                                    Showing events you&apos;ve created and manage
                                 </p>
                             )}
                             {user.role === 'admin' && (

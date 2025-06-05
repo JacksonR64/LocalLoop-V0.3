@@ -106,7 +106,7 @@ export default function ProtectedRoute({
                         Access Denied
                     </h2>
                     <p className="text-gray-600 mb-2">
-                        You don't have permission to access this page.
+                        You don&apos;t have permission to access this page.
                     </p>
                     <p className="text-sm text-gray-500 mb-6">
                         Required role: {requiredRoles.join(' or ')}. Your role: {user.role}

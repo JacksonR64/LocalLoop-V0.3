@@ -10,21 +10,7 @@ interface PerformanceMetric {
   userAgent: string
 }
 
-interface APIPerformanceMetric {
-  endpoint: string
-  method: string
-  duration: number
-  status: number
-  timestamp: number
-  success: boolean
-}
-
-interface DatabaseMetric {
-  query: string
-  duration: number
-  rowCount?: number
-  timestamp: number
-}
+// Removed unused interfaces - they were defined but never used
 
 // Performance metric thresholds based on Core Web Vitals
 const THRESHOLDS = {
@@ -117,7 +103,7 @@ async function sendMetricToAPI(metric: PerformanceMetric) {
         timestamp: metric.timestamp,
         additional_data: {
           navigationType: (window.performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming)?.type || 'unknown',
-          connectionType: (navigator as any).connection?.effectiveType || 'unknown'
+          connectionType: ('connection' in navigator ? (navigator as { connection?: { effectiveType?: string } }).connection?.effectiveType : undefined) || 'unknown'
         }
       })
     })

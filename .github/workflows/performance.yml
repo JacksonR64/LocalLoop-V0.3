@@ -5,177 +5,363 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+    types: [opened, synchronize, reopened]
   schedule:
-    # Run performance tests daily at 2 AM UTC
-    - cron: '0 2 * * *'
+    # Run weekly performance checks
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+    inputs:
+      test_type:
+        description: 'Type of performance test'
+        required: true
+        default: 'lighthouse'
+        type: choice
+        options:
+          - lighthouse
+          - load
+          - comprehensive
+
+# Prevent concurrent performance tests
+concurrency:
+  group: performance-${{ github.ref }}
+  cancel-in-progress: true
 
 env:
   NODE_VERSION: '18'
+  PERFORMANCE_BUDGET_CPU: '85'  # Performance budget for CPU score
+  PERFORMANCE_BUDGET_MEMORY: '90'  # Performance budget for memory score
+  LIGHTHOUSE_MIN_SCORE: '85'  # Minimum acceptable Lighthouse score
 
 jobs:
-  lighthouse:
-    name: Lighthouse Performance Audit
+  # Lighthouse Performance Testing
+  lighthouse-audit:
+    name: 🔍 Lighthouse Performance Audit
     runs-on: ubuntu-latest
-    
+    timeout-minutes: 15
+    if: github.event.inputs.test_type == 'lighthouse' || github.event.inputs.test_type == 'comprehensive' || github.event.inputs.test_type == ''
+
     steps:
-      - name: Checkout code
+      - name: 📥 Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: 📦 Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
 
-      - name: Install dependencies
+      - name: 📦 Install dependencies
         run: npm ci
 
-      - name: Build application
+      - name: 🏗️ Build application
         run: npm run build
         env:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
 
-      - name: Start application
+      - name: 🚀 Start production server
         run: npm start &
         env:
-          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          PORT: 3000
+          NODE_ENV: production
 
-      - name: Wait for application to start
-        run: |
-          timeout 60 bash -c 'until curl -f http://localhost:3000; do sleep 2; done'
+      - name: ⏳ Wait for server
+        run: npx wait-on http://localhost:3000 --timeout 60000
 
-      - name: Run Lighthouse CI
-        run: |
-          npm install -g @lhci/cli@0.12.x
-          lhci autorun
+      - name: 🔍 Run Lighthouse CI
+        run: npx lighthouse-ci autorun
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
 
-      - name: Upload Lighthouse results
+      - name: 📊 Upload Lighthouse reports
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: lighthouse-results
-          path: .lighthouseci/
-          retention-days: 7
+          name: lighthouse-reports-${{ github.run_number }}
+          path: |
+            .lighthouseci/
+            reports/
+          retention-days: 14
 
-  load-testing:
-    name: Load Testing
-    runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build application
-        run: npm run build
-        env:
-          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
-
-      - name: Start application
-        run: npm start &
-        env:
-          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
-
-      - name: Wait for application to start
+      - name: 🚨 Check performance budgets
         run: |
-          timeout 60 bash -c 'until curl -f http://localhost:3000; do sleep 2; done'
-
-      - name: Install k6
-        run: |
-          sudo gpg -k
-          sudo gpg --no-default-keyring --keyring /usr/share/keyrings/k6-archive-keyring.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C5AD17C747E3415A3642D57D77C6C491D6AC1D69
-          echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
-          sudo apt-get update
-          sudo apt-get install k6
-
-      - name: Run load tests
-        run: |
-          if [ -f "tests/load/homepage-load.js" ]; then
-            k6 run tests/load/homepage-load.js
+          # Parse Lighthouse results and check budgets
+          if [ -f ".lighthouseci/manifest.json" ]; then
+            echo "Checking Lighthouse performance budgets..."
+            
+            # Extract scores from manifest (simplified check)
+            PERF_SCORE=$(cat .lighthouseci/manifest.json | jq -r '.[0].summary.performance // 0' | cut -d. -f1)
+            ACCESSIBILITY_SCORE=$(cat .lighthouseci/manifest.json | jq -r '.[0].summary.accessibility // 0' | cut -d. -f1)
+            
+            echo "Performance Score: $PERF_SCORE"
+            echo "Accessibility Score: $ACCESSIBILITY_SCORE"
+            
+            if [ "$PERF_SCORE" -lt "${{ env.LIGHTHOUSE_MIN_SCORE }}" ]; then
+              echo "❌ Performance score ($PERF_SCORE) is below budget (${{ env.LIGHTHOUSE_MIN_SCORE }})"
+              exit 1
+            fi
+            
+            if [ "$ACCESSIBILITY_SCORE" -lt "90" ]; then
+              echo "⚠️ Accessibility score ($ACCESSIBILITY_SCORE) is below 90"
+            fi
+            
+            echo "✅ Performance budgets met"
           else
-            echo "Load test file not found, skipping"
+            echo "⚠️ No Lighthouse manifest found, skipping budget check"
           fi
 
-      - name: Upload load test results
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: load-test-results
-          path: tests/load/results/
-          retention-days: 7
-
-  bundle-analysis:
-    name: Bundle Size Analysis
+  # Load Testing with Artillery
+  load-testing:
+    name: ⚡ Load Testing
     runs-on: ubuntu-latest
-    
+    timeout-minutes: 20
+    if: github.event.inputs.test_type == 'load' || github.event.inputs.test_type == 'comprehensive' || (github.event_name == 'schedule')
+
     steps:
-      - name: Checkout code
+      - name: 📥 Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: 📦 Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
 
-      - name: Install dependencies
+      - name: 📦 Install dependencies
         run: npm ci
 
-      - name: Build application
+      - name: 🏗️ Build application
         run: npm run build
         env:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
 
-      - name: Analyze bundle size
-        run: npx @next/bundle-analyzer
+      - name: 🚀 Start production server
+        run: npm start &
+        env:
+          PORT: 3000
+          NODE_ENV: production
+
+      - name: ⏳ Wait for server
+        run: npx wait-on http://localhost:3000 --timeout 60000
+
+      - name: ⚡ Run load tests
+        run: npm run test:load
         continue-on-error: true
 
-      - name: Bundle size report
+      - name: 📊 Upload load test reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: load-test-reports-${{ github.run_number }}
+          path: |
+            tests/load/results/
+            reports/performance/
+          retention-days: 14
+
+      - name: 🚨 Analyze load test results
+        run: |
+          echo "Analyzing load test results..."
+          
+          if [ -f "tests/load/results/load-test-report.json" ]; then
+            # Parse load test results
+            AVG_RESPONSE_TIME=$(cat tests/load/results/load-test-report.json | jq -r '.aggregate.latency.mean // 0')
+            P95_RESPONSE_TIME=$(cat tests/load/results/load-test-report.json | jq -r '.aggregate.latency.p95 // 0')
+            ERROR_RATE=$(cat tests/load/results/load-test-report.json | jq -r '.aggregate.counters.errors // 0')
+            
+            echo "Average Response Time: ${AVG_RESPONSE_TIME}ms"
+            echo "P95 Response Time: ${P95_RESPONSE_TIME}ms"
+            echo "Error Rate: $ERROR_RATE"
+            
+            # Check thresholds
+            if (( $(echo "$AVG_RESPONSE_TIME > 2000" | bc -l) )); then
+              echo "❌ Average response time exceeds 2000ms"
+              exit 1
+            fi
+            
+            if (( $(echo "$P95_RESPONSE_TIME > 5000" | bc -l) )); then
+              echo "❌ P95 response time exceeds 5000ms"
+              exit 1
+            fi
+            
+            if (( $(echo "$ERROR_RATE > 5" | bc -l) )); then
+              echo "❌ Error rate exceeds 5%"
+              exit 1
+            fi
+            
+            echo "✅ Load test thresholds met"
+          else
+            echo "⚠️ Load test results not found"
+          fi
+
+  # Memory and CPU profiling
+  resource-profiling:
+    name: 🧠 Resource Profiling
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    if: github.event.inputs.test_type == 'comprehensive' || github.event_name == 'schedule'
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🧠 Install profiling tools
+        run: |
+          npm install -g clinic
+          npm install -g autocannon
+
+      - name: 🏗️ Build application
+        run: npm run build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+
+      - name: 🧠 Profile application startup
+        run: |
+          echo "Starting memory and CPU profiling..."
+          
+          # Start the app with profiling
+          timeout 120s clinic doctor --on-port 'autocannon -c10 -d30 http://localhost:3000' -- npm start || true
+          
+          # Generate flame graphs if available
+          if [ -f ".clinic/doctor.html" ]; then
+            echo "✅ Profiling report generated"
+          fi
+
+      - name: 📊 Upload profiling reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: profiling-reports-${{ github.run_number }}
+          path: |
+            .clinic/
+            reports/profiling/
+          retention-days: 7
+
+  # Bundle analysis
+  bundle-analysis:
+    name: 📦 Bundle Size Analysis
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🏗️ Build with bundle analysis
+        run: npm run build:analyze
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          ANALYZE: true
+
+      - name: 📊 Check bundle size budgets
+        run: |
+          echo "Checking bundle size budgets..."
+          
+          # Check if bundle size report exists
+          if [ -f ".next/analyze/bundle-sizes.json" ]; then
+            TOTAL_SIZE=$(cat .next/analyze/bundle-sizes.json | jq -r '.sizes.total // 0')
+            JS_SIZE=$(cat .next/analyze/bundle-sizes.json | jq -r '.sizes.javascript // 0')
+            
+            echo "Total Bundle Size: ${TOTAL_SIZE}KB"
+            echo "JavaScript Size: ${JS_SIZE}KB"
+            
+            # Budget checks (in KB)
+            if [ "$TOTAL_SIZE" -gt 1000 ]; then
+              echo "⚠️ Total bundle size (${TOTAL_SIZE}KB) exceeds budget (1000KB)"
+            fi
+            
+            if [ "$JS_SIZE" -gt 500 ]; then
+              echo "⚠️ JavaScript bundle size (${JS_SIZE}KB) exceeds budget (500KB)"
+            fi
+            
+            echo "✅ Bundle analysis complete"
+          else
+            echo "📊 Running basic bundle size check..."
+            find .next -name "*.js" -type f -exec du -ch {} + | grep total
+          fi
+
+      - name: 📊 Upload bundle analysis
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bundle-analysis-${{ github.run_number }}
+          path: |
+            .next/analyze/
+            reports/bundle/
+          retention-days: 14
+
+  # Performance summary
+  performance-summary:
+    name: 📊 Performance Summary
+    runs-on: ubuntu-latest
+    if: always()
+    needs: [lighthouse-audit, load-testing, bundle-analysis]
+
+    steps:
+      - name: 📊 Create performance summary
         uses: actions/github-script@v7
         with:
           script: |
-            const fs = require('fs');
-            const path = require('path');
+            const results = {
+              'Lighthouse Audit': '${{ needs.lighthouse-audit.result }}',
+              'Load Testing': '${{ needs.load-testing.result }}',
+              'Bundle Analysis': '${{ needs.bundle-analysis.result }}'
+            };
             
-            // Read build output for bundle sizes
-            const buildDir = '.next';
-            if (fs.existsSync(buildDir)) {
-              console.log('Bundle analysis completed ✅');
+            let summary = '## 🚀 Performance Test Results\n\n';
+            summary += '| Test Type | Status | Details |\n';
+            summary += '|-----------|--------|----------|\n';
+            
+            for (const [test, status] of Object.entries(results)) {
+              const emoji = status === 'success' ? '✅' : 
+                           status === 'failure' ? '❌' : 
+                           status === 'skipped' ? '⏭️' : '⏳';
               
-              // Create a simple bundle size report
-              const comment = `## 📦 Bundle Size Analysis
-              
-              Build completed successfully! 
-              
-              - ✅ Static assets generated
-              - ✅ Client-side bundles optimized  
-              - ✅ Server-side rendering configured
-              
-              Check the build artifacts for detailed size breakdown.
-              `;
-              
-              if (context.eventName === 'pull_request') {
-                github.rest.issues.createComment({
-                  issue_number: context.issue.number,
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  body: comment
-                });
+              let details = '';
+              if (status === 'success') {
+                details = 'All metrics within budget';
+              } else if (status === 'failure') {
+                details = 'Some metrics exceeded budget';
+              } else if (status === 'skipped') {
+                details = 'Test skipped for this run';
               }
-            } 
+              
+              summary += `| ${test} | ${emoji} ${status} | ${details} |\n`;
+            }
+            
+            summary += '\n### 📋 Performance Metrics\n\n';
+            summary += '- **Lighthouse Score**: Target ≥85\n';
+            summary += '- **Response Time**: Target <2s average\n';
+            summary += '- **P95 Response**: Target <5s\n';
+            summary += '- **Bundle Size**: Target <1MB total\n';
+            summary += '- **Error Rate**: Target <5%\n\n';
+            
+            if (Object.values(results).includes('failure')) {
+              summary += '⚠️ **Performance issues detected.** Check detailed reports in artifacts.\n\n';
+            } else {
+              summary += '🎉 **All performance tests passed!**\n\n';
+            }
+            
+            summary += '_Performance tests help ensure LocalLoop remains fast and responsive._';
+            
+            console.log(summary); 

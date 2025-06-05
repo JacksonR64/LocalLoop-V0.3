@@ -327,12 +327,10 @@ function PaymentForm({
 function PaymentSuccess({
     paymentIntentId,
     orderDetails,
-    customerEmail,
     onContinue
 }: {
     paymentIntentId: string
     orderDetails: CheckoutResponse
-    customerEmail: string
     onContinue: () => void
 }) {
     return (
@@ -499,7 +497,6 @@ export default function CheckoutForm({
             <PaymentSuccess
                 paymentIntentId={paymentIntentId}
                 orderDetails={orderDetails}
-                customerEmail={customerInfo.email}
                 onContinue={handleContinue}
             />
         )

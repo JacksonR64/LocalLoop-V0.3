@@ -2,22 +2,18 @@
 
 import { useState, useEffect } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card'
-import { Badge } from '@/components/ui/badge'
+
 import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import {
     BarChart3,
-    TrendingUp,
-    TrendingDown,
     Users,
     DollarSign,
-    Calendar,
     Target,
     ArrowUpRight,
     ArrowDownRight,
     RefreshCw,
-    Download,
-    Filter
+    Download
 } from 'lucide-react'
 
 interface AnalyticsData {

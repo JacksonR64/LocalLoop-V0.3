@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
 
         // Calculate date range
         const now = new Date()
-        let startDate = new Date()
+        const startDate = new Date()
 
         switch (timeRange) {
             case '7d':
@@ -103,8 +103,8 @@ export async function GET(request: NextRequest) {
                 conversionRate: 0,
                 growthRate: 23.5 // Placeholder - would calculate from historical data
             },
-            eventPerformance: [] as any[],
-            timeSeriesData: [] as any[],
+            eventPerformance: [] as Record<string, unknown>[],
+            timeSeriesData: [] as Record<string, unknown>[],
             attendeeInsights: {
                 newVsReturning: { new: 65, returning: 35 },
                 registrationMethods: { direct: 60, social: 25, referral: 15 },
@@ -140,19 +140,19 @@ export async function GET(request: NextRequest) {
             for (const event of events) {
                 // Count attendees from RSVPs
                 const rsvpAttendees = event.rsvps
-                    ?.filter((rsvp: any) => rsvp.status === 'confirmed')
+                    ?.filter((rsvp: Record<string, unknown>) => rsvp.status === 'confirmed')
                     ?.length || 0 // Count each RSVP as 1 attendee since attendee_count doesn't exist
 
                 // Count ticket holders
                 const ticketAttendees = event.orders
-                    ?.filter((order: any) => order.status === 'completed')
-                    ?.reduce((sum: number, order: any) =>
-                        sum + (order.tickets?.length || 0), 0) || 0
+                    ?.filter((order: Record<string, unknown>) => order.status === 'completed')
+                    ?.reduce((sum: number, order: Record<string, unknown>) =>
+                        sum + ((order.tickets as Record<string, unknown>[])?.length || 0), 0) || 0
 
                 // Calculate revenue from completed orders
                 const eventRevenue = event.orders
-                    ?.filter((order: any) => order.status === 'completed')
-                    ?.reduce((sum: number, order: any) => sum + (order.total_amount || 0), 0) || 0
+                    ?.filter((order: Record<string, unknown>) => order.status === 'completed')
+                    ?.reduce((sum: number, order: Record<string, unknown>) => sum + (order.total_amount as number || 0), 0) || 0
 
                 const eventTotalAttendees = rsvpAttendees + ticketAttendees
                 totalAttendees += eventTotalAttendees

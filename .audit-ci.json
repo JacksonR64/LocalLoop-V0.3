@@ -1,11 +1,131 @@
 {
-  "low": true,
-  "moderate": true,
-  "high": true,
-  "critical": true,
-  "report-type": "summary",
-  "package-manager": "npm",
-  "allowlist": [],
+  "allowlist": [
+    // Temporarily allow specific vulnerabilities that are being addressed
+    // Remove items from this list as they are fixed
+  ],
+  "advisories": [
+    // Specific advisory IDs to ignore (use sparingly and with justification)
+  ],
+  "modules": [
+    // Module-specific ignores (use for false positives)
+  ],
+  "levels": {
+    "low": true,
+    "moderate": true,
+    "high": true,
+    "critical": true
+  },
+  "report-type": [
+    "full"
+  ],
+  "registry": "https://registry.npmjs.org/",
+  "summary": true,
   "skip-dev": false,
-  "output-format": "text"
-} 
+  "whitelist": [
+    // Deprecated: use allowlist instead
+  ],
+  "output-format": "json",
+  "pass-enoaudit": false,
+  "report": {
+    "full": true,
+    "summary": true
+  },
+  "retry": {
+    "count": 3,
+    "factor": 2,
+    "minTimeout": 1000,
+    "maxTimeout": 60000,
+    "randomize": true
+  },
+  "config": {
+    "timeout": 30000,
+    "strict-ssl": true,
+    "maxSockets": 10
+  },
+  "vulnerabilities": {
+    "high": {
+      "action": "error",
+      "message": "High severity vulnerabilities found"
+    },
+    "critical": {
+      "action": "error",
+      "message": "Critical vulnerabilities found - must be fixed immediately"
+    },
+    "moderate": {
+      "action": "warn",
+      "message": "Moderate vulnerabilities found - consider fixing"
+    },
+    "low": {
+      "action": "info",
+      "message": "Low severity vulnerabilities found"
+    }
+  },
+  "exceptions": {
+    "GHSA-example-1234": {
+      "reason": "False positive - does not affect our usage",
+      "expiry": "2024-12-31",
+      "active": false
+    }
+  },
+  "ignore-dev-dependencies": false,
+  "production-only": false,
+  "audit-level": "moderate",
+  "exit-zero": false,
+  "fix": false,
+  "only": [],
+  "package-lock-only": false,
+  "dry-run": false,
+  "format": "table",
+  "unicode": true,
+  "fund": false,
+  "omit": [],
+  "include": [],
+  "install-strategy": "hoisted",
+  "legacy-peer-deps": false,
+  "package-manager": "npm",
+  "workspace": [],
+  "workspaces": false,
+  "include-workspace-root": false,
+  "install-links": false,
+  "bin-links": true,
+  "rebuild": false,
+  "ignore-scripts": false,
+  "foreground-scripts": false,
+  "ignore-platform": false,
+  "node-options": "",
+  "noproxy": "",
+  "offline": false,
+  "prefer-offline": false,
+  "prefer-online": false,
+  "proxy": "",
+  "https-proxy": "",
+  "user-agent": "npm audit-ci",
+  "cache": "",
+  "cache-max": null,
+  "cache-min": 0,
+  "init-author-name": "",
+  "init-author-email": "",
+  "init-author-url": "",
+  "init-license": "ISC",
+  "init-version": "1.0.0",
+  "resolution": "legacy",
+  "save": true,
+  "save-bundle": false,
+  "save-dev": false,
+  "save-exact": false,
+  "save-optional": false,
+  "save-peer": false,
+  "save-prefix": "^",
+  "save-prod": false,
+  "scope": "",
+  "script-shell": "",
+  "searchexclude": "",
+  "searchlimit": 20,
+  "searchopts": "",
+  "searchstaleness": 900,
+  "update-notifier": true,
+  "usage": false,
+  "version": false,
+  "viewer": "man",
+  "warn": true
+}
