@@ -8,16 +8,18 @@ const nextConfig: NextConfig = {
 
   // Enable experimental features for better performance
   experimental: {
-    optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
-    reactCompiler: false,
+    optimizePackageImports: ['@radix-ui/react-icons', 'lucide-react'],
+    optimizeCss: true,
   },
 
   // Image optimization
   images: {
-    formats: ['image/webp', 'image/avif'],
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    formats: ['image/avif', 'image/webp'],
+    minimumCacheTTL: 60 * 60 * 24 * 30, // 30 days
+    dangerouslyAllowSVG: true,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    minimumCacheTTL: 86400, // 24 hours
     remotePatterns: [
       {
         protocol: 'https',
@@ -46,36 +48,40 @@ const nextConfig: NextConfig = {
   // PoweredBy header removal for security
   poweredByHeader: false,
 
-  // Enhanced headers for security and performance
+  // Headers for performance and caching
   async headers() {
     return [
       {
+        // Apply to all static assets
         source: '/(.*)',
         headers: [
           {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff',
+            key: 'X-DNS-Prefetch-Control',
+            value: 'on'
           },
           {
             key: 'X-Frame-Options',
-            value: 'DENY',
-          },
+            value: 'DENY'
+          }
+        ],
+      },
+      {
+        // Cache static assets for 1 year
+        source: '/static/(.*)',
+        headers: [
           {
-            key: 'X-XSS-Protection',
-            value: '1; mode=block',
-          },
-          {
-            key: 'Referrer-Policy',
-            value: 'origin-when-cross-origin',
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable'
           },
         ],
       },
       {
+        // Cache API responses briefly
         source: '/api/(.*)',
         headers: [
           {
             key: 'Cache-Control',
-            value: 's-maxage=1, stale-while-revalidate',
+            value: 'public, max-age=60, stale-while-revalidate=300'
           },
         ],
       },
@@ -87,6 +93,58 @@ const nextConfig: NextConfig = {
     NEXT_PUBLIC_APP_URL: process.env.NODE_ENV === 'production'
       ? 'https://your-domain.com'
       : 'http://localhost:3000',
+  },
+
+  // Webpack optimizations  
+  webpack: (config, { dev, isServer }) => {
+    // Production optimizations
+    if (!dev) {
+      config.optimization = {
+        ...config.optimization,
+        sideEffects: false,
+        splitChunks: {
+          chunks: 'all',
+          cacheGroups: {
+            default: false,
+            vendors: false,
+            // Vendor chunk for common libraries
+            vendor: {
+              name: 'vendor',
+              chunks: 'all',
+              test: /node_modules/,
+              enforce: true,
+            },
+            // UI libraries chunk
+            ui: {
+              name: 'ui',
+              chunks: 'all',
+              test: /node_modules\/(lucide-react|@radix-ui)/,
+              enforce: true,
+            },
+            // Common chunk for frequently used modules
+            common: {
+              name: 'common',
+              minChunks: 2,
+              chunks: 'all',
+              enforce: true,
+            },
+          },
+        },
+      };
+    }
+
+    // Bundle analyzer in development (optional)
+    if (dev && process.env.ANALYZE === 'true') {
+      const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+      config.plugins.push(
+        new BundleAnalyzerPlugin({
+          analyzerMode: 'server',
+          openAnalyzer: true,
+        })
+      );
+    }
+
+    return config;
   },
 };
 

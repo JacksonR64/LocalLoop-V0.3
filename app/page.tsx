@@ -87,3 +87,8 @@ export default async function HomePage() {
     </div>
   );
 }
+
+// Enable ISR with 5-minute revalidation
+// This allows the homepage to be statically generated and cached,
+// but revalidated every 5 minutes to ensure fresh event data
+export const revalidate = 300; // 5 minutes

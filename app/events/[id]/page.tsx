@@ -119,4 +119,9 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
             <EventDetailClient event={eventData} />
         </Suspense>
     );
-} 
+}
+
+// Enable ISR with 15-minute revalidation
+// Individual events change less frequently than the homepage,
+// so we can use a longer revalidation interval for better performance
+export const revalidate = 900; // 15 minutes 

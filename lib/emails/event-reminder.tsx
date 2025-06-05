@@ -93,7 +93,7 @@ export const EventReminderEmail = ({
                     {/* Header */}
                     <Section style={header}>
                         <Img
-                            src={`${baseUrl}/logo.png`}
+                            src={`${baseUrl}/logo.svg`}
                             width="50"
                             height="50"
                             alt="LocalLoop"

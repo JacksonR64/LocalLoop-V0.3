@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
+import { withCache, cacheKeys, invalidateEventCache, CACHE_TTL } from '@/lib/utils/cache'
 
 export const dynamic = 'force-dynamic'
 
@@ -149,6 +150,9 @@ export async function POST(request: NextRequest) {
             )
         }
 
+        // Invalidate events cache after creation
+        invalidateEventCache()
+
         return NextResponse.json({
             message: 'Event created successfully',
             event
@@ -241,61 +245,77 @@ export async function GET(request: NextRequest) {
                 query = query.gt('start_time', now).eq('published', true).eq('cancelled', false)
         }
 
-        // Apply pagination and ordering
-        query = query
-            .order('start_time', { ascending: true })
-            .range(offset, offset + limit - 1)
+        // Create cache key based on all query parameters
+        const cacheKey = cacheKeys.events.list({
+            page,
+            limit,
+            category,
+            organizer_id,
+            featured,
+            search,
+            status,
+        });
 
-        const { data: events, error } = await query
+        // Wrap database queries in cache
+        const result = await withCache(
+            cacheKey,
+            async () => {
+                // Apply pagination and ordering
+                query = query
+                    .order('start_time', { ascending: true })
+                    .range(offset, offset + limit - 1)
 
-        if (error) {
-            console.error('Error fetching events:', error)
-            return NextResponse.json(
-                { error: 'Failed to fetch events' },
-                { status: 500 }
-            )
-        }
+                const { data: events, error } = await query
 
-        // Get total count for pagination
-        let countQuery = supabase
-            .from('events')
-            .select('id', { count: 'exact', head: true })
+                if (error) {
+                    throw new Error('Failed to fetch events');
+                }
 
-        // Apply same filters for count
-        if (category) countQuery = countQuery.eq('category', category)
-        if (organizer_id) countQuery = countQuery.eq('organizer_id', organizer_id)
-        if (featured === 'true') countQuery = countQuery.eq('featured', true)
-        if (search) countQuery = countQuery.textSearch('title', search)
+                // Get total count for pagination
+                let countQuery = supabase
+                    .from('events')
+                    .select('id', { count: 'exact', head: true })
 
-        switch (status) {
-            case 'upcoming':
-                countQuery = countQuery.gt('start_time', now).eq('published', true).eq('cancelled', false)
-                break
-            case 'past':
-                countQuery = countQuery.lt('end_time', now).eq('published', true)
-                break
-            case 'in_progress':
-                countQuery = countQuery.lte('start_time', now).gte('end_time', now).eq('published', true)
-                break
-            case 'cancelled':
-                countQuery = countQuery.eq('cancelled', true)
-                break
-            case 'draft':
-                countQuery = countQuery.eq('published', false)
-                break
-        }
+                // Apply same filters for count
+                if (category) countQuery = countQuery.eq('category', category)
+                if (organizer_id) countQuery = countQuery.eq('organizer_id', organizer_id)
+                if (featured === 'true') countQuery = countQuery.eq('featured', true)
+                if (search) countQuery = countQuery.textSearch('title', search)
 
-        const { count } = await countQuery
+                switch (status) {
+                    case 'upcoming':
+                        countQuery = countQuery.gt('start_time', now).eq('published', true).eq('cancelled', false)
+                        break
+                    case 'past':
+                        countQuery = countQuery.lt('end_time', now).eq('published', true)
+                        break
+                    case 'in_progress':
+                        countQuery = countQuery.lte('start_time', now).gte('end_time', now).eq('published', true)
+                        break
+                    case 'cancelled':
+                        countQuery = countQuery.eq('cancelled', true)
+                        break
+                    case 'draft':
+                        countQuery = countQuery.eq('published', false)
+                        break
+                }
 
-        return NextResponse.json({
-            events,
-            pagination: {
-                page,
-                limit,
-                total: count || 0,
-                totalPages: Math.ceil((count || 0) / limit)
-            }
-        })
+                const { count } = await countQuery
+
+                return {
+                    events,
+                    pagination: {
+                        page,
+                        limit,
+                        total: count || 0,
+                        totalPages: Math.ceil((count || 0) / limit)
+                    }
+                };
+            },
+            CACHE_TTL.SHORT // Cache for 1 minute since events can change frequently
+        );
+
+        return NextResponse.json(result)
 
     } catch (error) {
         console.error('Error in GET /api/events:', error)

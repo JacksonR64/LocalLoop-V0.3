@@ -1,0 +1,7 @@
+<svg width="200" height="60" viewBox="0 0 200 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="30" cy="30" r="25" fill="#3B82F6" stroke="#1E40AF" stroke-width="2"/>
+  <circle cx="30" cy="30" r="15" fill="none" stroke="white" stroke-width="2"/>
+  <path d="M20 30 L25 35 L40 20" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="70" y="25" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#1F2937">LocalLoop</text>
+  <text x="70" y="45" font-family="Arial, sans-serif" font-size="12" fill="#6B7280">Event Management</text>
+</svg> 
