@@ -3,7 +3,7 @@ import { lazy, ComponentType, LazyExoticComponent } from 'react'
 // Lazy loading utility with better error handling
 export function lazyLoad<T extends ComponentType<any>>(
     importFunc: () => Promise<{ default: T }>,
-    fallback?: ComponentType
+    fallback?: ComponentType<any>
 ): LazyExoticComponent<T> {
     return lazy(async () => {
         try {
@@ -20,10 +20,10 @@ export function lazyLoad<T extends ComponentType<any>>(
                     <div className= "p-4 text-center text-gray-500" >
                     Failed to load component
                     </ div >
-        )) as T
+                )) as T
 }
-    }
-  })
+        }
+    })
 }
 
 // Debounce utility for search and input optimization
@@ -153,4 +153,4 @@ export function addResourceHints() {
         }
         document.head.appendChild(link)
     })
-} 
+}
