@@ -1,0 +1,70 @@
+# Task ID: 24
+# Title: Fix Stripe Checkout Flow and Payment Integration Issues
+# Status: done
+# Dependencies: 9, 3, 6
+# Priority: high
+# Description: Resolve critical checkout API validation failures, database ticket type ID mismatches, price calculation errors, frontend infinite API loops, and restore complete PaymentIntent creation functionality for all paid events.
+# Details:
+This task involves fixing several critical issues in the Stripe payment integration:
+
+1. Database ticket type ID mismatches:
+   - Identify and correct mismatches between ticket type IDs in the database and those referenced in the checkout flow
+   - Ensure consistent data structure between frontend requests and database schema
+   - Add validation to prevent future mismatches
+
+2. Remove dependency on non-existent database columns:
+   - Audit code for references to columns that don't exist in the current schema
+   - Refactor code to use existing columns or add necessary columns if required
+   - Update database queries and API endpoints accordingly
+
+3. Fix price calculation errors:
+   - Correct the decimal handling in price calculations (e.g., $2400 showing instead of $24.00)
+   - Ensure consistent currency formatting throughout the application
+   - Implement proper rounding and decimal place handling for all monetary values
+   - Add validation to prevent invalid price inputs
+
+4. Eliminate infinite API loops in frontend components:
+   - Debug and fix React component lifecycle issues causing infinite API calls
+   - Implement proper dependency arrays in useEffect hooks
+   - Add request throttling or debouncing where appropriate
+   - Ensure proper error handling to prevent cascading API failures
+
+5. Restore PaymentIntent creation functionality:
+   - Fix the Stripe PaymentIntent creation process for all paid events
+   - Ensure proper error handling and validation in the payment flow
+   - Verify webhook handling for payment confirmations
+   - Test the complete checkout flow for various ticket types and quantities
+
+Implementation should follow Stripe's best practices for checkout flows and ensure proper error handling throughout the process. Update any related documentation to reflect the changes made.
+
+# Test Strategy:
+1. Unit Testing:
+   - Write unit tests for price calculation functions to verify correct decimal handling
+   - Test database queries with mock data to ensure proper ticket type ID handling
+   - Verify PaymentIntent creation with Stripe test mode
+
+2. Integration Testing:
+   - Test the complete checkout flow with various ticket types and quantities
+   - Verify proper handling of edge cases (zero quantity, maximum limits, etc.)
+   - Test with both guest checkout and logged-in users
+
+3. End-to-End Testing:
+   - Complete test purchases using Stripe test cards for various scenarios (success, failure, 3D Secure)
+   - Verify order creation in the database after successful payments
+   - Test webhook handling for payment confirmations
+
+4. Performance Testing:
+   - Monitor API call frequency to ensure infinite loops are resolved
+   - Verify response times for checkout API endpoints
+   - Test under load to ensure stability
+
+5. Regression Testing:
+   - Verify that all paid events can successfully process payments
+   - Ensure existing orders and tickets remain valid
+   - Check that event detail pages correctly display ticket information
+
+6. Manual Testing Checklist:
+   - Verify correct price display throughout the checkout process
+   - Test with multiple browsers and devices
+   - Confirm proper error messages for validation failures
+   - Verify successful receipt/confirmation emails after purchase

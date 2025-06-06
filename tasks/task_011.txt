@@ -1,0 +1,49 @@
+# Task ID: 11
+# Title: Develop User Profile and Event History
+# Status: done
+# Dependencies: 2, 3, 7, 9
+# Priority: medium
+# Description: Build user profile page with event history, upcoming/past events, and profile management.
+# Details:
+Display user profile information, upcoming and past events (RSVPs and tickets). Allow profile updates, email preferences, and account deletion. Use Supabase for data retrieval.
+
+# Test Strategy:
+Test profile page rendering, event history, profile updates, and account deletion.
+
+# Subtasks:
+## 1. Implement User Profile Information Display [done]
+### Dependencies: None
+### Description: Create a comprehensive profile view that displays user's personal information, contact details, and account status
+### Details:
+Design and implement a profile page that retrieves and displays user data from the User Profile Service. Include fields for name, email, profile picture, address information, and account status. Ensure proper data formatting and responsive design for various screen sizes.
+
+## 2. Develop Event History Component [done]
+### Dependencies: None
+### Description: Create separate views for upcoming and past events with filtering and sorting capabilities
+### Details:
+Implement a dual-view component that displays upcoming events and past event history. Include date-based filtering, search functionality, and the ability to sort events by different criteria. Ensure proper pagination for large event histories and optimize data loading for performance.
+
+## 3. Build Profile Update Forms [done]
+### Dependencies: 11.1
+### Description: Create forms for users to update their personal information, contact details, and preferences
+### Details:
+Design and implement form components for updating user profile data. Include validation for all input fields, real-time feedback, and confirmation dialogs for sensitive changes. Ensure forms handle partial updates and maintain data integrity when submitting to the User Profile Service.
+
+## 4. Implement Email Preferences Management [done]
+### Dependencies: 11.3
+### Description: Create a dedicated section for users to manage their email notification preferences
+### Details:
+Develop a UI component that allows users to opt in/out of different types of email notifications. Include toggles for marketing emails, account updates, event reminders, and security notifications. Implement backend integration to store and retrieve these preferences from the user store.
+
+## 5. Create Account Deletion Workflow [done]
+### Dependencies: 11.1
+### Description: Implement a secure, multi-step process for account deletion with proper verification
+### Details:
+Design a secure workflow for account deletion that includes confirmation steps, password verification, and explanations of data retention policies. Implement backend logic to handle proper data removal or anonymization according to privacy regulations. Include options for temporary deactivation as an alternative to permanent deletion.
+
+## 6. Develop Data Retrieval and Export Functionality [done]
+### Dependencies: 11.1, 11.2
+### Description: Create mechanisms for users to download their personal data in common formats
+### Details:
+Implement functionality that allows users to request and download all their personal data in formats like JSON, CSV, or PDF. Include options to select specific data categories for export. Ensure the export process is secure, properly authenticated, and provides complete data as required by privacy regulations.
+

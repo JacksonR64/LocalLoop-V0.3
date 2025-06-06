@@ -1,0 +1,65 @@
+# Task ID: 23
+# Title: Fix Critical RSVP Functionality Bugs
+# Status: done
+# Dependencies: 3, 6, 7
+# Priority: high
+# Description: Resolve critical bugs in the RSVP system including authentication flow issues, database schema column mismatches, component interface conflicts, and code quality problems.
+# Details:
+This task involves fixing several critical issues in the RSVP functionality:
+
+1. Authentication Flow Correction:
+   - Restructure the RSVP API validation flow to perform authentication checks before validation
+   - Implement proper middleware or guard patterns to ensure authenticated contexts
+   - Update API route handlers to verify JWT tokens at the beginning of request processing
+
+2. Database Schema Alignment:
+   - Fix column name mismatches between code and database:
+     - Change references from `display_name` to `full_name` (or vice versa) consistently
+     - Standardize `published` vs `is_open_for_registration` field usage
+   - Update TypeScript interfaces and database query functions to reflect correct column names
+   - Add migration script if database schema changes are needed
+
+3. Component Interface Resolution:
+   - Resolve conflicts between TicketSelection and EventDetailClient components
+   - Standardize prop interfaces and ensure consistent data flow
+   - Fix any state management issues between these components
+   - Ensure proper event handling and callback propagation
+
+4. Code Quality Improvements:
+   - Fix linting errors throughout RSVP-related code
+   - Clean up unnecessary or incorrect imports
+   - Remove unused variables and functions
+   - Ensure consistent code style and formatting
+
+Implementation should maintain backward compatibility with existing functionality while fixing the identified issues. Document any API changes that might affect other components.
+
+# Test Strategy:
+1. Authentication Flow Testing:
+   - Write unit tests for the authentication middleware/guards
+   - Test RSVP API endpoints with valid and invalid authentication tokens
+   - Verify authentication checks occur before validation logic
+   - Test error responses for unauthenticated requests
+
+2. Database Schema Testing:
+   - Create integration tests that verify correct column names are used in queries
+   - Test data retrieval and storage with the corrected schema references
+   - Verify existing data remains accessible after fixes
+   - Run database migration tests if schema changes were implemented
+
+3. Component Interface Testing:
+   - Create unit tests for TicketSelection and EventDetailClient components
+   - Test component interaction with mock data
+   - Verify props are correctly passed between components
+   - Test all user interaction flows (selecting tickets, submitting RSVPs)
+
+4. End-to-End Testing:
+   - Test complete RSVP flow from event detail page through confirmation
+   - Verify guest RSVP functionality works correctly
+   - Test RSVP cancellation process
+   - Verify email confirmations are sent correctly
+
+5. Code Quality Verification:
+   - Run linting tools to ensure all linting errors are resolved
+   - Verify no unused imports remain
+   - Run the application in development mode to check for console warnings
+   - Conduct code review to ensure consistent patterns are followed

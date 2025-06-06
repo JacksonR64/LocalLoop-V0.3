@@ -1,0 +1,175 @@
+# Task ID: 8
+# Title: Integrate Google Calendar Event Creation
+# Status: done
+# Dependencies: 4, 6, 7
+# Priority: high
+# Description: Implement 'Add to Google Calendar' feature for RSVPs, including OAuth consent and event creation.
+# Details:
+Add 'Add to Google Calendar' button to event detail page. Implement OAuth consent flow if not already authenticated. Use googleapis v114 to create events in user's calendar. Store event ID in rsvps table. Handle errors and rate limits.
+
+# Test Strategy:
+Test OAuth consent, event creation, error handling, and verify event appears in user's Google Calendar.
+
+# Subtasks:
+## 1. UI Integration [done]
+### Dependencies: None
+### Description: Design and implement the user interface components required for event creation, including input forms and feedback messages.
+### Details:
+Ensure the UI is intuitive and aligns with design guidelines. Collaborate with designers and stakeholders to finalize wireframes and prototypes. Integrate UI with backend endpoints for seamless user experience.
+<info added on 2025-06-02T14:18:36.087Z>
+Implementation Plan for UI Integration:
+
+1. UI Integration for 'Add to Google Calendar':
+   - Add a clear, accessible button or link to RSVP confirmation and event detail pages.
+   - Use Shadcn UI/Button and Lucide icon for visual clarity.
+   - Button should be visible only for eligible events (future, not already added, user authenticated).
+   - On click, trigger OAuth consent if not already granted, else proceed to event creation.
+   - Show loading, success, and error states with user feedback.
+   - Ensure mobile-first, accessible design (focus ring, aria-label, etc.).
+2. Testing:
+   - Manual E2E: RSVP, click 'Add to Calendar', verify OAuth, event creation, and feedback.
+   - Unit: Button renders, disables, and handles states correctly.
+   - Confirm build passes after integration.
+</info added on 2025-06-02T14:18:36.087Z>
+
+## 2. OAuth Consent Handling [done]
+### Dependencies: 8.1
+### Description: Implement OAuth authentication flow to securely obtain user consent and access tokens for API operations.
+### Details:
+Set up OAuth endpoints, handle redirect URIs, and manage token storage securely. Ensure proper error handling for denied consent or expired tokens.
+<info added on 2025-06-02T14:19:42.238Z>
+OAuth Implementation Plan:
+
+1. Configure OAuth endpoints:
+   - Set up /api/auth/google/connect for initial authorization
+   - Implement /api/auth/google/callback to handle redirect after consent
+
+2. Token management:
+   - Store tokens in Supabase using AES-256-GCM encryption (reference Task 4)
+   - Implement token refresh mechanism for expired credentials
+
+3. User consent flow:
+   - Check connection status before calendar operations
+   - Redirect to Google OAuth if user not connected
+   - Proceed directly to event creation if already authenticated
+
+4. Error handling:
+   - Create user-friendly messages for denied permissions
+   - Handle token expiration gracefully with automatic refresh when possible
+   - Implement comprehensive error states with appropriate UI feedback
+
+5. Testing strategy:
+   - Manual E2E testing for consent flow, denial scenarios, and token expiration
+   - Unit tests for token storage and error handling mechanisms
+   - Verify build integrity after implementation
+</info added on 2025-06-02T14:19:42.238Z>
+
+## 3. Event Creation via API [done]
+### Dependencies: 8.2
+### Description: Develop backend logic to create events using the external API, utilizing the access tokens obtained from OAuth.
+### Details:
+Map UI input data to API request payloads, send requests to the event creation endpoint, and handle API responses.
+<info added on 2025-06-02T14:20:06.946Z>
+Implementation steps:
+1. Create data mapping function to transform UI event data (title, description, start/end times, location) into Google Calendar API event payload format
+2. Retrieve stored OAuth token from user session/database for API authentication
+3. Develop backend endpoint that:
+   - Receives event data from frontend
+   - Validates input data
+   - Constructs API request using googleapis v114
+   - Makes authenticated API call to Google Calendar
+4. Implement response handling:
+   - Extract eventId from successful responses
+   - Store eventId in database for future reference
+   - Return appropriate success/failure status to UI
+5. Testing strategy:
+   - Manual end-to-end test to verify events appear in Google Calendar
+   - Unit tests for API call construction and error handling
+   - Ensure CI build passes with new implementation
+</info added on 2025-06-02T14:20:06.946Z>
+
+## 4. Storing Event IDs [done]
+### Dependencies: 8.3
+### Description: Implement logic to persistently store event IDs returned from the API for future reference and management.
+### Details:
+Choose appropriate storage (database or secure file), ensure data integrity, and provide retrieval mechanisms as needed.
+<info added on 2025-06-02T14:20:22.022Z>
+Store the eventId returned from Google Calendar API in the rsvps table in Supabase, linking it to the specific user and event. Implement transaction handling to ensure the eventId is only stored if the Calendar event creation is successful, maintaining data integrity. Create a retrieval mechanism that allows the application to access these stored eventIds for future event updates or cancellations. Testing should include manual end-to-end verification that eventIds are properly stored and retrievable, unit tests for the Supabase update logic, and confirmation that the build pipeline passes after implementation.
+</info added on 2025-06-02T14:20:22.022Z>
+
+## 5. Error and Rate Limit Handling [done]
+### Dependencies: 8.3
+### Description: Add robust error handling for API failures, OAuth issues, and rate limiting scenarios.
+### Details:
+Detect and gracefully handle errors, display user-friendly messages, and implement retry or backoff strategies for rate limits.
+<info added on 2025-06-02T14:24:15.193Z>
+# Error Handling Implementation Plan
+
+## Error Detection
+- Implement comprehensive error detection for Google Calendar API responses
+- Handle specific error codes: 401 (invalid token), 403 (quota exceeded), 5xx (server errors)
+- Detect network connectivity issues and timeout errors
+
+## User Experience
+- Create contextual error messages that explain the issue in non-technical terms
+- Add visual feedback in UI (toast notifications, inline error states)
+- Provide actionable recovery steps where possible (e.g., "Try again later" for rate limits)
+
+## Technical Implementation
+- Implement exponential backoff strategy for rate-limited requests (starting at 1s, max 32s)
+- Add circuit breaker pattern to prevent cascading failures
+- Centralize error handling logic in a dedicated service
+
+## Monitoring
+- Log all errors with relevant context (user ID, request parameters, timestamp)
+- Add error categorization for analytics
+- Implement error reporting to monitoring system
+
+## Testing Strategy
+- Create unit tests for each error handling scenario
+- Develop E2E tests that simulate API failures using mock responses
+- Verify graceful degradation when services are unavailable
+</info added on 2025-06-02T14:24:15.193Z>
+
+## 6. Testing and Validation [done]
+### Dependencies: 8.4, 8.5
+### Description: Conduct comprehensive testing of the integrated system, covering UI, authentication, API calls, storage, and error handling.
+### Details:
+Perform unit, integration, and end-to-end tests. Test across devices and edge cases to ensure reliability and usability.
+<info added on 2025-06-02T14:24:30.063Z>
+Implement comprehensive testing for the Google Calendar integration:
+
+1. Unit tests:
+   - Test API wrapper functions in isolation
+   - Mock Google Calendar API responses
+   - Verify token handling and refresh logic
+
+2. Integration tests:
+   - Test the complete flow from user action to calendar event creation
+   - Verify proper data transformation between app and Google Calendar format
+   - Test token storage and retrieval from Supabase
+
+3. End-to-end tests:
+   - Complete user journey from authentication to event creation
+   - Verify events appear correctly in Google Calendar
+   - Confirm eventId is properly stored in Supabase
+
+4. Edge case testing:
+   - User denies consent during OAuth flow
+   - Expired access token scenarios
+   - API failures and error responses
+   - Rate limit handling
+   - Network connectivity issues
+   - Cross-device compatibility
+
+5. UI feedback verification:
+   - Confirm appropriate loading states during API calls
+   - Verify error messages are displayed correctly
+   - Test success confirmations
+
+6. Final validation:
+   - Ensure CI/CD build passes with all tests
+   - Rate each component for completeness (1-5)
+   - Document reliability metrics and test coverage
+</info added on 2025-06-02T14:24:30.063Z>
+

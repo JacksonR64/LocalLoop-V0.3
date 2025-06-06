@@ -1,0 +1,175 @@
+# Task ID: 10
+# Title: Add Google Calendar Integration for Paid Events
+# Status: done
+# Dependencies: 4, 8, 9
+# Priority: high
+# Description: Extend Google Calendar integration to paid events, allowing ticket purchasers to add events to their calendar.
+# Details:
+Add 'Add to Google Calendar' button to order confirmation page. Implement OAuth consent if needed. Create event in user's calendar using googleapis v114. Store event ID in orders table. Handle errors and rate limits.
+
+# Test Strategy:
+Test OAuth consent, event creation, error handling, and verify event appears in user's Google Calendar after ticket purchase.
+
+# Subtasks:
+## 1. Design and Implement UI on Order Confirmation [done]
+### Dependencies: None
+### Description: Add a user interface element on the order confirmation page that prompts users to add their paid event to their calendar.
+### Details:
+This UI should clearly indicate the option to add the event to a calendar and guide the user through the next steps.
+<info added on 2025-06-02T19:03:01.409Z>
+The UI for Google Calendar integration in the payment success flow should include:
+
+1. Add a prominent "Add to Google Calendar" button in the PaymentSuccess component (CheckoutForm.tsx lines 257-298)
+2. Reuse the existing GoogleCalendarConnect component pattern from the RSVP implementation
+3. Connect to the GoogleCalendarAuth service that's already implemented
+4. Display clear OAuth consent instructions for users
+5. Show appropriate loading states during the connection process
+6. Provide success/failure feedback after calendar integration attempt
+7. Include a visual indicator showing the event has been added to calendar when successful
+8. Ensure the UI handles both first-time Google connections and already-connected accounts
+
+Implementation should leverage existing infrastructure from Task 8 (RSVP integration) while adapting specifically for the paid events confirmation context.
+</info added on 2025-06-02T19:03:01.409Z>
+<info added on 2025-06-02T19:09:10.566Z>
+✅ **UI Integration Completed Successfully**
+
+**Implementation Summary:**
+- Successfully integrated GoogleCalendarAddButton component into the PaymentSuccess component in CheckoutForm.tsx
+- Fixed component props to properly pass paymentIntentId, eventDetails, and customerEmail
+- Added proper spacing and styling with className="mb-6"
+- Component now appears prominently after order confirmation details but before the "Continue to Event" button
+
+**Technical Details:**
+- GoogleCalendarAddButton is imported at the top of CheckoutForm.tsx
+- Component receives all required props from PaymentSuccess function
+- Customer email flows correctly from checkout form → PaymentSuccess → GoogleCalendarAddButton
+- Component is positioned optimally in the payment success UI flow
+
+**User Experience:**
+- Users see the "Add to Google Calendar" option immediately after successful payment
+- Clear visual separation from order details and action buttons
+- Component handles all states: idle, loading, success, error, and OAuth required
+
+**Integration Pattern:**
+```tsx
+<GoogleCalendarAddButton
+    paymentIntentId={paymentIntentId}
+    eventDetails={orderDetails.event}
+    customerEmail={customerEmail}
+    className="mb-6"
+/>
+```
+
+The UI integration is now complete and ready for testing with the existing Google Calendar infrastructure.
+</info added on 2025-06-02T19:09:10.566Z>
+
+## 2. Initiate OAuth Consent Flow [done]
+### Dependencies: 10.1
+### Description: Trigger the OAuth 2.0 consent process when the user opts to add the event to their calendar, ensuring proper scopes and consent screen configuration.
+### Details:
+Configure the OAuth consent screen with the minimum required scopes and ensure the flow uses an external user agent (browser) for security and compliance.
+<info added on 2025-06-02T19:12:00.522Z>
+The OAuth consent flow for Google Calendar integration has been successfully implemented and verified. The system utilizes a GoogleCalendarAuth service in `/lib/google-auth.ts` with proper endpoints for connection (`/api/auth/google/connect`) and callback handling (`/api/auth/google/callback`). 
+
+The implementation includes secure token management with encryption and refresh capabilities. The OAuth flow is properly integrated with the checkout process, allowing users to add paid events to their Google Calendar after payment completion.
+
+The consent screen is configured with the minimal required `calendar.events` scope, and the flow correctly uses an external browser for authentication, ensuring security and compliance with OAuth best practices. The system supports both authenticated users and guest purchases with appropriate error handling and fallbacks.
+
+All components have been verified to compile successfully, and the infrastructure is ready for testing with no additional OAuth implementation required.
+</info added on 2025-06-02T19:12:00.522Z>
+
+## 3. Create Calendar Event After Consent [done]
+### Dependencies: 10.2
+### Description: Upon successful OAuth authorization, create the event in the user's calendar using the relevant API.
+### Details:
+Use the obtained access token to call the calendar API and create an event with the order details (date, time, description, etc.).
+<info added on 2025-06-02T19:12:44.813Z>
+The Google Calendar event creation functionality has been successfully implemented. The core implementation includes:
+
+1. A robust `GoogleCalendarAuth.createEventForUser()` method in `/lib/google-auth.ts` that:
+   - Retrieves the user's calendar service with valid tokens
+   - Converts event data to Google Calendar format
+   - Creates events in the user's primary calendar
+   - Returns success status and event ID
+
+2. A complete API endpoint at `/api/calendar/add-to-calendar/route.ts` that:
+   - Validates payment intent and order completion
+   - Calls createEventForUser with properly formatted event data
+   - Handles success and failure scenarios
+   - Updates order records with calendar event IDs
+
+The event data flow follows the pattern: Payment Success → GoogleCalendarAddButton → API Call → createEventForUser → Google Calendar API.
+
+Events are created with complete details including title, description, location, properly converted start/end times, and customer email as an attendee.
+
+Comprehensive error handling has been implemented to detect disconnected calendars, handle API failures, update order tracking fields, and provide fallback retry options.
+
+Database integration is complete with updates to the orders table to store calendar_event_id, integration attempt tracking, and error message storage for debugging purposes.
+</info added on 2025-06-02T19:12:44.813Z>
+
+## 4. Store Event IDs with Order Data [done]
+### Dependencies: 10.3
+### Description: Persist the created calendar event ID alongside the order record for future reference and potential updates or deletions.
+### Details:
+Update the backend to associate the event ID with the order, ensuring secure storage and easy retrieval.
+<info added on 2025-06-02T19:15:00.896Z>
+The database schema for orders has been successfully implemented with comprehensive Google Calendar integration tracking fields:
+
+- `google_calendar_event_id` (text) stores the Google Calendar event ID
+- `added_to_google_calendar` (boolean) tracks integration success
+- `calendar_add_attempted_at` (timestamptz) records integration attempt timestamps
+- `calendar_add_error` (text) captures error messages for debugging
+
+The API endpoint `/api/calendar/add-to-calendar/route.ts` correctly updates these fields on both success and error paths. On success, it stores the event ID, sets the boolean flag to true, and records the timestamp. On failure, it sets the boolean flag to false, records the timestamp, and stores the error message.
+
+Additional features include a computed `calendar_integration_status` column for enum status tracking, optimized database indexes for calendar integration queries, proper constraints for data consistency, and an audit trail for debugging and analytics.
+
+The implementation ensures secure storage of event IDs for future event management, efficient retry processing through indexing, and maintenance of proper foreign key relationships. The event ID storage implementation is now complete and production-ready.
+</info added on 2025-06-02T19:15:00.896Z>
+
+## 5. Implement Robust Error Handling and User Feedback [done]
+### Dependencies: 10.1, 10.2, 10.3, 10.4
+### Description: Handle errors at each step (UI, OAuth, event creation, storage) and provide clear feedback to the user.
+### Details:
+Display appropriate error messages and fallback options if any part of the process fails, ensuring a smooth user experience.
+<info added on 2025-06-02T19:15:50.261Z>
+Robust Error Handling and User Feedback Implementation Verified
+
+Comprehensive Error Handling Analysis:
+
+UI Component Error Handling (GoogleCalendarAddButton):
+1. State Management: Four distinct states (idle, success, error, oauth_required) with appropriate UI feedback
+2. Network Error Handling: Try-catch blocks for API calls with fallback error messages
+3. Loading States: Visual loading indicators during API calls
+4. Retry Functionality: "Try Again" button for failed attempts
+5. OAuth Flow: Clear guidance for authorization requirements
+6. Visual Feedback: Color-coded alerts (green=success, red=error, blue=oauth)
+
+API Error Handling (/api/calendar/add-to-calendar):
+1. Input Validation: Zod schema validation with detailed error responses
+2. Order Verification: Validates payment intent, order status, and completion
+3. Duplicate Prevention: Checks if event already added to calendar
+4. Authentication Handling: Graceful handling of guest vs authenticated users
+5. Calendar Service Errors: Comprehensive error catching and database logging
+6. Database Error Tracking: Updates order records with error details for debugging
+
+Error Categories Handled:
+- Validation Errors: Invalid request data, malformed UUIDs, missing fields
+- Authentication Errors: Missing user, expired tokens, OAuth required
+- Business Logic Errors: Order not found, payment not completed, already added
+- External Service Errors: Google Calendar API failures, network timeouts
+- Database Errors: Connection issues, constraint violations
+
+User Feedback Features:
+- Success Messages: Clear confirmation when event added successfully
+- Error Messages: Specific, actionable error descriptions
+- OAuth Guidance: Step-by-step instructions for calendar connection
+- Retry Options: Easy retry buttons for transient failures
+- Loading Indicators: Visual feedback during processing
+
+Fallback Actions:
+- connect_calendar: Directs users to OAuth flow
+- retry_later: Suggests trying again for temporary issues
+- manual_add: Could be added for persistent failures
+</info added on 2025-06-02T19:15:50.261Z>
+
