@@ -1,6 +1,6 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# dependencies
+# Dependencies
 /node_modules
 /.pnp
 .pnp.*
@@ -10,82 +10,100 @@
 !.yarn/releases
 !.yarn/versions
 
-# testing
+# Testing
 /coverage
+test-results/
+playwright-report/
 
-# next.js
+# Next.js
 /.next/
 /out/
+*.tsbuildinfo
+next-env.d.ts
 
-# production
+# Production builds
 /build
+/dist
 
-# misc
-.DS_Store
-*.pem
+# Environment variables
+.env*
+!.env.example
+!.env.local.example
 
-# debug
+# Vercel
+.vercel
+
+# Logs
+logs/
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
-
-# env files - Next.js convention
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-.env
-# Allow .env.example to be committed
-
-# vercel
-.vercel
-
-# typescript
-*.tsbuildinfo
-next-env.d.ts
-
-# Added by Claude Task Master
-# Logs
-logs
-*.log
 dev-debug.log
 
-# Dependency directories
-node_modules/
+# OS generated files
+.DS_Store
+*/.DS_Store
+**/.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
 
-# Environment variables
-.env
-
-# Editor directories and files
-.idea
-.vscode
+# IDE and editor files
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+.windsurfrules
+.roomodes
+.roo/
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
 
-# IDE-specific files (additional)
-.windsurfrules
-.roomodes
-.roo/
-
-# Build artifacts and reports
-test-results/
-playwright-report/
-reports/
-coverage/
-.swc/
-
 # Temporary files
 *.tmp
 *.temp
+*.bak
+*~
+
+# Development directories
 copy/
+backup-scripts/
 
-# OS specific files
-.DS_Store
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
 
-# Task files (keep tasks/ but ignore individual task files if needed)
-# tasks.json
-# tasks/ 
+# Coverage directory used by tools like istanbul
+coverage/
+.nyc_output/
+
+# SWC compiler
+.swc/
+
+# Build tools and reports
+reports/
+lighthouse-report/
+
+# Local configuration
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# ESLint cache
+.eslintcache
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Husky
+.husky/_ 
