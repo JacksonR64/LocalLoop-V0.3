@@ -148,9 +148,58 @@ jobs:
         uses: actions/checkout@v4
 
       - name: 🚀 Deploy to Vercel
+        id: deploy
         uses: amondnet/vercel-action@v25
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
           vercel-args: '--prod'
+
+      - name: 🏥 Verify Health Check
+        run: |
+          echo "Waiting for deployment to be ready..."
+          sleep 30
+          
+          # Test health endpoint
+          HEALTH_URL="${{ steps.deploy.outputs.preview-url }}/api/health"
+          if [ -z "$HEALTH_URL" ]; then
+            HEALTH_URL="https://local-loop.vercel.app/api/health"
+          fi
+          
+          echo "Testing health endpoint: $HEALTH_URL"
+          
+          for i in {1..5}; do
+            echo "Health check attempt $i/5..."
+            
+            RESPONSE=$(curl -s -w "%{http_code}" -o response.json "$HEALTH_URL" || echo "000")
+            HTTP_CODE=${RESPONSE: -3}
+            
+            if [ "$HTTP_CODE" = "200" ]; then
+              echo "✅ Health check passed!"
+              echo "Response:"
+              cat response.json | jq .
+              exit 0
+            else
+              echo "❌ Health check failed with status: $HTTP_CODE"
+              if [ -f response.json ]; then
+                echo "Response body:"
+                cat response.json
+              fi
+            fi
+            
+            if [ $i -lt 5 ]; then
+              echo "Retrying in 15 seconds..."
+              sleep 15
+            fi
+          done
+          
+          echo "❌ Health check failed after 5 attempts"
+          exit 1
+
+      - name: 🎉 Deployment Success
+        if: success()
+        run: |
+          echo "🎉 LocalLoop successfully deployed to production!"
+          echo "🔗 URL: ${{ steps.deploy.outputs.preview-url || 'https://local-loop.vercel.app' }}"
+          echo "✅ Health checks: PASSED"
