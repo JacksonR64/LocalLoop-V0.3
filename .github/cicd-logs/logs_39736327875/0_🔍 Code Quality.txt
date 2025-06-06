@@ -1,0 +1,225 @@
+﻿2025-06-06T16:24:35.5896843Z Current runner version: '2.325.0'
+2025-06-06T16:24:35.5933064Z ##[group]Runner Image Provisioner
+2025-06-06T16:24:35.5934493Z Hosted Compute Agent
+2025-06-06T16:24:35.5935355Z Version: 20250508.323
+2025-06-06T16:24:35.5936430Z Commit: 81b259f29879f73b4213d199e42d8c3465dae986
+2025-06-06T16:24:35.5937871Z Build Date: 2025-05-08T19:40:08Z
+2025-06-06T16:24:35.5938841Z ##[endgroup]
+2025-06-06T16:24:35.5939867Z ##[group]Operating System
+2025-06-06T16:24:35.5940791Z Ubuntu
+2025-06-06T16:24:35.5941582Z 24.04.2
+2025-06-06T16:24:35.5942302Z LTS
+2025-06-06T16:24:35.5943262Z ##[endgroup]
+2025-06-06T16:24:35.5944063Z ##[group]Runner Image
+2025-06-06T16:24:35.5945041Z Image: ubuntu-24.04
+2025-06-06T16:24:35.5946122Z Version: 20250511.1.0
+2025-06-06T16:24:35.5948241Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20250511.1/images/ubuntu/Ubuntu2404-Readme.md
+2025-06-06T16:24:35.5951133Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20250511.1
+2025-06-06T16:24:35.5952835Z ##[endgroup]
+2025-06-06T16:24:35.5954913Z ##[group]GITHUB_TOKEN Permissions
+2025-06-06T16:24:35.5957763Z Contents: read
+2025-06-06T16:24:35.5958594Z Metadata: read
+2025-06-06T16:24:35.5959550Z Packages: read
+2025-06-06T16:24:35.5960297Z ##[endgroup]
+2025-06-06T16:24:35.5963442Z Secret source: Actions
+2025-06-06T16:24:35.5964722Z Prepare workflow directory
+2025-06-06T16:24:35.6751634Z Prepare all required actions
+2025-06-06T16:24:35.6810055Z Getting action download info
+2025-06-06T16:24:36.0913649Z ##[group]Download immutable action package 'actions/checkout@v4'
+2025-06-06T16:24:36.0914645Z Version: 4.2.2
+2025-06-06T16:24:36.0915779Z Digest: sha256:ccb2698953eaebd21c7bf6268a94f9c26518a7e38e27e0b83c1fe1ad049819b1
+2025-06-06T16:24:36.0917094Z Source commit SHA: 11bd71901bbe5b1630ceea73d27597364c9af683
+2025-06-06T16:24:36.0917763Z ##[endgroup]
+2025-06-06T16:24:36.1752054Z ##[group]Download immutable action package 'actions/setup-node@v4'
+2025-06-06T16:24:36.1752995Z Version: 4.4.0
+2025-06-06T16:24:36.1753728Z Digest: sha256:9427cefe82346e992fb5b949e3569b39d537ae41aa3086483b14eceebfc16bc1
+2025-06-06T16:24:36.1754646Z Source commit SHA: 49933ea5288caeca8642d1e84afbd3f7d6820020
+2025-06-06T16:24:36.1755406Z ##[endgroup]
+2025-06-06T16:24:36.5143110Z Complete job name: 🔍 Code Quality
+2025-06-06T16:24:36.5841627Z ##[group]Run actions/checkout@v4
+2025-06-06T16:24:36.5842461Z with:
+2025-06-06T16:24:36.5842863Z   repository: JacksonR64/LocalLoop-V0.3
+2025-06-06T16:24:36.5843552Z   token: ***
+2025-06-06T16:24:36.5843924Z   ssh-strict: true
+2025-06-06T16:24:36.5844309Z   ssh-user: git
+2025-06-06T16:24:36.5844708Z   persist-credentials: true
+2025-06-06T16:24:36.5845142Z   clean: true
+2025-06-06T16:24:36.5845532Z   sparse-checkout-cone-mode: true
+2025-06-06T16:24:36.5845996Z   fetch-depth: 1
+2025-06-06T16:24:36.5846381Z   fetch-tags: false
+2025-06-06T16:24:36.5847092Z   show-progress: true
+2025-06-06T16:24:36.5847501Z   lfs: false
+2025-06-06T16:24:36.5847859Z   submodules: false
+2025-06-06T16:24:36.5848252Z   set-safe-directory: true
+2025-06-06T16:24:36.5849020Z env:
+2025-06-06T16:24:36.5849375Z   NODE_VERSION: 18
+2025-06-06T16:24:36.5849742Z ##[endgroup]
+2025-06-06T16:24:36.7482520Z Syncing repository: JacksonR64/LocalLoop-V0.3
+2025-06-06T16:24:36.7485263Z ##[group]Getting Git version info
+2025-06-06T16:24:36.7486813Z Working directory is '/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3'
+2025-06-06T16:24:36.7488550Z [command]/usr/bin/git version
+2025-06-06T16:24:36.7489384Z git version 2.49.0
+2025-06-06T16:24:36.7493499Z ##[endgroup]
+2025-06-06T16:24:36.7500345Z Temporarily overriding HOME='/home/runner/work/_temp/507267c1-dc6c-4c4d-9757-84663ed5354f' before making global git config changes
+2025-06-06T16:24:36.7502734Z Adding repository directory to the temporary git global config as a safe directory
+2025-06-06T16:24:36.7504697Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3
+2025-06-06T16:24:36.7507659Z Deleting the contents of '/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3'
+2025-06-06T16:24:36.7510572Z ##[group]Initializing the repository
+2025-06-06T16:24:36.7511632Z [command]/usr/bin/git init /home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3
+2025-06-06T16:24:36.7590689Z hint: Using 'master' as the name for the initial branch. This default branch name
+2025-06-06T16:24:36.7594980Z hint: is subject to change. To configure the initial branch name to use in all
+2025-06-06T16:24:36.7597278Z hint: of your new repositories, which will suppress this warning, call:
+2025-06-06T16:24:36.7599463Z hint:
+2025-06-06T16:24:36.7600253Z hint: 	git config --global init.defaultBranch <name>
+2025-06-06T16:24:36.7601289Z hint:
+2025-06-06T16:24:36.7602286Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2025-06-06T16:24:36.7603896Z hint: 'development'. The just-created branch can be renamed via this command:
+2025-06-06T16:24:36.7606858Z hint:
+2025-06-06T16:24:36.7607582Z hint: 	git branch -m <name>
+2025-06-06T16:24:36.7608847Z Initialized empty Git repository in /home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/.git/
+2025-06-06T16:24:36.7614554Z [command]/usr/bin/git remote add origin https://github.com/JacksonR64/LocalLoop-V0.3
+2025-06-06T16:24:36.7656315Z ##[endgroup]
+2025-06-06T16:24:36.7657883Z ##[group]Disabling automatic garbage collection
+2025-06-06T16:24:36.7659782Z [command]/usr/bin/git config --local gc.auto 0
+2025-06-06T16:24:36.7693307Z ##[endgroup]
+2025-06-06T16:24:36.7694426Z ##[group]Setting up auth
+2025-06-06T16:24:36.7700917Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2025-06-06T16:24:36.7734930Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2025-06-06T16:24:36.8074618Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2025-06-06T16:24:36.8110158Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2025-06-06T16:24:36.8341732Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2025-06-06T16:24:36.8389510Z ##[endgroup]
+2025-06-06T16:24:36.8391932Z ##[group]Fetching the repository
+2025-06-06T16:24:36.8400078Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +1a853785723970227154fb8279695052df184f77:refs/remotes/origin/fix/ci-pipeline
+2025-06-06T16:24:37.9315347Z From https://github.com/JacksonR64/LocalLoop-V0.3
+2025-06-06T16:24:37.9322991Z  * [new ref]         1a853785723970227154fb8279695052df184f77 -> origin/fix/ci-pipeline
+2025-06-06T16:24:37.9348342Z ##[endgroup]
+2025-06-06T16:24:37.9350062Z ##[group]Determining the checkout info
+2025-06-06T16:24:37.9352355Z ##[endgroup]
+2025-06-06T16:24:37.9356430Z [command]/usr/bin/git sparse-checkout disable
+2025-06-06T16:24:37.9399497Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2025-06-06T16:24:37.9435162Z ##[group]Checking out the ref
+2025-06-06T16:24:37.9440240Z [command]/usr/bin/git checkout --progress --force -B fix/ci-pipeline refs/remotes/origin/fix/ci-pipeline
+2025-06-06T16:24:38.0108564Z Switched to a new branch 'fix/ci-pipeline'
+2025-06-06T16:24:38.0112676Z branch 'fix/ci-pipeline' set up to track 'origin/fix/ci-pipeline'.
+2025-06-06T16:24:38.0124278Z ##[endgroup]
+2025-06-06T16:24:38.0163816Z [command]/usr/bin/git log -1 --format=%H
+2025-06-06T16:24:38.0188877Z 1a853785723970227154fb8279695052df184f77
+2025-06-06T16:24:38.0494248Z ##[group]Run actions/setup-node@v4
+2025-06-06T16:24:38.0495401Z with:
+2025-06-06T16:24:38.0496193Z   node-version: 18
+2025-06-06T16:24:38.0497388Z   cache: npm
+2025-06-06T16:24:38.0498223Z   always-auth: false
+2025-06-06T16:24:38.0499155Z   check-latest: false
+2025-06-06T16:24:38.0500344Z   token: ***
+2025-06-06T16:24:38.0501161Z env:
+2025-06-06T16:24:38.0502154Z   NODE_VERSION: 18
+2025-06-06T16:24:38.0503019Z ##[endgroup]
+2025-06-06T16:24:38.3260037Z Found in cache @ /opt/hostedtoolcache/node/18.20.8/x64
+2025-06-06T16:24:38.3270224Z ##[group]Environment details
+2025-06-06T16:24:45.2534263Z node: v18.20.8
+2025-06-06T16:24:45.2537478Z npm: 10.8.2
+2025-06-06T16:24:45.2538382Z yarn: 1.22.22
+2025-06-06T16:24:45.2540152Z ##[endgroup]
+2025-06-06T16:24:45.2575402Z [command]/opt/hostedtoolcache/node/18.20.8/x64/bin/npm config get cache
+2025-06-06T16:24:46.0344324Z /home/runner/.npm
+2025-06-06T16:24:46.3140557Z Cache hit for: node-cache-Linux-x64-npm-2be94d80918732632554aac3646f7ebd6a7b87a8da6fd4ec5f1428c609b1c779
+2025-06-06T16:24:47.6402298Z Received 8388608 of 201999962 (4.2%), 8.0 MBs/sec
+2025-06-06T16:24:48.7345338Z Received 134217728 of 201999962 (66.4%), 61.1 MBs/sec
+2025-06-06T16:24:49.3821356Z Received 201999962 of 201999962 (100.0%), 70.3 MBs/sec
+2025-06-06T16:24:49.3823370Z Cache Size: ~193 MB (201999962 B)
+2025-06-06T16:24:49.3992141Z [command]/usr/bin/tar -xf /home/runner/work/_temp/84dc8c58-4901-4f52-8ba9-5814aa55d701/cache.tzst -P -C /home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3 --use-compress-program unzstd
+2025-06-06T16:24:50.1324504Z Cache restored successfully
+2025-06-06T16:24:50.1734773Z Cache restored from key: node-cache-Linux-x64-npm-2be94d80918732632554aac3646f7ebd6a7b87a8da6fd4ec5f1428c609b1c779
+2025-06-06T16:24:50.1897023Z ##[group]Run npm ci --legacy-peer-deps
+2025-06-06T16:24:50.1897433Z [36;1mnpm ci --legacy-peer-deps[0m
+2025-06-06T16:24:50.2133431Z shell: /usr/bin/bash -e {0}
+2025-06-06T16:24:50.2133697Z env:
+2025-06-06T16:24:50.2133873Z   NODE_VERSION: 18
+2025-06-06T16:24:50.2134065Z ##[endgroup]
+2025-06-06T16:25:01.9705543Z npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+2025-06-06T16:25:02.2537730Z npm warn deprecated abab@2.0.6: Use your platform's native atob() and btoa() methods instead
+2025-06-06T16:25:02.3639941Z npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+2025-06-06T16:25:02.4627819Z npm warn deprecated domexception@4.0.0: Use your platform's native DOMException instead
+2025-06-06T16:25:14.6069944Z 
+2025-06-06T16:25:14.6070819Z > 1000x-app@0.1.0 prepare
+2025-06-06T16:25:14.6071407Z > husky install
+2025-06-06T16:25:14.6071622Z 
+2025-06-06T16:25:14.6681201Z husky - install command is DEPRECATED
+2025-06-06T16:25:14.6925213Z 
+2025-06-06T16:25:14.6926144Z added 811 packages, and audited 812 packages in 24s
+2025-06-06T16:25:14.6927305Z 
+2025-06-06T16:25:14.6928346Z 183 packages are looking for funding
+2025-06-06T16:25:14.6929203Z   run `npm fund` for details
+2025-06-06T16:25:14.6943122Z 
+2025-06-06T16:25:14.6944086Z found 0 vulnerabilities
+2025-06-06T16:25:14.7904259Z ##[group]Run npm run lint
+2025-06-06T16:25:14.7904546Z [36;1mnpm run lint[0m
+2025-06-06T16:25:14.7959088Z shell: /usr/bin/bash -e {0}
+2025-06-06T16:25:14.7959353Z env:
+2025-06-06T16:25:14.7959527Z   NODE_VERSION: 18
+2025-06-06T16:25:14.7959740Z ##[endgroup]
+2025-06-06T16:25:14.9437198Z 
+2025-06-06T16:25:14.9438404Z > 1000x-app@0.1.0 lint
+2025-06-06T16:25:14.9438910Z > next lint
+2025-06-06T16:25:14.9439709Z 
+2025-06-06T16:25:20.7620436Z Attention: Next.js now collects completely anonymous telemetry regarding usage.
+2025-06-06T16:25:20.7625599Z This information is used to shape Next.js' roadmap and prioritize features.
+2025-06-06T16:25:20.7631526Z You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+2025-06-06T16:25:20.7638555Z https://nextjs.org/telemetry
+2025-06-06T16:25:20.7640900Z 
+2025-06-06T16:25:20.8952307Z 
+2025-06-06T16:25:20.8953013Z ./app/api/events/__tests__/route.test.ts
+2025-06-06T16:25:20.8954124Z 64:61  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+2025-06-06T16:25:20.8979457Z 65:50  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+2025-06-06T16:25:20.8981268Z 66:55  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+2025-06-06T16:25:20.8981847Z 
+2025-06-06T16:25:20.8982094Z ./app/api/staff/attendees/route.ts
+2025-06-06T16:25:20.8983022Z 200:61  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+2025-06-06T16:25:20.8983592Z 
+2025-06-06T16:25:20.9070903Z ./app/api/staff/export/route.ts
+2025-06-06T16:25:20.9071921Z 263:27  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+2025-06-06T16:25:20.9073140Z 293:31  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+2025-06-06T16:25:20.9074390Z 377:47  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+2025-06-06T16:25:20.9075567Z 378:60  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+2025-06-06T16:25:20.9077223Z 379:43  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+2025-06-06T16:25:20.9078447Z 381:60  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+2025-06-06T16:25:20.9079682Z 382:56  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+2025-06-06T16:25:20.9080853Z 383:55  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+2025-06-06T16:25:20.9082017Z 386:30  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+2025-06-06T16:25:20.9083209Z 387:43  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+2025-06-06T16:25:20.9084390Z 398:55  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+2025-06-06T16:25:20.9085577Z 399:59  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+2025-06-06T16:25:20.9086933Z 439:43  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+2025-06-06T16:25:20.9088147Z 440:60  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+2025-06-06T16:25:20.9089320Z 441:43  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+2025-06-06T16:25:20.9090474Z 444:30  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+2025-06-06T16:25:20.9091635Z 445:43  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+2025-06-06T16:25:20.9092801Z 447:58  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+2025-06-06T16:25:20.9093372Z 
+2025-06-06T16:25:20.9094669Z info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
+2025-06-06T16:25:21.0027724Z ##[group]Run npm run type-check
+2025-06-06T16:25:21.0028024Z [36;1mnpm run type-check[0m
+2025-06-06T16:25:21.0078784Z shell: /usr/bin/bash -e {0}
+2025-06-06T16:25:21.0079030Z env:
+2025-06-06T16:25:21.0079199Z   NODE_VERSION: 18
+2025-06-06T16:25:21.0079377Z ##[endgroup]
+2025-06-06T16:25:21.1411598Z 
+2025-06-06T16:25:21.1411947Z > 1000x-app@0.1.0 type-check
+2025-06-06T16:25:21.1412396Z > tsc --noEmit
+2025-06-06T16:25:21.1412616Z 
+2025-06-06T16:25:42.8255261Z Post job cleanup.
+2025-06-06T16:25:42.9803117Z Cache hit occurred on the primary key node-cache-Linux-x64-npm-2be94d80918732632554aac3646f7ebd6a7b87a8da6fd4ec5f1428c609b1c779, not saving cache.
+2025-06-06T16:25:42.9917192Z Post job cleanup.
+2025-06-06T16:25:43.0936306Z [command]/usr/bin/git version
+2025-06-06T16:25:43.0989792Z git version 2.49.0
+2025-06-06T16:25:43.1037537Z Temporarily overriding HOME='/home/runner/work/_temp/7570e134-9f03-4810-9764-734fb98d9ce8' before making global git config changes
+2025-06-06T16:25:43.1039567Z Adding repository directory to the temporary git global config as a safe directory
+2025-06-06T16:25:43.1044004Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3
+2025-06-06T16:25:43.3589584Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2025-06-06T16:25:43.3649742Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2025-06-06T16:25:43.5482384Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2025-06-06T16:25:43.5511964Z http.https://github.com/.extraheader
+2025-06-06T16:25:43.5525030Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2025-06-06T16:25:43.5947842Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2025-06-06T16:25:43.6340206Z Cleaning up orphan processes

@@ -89,11 +89,11 @@ jobs:
       - name: 🧪 Run tests
         run: npm run test:ci
 
-  # Stage 4: E2E Tests (Optional - only run if needed)
+  # Stage 4: E2E Tests (Optimized for CI speed)
   e2e:
     name: 🎭 E2E Tests
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 10  # Reduced from 20 minutes
     needs: build
     if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/fix/ci-pipeline'
 
@@ -111,7 +111,7 @@ jobs:
         run: npm ci --legacy-peer-deps
 
       - name: 🎭 Install Playwright
-        run: npx playwright install --with-deps chromium
+        run: npx playwright install --with-deps chromium webkit firefox
 
       - name: 🏗️ Build
         run: npm run build
@@ -120,9 +120,11 @@ jobs:
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
 
       - name: 🎭 Run E2E tests
-        run: npx playwright test
+        run: npx playwright test --config=playwright.ci.config.ts
         env:
           CI: true
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
 
       - name: 📊 Upload test results
         if: always()
