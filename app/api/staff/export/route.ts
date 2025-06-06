@@ -12,24 +12,6 @@ interface DatabaseEvent {
     organizer_id: string
 }
 
-interface DatabaseUser {
-    id: string
-    email: string
-    display_name?: string
-}
-
-interface DatabaseRSVP {
-    id: string
-    status: string
-    check_in_time?: string
-    created_at: string
-    guest_name?: string
-    guest_email?: string
-    attendee_names?: string[]
-    events: DatabaseEvent | DatabaseEvent[]
-    users?: DatabaseUser | DatabaseUser[]
-}
-
 interface DatabaseTicketType {
     id: string
     name: string
@@ -427,7 +409,7 @@ async function exportEvents(
     userRole: string,
     userId: string
 ): Promise<EventExportRow[]> {
-    const { status, timeRange = 'all' } = filters
+    const { status } = filters
 
     let query = supabase
         .from('events')
@@ -481,8 +463,10 @@ async function exportEvents(
 }
 
 async function exportSummary(
-    _supabase: SupabaseClient,
-    _filters: Record<string, unknown>
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    supabase: SupabaseClient,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    filters: Record<string, unknown>
 ): Promise<SummaryExportRow[]> {
     // This would contain high-level summary metrics
     // Implementation depends on specific requirements

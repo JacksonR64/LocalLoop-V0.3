@@ -96,7 +96,7 @@ export default function StaffDashboard({ user }: StaffDashboardProps) {
 
             const data = await response.json()
             setEvents(data.events || [])
-            setMetrics(data.metrics || metrics)
+            setMetrics(prevMetrics => data.metrics || prevMetrics)
             setError(null)
         } catch (error) {
             console.error('Error fetching dashboard data:', error)
