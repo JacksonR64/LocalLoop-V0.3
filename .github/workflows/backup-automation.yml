@@ -1,0 +1,312 @@
+name: 🔄 Automated Backup System
+
+on:
+  schedule:
+    # Daily backups at 2 AM UTC
+    - cron: '0 2 * * *'
+    # Weekly full backups on Sundays at 3 AM UTC
+    - cron: '0 3 * * 0'
+  workflow_dispatch:
+    inputs:
+      backup_type:
+        description: 'Type of backup to perform'
+        required: true
+        default: 'full'
+        type: choice
+        options:
+        - full
+        - database
+        - configuration
+        - git
+      notification_email:
+        description: 'Email for backup notifications (optional)'
+        required: false
+        type: string
+
+env:
+  BACKUP_RETENTION_DAYS: 30
+  SMTP_ENABLED: false
+
+jobs:
+  backup:
+    name: 🔐 Perform Backup
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    
+    strategy:
+      matrix:
+        backup-type: 
+          - ${{ github.event.inputs.backup_type || 'full' }}
+    
+    steps:
+    - name: 📥 Checkout Repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Full history for git backup
+        token: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: 🔐 Configure Git
+      run: |
+        git config --global user.name 'Backup Bot'
+        git config --global user.email 'backup@localloop.com'
+    
+    - name: 📋 Setup Backup Environment
+      run: |
+        # Create necessary directories
+        mkdir -p logs backups/{database,config,git,reports}
+        
+        # Set environment variables based on backup type
+        case "${{ matrix.backup-type }}" in
+          "database")
+            echo "DB_BACKUP_ENABLED=true" >> $GITHUB_ENV
+            echo "CONFIG_BACKUP_ENABLED=false" >> $GITHUB_ENV
+            echo "GIT_BACKUP_ENABLED=false" >> $GITHUB_ENV
+            ;;
+          "configuration")
+            echo "DB_BACKUP_ENABLED=false" >> $GITHUB_ENV
+            echo "CONFIG_BACKUP_ENABLED=true" >> $GITHUB_ENV
+            echo "GIT_BACKUP_ENABLED=false" >> $GITHUB_ENV
+            ;;
+          "git")
+            echo "DB_BACKUP_ENABLED=false" >> $GITHUB_ENV
+            echo "CONFIG_BACKUP_ENABLED=false" >> $GITHUB_ENV
+            echo "GIT_BACKUP_ENABLED=true" >> $GITHUB_ENV
+            ;;
+          "full")
+            echo "DB_BACKUP_ENABLED=true" >> $GITHUB_ENV
+            echo "CONFIG_BACKUP_ENABLED=true" >> $GITHUB_ENV
+            echo "GIT_BACKUP_ENABLED=true" >> $GITHUB_ENV
+            ;;
+        esac
+        
+        # Set notification email if provided
+        if [[ -n "${{ github.event.inputs.notification_email }}" ]]; then
+          echo "NOTIFICATION_EMAIL=${{ github.event.inputs.notification_email }}" >> $GITHUB_ENV
+        fi
+    
+    - name: 🛠️ Install Dependencies
+      run: |
+        # Install PostgreSQL client for database backups
+        sudo apt-get update
+        sudo apt-get install -y postgresql-client-common postgresql-client
+        
+        # Install jq for JSON processing
+        sudo apt-get install -y jq
+        
+        # Make backup scripts executable
+        chmod +x backup-scripts/*.sh
+    
+    - name: 🗄️ Setup Supabase Environment (if database backup enabled)
+      if: env.DB_BACKUP_ENABLED == 'true'
+      run: |
+        # Set up Supabase environment variables for backup
+        # Note: In production, these would come from secrets
+        echo "SUPABASE_PROJECT_REF=${{ secrets.SUPABASE_PROJECT_REF }}" >> $GITHUB_ENV
+        echo "SUPABASE_ACCESS_TOKEN=${{ secrets.SUPABASE_ACCESS_TOKEN }}" >> $GITHUB_ENV
+        echo "SUPABASE_DB_PASSWORD=${{ secrets.SUPABASE_DB_PASSWORD }}" >> $GITHUB_ENV
+    
+    - name: 🔄 Perform Backup
+      id: backup
+      run: |
+        echo "🚀 Starting ${{ matrix.backup-type }} backup process..."
+        
+        # Set backup base directory
+        export BACKUP_BASE_DIR="./backups"
+        export LOG_FILE="./logs/backup-$(date +%Y%m%d_%H%M%S).log"
+        
+        # Run the master backup script
+        if ./backup-scripts/master-backup.sh; then
+          echo "backup_status=success" >> $GITHUB_OUTPUT
+          echo "✅ Backup completed successfully"
+        else
+          echo "backup_status=failed" >> $GITHUB_OUTPUT
+          echo "❌ Backup failed"
+          exit 1
+        fi
+    
+    - name: 📊 Generate Backup Summary
+      if: always()
+      run: |
+        echo "## 🔄 Backup Summary" >> $GITHUB_STEP_SUMMARY
+        echo "**Type:** ${{ matrix.backup-type }}" >> $GITHUB_STEP_SUMMARY
+        echo "**Status:** ${{ steps.backup.outputs.backup_status }}" >> $GITHUB_STEP_SUMMARY
+        echo "**Date:** $(date)" >> $GITHUB_STEP_SUMMARY
+        echo "**Repository:** ${{ github.repository }}" >> $GITHUB_STEP_SUMMARY
+        echo "**Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+        
+        if [[ -f logs/backup-*.log ]]; then
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📋 Backup Log (Last 20 lines)" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          tail -20 logs/backup-*.log >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+        fi
+        
+        if [[ -d backups/reports ]]; then
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📄 Generated Reports" >> $GITHUB_STEP_SUMMARY
+          ls -la backups/reports/ >> $GITHUB_STEP_SUMMARY
+        fi
+    
+    - name: 📤 Upload Backup Artifacts
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: backup-${{ matrix.backup-type }}-${{ github.run_number }}
+        path: |
+          backups/
+          logs/
+        retention-days: 30
+        compression-level: 9
+    
+    - name: 🚨 Notify on Failure
+      if: failure()
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const issue = await github.rest.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: `🚨 Backup Failed: ${{ matrix.backup-type }} backup on ${new Date().toISOString()}`,
+            body: `## Backup Failure Report
+            
+            **Backup Type:** ${{ matrix.backup-type }}
+            **Workflow Run:** ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            **Commit:** ${{ github.sha }}
+            **Branch:** ${{ github.ref_name }}
+            **Triggered by:** ${{ github.actor }}
+            
+            ### Action Required
+            - [ ] Investigate backup failure
+            - [ ] Check backup logs in workflow artifacts
+            - [ ] Verify backup infrastructure
+            - [ ] Test backup restoration if needed
+            
+            ### Troubleshooting
+            1. Check the workflow logs for specific error messages
+            2. Verify that all required secrets are configured
+            3. Ensure backup scripts have proper permissions
+            4. Check available disk space and system resources
+            
+            *This issue was automatically created by the backup automation workflow.*`,
+            labels: ['bug', 'backup', 'infrastructure', 'urgent']
+          });
+          
+          console.log(`Created issue #${issue.data.number} for backup failure`);
+
+  backup-health-check:
+    name: 🔍 Backup Health Check
+    runs-on: ubuntu-latest
+    needs: backup
+    if: always()
+    
+    steps:
+    - name: 📥 Checkout Repository
+      uses: actions/checkout@v4
+    
+    - name: 📋 Download Backup Artifacts
+      uses: actions/download-artifact@v4
+      with:
+        pattern: backup-*
+        merge-multiple: true
+    
+    - name: 🔍 Verify Backup Health
+      run: |
+        echo "🔍 Performing backup health check..."
+        
+        # Check if backup reports exist
+        if [[ -d backups/reports ]]; then
+          latest_report=$(find backups/reports -name "backup_report_*.json" | sort | tail -1)
+          if [[ -f "$latest_report" ]]; then
+            echo "✅ Backup report found: $(basename "$latest_report")"
+            
+            # Extract backup statistics
+            if command -v jq &> /dev/null; then
+              backup_status=$(jq -r '.results[]' "$latest_report" 2>/dev/null || echo "Could not parse report")
+              echo "📊 Backup Results:"
+              echo "$backup_status"
+            fi
+          else
+            echo "⚠️ No backup report found"
+          fi
+        else
+          echo "⚠️ No backup reports directory found"
+        fi
+        
+        # Check backup file sizes
+        if [[ -d backups ]]; then
+          echo ""
+          echo "📁 Backup Directory Contents:"
+          du -sh backups/* 2>/dev/null || echo "No backup files found"
+        fi
+        
+        # Check log files for errors
+        if [[ -d logs ]]; then
+          echo ""
+          echo "📋 Checking logs for errors..."
+          if grep -i "error\|failed\|exception" logs/*.log 2>/dev/null; then
+            echo "⚠️ Errors found in backup logs"
+          else
+            echo "✅ No errors found in backup logs"
+          fi
+        fi
+    
+    - name: 📊 Update Repository Stats
+      run: |
+        # Create or update backup status file
+        mkdir -p .github/backup-status
+        
+        cat > .github/backup-status/last-backup.json << EOF
+        {
+          "last_backup": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")",
+          "backup_type": "${{ github.event.inputs.backup_type || 'full' }}",
+          "status": "${{ needs.backup.result }}",
+          "workflow_run": "${{ github.run_id }}",
+          "commit": "${{ github.sha }}",
+          "triggered_by": "${{ github.actor }}"
+        }
+        EOF
+        
+        echo "📄 Backup status updated"
+
+  cleanup-old-artifacts:
+    name: 🧹 Cleanup Old Backup Artifacts
+    runs-on: ubuntu-latest
+    needs: [backup, backup-health-check]
+    if: always()
+    
+    steps:
+    - name: 🧹 Delete Old Backup Artifacts
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const retention_days = 30;
+          const cutoff_date = new Date();
+          cutoff_date.setDate(cutoff_date.getDate() - retention_days);
+          
+          console.log(`Cleaning up backup artifacts older than ${retention_days} days (before ${cutoff_date.toISOString()})`);
+          
+          const artifacts = await github.rest.actions.listArtifactsForRepo({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            per_page: 100
+          });
+          
+          let deleted_count = 0;
+          for (const artifact of artifacts.data.artifacts) {
+            if (artifact.name.startsWith('backup-') && new Date(artifact.created_at) < cutoff_date) {
+              try {
+                await github.rest.actions.deleteArtifact({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  artifact_id: artifact.id
+                });
+                console.log(`Deleted artifact: ${artifact.name} (created: ${artifact.created_at})`);
+                deleted_count++;
+              } catch (error) {
+                console.log(`Failed to delete artifact ${artifact.name}: ${error.message}`);
+              }
+            }
+          }
+          
+          console.log(`Cleanup complete. Deleted ${deleted_count} old backup artifacts.`); 

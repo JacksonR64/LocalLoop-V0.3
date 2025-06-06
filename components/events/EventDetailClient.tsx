@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { Calendar, Clock, MapPin, User, DollarSign, Share2, Heart, ArrowLeft } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui';
 import { EventData } from '@/components/events';
-import { EventMap } from '@/components/events/EventMap';
+import { EventMapWrapper as EventMap } from '@/components/events/EventMapWrapper';
 import { RSVPTicketSection } from '@/components/events/RSVPTicketSection';
 import TicketSelection from '@/components/events/TicketSelection';
 import CheckoutForm from '@/components/checkout/CheckoutForm';

@@ -1,4 +1,5 @@
-import { onCLS, onFCP, onINP, onLCP, onTTFB } from 'web-vitals'
+// Dynamic import for web-vitals to prevent server-side bundling issues
+// import { onCLS, onFCP, onINP, onLCP, onTTFB } from 'web-vitals'
 
 // Types for performance metrics
 interface PerformanceMetric {
@@ -22,68 +23,77 @@ const THRESHOLDS = {
 }
 
 // Initialize Core Web Vitals tracking
-export function initWebVitals() {
+export async function initWebVitals() {
   if (typeof window === 'undefined') return
 
-  // Track Largest Contentful Paint
-  onLCP((metric) => {
-    sendMetricToAPI({
-      name: 'LCP',
-      value: metric.value,
-      rating: metric.rating,
-      timestamp: Date.now(),
-      url: window.location.href,
-      userAgent: navigator.userAgent
-    })
-  })
+  try {
+    // Dynamic import to prevent server-side bundling
+    const { onCLS, onFCP, onINP, onLCP, onTTFB } = await import('web-vitals')
 
-  // Track Interaction to Next Paint (replaces First Input Delay)
-  onINP((metric) => {
-    sendMetricToAPI({
-      name: 'INP',
-      value: metric.value,
-      rating: metric.rating,
-      timestamp: Date.now(),
-      url: window.location.href,
-      userAgent: navigator.userAgent
+    // Track Largest Contentful Paint
+    onLCP((metric) => {
+      sendMetricToAPI({
+        name: 'LCP',
+        value: metric.value,
+        rating: metric.rating,
+        timestamp: Date.now(),
+        url: window.location.href,
+        userAgent: navigator.userAgent
+      })
     })
-  })
 
-  // Track Cumulative Layout Shift
-  onCLS((metric) => {
-    sendMetricToAPI({
-      name: 'CLS',
-      value: metric.value,
-      rating: metric.rating,
-      timestamp: Date.now(),
-      url: window.location.href,
-      userAgent: navigator.userAgent
+    // Track Interaction to Next Paint (replaces First Input Delay)
+    onINP((metric) => {
+      sendMetricToAPI({
+        name: 'INP',
+        value: metric.value,
+        rating: metric.rating,
+        timestamp: Date.now(),
+        url: window.location.href,
+        userAgent: navigator.userAgent
+      })
     })
-  })
 
-  // Track First Contentful Paint
-  onFCP((metric) => {
-    sendMetricToAPI({
-      name: 'FCP',
-      value: metric.value,
-      rating: metric.rating,
-      timestamp: Date.now(),
-      url: window.location.href,
-      userAgent: navigator.userAgent
+    // Track Cumulative Layout Shift
+    onCLS((metric) => {
+      sendMetricToAPI({
+        name: 'CLS',
+        value: metric.value,
+        rating: metric.rating,
+        timestamp: Date.now(),
+        url: window.location.href,
+        userAgent: navigator.userAgent
+      })
     })
-  })
 
-  // Track Time to First Byte
-  onTTFB((metric) => {
-    sendMetricToAPI({
-      name: 'TTFB',
-      value: metric.value,
-      rating: metric.rating,
-      timestamp: Date.now(),
-      url: window.location.href,
-      userAgent: navigator.userAgent
+    // Track First Contentful Paint
+    onFCP((metric) => {
+      sendMetricToAPI({
+        name: 'FCP',
+        value: metric.value,
+        rating: metric.rating,
+        timestamp: Date.now(),
+        url: window.location.href,
+        userAgent: navigator.userAgent
+      })
     })
-  })
+
+    // Track Time to First Byte
+    onTTFB((metric) => {
+      sendMetricToAPI({
+        name: 'TTFB',
+        value: metric.value,
+        rating: metric.rating,
+        timestamp: Date.now(),
+        url: window.location.href,
+        userAgent: navigator.userAgent
+      })
+    })
+  } catch (error) {
+    if (process.env.NODE_ENV === 'development') {
+      console.warn('Failed to initialize web vitals:', error)
+    }
+  }
 }
 
 // Send metric data to API
