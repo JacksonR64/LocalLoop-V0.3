@@ -2,6 +2,7 @@
  * @jest-environment node
  */
 
+// @ts-nocheck
 // Mock Supabase
 jest.mock('@/lib/supabase-server', () => ({
     createServerSupabaseClient: jest.fn(() => ({
