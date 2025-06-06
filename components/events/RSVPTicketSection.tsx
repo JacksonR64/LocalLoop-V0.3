@@ -122,7 +122,7 @@ const RSVPTicketSection: React.FC<RSVPTicketSectionProps> = ({
         } else {
             setExistingRSVP(null);
         }
-    }, [user, eventId]);
+    }, [user, eventId, checkExistingRSVP]);
 
     // Handle RSVP submission
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {

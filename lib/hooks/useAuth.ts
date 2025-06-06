@@ -1,7 +1,7 @@
 // Client-side authentication hook for LocalLoop
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { supabase } from '@/lib/supabase'
 import type { User } from '@supabase/supabase-js'
 
@@ -32,7 +32,7 @@ export function useAuth(): UseAuthReturn {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
 
-    const fetchUserProfile = async (authUser: User) => {
+    const fetchUserProfile = useCallback(async (authUser: User) => {
         try {
             const { data, error } = await supabase
                 .from('users')
@@ -58,9 +58,9 @@ export function useAuth(): UseAuthReturn {
             setError('Failed to load user profile')
             return null
         }
-    }
+    }, [])
 
-    const refresh = async () => {
+    const refresh = useCallback(async () => {
         try {
             setLoading(true)
             setError(null)
@@ -88,9 +88,9 @@ export function useAuth(): UseAuthReturn {
         } finally {
             setLoading(false)
         }
-    }
+    }, [fetchUserProfile])
 
-    const signOut = async () => {
+    const signOut = useCallback(async () => {
         try {
             setLoading(true)
             const { error } = await supabase.auth.signOut()
@@ -107,7 +107,7 @@ export function useAuth(): UseAuthReturn {
         } finally {
             setLoading(false)
         }
-    }
+    }, [])
 
     useEffect(() => {
         // Get initial session
@@ -129,7 +129,7 @@ export function useAuth(): UseAuthReturn {
         )
 
         return () => subscription.unsubscribe()
-    }, [])
+    }, [refresh, fetchUserProfile])
 
     const isAuthenticated = !!user
     const isStaff = user ? ['organizer', 'admin'].includes(user.role) : false

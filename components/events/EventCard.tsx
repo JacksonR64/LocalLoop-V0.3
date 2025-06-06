@@ -82,8 +82,7 @@ function SafeImage({
     sizes?: string;
     placeholder?: "blur" | "empty" | undefined;
     blurDataURL?: string;
-    [key: string]: any;
-}) {
+} & Omit<React.ComponentProps<typeof Image>, 'src' | 'alt' | 'fill' | 'className' | 'sizes' | 'placeholder' | 'blurDataURL'>) {
     const [hasError, setHasError] = React.useState(false);
 
     // Reset error state when src changes

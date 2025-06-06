@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card'
 
 import { Button } from '@/components/ui/button'
@@ -70,7 +70,7 @@ export default function Analytics() {
     const [timeRange, setTimeRange] = useState('30d')
     const [refreshing, setRefreshing] = useState(false)
 
-    const fetchAnalytics = async () => {
+    const fetchAnalytics = useCallback(async () => {
         try {
             setLoading(true)
             setError(null)
@@ -139,11 +139,11 @@ export default function Analytics() {
             setLoading(false)
             setRefreshing(false)
         }
-    }
+    }, [timeRange])
 
     useEffect(() => {
         fetchAnalytics()
-    }, [timeRange])
+    }, [fetchAnalytics])
 
     const handleRefresh = async () => {
         setRefreshing(true)

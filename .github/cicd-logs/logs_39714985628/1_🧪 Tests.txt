@@ -1,0 +1,990 @@
+﻿2025-06-06T09:07:20.0427658Z Current runner version: '2.325.0'
+2025-06-06T09:07:20.0471111Z ##[group]Runner Image Provisioner
+2025-06-06T09:07:20.0472286Z Hosted Compute Agent
+2025-06-06T09:07:20.0473288Z Version: 20250508.323
+2025-06-06T09:07:20.0474178Z Commit: 81b259f29879f73b4213d199e42d8c3465dae986
+2025-06-06T09:07:20.0475348Z Build Date: 2025-05-08T19:40:08Z
+2025-06-06T09:07:20.0476437Z ##[endgroup]
+2025-06-06T09:07:20.0477287Z ##[group]Operating System
+2025-06-06T09:07:20.0478201Z Ubuntu
+2025-06-06T09:07:20.0479050Z 24.04.2
+2025-06-06T09:07:20.0479893Z LTS
+2025-06-06T09:07:20.0480952Z ##[endgroup]
+2025-06-06T09:07:20.0481891Z ##[group]Runner Image
+2025-06-06T09:07:20.0482726Z Image: ubuntu-24.04
+2025-06-06T09:07:20.0483560Z Version: 20250511.1.0
+2025-06-06T09:07:20.0485475Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20250511.1/images/ubuntu/Ubuntu2404-Readme.md
+2025-06-06T09:07:20.0488210Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20250511.1
+2025-06-06T09:07:20.0490041Z ##[endgroup]
+2025-06-06T09:07:20.0492198Z ##[group]GITHUB_TOKEN Permissions
+2025-06-06T09:07:20.0495286Z Contents: read
+2025-06-06T09:07:20.0496214Z Metadata: read
+2025-06-06T09:07:20.0496982Z Packages: read
+2025-06-06T09:07:20.0497857Z ##[endgroup]
+2025-06-06T09:07:20.0521614Z Secret source: Actions
+2025-06-06T09:07:20.0522861Z Prepare workflow directory
+2025-06-06T09:07:20.1595577Z Prepare all required actions
+2025-06-06T09:07:20.1653826Z Getting action download info
+2025-06-06T09:07:20.5447693Z ##[group]Download immutable action package 'actions/checkout@v4'
+2025-06-06T09:07:20.5449324Z Version: 4.2.2
+2025-06-06T09:07:20.5450550Z Digest: sha256:ccb2698953eaebd21c7bf6268a94f9c26518a7e38e27e0b83c1fe1ad049819b1
+2025-06-06T09:07:20.5451989Z Source commit SHA: 11bd71901bbe5b1630ceea73d27597364c9af683
+2025-06-06T09:07:20.5452847Z ##[endgroup]
+2025-06-06T09:07:20.6179187Z ##[group]Download immutable action package 'actions/setup-node@v4'
+2025-06-06T09:07:20.6180097Z Version: 4.4.0
+2025-06-06T09:07:20.6181291Z Digest: sha256:9427cefe82346e992fb5b949e3569b39d537ae41aa3086483b14eceebfc16bc1
+2025-06-06T09:07:20.6182441Z Source commit SHA: 49933ea5288caeca8642d1e84afbd3f7d6820020
+2025-06-06T09:07:20.6183234Z ##[endgroup]
+2025-06-06T09:07:20.7928950Z Complete job name: 🧪 Tests
+2025-06-06T09:07:20.8594192Z ##[group]Run actions/checkout@v4
+2025-06-06T09:07:20.8595101Z with:
+2025-06-06T09:07:20.8595572Z   repository: JacksonR64/LocalLoop-V0.3
+2025-06-06T09:07:20.8596350Z   token: ***
+2025-06-06T09:07:20.8596775Z   ssh-strict: true
+2025-06-06T09:07:20.8597212Z   ssh-user: git
+2025-06-06T09:07:20.8597633Z   persist-credentials: true
+2025-06-06T09:07:20.8598112Z   clean: true
+2025-06-06T09:07:20.8598539Z   sparse-checkout-cone-mode: true
+2025-06-06T09:07:20.8599058Z   fetch-depth: 1
+2025-06-06T09:07:20.8599481Z   fetch-tags: false
+2025-06-06T09:07:20.8599908Z   show-progress: true
+2025-06-06T09:07:20.8600537Z   lfs: false
+2025-06-06T09:07:20.8600942Z   submodules: false
+2025-06-06T09:07:20.8601381Z   set-safe-directory: true
+2025-06-06T09:07:20.8602127Z env:
+2025-06-06T09:07:20.8602524Z   NODE_VERSION: 18
+2025-06-06T09:07:20.8602942Z ##[endgroup]
+2025-06-06T09:07:20.9888819Z Syncing repository: JacksonR64/LocalLoop-V0.3
+2025-06-06T09:07:20.9891425Z ##[group]Getting Git version info
+2025-06-06T09:07:20.9893051Z Working directory is '/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3'
+2025-06-06T09:07:20.9895205Z [command]/usr/bin/git version
+2025-06-06T09:07:20.9897899Z git version 2.49.0
+2025-06-06T09:07:20.9901196Z ##[endgroup]
+2025-06-06T09:07:20.9916486Z Temporarily overriding HOME='/home/runner/work/_temp/439b4734-5f6d-43b3-9cd0-0aa417a2195f' before making global git config changes
+2025-06-06T09:07:20.9919418Z Adding repository directory to the temporary git global config as a safe directory
+2025-06-06T09:07:21.0803790Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3
+2025-06-06T09:07:21.0807238Z Deleting the contents of '/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3'
+2025-06-06T09:07:21.0809910Z ##[group]Initializing the repository
+2025-06-06T09:07:21.0811591Z [command]/usr/bin/git init /home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3
+2025-06-06T09:07:21.0813361Z hint: Using 'master' as the name for the initial branch. This default branch name
+2025-06-06T09:07:21.0815315Z hint: is subject to change. To configure the initial branch name to use in all
+2025-06-06T09:07:21.0817090Z hint: of your new repositories, which will suppress this warning, call:
+2025-06-06T09:07:21.0818448Z hint:
+2025-06-06T09:07:21.0819316Z hint: 	git config --global init.defaultBranch <name>
+2025-06-06T09:07:21.0822622Z hint:
+2025-06-06T09:07:21.0823788Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2025-06-06T09:07:21.0825684Z hint: 'development'. The just-created branch can be renamed via this command:
+2025-06-06T09:07:21.0827096Z hint:
+2025-06-06T09:07:21.0827815Z hint: 	git branch -m <name>
+2025-06-06T09:07:21.0829266Z Initialized empty Git repository in /home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/.git/
+2025-06-06T09:07:21.0832946Z [command]/usr/bin/git remote add origin https://github.com/JacksonR64/LocalLoop-V0.3
+2025-06-06T09:07:21.0835878Z ##[endgroup]
+2025-06-06T09:07:21.0837172Z ##[group]Disabling automatic garbage collection
+2025-06-06T09:07:21.0838360Z [command]/usr/bin/git config --local gc.auto 0
+2025-06-06T09:07:21.0841221Z ##[endgroup]
+2025-06-06T09:07:21.0842423Z ##[group]Setting up auth
+2025-06-06T09:07:21.0843713Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2025-06-06T09:07:21.0847891Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2025-06-06T09:07:21.0852665Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2025-06-06T09:07:21.0857721Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2025-06-06T09:07:21.1082307Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2025-06-06T09:07:21.1121590Z ##[endgroup]
+2025-06-06T09:07:21.1124713Z ##[group]Fetching the repository
+2025-06-06T09:07:21.1295152Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +1e9007d81017f1c54489a3adad4deec386f413f7:refs/remotes/origin/fix/ci-pipeline
+2025-06-06T09:07:21.7659984Z From https://github.com/JacksonR64/LocalLoop-V0.3
+2025-06-06T09:07:21.7663780Z  * [new ref]         1e9007d81017f1c54489a3adad4deec386f413f7 -> origin/fix/ci-pipeline
+2025-06-06T09:07:21.7692456Z ##[endgroup]
+2025-06-06T09:07:21.7694235Z ##[group]Determining the checkout info
+2025-06-06T09:07:21.7696155Z ##[endgroup]
+2025-06-06T09:07:21.7701011Z [command]/usr/bin/git sparse-checkout disable
+2025-06-06T09:07:21.7745177Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2025-06-06T09:07:21.7779166Z ##[group]Checking out the ref
+2025-06-06T09:07:21.7782149Z [command]/usr/bin/git checkout --progress --force -B fix/ci-pipeline refs/remotes/origin/fix/ci-pipeline
+2025-06-06T09:07:21.8521301Z Switched to a new branch 'fix/ci-pipeline'
+2025-06-06T09:07:21.8523324Z branch 'fix/ci-pipeline' set up to track 'origin/fix/ci-pipeline'.
+2025-06-06T09:07:21.8534433Z ##[endgroup]
+2025-06-06T09:07:21.8576289Z [command]/usr/bin/git log -1 --format=%H
+2025-06-06T09:07:21.8604859Z 1e9007d81017f1c54489a3adad4deec386f413f7
+2025-06-06T09:07:21.8912071Z ##[group]Run actions/setup-node@v4
+2025-06-06T09:07:21.8913280Z with:
+2025-06-06T09:07:21.8914097Z   node-version: 18
+2025-06-06T09:07:21.8914978Z   cache: npm
+2025-06-06T09:07:21.8915828Z   always-auth: false
+2025-06-06T09:07:21.8916768Z   check-latest: false
+2025-06-06T09:07:21.8917962Z   token: ***
+2025-06-06T09:07:21.8918788Z env:
+2025-06-06T09:07:21.8919568Z   NODE_VERSION: 18
+2025-06-06T09:07:21.8920905Z ##[endgroup]
+2025-06-06T09:07:22.1293373Z Found in cache @ /opt/hostedtoolcache/node/18.20.8/x64
+2025-06-06T09:07:22.1300655Z ##[group]Environment details
+2025-06-06T09:07:24.1634850Z node: v18.20.8
+2025-06-06T09:07:24.1637328Z npm: 10.8.2
+2025-06-06T09:07:24.1637684Z yarn: 1.22.22
+2025-06-06T09:07:24.1638569Z ##[endgroup]
+2025-06-06T09:07:24.1669459Z [command]/opt/hostedtoolcache/node/18.20.8/x64/bin/npm config get cache
+2025-06-06T09:07:24.5170932Z /home/runner/.npm
+2025-06-06T09:07:24.6245245Z Cache hit for: node-cache-Linux-x64-npm-2be94d80918732632554aac3646f7ebd6a7b87a8da6fd4ec5f1428c609b1c779
+2025-06-06T09:07:25.6604218Z Received 197805658 of 201999962 (97.9%), 188.3 MBs/sec
+2025-06-06T09:07:25.7034167Z Received 201999962 of 201999962 (100.0%), 184.3 MBs/sec
+2025-06-06T09:07:25.7035875Z Cache Size: ~193 MB (201999962 B)
+2025-06-06T09:07:25.7076523Z [command]/usr/bin/tar -xf /home/runner/work/_temp/97f19596-0937-4fb7-8181-c6d75d2b3a24/cache.tzst -P -C /home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3 --use-compress-program unzstd
+2025-06-06T09:07:26.1819996Z Cache restored successfully
+2025-06-06T09:07:26.2234723Z Cache restored from key: node-cache-Linux-x64-npm-2be94d80918732632554aac3646f7ebd6a7b87a8da6fd4ec5f1428c609b1c779
+2025-06-06T09:07:26.2441927Z ##[group]Run npm ci --legacy-peer-deps
+2025-06-06T09:07:26.2442311Z [36;1mnpm ci --legacy-peer-deps[0m
+2025-06-06T09:07:26.2631949Z shell: /usr/bin/bash -e {0}
+2025-06-06T09:07:26.2632217Z env:
+2025-06-06T09:07:26.2632405Z   NODE_VERSION: 18
+2025-06-06T09:07:26.2632611Z ##[endgroup]
+2025-06-06T09:07:33.7523254Z npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+2025-06-06T09:07:34.0672748Z npm warn deprecated abab@2.0.6: Use your platform's native atob() and btoa() methods instead
+2025-06-06T09:07:34.2230982Z npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+2025-06-06T09:07:34.3562451Z npm warn deprecated domexception@4.0.0: Use your platform's native DOMException instead
+2025-06-06T09:07:45.3398394Z 
+2025-06-06T09:07:45.3399353Z > 1000x-app@0.1.0 prepare
+2025-06-06T09:07:45.3400052Z > husky install
+2025-06-06T09:07:45.3400584Z 
+2025-06-06T09:07:45.4009788Z husky - install command is DEPRECATED
+2025-06-06T09:07:45.4251865Z 
+2025-06-06T09:07:45.4253435Z added 811 packages, and audited 812 packages in 19s
+2025-06-06T09:07:45.4270954Z 
+2025-06-06T09:07:45.4271442Z 183 packages are looking for funding
+2025-06-06T09:07:45.4271965Z   run `npm fund` for details
+2025-06-06T09:07:45.4278827Z 
+2025-06-06T09:07:45.4279408Z found 0 vulnerabilities
+2025-06-06T09:07:45.5237680Z ##[group]Run npm run test:ci
+2025-06-06T09:07:45.5237986Z [36;1mnpm run test:ci[0m
+2025-06-06T09:07:45.5297361Z shell: /usr/bin/bash -e {0}
+2025-06-06T09:07:45.5297612Z env:
+2025-06-06T09:07:45.5297795Z   NODE_VERSION: 18
+2025-06-06T09:07:45.5298005Z ##[endgroup]
+2025-06-06T09:07:45.6689572Z 
+2025-06-06T09:07:45.6690686Z > 1000x-app@0.1.0 test:ci
+2025-06-06T09:07:45.6691325Z > jest --ci --coverage --watchAll=false
+2025-06-06T09:07:45.6691695Z 
+2025-06-06T09:07:46.7250687Z jest-haste-map: Haste module naming collision: 1000x-app
+2025-06-06T09:07:46.7255563Z   The following files share their name; please adjust your hasteImpl:
+2025-06-06T09:07:46.7267632Z     * <rootDir>/package.json
+2025-06-06T09:07:46.7272296Z     * <rootDir>/copy/package.json
+2025-06-06T09:07:46.7279498Z 
+2025-06-06T09:07:47.9201922Z PASS lib/utils/__tests__/ticket-utils.test.ts
+2025-06-06T09:07:47.9202742Z   Ticket Utils
+2025-06-06T09:07:47.9203512Z     formatPrice
+2025-06-06T09:07:47.9204794Z       ✓ should format price correctly for paid tickets (14 ms)
+2025-06-06T09:07:47.9205825Z       ✓ should display "Free" for zero price (1 ms)
+2025-06-06T09:07:47.9206641Z       ✓ should handle different currencies
+2025-06-06T09:07:47.9207426Z       ✓ should handle large amounts (1 ms)
+2025-06-06T09:07:47.9208755Z       ✓ should handle small amounts (1 ms)
+2025-06-06T09:07:47.9209376Z     convertToStripeAmount
+2025-06-06T09:07:47.9221071Z       ✓ should convert dollars to cents correctly (1 ms)
+2025-06-06T09:07:47.9221944Z       ✓ should handle zero amount
+2025-06-06T09:07:47.9222802Z       ✓ should round properly for precision issues (1 ms)
+2025-06-06T09:07:47.9224423Z       ✓ should handle large amounts
+2025-06-06T09:07:47.9226264Z     convertToDollars
+2025-06-06T09:07:47.9227588Z       ✓ should convert cents to dollars correctly (1 ms)
+2025-06-06T09:07:47.9229518Z       ✓ should handle zero amount (1 ms)
+2025-06-06T09:07:47.9231627Z       ✓ should handle single cents (1 ms)
+2025-06-06T09:07:47.9232140Z     calculateStripeFee
+2025-06-06T09:07:47.9232717Z       ✓ should calculate Stripe fees correctly (1 ms)
+2025-06-06T09:07:47.9233429Z       ✓ should handle zero amount (1 ms)
+2025-06-06T09:07:47.9234044Z       ✓ should handle small amounts (1 ms)
+2025-06-06T09:07:47.9234635Z       ✓ should handle large amounts (1 ms)
+2025-06-06T09:07:47.9235119Z     calculateCustomerTotal
+2025-06-06T09:07:47.9235802Z       ✓ should calculate total amount customer pays (1 ms)
+2025-06-06T09:07:47.9236535Z       ✓ should handle free tickets (5 ms)
+2025-06-06T09:07:47.9237035Z     checkTicketAvailability
+2025-06-06T09:07:47.9237792Z       ✓ should return availability for tickets with capacity (1 ms)
+2025-06-06T09:07:47.9238629Z       ✓ should handle tickets without capacity limits
+2025-06-06T09:07:47.9239309Z       ✓ should detect sold out tickets
+2025-06-06T09:07:47.9239966Z       ✓ should handle tickets with sale periods
+2025-06-06T09:07:47.9240781Z       ✓ should detect ended sales
+2025-06-06T09:07:47.9241255Z     formatAvailabilityStatus
+2025-06-06T09:07:47.9241902Z       ✓ should format available status (1 ms)
+2025-06-06T09:07:47.9242568Z       ✓ should format unlimited availability
+2025-06-06T09:07:47.9243188Z       ✓ should format sold out status
+2025-06-06T09:07:47.9243668Z     validateTicketPrice
+2025-06-06T09:07:47.9244305Z       ✓ should validate correct prices (1 ms)
+2025-06-06T09:07:47.9244958Z       ✓ should reject negative prices
+2025-06-06T09:07:47.9245670Z       ✓ should reject prices below minimum for paid tickets
+2025-06-06T09:07:47.9246430Z       ✓ should reject prices above maximum
+2025-06-06T09:07:47.9246935Z     calculateRefundAmount
+2025-06-06T09:07:47.9247643Z       ✓ should calculate customer refund with Stripe fee deduction
+2025-06-06T09:07:47.9248468Z       ✓ should calculate full refund for event cancellation
+2025-06-06T09:07:47.9249171Z       ✓ should handle small amounts (1 ms)
+2025-06-06T09:07:47.9249663Z     getTicketTypeDisplayName
+2025-06-06T09:07:47.9335862Z       ✓ should return the ticket type name with price
+2025-06-06T09:07:47.9337091Z       ✓ should handle empty or undefined names (1 ms)
+2025-06-06T09:07:47.9337701Z     sortTicketTypes
+2025-06-06T09:07:47.9338363Z       ✓ should sort ticket types by price ascending
+2025-06-06T09:07:47.9338918Z     getActiveTicketTypes
+2025-06-06T09:07:47.9339643Z       ✓ should filter only active ticket types (1 ms)
+2025-06-06T09:07:47.9341108Z       ✓ should maintain order of active tickets
+2025-06-06T09:07:47.9341690Z     calculateTotalRevenue
+2025-06-06T09:07:47.9342402Z       ✓ should calculate total revenue from sold tickets
+2025-06-06T09:07:47.9343190Z       ✓ should handle tickets with no sales (1 ms)
+2025-06-06T09:07:47.9343720Z     formatSaleDate
+2025-06-06T09:07:47.9344306Z       ✓ should format date strings (4 ms)
+2025-06-06T09:07:47.9345010Z       ✓ should handle different date formats
+2025-06-06T09:07:47.9345539Z     hasCapacityLimit
+2025-06-06T09:07:47.9346228Z       ✓ should return true for tickets with capacity (1 ms)
+2025-06-06T09:07:47.9347045Z       ✓ should return false for unlimited tickets
+2025-06-06T09:07:47.9347591Z     getMinimumTicketPrice
+2025-06-06T09:07:47.9348311Z       ✓ should return minimum price from ticket types
+2025-06-06T09:07:47.9349067Z       ✓ should return null for empty array (1 ms)
+2025-06-06T09:07:47.9350247Z       ✓ should exclude inactive tickets from price calculation
+2025-06-06T09:07:47.9351109Z     getMaximumTicketPrice
+2025-06-06T09:07:47.9351895Z       ✓ should return maximum price from ticket types
+2025-06-06T09:07:47.9352604Z       ✓ should return null for empty array
+2025-06-06T09:07:47.9353111Z     formatPriceRange
+2025-06-06T09:07:47.9353801Z       ✓ should format price range for mixed ticket types (1 ms)
+2025-06-06T09:07:47.9354521Z       ✓ should handle single price point
+2025-06-06T09:07:47.9355231Z       ✓ should handle all free tickets (1 ms)
+2025-06-06T09:07:47.9355879Z       ✓ should handle empty array
+2025-06-06T09:07:47.9356188Z 
+2025-06-06T09:07:48.3141252Z PASS lib/utils/__tests__/eventFilters.test.ts
+2025-06-06T09:07:48.3142325Z   Event Filters
+2025-06-06T09:07:48.3143518Z     applyFilters
+2025-06-06T09:07:48.3144701Z       ✓ should return all events with empty filters (1 ms)
+2025-06-06T09:07:48.3146192Z       ✓ should filter by categories
+2025-06-06T09:07:48.3147257Z       ✓ should filter by price type (free) (1 ms)
+2025-06-06T09:07:48.3148774Z       ✓ should filter by price type (paid) (1 ms)
+2025-06-06T09:07:48.3149855Z       ✓ should filter by search query (1 ms)
+2025-06-06T09:07:48.3151531Z       ✓ should sort by date ascending (1 ms)
+2025-06-06T09:07:48.3152583Z       ✓ should sort by date descending
+2025-06-06T09:07:48.3154006Z       ✓ should sort by title ascending (1 ms)
+2025-06-06T09:07:48.3155122Z       ✓ should combine multiple filters (1 ms)
+2025-06-06T09:07:48.3156298Z     getEventCategories
+2025-06-06T09:07:48.3158636Z       ✓ should return unique categories with counts (1 ms)
+2025-06-06T09:07:48.3160242Z       ✓ should handle empty events array
+2025-06-06T09:07:48.3161900Z       ✓ should sort categories alphabetically (1 ms)
+2025-06-06T09:07:48.3163148Z     getEventPriceCounts
+2025-06-06T09:07:48.3164455Z       ✓ should count free and paid events (1 ms)
+2025-06-06T09:07:48.3165812Z       ✓ should handle empty events array
+2025-06-06T09:07:48.3167260Z       ✓ should handle all free events
+2025-06-06T09:07:48.3169024Z     hasActiveFilters
+2025-06-06T09:07:48.3170621Z       ✓ should return false for empty filters (1 ms)
+2025-06-06T09:07:48.3172082Z       ✓ should return true when categories are selected
+2025-06-06T09:07:48.3173644Z       ✓ should return true when price type is filtered (1 ms)
+2025-06-06T09:07:48.3175656Z       ✓ should return true when search query is present
+2025-06-06T09:07:48.3176164Z     getFilterSummary
+2025-06-06T09:07:48.3176684Z       ✓ should generate filter summary (6 ms)
+2025-06-06T09:07:48.3177248Z       ✓ should handle no filters applied
+2025-06-06T09:07:48.3177680Z     filtersToQueryParams
+2025-06-06T09:07:48.3178371Z       ✓ should convert filters to query params (1 ms)
+2025-06-06T09:07:48.3179295Z       ✓ should skip empty values
+2025-06-06T09:07:48.3179730Z     queryParamsToFilters
+2025-06-06T09:07:48.3180510Z       ✓ should convert query params to filters
+2025-06-06T09:07:48.3181187Z       ✓ should handle empty params (1 ms)
+2025-06-06T09:07:48.3181539Z 
+2025-06-06T09:07:48.7549088Z   console.log
+2025-06-06T09:07:48.7561587Z     🧪 Component integration test framework working correctly
+2025-06-06T09:07:48.7572469Z PASS tests/integration/component-interactions.test.ts
+2025-06-06T09:07:48.7572895Z 
+2025-06-06T09:07:48.7573425Z       at Object.log (tests/integration/component-interactions.test.ts:254:21)
+2025-06-06T09:07:48.7573952Z 
+2025-06-06T09:07:48.7574393Z   Component Interactions Integration
+2025-06-06T09:07:48.7575121Z     Event Filters and Event List Integration
+2025-06-06T09:07:48.7576131Z       ✓ should filter events when filter options are selected (1 ms)
+2025-06-06T09:07:48.7576997Z     Authentication Flow Integration
+2025-06-06T09:07:48.7577970Z       ✓ should handle authentication state changes across components
+2025-06-06T09:07:48.7578853Z     Form Submission and Data Persistence Integration
+2025-06-06T09:07:48.7579837Z       ✓ should handle form submission with validation and API calls (2 ms)
+2025-06-06T09:07:48.7580843Z     Error Handling and User Feedback Integration
+2025-06-06T09:07:48.7582283Z       ✓ should display appropriate error messages when API calls fail (1 ms)
+2025-06-06T09:07:48.7583155Z     State Management Integration
+2025-06-06T09:07:48.7584111Z       ✓ should maintain consistent state across component updates (1 ms)
+2025-06-06T09:07:48.7584988Z     Real-time Updates Integration
+2025-06-06T09:07:48.7585792Z       ✓ should handle real-time data updates correctly
+2025-06-06T09:07:48.7586557Z     Performance and Loading States Integration
+2025-06-06T09:07:48.7587554Z       ✓ should handle loading states appropriately during data fetching (100 ms)
+2025-06-06T09:07:48.7591553Z     Integration Test Framework Verification
+2025-06-06T09:07:48.7592787Z       ✓ should verify component integration test setup is working (19 ms)
+2025-06-06T09:07:48.7606369Z 
+2025-06-06T09:07:48.9023737Z   console.log
+2025-06-06T09:07:48.9026372Z     🧪 Database validation integration tests working correctly
+2025-06-06T09:07:48.9032547Z 
+2025-06-06T09:07:48.9033057Z       at Object.log (tests/integration/database-validation.test.ts:219:21)
+2025-06-06T09:07:48.9033552Z 
+2025-06-06T09:07:48.9036716Z PASS tests/integration/database-validation.test.ts
+2025-06-06T09:07:48.9037289Z   Database Validation Integration
+2025-06-06T09:07:48.9037759Z     Data Structure Validation
+2025-06-06T09:07:48.9041405Z       ✓ should validate event data structure (2 ms)
+2025-06-06T09:07:48.9042120Z       ✓ should validate RSVP data structure (1 ms)
+2025-06-06T09:07:48.9042825Z       ✓ should validate ticket type data structure (2 ms)
+2025-06-06T09:07:48.9043372Z     API Response Format Validation
+2025-06-06T09:07:48.9044008Z       ✓ should validate events API response format (2 ms)
+2025-06-06T09:07:48.9044722Z       ✓ should validate error response format (1 ms)
+2025-06-06T09:07:48.9045246Z     Business Logic Validation
+2025-06-06T09:07:48.9045817Z       ✓ should validate event capacity logic
+2025-06-06T09:07:48.9046425Z       ✓ should validate ticket pricing logic
+2025-06-06T09:07:48.9047122Z       ✓ should validate date logic for events (1 ms)
+2025-06-06T09:07:48.9047644Z     Data Transformation Logic
+2025-06-06T09:07:48.9048308Z       ✓ should transform event data for API responses (1 ms)
+2025-06-06T09:07:48.9049051Z       ✓ should handle pagination logic correctly (1 ms)
+2025-06-06T09:07:48.9049652Z     Integration Test Framework Verification
+2025-06-06T09:07:48.9050620Z       ✓ should verify database integration test setup is working (4 ms)
+2025-06-06T09:07:48.9051081Z 
+2025-06-06T09:07:49.0460047Z   console.log
+2025-06-06T09:07:49.0474145Z     🧪 API integration test framework working correctly
+2025-06-06T09:07:49.0474551Z 
+2025-06-06T09:07:49.0475258Z       at Object.log (tests/integration/api-routes.test.ts:198:21)
+2025-06-06T09:07:49.0475696Z 
+2025-06-06T09:07:49.0523632Z PASS tests/integration/api-routes.test.ts
+2025-06-06T09:07:49.0533772Z   API Routes Integration
+2025-06-06T09:07:49.0534247Z     API Route Structure Validation
+2025-06-06T09:07:49.0535009Z       ✓ should validate API endpoint configurations (3 ms)
+2025-06-06T09:07:49.0535784Z       ✓ should validate HTTP method patterns (3 ms)
+2025-06-06T09:07:49.0536715Z     Request/Response Format Validation
+2025-06-06T09:07:49.0542336Z       ✓ should validate event creation request format (1 ms)
+2025-06-06T09:07:49.0543756Z       ✓ should validate RSVP creation request format (1 ms)
+2025-06-06T09:07:49.0546393Z       ✓ should validate performance analytics data format (1 ms)
+2025-06-06T09:07:49.0547928Z     Error Handling Patterns
+2025-06-06T09:07:49.0548586Z       ✓ should validate error response structure
+2025-06-06T09:07:49.0549312Z       ✓ should validate success response structure
+2025-06-06T09:07:49.0549890Z     Authentication Integration Patterns
+2025-06-06T09:07:49.0550908Z       ✓ should validate authentication header patterns
+2025-06-06T09:07:49.0551680Z       ✓ should validate user session data structure (1 ms)
+2025-06-06T09:07:49.0552264Z     Integration Test Framework Verification
+2025-06-06T09:07:49.0553373Z       ✓ should verify API integration test setup is working (2 ms)
+2025-06-06T09:07:49.0554165Z       ✓ should validate test data consistency (1 ms)
+2025-06-06T09:07:49.0554521Z 
+2025-06-06T09:07:49.6193666Z PASS components/ui/__tests__/button.test.tsx
+2025-06-06T09:07:49.6198093Z   Button Component
+2025-06-06T09:07:49.6202789Z     ✓ should render with default props (75 ms)
+2025-06-06T09:07:49.6207256Z     ✓ should render different variants correctly (32 ms)
+2025-06-06T09:07:49.6211587Z     ✓ should render different sizes correctly (22 ms)
+2025-06-06T09:07:49.6215717Z     ✓ should handle click events (27 ms)
+2025-06-06T09:07:49.6220537Z     ✓ should be disabled when disabled prop is true (6 ms)
+2025-06-06T09:07:49.6223866Z     ✓ should render as different HTML elements when asChild is used (4 ms)
+2025-06-06T09:07:49.6227076Z     ✓ should forward refs correctly (3 ms)
+2025-06-06T09:07:49.6229859Z     ✓ should accept custom className (7 ms)
+2025-06-06T09:07:49.6232772Z     ✓ should handle keyboard navigation (20 ms)
+2025-06-06T09:07:49.6235797Z     ✓ should have proper accessibility attributes (6 ms)
+2025-06-06T09:07:49.6238520Z     ✓ should render loading state correctly (6 ms)
+2025-06-06T09:07:49.6248855Z     ✓ should handle focus and blur events (28 ms)
+2025-06-06T09:07:49.6249649Z     ✓ should prevent default behavior when needed (15 ms)
+2025-06-06T09:07:49.6250543Z     ✓ should render with icons (3 ms)
+2025-06-06T09:07:49.6251270Z     ✓ should handle rapid clicks gracefully (33 ms)
+2025-06-06T09:07:49.6251670Z 
+2025-06-06T09:07:49.9256814Z PASS app/api/events/__tests__/route.test.ts
+2025-06-06T09:07:49.9272230Z   /api/events
+2025-06-06T09:07:49.9274052Z     ✓ should return 401 when user is not authenticated (7 ms)
+2025-06-06T09:07:49.9275944Z     ✓ should return events when user is authenticated (2 ms)
+2025-06-06T09:07:49.9277186Z 
+2025-06-06T09:07:56.6218665Z ----------------------------------|---------|----------|---------|---------|---------------------------------------------------
+2025-06-06T09:07:56.6223360Z File                              | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s                                 
+2025-06-06T09:07:56.6225191Z ----------------------------------|---------|----------|---------|---------|---------------------------------------------------
+2025-06-06T09:07:56.6236636Z All files                         |    4.46 |     2.99 |    5.08 |    4.23 |                                                   
+2025-06-06T09:07:56.6239033Z  app                              |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6249983Z   robots.ts                       |       0 |        0 |       0 |       0 | 3-6                                               
+2025-06-06T09:07:56.6251102Z   sitemap.ts                      |       0 |        0 |       0 |       0 | 3-25                                              
+2025-06-06T09:07:56.6251962Z  app/about                        |       0 |      100 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6252808Z   page.tsx                        |       0 |      100 |       0 |       0 | 1-4                                               
+2025-06-06T09:07:56.6253742Z  app/api/analytics/performance    |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6254715Z   route.ts                        |       0 |        0 |       0 |       0 | 1-231                                             
+2025-06-06T09:07:56.6255659Z  app/api/auth/google/callback     |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6256592Z   route.ts                        |       0 |        0 |       0 |       0 | 1-269                                             
+2025-06-06T09:07:56.6257541Z  app/api/auth/google/connect      |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6258699Z   route.ts                        |       0 |        0 |       0 |       0 | 1-118                                             
+2025-06-06T09:07:56.6259635Z  app/api/auth/google/disconnect   |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6260746Z   route.ts                        |       0 |        0 |       0 |       0 | 1-106                                             
+2025-06-06T09:07:56.6261637Z  app/api/auth/google/status       |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6262535Z   route.ts                        |       0 |        0 |       0 |       0 | 1-185                                             
+2025-06-06T09:07:56.6263393Z  app/api/auth/welcome             |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6264274Z   route.ts                        |       0 |        0 |       0 |       0 | 1-127                                             
+2025-06-06T09:07:56.6265216Z  app/api/calendar/add-to-calendar |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6266150Z   route.ts                        |       0 |        0 |       0 |       0 | 1-218                                             
+2025-06-06T09:07:56.6267077Z  app/api/calendar/create-event    |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6267992Z   route.ts                        |       0 |        0 |       0 |       0 | 1-94                                              
+2025-06-06T09:07:56.6268834Z  app/api/checkout                 |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6269677Z   route.ts                        |       0 |        0 |       0 |       0 | 1-289                                             
+2025-06-06T09:07:56.6270698Z  app/api/events                   |   37.71 |    18.51 |   66.66 |   39.44 |                                                   
+2025-06-06T09:07:56.6271613Z   route.ts                        |   37.71 |    18.51 |   66.66 |   39.44 | 7-163,209,213,217,221,231-245,271,290-300,321-322 
+2025-06-06T09:07:56.6272508Z  app/api/events/[id]              |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6273929Z   route.ts                        |       0 |        0 |       0 |       0 | 1-327                                             
+2025-06-06T09:07:56.6275158Z  app/api/events/cancellation      |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6279741Z   route.ts                        |       0 |        0 |       0 |       0 | 1-293                                             
+2025-06-06T09:07:56.6280715Z  app/api/events/reminders         |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6281410Z   route.ts                        |       0 |        0 |       0 |       0 | 1-322                                             
+2025-06-06T09:07:56.6282022Z  app/api/orders                   |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6282628Z   route.ts                        |       0 |        0 |       0 |       0 | 1-222                                             
+2025-06-06T09:07:56.6283232Z  app/api/refunds                  |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6283850Z   route.ts                        |       0 |        0 |       0 |       0 | 1-309                                             
+2025-06-06T09:07:56.6284451Z  app/api/rsvps                    |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6285059Z   route.ts                        |       0 |        0 |       0 |       0 | 1-334                                             
+2025-06-06T09:07:56.6285859Z  app/api/rsvps/[id]               |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6286470Z   route.ts                        |       0 |        0 |       0 |       0 | 1-315                                             
+2025-06-06T09:07:56.6287138Z  app/api/staff/analytics          |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6288002Z   route.ts                        |       0 |        0 |       0 |       0 | 1-207                                             
+2025-06-06T09:07:56.6295755Z  app/api/staff/attendees          |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6296641Z   route.ts                        |       0 |        0 |       0 |       0 | 1-260                                             
+2025-06-06T09:07:56.6297446Z  app/api/staff/dashboard          |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6298285Z   route.ts                        |       0 |        0 |       0 |       0 | 1-168                                             
+2025-06-06T09:07:56.6299096Z  app/api/staff/export             |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6299902Z   route.ts                        |       0 |        0 |       0 |       0 | 1-398                                             
+2025-06-06T09:07:56.6300860Z  app/api/test-env                 |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6301605Z   route.ts                        |       0 |        0 |       0 |       0 | 1-4                                               
+2025-06-06T09:07:56.6302371Z  app/api/test-upgrade-role        |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6303045Z   route.ts                        |       0 |        0 |       0 |       0 | 1-40                                              
+2025-06-06T09:07:56.6303692Z  app/api/ticket-types             |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6304394Z   route.ts                        |       0 |        0 |       0 |       0 | 1-373                                             
+2025-06-06T09:07:56.6305060Z  app/api/ticket-types/[id]        |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6306036Z   route.ts                        |       0 |        0 |       0 |       0 | 1-358                                             
+2025-06-06T09:07:56.6306960Z  app/api/update-customer-info     |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6307831Z   route.ts                        |       0 |        0 |       0 |       0 | 1-61                                              
+2025-06-06T09:07:56.6308663Z  app/api/webhooks/stripe          |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6309543Z   route.ts                        |       0 |        0 |       0 |       0 | 1-665                                             
+2025-06-06T09:07:56.6310836Z  app/auth/callback                |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6311672Z   page.tsx                        |       0 |        0 |       0 |       0 | 3-37                                              
+2025-06-06T09:07:56.6312526Z  app/auth/google/callback         |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6313373Z   page.tsx                        |       0 |        0 |       0 |       0 | 3-193                                             
+2025-06-06T09:07:56.6314413Z  app/auth/login                   |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6315236Z   page.tsx                        |       0 |        0 |       0 |       0 | 3-112                                             
+2025-06-06T09:07:56.6316103Z  app/auth/reset-password          |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6316934Z   page.tsx                        |       0 |        0 |       0 |       0 | 3-56                                              
+2025-06-06T09:07:56.6317725Z  app/auth/signup                  |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6318499Z   page.tsx                        |       0 |        0 |       0 |       0 | 3-103                                             
+2025-06-06T09:07:56.6319382Z  app/auth/update-password         |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6320242Z   page.tsx                        |       0 |      100 |       0 |       0 | 3-6                                               
+2025-06-06T09:07:56.6321291Z   update-password-form.tsx        |       0 |        0 |       0 |       0 | 3-103                                             
+2025-06-06T09:07:56.6322166Z  app/contact                      |       0 |      100 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6322976Z   page.tsx                        |       0 |      100 |       0 |       0 | 1-4                                               
+2025-06-06T09:07:56.6323820Z  app/create-event                 |       0 |      100 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6324625Z   page.tsx                        |       0 |      100 |       0 |       0 | 1-4                                               
+2025-06-06T09:07:56.6325386Z  app/demo                         |       0 |      100 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6326162Z   page.tsx                        |       0 |      100 |       0 |       0 | 3-249                                             
+2025-06-06T09:07:56.6327053Z  app/demo/lists                   |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6327864Z   page.tsx                        |       0 |        0 |       0 |       0 | 3-254                                             
+2025-06-06T09:07:56.6328863Z  app/events/[id]                  |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6329740Z   page.tsx                        |       0 |        0 |       0 |       0 | 1-127                                             
+2025-06-06T09:07:56.6335408Z  app/my-events                    |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6336288Z   page.tsx                        |       0 |        0 |       0 |       0 | 2-18                                              
+2025-06-06T09:07:56.6337132Z  app/privacy                      |       0 |      100 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6337968Z   page.tsx                        |       0 |      100 |       0 |       0 | 1-4                                               
+2025-06-06T09:07:56.6338807Z  app/staff                        |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6339611Z   page.tsx                        |       0 |        0 |       0 |       0 | 1-36                                              
+2025-06-06T09:07:56.6340787Z  app/staff/dashboard              |       0 |      100 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6344346Z   page.tsx                        |       0 |      100 |       0 |       0 | 1-5                                               
+2025-06-06T09:07:56.6345240Z  app/staff/events/[id]/edit       |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6346250Z   StaffEventEditClient.tsx        |       0 |      100 |       0 |       0 | 3-19                                              
+2025-06-06T09:07:56.6347162Z   page.tsx                        |       0 |        0 |       0 |       0 | 1-45                                              
+2025-06-06T09:07:56.6348061Z  app/staff/events/create          |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6349092Z   StaffEventCreateClient.tsx      |       0 |      100 |       0 |       0 | 3-15                                              
+2025-06-06T09:07:56.6350150Z   page.tsx                        |       0 |        0 |       0 |       0 | 1-24                                              
+2025-06-06T09:07:56.6351204Z  app/terms                        |       0 |      100 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6352018Z   page.tsx                        |       0 |      100 |       0 |       0 | 1-4                                               
+2025-06-06T09:07:56.6352831Z  app/test-auth                    |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6353647Z   page.tsx                        |       0 |        0 |       0 |       0 | 1-23                                              
+2025-06-06T09:07:56.6354440Z  components                       |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6355354Z   GoogleCalendarConnect.tsx       |       0 |        0 |       0 |       0 | 3-420                                             
+2025-06-06T09:07:56.6356332Z  components/analytics             |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6357320Z   PerformanceMonitor.tsx          |       0 |        0 |       0 |       0 | 3-50                                              
+2025-06-06T09:07:56.6358241Z  components/auth                  |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6359138Z   ProfileDropdown.tsx             |       0 |        0 |       0 |       0 | 3-52                                              
+2025-06-06T09:07:56.6361006Z   ProtectedRoute.tsx              |       0 |        0 |       0 |       0 | 3-148                                             
+2025-06-06T09:07:56.6362065Z  components/checkout              |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6363043Z   CheckoutForm.tsx                |       0 |        0 |       0 |       0 | 3-528                                             
+2025-06-06T09:07:56.6364075Z   GoogleCalendarAddButton.tsx     |       0 |        0 |       0 |       0 | 3-14                                              
+2025-06-06T09:07:56.6365084Z  components/dashboard             |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6366003Z   Analytics.tsx                   |       0 |        0 |       0 |       0 | 3-423                                             
+2025-06-06T09:07:56.6366935Z   AttendeeManagement.tsx          |       0 |        0 |       0 |       0 | 3-613                                             
+2025-06-06T09:07:56.6367940Z   PerformanceDashboard.tsx        |       0 |        0 |       0 |       0 | 3-237                                             
+2025-06-06T09:07:56.6368893Z   RefundDialog.tsx                |       0 |        0 |       0 |       0 | 3-303                                             
+2025-06-06T09:07:56.6370113Z   StaffDashboard.tsx              |       0 |        0 |       0 |       0 | 3-438                                             
+2025-06-06T09:07:56.6371272Z   UserDashboard.tsx               |       0 |        0 |       0 |       0 | 3-693                                             
+2025-06-06T09:07:56.6372187Z  components/events                |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6373062Z   EventCard.tsx                   |       0 |        0 |       0 |       0 | 3-528                                             
+2025-06-06T09:07:56.6373990Z   EventDetailClient.tsx           |       0 |        0 |       0 |       0 | 3-283                                             
+2025-06-06T09:07:56.6374942Z   EventForm.tsx                   |       0 |        0 |       0 |       0 | 3-825                                             
+2025-06-06T09:07:56.6375899Z   EventImageGallery.tsx           |       0 |        0 |       0 |       0 | 3-276                                             
+2025-06-06T09:07:56.6376788Z   EventList.tsx                   |       0 |        0 |       0 |       0 | 3-407                                             
+2025-06-06T09:07:56.6377699Z   EventMapWrapper.tsx             |       0 |        0 |       0 |       0 | 3-13                                              
+2025-06-06T09:07:56.6378666Z   RSVPTicketSection.tsx           |       0 |        0 |       0 |       0 | 3-464                                             
+2025-06-06T09:07:56.6379776Z   TicketSelection.tsx             |       0 |        0 |       0 |       0 | 3-294                                             
+2025-06-06T09:07:56.6381000Z   TicketTypeManager.tsx           |       0 |        0 |       0 |       0 | 3-500                                             
+2025-06-06T09:07:56.6381919Z   index.ts                        |       0 |      100 |     100 |       0 | 5-44                                              
+2025-06-06T09:07:56.6382827Z  components/filters               |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6383790Z   ActiveFilters.tsx               |       0 |        0 |       0 |       0 | 3-62                                              
+2025-06-06T09:07:56.6384738Z   CategoryFilter.tsx              |       0 |        0 |       0 |       0 | 3-104                                             
+2025-06-06T09:07:56.6385678Z   DateFilter.tsx                  |       0 |        0 |       0 |       0 | 3-167                                             
+2025-06-06T09:07:56.6386817Z   EventFilters.tsx                |       0 |        0 |       0 |       0 | 3-206                                             
+2025-06-06T09:07:56.6387803Z   PriceFilter.tsx                 |       0 |        0 |       0 |       0 | 3-90                                              
+2025-06-06T09:07:56.6388807Z   SortControl.tsx                 |       0 |        0 |       0 |       0 | 3-71                                              
+2025-06-06T09:07:56.6389743Z  components/homepage              |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6390843Z   HomePageClient.tsx              |       0 |        0 |       0 |       0 | 3-294                                             
+2025-06-06T09:07:56.6391754Z  components/ui                    |    4.59 |       16 |    5.26 |    5.26 |                                                   
+2025-06-06T09:07:56.6392606Z   Card.tsx                        |       0 |        0 |       0 |       0 | 3-161                                             
+2025-06-06T09:07:56.6393456Z   LoadingSpinner.tsx              |       0 |        0 |       0 |       0 | 1-20                                              
+2025-06-06T09:07:56.6394322Z   alert.tsx                       |       0 |        0 |       0 |       0 | 1-44                                              
+2025-06-06T09:07:56.6395391Z   badge.tsx                       |       0 |        0 |       0 |       0 | 1-33                                              
+2025-06-06T09:07:56.6396252Z   button.tsx                      |     100 |      100 |     100 |     100 |                                                   
+2025-06-06T09:07:56.6397153Z   checkbox.tsx                    |       0 |      100 |     100 |       0 | 3-30                                              
+2025-06-06T09:07:56.6398020Z   dialog.tsx                      |       0 |        0 |       0 |       0 | 1-87                                              
+2025-06-06T09:07:56.6398884Z   index.ts                        |       0 |      100 |     100 |       0 | 3-49                                              
+2025-06-06T09:07:56.6399728Z   input.tsx                       |       0 |      100 |       0 |       0 | 1-26                                              
+2025-06-06T09:07:56.6400783Z   label.tsx                       |       0 |      100 |     100 |       0 | 3-26                                              
+2025-06-06T09:07:56.6401613Z   select.tsx                      |       0 |        0 |     100 |       0 | 3-159                                             
+2025-06-06T09:07:56.6402479Z   switch.tsx                      |       0 |      100 |     100 |       0 | 3-29                                              
+2025-06-06T09:07:56.6403358Z   table.tsx                       |       0 |      100 |     100 |       0 | 1-116                                             
+2025-06-06T09:07:56.6404198Z   tabs.tsx                        |       0 |      100 |     100 |       0 | 3-55                                              
+2025-06-06T09:07:56.6405066Z   textarea.tsx                    |       0 |      100 |       0 |       0 | 1-25                                              
+2025-06-06T09:07:56.6405915Z  lib                              |     0.6 |        0 |    0.81 |    0.63 |                                                   
+2025-06-06T09:07:56.6406853Z   auth-context.tsx                |       0 |        0 |       0 |       0 | 3-143                                             
+2025-06-06T09:07:56.6407748Z   auth.ts                         |       0 |        0 |       0 |       0 | 1-280                                             
+2025-06-06T09:07:56.6408554Z   config.ts                       |       0 |        0 |       0 |       0 | 2-25                                              
+2025-06-06T09:07:56.6409416Z   csv-export.ts                   |       0 |        0 |       0 |       0 | 66-278                                            
+2025-06-06T09:07:56.6410625Z   email-service.ts                |       0 |        0 |       0 |       0 | 1-807                                             
+2025-06-06T09:07:56.6411595Z   google-auth.ts                  |       0 |        0 |       0 |       0 | 1-569                                             
+2025-06-06T09:07:56.6412545Z   google-calendar.ts              |       0 |        0 |       0 |       0 | 1-336                                             
+2025-06-06T09:07:56.6413462Z   stripe-client.ts                |       0 |        0 |       0 |       0 | 1-155                                             
+2025-06-06T09:07:56.6414331Z   stripe.ts                       |       0 |        0 |       0 |       0 | 1-123                                             
+2025-06-06T09:07:56.6415224Z   supabase-server.ts              |       0 |        0 |       0 |       0 | 1-28                                              
+2025-06-06T09:07:56.6416123Z   supabase.ts                     |       0 |        0 |       0 |       0 | 1-12                                              
+2025-06-06T09:07:56.6416968Z   utils.ts                        |   23.52 |        0 |   16.66 |      25 | 20-77                                             
+2025-06-06T09:07:56.6417826Z  lib/emails                       |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6418998Z   event-cancellation.tsx          |       0 |        0 |       0 |       0 | 14-498                                            
+2025-06-06T09:07:56.6419997Z   event-reminder.tsx              |       0 |        0 |       0 |       0 | 14-473                                            
+2025-06-06T09:07:56.6421179Z   rsvp-cancellation.tsx           |       0 |        0 |       0 |       0 | 14-329                                            
+2025-06-06T09:07:56.6422182Z   rsvp-confirmation.tsx           |       0 |        0 |       0 |       0 | 14-350                                            
+2025-06-06T09:07:56.6423247Z   send-ticket-confirmation.ts     |       0 |        0 |       0 |       0 | 1-104                                             
+2025-06-06T09:07:56.6424257Z   welcome-email.tsx               |       0 |        0 |       0 |       0 | 14-311                                            
+2025-06-06T09:07:56.6425231Z  lib/emails/templates             |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6426283Z   RefundConfirmationEmail.tsx     |       0 |        0 |       0 |       0 | 13-491                                            
+2025-06-06T09:07:56.6427377Z   TicketConfirmationEmail.tsx     |       0 |        0 |       0 |       0 | 13-380                                            
+2025-06-06T09:07:56.6428335Z  lib/hooks                        |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6429189Z   useAuth.ts                      |       0 |        0 |       0 |       0 | 4-139                                             
+2025-06-06T09:07:56.6430103Z   useInfiniteScroll.ts            |       0 |        0 |       0 |       0 | 3-61                                              
+2025-06-06T09:07:56.6431271Z   usePagination.ts                |       0 |        0 |       0 |       0 | 3-91                                              
+2025-06-06T09:07:56.6432200Z  lib/middleware                   |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6433087Z   performance.ts                  |       0 |        0 |       0 |       0 | 1-203                                             
+2025-06-06T09:07:56.6433967Z  lib/types                        |       0 |      100 |       0 |       0 |                                                   
+2025-06-06T09:07:56.6434835Z   filters.ts                      |       0 |      100 |       0 |       0 | 46-151                                            
+2025-06-06T09:07:56.6435899Z   index.ts                        |       0 |      100 |     100 |       0 | 10-13                                             
+2025-06-06T09:07:56.6436777Z  lib/utils                        |   45.83 |    45.29 |   38.01 |   44.93 |                                                   
+2025-06-06T09:07:56.6437635Z   cache.ts                        |       0 |        0 |       0 |       0 | 11-182                                            
+2025-06-06T09:07:56.6438577Z   eventFilters.ts                 |   69.92 |    61.33 |   62.16 |   69.84 | 16-27,43-45,103-115,185-245,273,277,294-295,327   
+2025-06-06T09:07:56.6439536Z   optimization.ts                 |       0 |        0 |       0 |       0 | 1-135                                             
+2025-06-06T09:07:56.6440682Z   performance.ts                  |       0 |        0 |       0 |       0 | 17-279                                            
+2025-06-06T09:07:56.6441649Z   ticket-utils.ts                 |    92.8 |     77.5 |     100 |   93.06 | 136,140,225,242-243,248-249                       
+2025-06-06T09:07:56.6442765Z ----------------------------------|---------|----------|---------|---------|---------------------------------------------------
+2025-06-06T09:07:56.6443297Z 
+2025-06-06T09:07:56.6444466Z =============================== Coverage summary ===============================
+2025-06-06T09:07:56.6445323Z Statements   : 4.46% ( 265/5939 )
+2025-06-06T09:07:56.6445841Z Branches     : 2.99% ( 96/3208 )
+2025-06-06T09:07:56.6446333Z Functions    : 5.08% ( 50/984 )
+2025-06-06T09:07:56.6446820Z Lines        : 4.23% ( 238/5623 )
+2025-06-06T09:07:56.6447422Z ================================================================================
+2025-06-06T09:07:57.1799258Z Jest: "global" coverage threshold for statements (80%) not met: 0%
+2025-06-06T09:07:57.1801830Z Jest: "global" coverage threshold for branches (80%) not met: 0%
+2025-06-06T09:07:57.1803815Z Jest: "global" coverage threshold for lines (80%) not met: 0%
+2025-06-06T09:07:57.1805891Z Jest: "global" coverage threshold for functions (80%) not met: 0%
+2025-06-06T09:07:57.1809205Z Jest: "lib/utils/ticket-utils.ts" coverage threshold for statements (95%) not met: 92.8%
+2025-06-06T09:07:57.1810597Z Jest: "lib/utils/ticket-utils.ts" coverage threshold for branches (95%) not met: 77.5%
+2025-06-06T09:07:57.1811751Z Jest: "lib/utils/ticket-utils.ts" coverage threshold for lines (95%) not met: 93.06%
+2025-06-06T09:07:57.1812938Z Jest: "lib/utils/eventFilters.ts" coverage threshold for statements (95%) not met: 69.92%
+2025-06-06T09:07:57.1814120Z Jest: "lib/utils/eventFilters.ts" coverage threshold for branches (95%) not met: 61.33%
+2025-06-06T09:07:57.1815217Z Jest: "lib/utils/eventFilters.ts" coverage threshold for lines (95%) not met: 69.84%
+2025-06-06T09:07:57.1816288Z Jest: "lib/utils/eventFilters.ts" coverage threshold for functions (95%) not met: 62.16%
+2025-06-06T09:07:57.1817819Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/events/route.ts" coverage threshold for statements (85%) not met: 37.71%
+2025-06-06T09:07:57.1819689Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/events/route.ts" coverage threshold for branches (75%) not met: 18.51%
+2025-06-06T09:07:57.1821655Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/events/route.ts" coverage threshold for lines (85%) not met: 39.44%
+2025-06-06T09:07:57.1823467Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/events/route.ts" coverage threshold for functions (85%) not met: 66.66%
+2025-06-06T09:07:57.1825288Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/checkout/route.ts" coverage threshold for statements (85%) not met: 0%
+2025-06-06T09:07:57.1827113Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/checkout/route.ts" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.1828882Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/checkout/route.ts" coverage threshold for lines (85%) not met: 0%
+2025-06-06T09:07:57.1831120Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/checkout/route.ts" coverage threshold for functions (85%) not met: 0%
+2025-06-06T09:07:57.1832913Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/orders/route.ts" coverage threshold for statements (85%) not met: 0%
+2025-06-06T09:07:57.1834609Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/orders/route.ts" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.1836296Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/orders/route.ts" coverage threshold for lines (85%) not met: 0%
+2025-06-06T09:07:57.1837982Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/orders/route.ts" coverage threshold for functions (85%) not met: 0%
+2025-06-06T09:07:57.1839657Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/refunds/route.ts" coverage threshold for statements (85%) not met: 0%
+2025-06-06T09:07:57.1841564Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/refunds/route.ts" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.1842844Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/refunds/route.ts" coverage threshold for lines (85%) not met: 0%
+2025-06-06T09:07:57.1844111Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/refunds/route.ts" coverage threshold for functions (85%) not met: 0%
+2025-06-06T09:07:57.1845625Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/rsvps/route.ts" coverage threshold for statements (85%) not met: 0%
+2025-06-06T09:07:57.1846883Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/rsvps/route.ts" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.1848129Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/rsvps/route.ts" coverage threshold for lines (85%) not met: 0%
+2025-06-06T09:07:57.1849831Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/rsvps/route.ts" coverage threshold for functions (85%) not met: 0%
+2025-06-06T09:07:57.1851391Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/test-env/route.ts" coverage threshold for statements (85%) not met: 0%
+2025-06-06T09:07:57.1853116Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/test-env/route.ts" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.1854758Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/test-env/route.ts" coverage threshold for lines (85%) not met: 0%
+2025-06-06T09:07:57.1856455Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/test-env/route.ts" coverage threshold for functions (85%) not met: 0%
+2025-06-06T09:07:57.1858262Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/test-upgrade-role/route.ts" coverage threshold for statements (85%) not met: 0%
+2025-06-06T09:07:57.1860094Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/test-upgrade-role/route.ts" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.1862125Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/test-upgrade-role/route.ts" coverage threshold for lines (85%) not met: 0%
+2025-06-06T09:07:57.1863974Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/test-upgrade-role/route.ts" coverage threshold for functions (85%) not met: 0%
+2025-06-06T09:07:57.1865796Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/ticket-types/route.ts" coverage threshold for statements (85%) not met: 0%
+2025-06-06T09:07:57.1867607Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/ticket-types/route.ts" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.1869376Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/ticket-types/route.ts" coverage threshold for lines (85%) not met: 0%
+2025-06-06T09:07:57.1871230Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/ticket-types/route.ts" coverage threshold for functions (85%) not met: 0%
+2025-06-06T09:07:57.1873399Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/update-customer-info/route.ts" coverage threshold for statements (85%) not met: 0%
+2025-06-06T09:07:57.1875433Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/update-customer-info/route.ts" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.1877335Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/update-customer-info/route.ts" coverage threshold for lines (85%) not met: 0%
+2025-06-06T09:07:57.1879195Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/update-customer-info/route.ts" coverage threshold for functions (85%) not met: 0%
+2025-06-06T09:07:57.1881332Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/analytics/performance/route.ts" coverage threshold for statements (85%) not met: 0%
+2025-06-06T09:07:57.1883313Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/analytics/performance/route.ts" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.1885253Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/analytics/performance/route.ts" coverage threshold for lines (85%) not met: 0%
+2025-06-06T09:07:57.1887202Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/analytics/performance/route.ts" coverage threshold for functions (85%) not met: 0%
+2025-06-06T09:07:57.1889039Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/auth/welcome/route.ts" coverage threshold for statements (85%) not met: 0%
+2025-06-06T09:07:57.1891342Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/auth/welcome/route.ts" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.1893140Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/auth/welcome/route.ts" coverage threshold for lines (85%) not met: 0%
+2025-06-06T09:07:57.1894957Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/auth/welcome/route.ts" coverage threshold for functions (85%) not met: 0%
+2025-06-06T09:07:57.1896862Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/calendar/add-to-calendar/route.ts" coverage threshold for statements (85%) not met: 0%
+2025-06-06T09:07:57.1898827Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/calendar/add-to-calendar/route.ts" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.1900995Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/calendar/add-to-calendar/route.ts" coverage threshold for lines (85%) not met: 0%
+2025-06-06T09:07:57.1902954Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/calendar/add-to-calendar/route.ts" coverage threshold for functions (85%) not met: 0%
+2025-06-06T09:07:57.1904898Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/calendar/create-event/route.ts" coverage threshold for statements (85%) not met: 0%
+2025-06-06T09:07:57.1906811Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/calendar/create-event/route.ts" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.1908687Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/calendar/create-event/route.ts" coverage threshold for lines (85%) not met: 0%
+2025-06-06T09:07:57.1910791Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/calendar/create-event/route.ts" coverage threshold for functions (85%) not met: 0%
+2025-06-06T09:07:57.1912698Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/events/[id]/route.ts" coverage threshold for statements (85%) not met: 0%
+2025-06-06T09:07:57.1914514Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/events/[id]/route.ts" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.1916300Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/events/[id]/route.ts" coverage threshold for lines (85%) not met: 0%
+2025-06-06T09:07:57.1918043Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/events/[id]/route.ts" coverage threshold for functions (85%) not met: 0%
+2025-06-06T09:07:57.1920222Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/events/cancellation/route.ts" coverage threshold for statements (85%) not met: 0%
+2025-06-06T09:07:57.1922234Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/events/cancellation/route.ts" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.1924024Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/events/cancellation/route.ts" coverage threshold for lines (85%) not met: 0%
+2025-06-06T09:07:57.1926018Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/events/cancellation/route.ts" coverage threshold for functions (85%) not met: 0%
+2025-06-06T09:07:57.1927972Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/events/reminders/route.ts" coverage threshold for statements (85%) not met: 0%
+2025-06-06T09:07:57.1930206Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/events/reminders/route.ts" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.1932349Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/events/reminders/route.ts" coverage threshold for lines (85%) not met: 0%
+2025-06-06T09:07:57.1934215Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/events/reminders/route.ts" coverage threshold for functions (85%) not met: 0%
+2025-06-06T09:07:57.1935924Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/rsvps/[id]/route.ts" coverage threshold for statements (85%) not met: 0%
+2025-06-06T09:07:57.1937764Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/rsvps/[id]/route.ts" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.1939322Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/rsvps/[id]/route.ts" coverage threshold for lines (85%) not met: 0%
+2025-06-06T09:07:57.1941096Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/rsvps/[id]/route.ts" coverage threshold for functions (85%) not met: 0%
+2025-06-06T09:07:57.1942806Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/staff/analytics/route.ts" coverage threshold for statements (85%) not met: 0%
+2025-06-06T09:07:57.1944555Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/staff/analytics/route.ts" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.1946323Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/staff/analytics/route.ts" coverage threshold for lines (85%) not met: 0%
+2025-06-06T09:07:57.1948072Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/staff/analytics/route.ts" coverage threshold for functions (85%) not met: 0%
+2025-06-06T09:07:57.1949815Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/staff/attendees/route.ts" coverage threshold for statements (85%) not met: 0%
+2025-06-06T09:07:57.1951684Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/staff/attendees/route.ts" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.1953353Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/staff/attendees/route.ts" coverage threshold for lines (85%) not met: 0%
+2025-06-06T09:07:57.1955045Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/staff/attendees/route.ts" coverage threshold for functions (85%) not met: 0%
+2025-06-06T09:07:57.1956778Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/staff/dashboard/route.ts" coverage threshold for statements (85%) not met: 0%
+2025-06-06T09:07:57.1958526Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/staff/dashboard/route.ts" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.1960235Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/staff/dashboard/route.ts" coverage threshold for lines (85%) not met: 0%
+2025-06-06T09:07:57.1962053Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/staff/dashboard/route.ts" coverage threshold for functions (85%) not met: 0%
+2025-06-06T09:07:57.1963573Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/staff/export/route.ts" coverage threshold for statements (85%) not met: 0%
+2025-06-06T09:07:57.1966021Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/staff/export/route.ts" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.1967903Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/staff/export/route.ts" coverage threshold for lines (85%) not met: 0%
+2025-06-06T09:07:57.1969531Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/staff/export/route.ts" coverage threshold for functions (85%) not met: 0%
+2025-06-06T09:07:57.1975718Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/ticket-types/[id]/route.ts" coverage threshold for statements (85%) not met: 0%
+2025-06-06T09:07:57.1977463Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/ticket-types/[id]/route.ts" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.1979171Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/ticket-types/[id]/route.ts" coverage threshold for lines (85%) not met: 0%
+2025-06-06T09:07:57.1981099Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/ticket-types/[id]/route.ts" coverage threshold for functions (85%) not met: 0%
+2025-06-06T09:07:57.1982871Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/webhooks/stripe/route.ts" coverage threshold for statements (85%) not met: 0%
+2025-06-06T09:07:57.1984834Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/webhooks/stripe/route.ts" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.1986562Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/webhooks/stripe/route.ts" coverage threshold for lines (85%) not met: 0%
+2025-06-06T09:07:57.1988298Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/webhooks/stripe/route.ts" coverage threshold for functions (85%) not met: 0%
+2025-06-06T09:07:57.1990108Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/auth/google/callback/route.ts" coverage threshold for statements (85%) not met: 0%
+2025-06-06T09:07:57.1992189Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/auth/google/callback/route.ts" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.1994031Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/auth/google/callback/route.ts" coverage threshold for lines (85%) not met: 0%
+2025-06-06T09:07:57.1995856Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/auth/google/callback/route.ts" coverage threshold for functions (85%) not met: 0%
+2025-06-06T09:07:57.1997672Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/auth/google/connect/route.ts" coverage threshold for statements (85%) not met: 0%
+2025-06-06T09:07:57.1999479Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/auth/google/connect/route.ts" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.2001495Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/auth/google/connect/route.ts" coverage threshold for lines (85%) not met: 0%
+2025-06-06T09:07:57.2003311Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/auth/google/connect/route.ts" coverage threshold for functions (85%) not met: 0%
+2025-06-06T09:07:57.2005175Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/auth/google/disconnect/route.ts" coverage threshold for statements (85%) not met: 0%
+2025-06-06T09:07:57.2007054Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/auth/google/disconnect/route.ts" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.2008886Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/auth/google/disconnect/route.ts" coverage threshold for lines (85%) not met: 0%
+2025-06-06T09:07:57.2010947Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/auth/google/disconnect/route.ts" coverage threshold for functions (85%) not met: 0%
+2025-06-06T09:07:57.2012807Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/auth/google/status/route.ts" coverage threshold for statements (85%) not met: 0%
+2025-06-06T09:07:57.2014789Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/auth/google/status/route.ts" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.2016604Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/auth/google/status/route.ts" coverage threshold for lines (85%) not met: 0%
+2025-06-06T09:07:57.2018363Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/app/api/auth/google/status/route.ts" coverage threshold for functions (85%) not met: 0%
+2025-06-06T09:07:57.2020213Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/GoogleCalendarConnect.tsx" coverage threshold for statements (80%) not met: 0%
+2025-06-06T09:07:57.2022359Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/GoogleCalendarConnect.tsx" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.2024187Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/GoogleCalendarConnect.tsx" coverage threshold for lines (80%) not met: 0%
+2025-06-06T09:07:57.2026226Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/GoogleCalendarConnect.tsx" coverage threshold for functions (80%) not met: 0%
+2025-06-06T09:07:57.2028143Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/analytics/PerformanceMonitor.tsx" coverage threshold for statements (80%) not met: 0%
+2025-06-06T09:07:57.2030283Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/analytics/PerformanceMonitor.tsx" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.2032878Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/analytics/PerformanceMonitor.tsx" coverage threshold for lines (80%) not met: 0%
+2025-06-06T09:07:57.2034865Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/analytics/PerformanceMonitor.tsx" coverage threshold for functions (80%) not met: 0%
+2025-06-06T09:07:57.2036796Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/auth/ProfileDropdown.tsx" coverage threshold for statements (80%) not met: 0%
+2025-06-06T09:07:57.2038622Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/auth/ProfileDropdown.tsx" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.2040653Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/auth/ProfileDropdown.tsx" coverage threshold for lines (80%) not met: 0%
+2025-06-06T09:07:57.2042513Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/auth/ProfileDropdown.tsx" coverage threshold for functions (80%) not met: 0%
+2025-06-06T09:07:57.2044365Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/auth/ProtectedRoute.tsx" coverage threshold for statements (80%) not met: 0%
+2025-06-06T09:07:57.2046190Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/auth/ProtectedRoute.tsx" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.2047960Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/auth/ProtectedRoute.tsx" coverage threshold for lines (80%) not met: 0%
+2025-06-06T09:07:57.2049743Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/auth/ProtectedRoute.tsx" coverage threshold for functions (80%) not met: 0%
+2025-06-06T09:07:57.2051713Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/checkout/CheckoutForm.tsx" coverage threshold for statements (80%) not met: 0%
+2025-06-06T09:07:57.2053576Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/checkout/CheckoutForm.tsx" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.2055373Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/checkout/CheckoutForm.tsx" coverage threshold for lines (80%) not met: 0%
+2025-06-06T09:07:57.2057184Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/checkout/CheckoutForm.tsx" coverage threshold for functions (80%) not met: 0%
+2025-06-06T09:07:57.2059306Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/checkout/GoogleCalendarAddButton.tsx" coverage threshold for statements (80%) not met: 0%
+2025-06-06T09:07:57.2061626Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/checkout/GoogleCalendarAddButton.tsx" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.2063657Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/checkout/GoogleCalendarAddButton.tsx" coverage threshold for lines (80%) not met: 0%
+2025-06-06T09:07:57.2065699Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/checkout/GoogleCalendarAddButton.tsx" coverage threshold for functions (80%) not met: 0%
+2025-06-06T09:07:57.2067613Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/dashboard/Analytics.tsx" coverage threshold for statements (80%) not met: 0%
+2025-06-06T09:07:57.2069420Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/dashboard/Analytics.tsx" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.2071341Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/dashboard/Analytics.tsx" coverage threshold for lines (80%) not met: 0%
+2025-06-06T09:07:57.2073124Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/dashboard/Analytics.tsx" coverage threshold for functions (80%) not met: 0%
+2025-06-06T09:07:57.2075029Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/dashboard/AttendeeManagement.tsx" coverage threshold for statements (80%) not met: 0%
+2025-06-06T09:07:57.2077197Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/dashboard/AttendeeManagement.tsx" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.2079146Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/dashboard/AttendeeManagement.tsx" coverage threshold for lines (80%) not met: 0%
+2025-06-06T09:07:57.2081315Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/dashboard/AttendeeManagement.tsx" coverage threshold for functions (80%) not met: 0%
+2025-06-06T09:07:57.2083325Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/dashboard/PerformanceDashboard.tsx" coverage threshold for statements (80%) not met: 0%
+2025-06-06T09:07:57.2085336Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/dashboard/PerformanceDashboard.tsx" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.2087318Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/dashboard/PerformanceDashboard.tsx" coverage threshold for lines (80%) not met: 0%
+2025-06-06T09:07:57.2089307Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/dashboard/PerformanceDashboard.tsx" coverage threshold for functions (80%) not met: 0%
+2025-06-06T09:07:57.2091405Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/dashboard/RefundDialog.tsx" coverage threshold for statements (80%) not met: 0%
+2025-06-06T09:07:57.2093288Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/dashboard/RefundDialog.tsx" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.2095178Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/dashboard/RefundDialog.tsx" coverage threshold for lines (80%) not met: 0%
+2025-06-06T09:07:57.2097009Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/dashboard/RefundDialog.tsx" coverage threshold for functions (80%) not met: 0%
+2025-06-06T09:07:57.2098928Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/dashboard/StaffDashboard.tsx" coverage threshold for statements (80%) not met: 0%
+2025-06-06T09:07:57.2101051Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/dashboard/StaffDashboard.tsx" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.2102951Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/dashboard/StaffDashboard.tsx" coverage threshold for lines (80%) not met: 0%
+2025-06-06T09:07:57.2104835Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/dashboard/StaffDashboard.tsx" coverage threshold for functions (80%) not met: 0%
+2025-06-06T09:07:57.2106914Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/dashboard/UserDashboard.tsx" coverage threshold for statements (80%) not met: 0%
+2025-06-06T09:07:57.2108830Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/dashboard/UserDashboard.tsx" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.2110858Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/dashboard/UserDashboard.tsx" coverage threshold for lines (80%) not met: 0%
+2025-06-06T09:07:57.2112734Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/dashboard/UserDashboard.tsx" coverage threshold for functions (80%) not met: 0%
+2025-06-06T09:07:57.2114648Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/filters/ActiveFilters.tsx" coverage threshold for statements (80%) not met: 0%
+2025-06-06T09:07:57.2116489Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/filters/ActiveFilters.tsx" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.2118308Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/filters/ActiveFilters.tsx" coverage threshold for lines (80%) not met: 0%
+2025-06-06T09:07:57.2120135Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/filters/ActiveFilters.tsx" coverage threshold for functions (80%) not met: 0%
+2025-06-06T09:07:57.2122346Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/filters/CategoryFilter.tsx" coverage threshold for statements (80%) not met: 0%
+2025-06-06T09:07:57.2124244Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/filters/CategoryFilter.tsx" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.2126089Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/filters/CategoryFilter.tsx" coverage threshold for lines (80%) not met: 0%
+2025-06-06T09:07:57.2127927Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/filters/CategoryFilter.tsx" coverage threshold for functions (80%) not met: 0%
+2025-06-06T09:07:57.2129775Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/filters/DateFilter.tsx" coverage threshold for statements (80%) not met: 0%
+2025-06-06T09:07:57.2131741Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/filters/DateFilter.tsx" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.2133525Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/filters/DateFilter.tsx" coverage threshold for lines (80%) not met: 0%
+2025-06-06T09:07:57.2135298Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/filters/DateFilter.tsx" coverage threshold for functions (80%) not met: 0%
+2025-06-06T09:07:57.2137124Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/filters/EventFilters.tsx" coverage threshold for statements (80%) not met: 0%
+2025-06-06T09:07:57.2138964Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/filters/EventFilters.tsx" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.2140896Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/filters/EventFilters.tsx" coverage threshold for lines (80%) not met: 0%
+2025-06-06T09:07:57.2142709Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/filters/EventFilters.tsx" coverage threshold for functions (80%) not met: 0%
+2025-06-06T09:07:57.2144549Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/filters/PriceFilter.tsx" coverage threshold for statements (80%) not met: 0%
+2025-06-06T09:07:57.2146360Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/filters/PriceFilter.tsx" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.2148137Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/filters/PriceFilter.tsx" coverage threshold for lines (80%) not met: 0%
+2025-06-06T09:07:57.2150096Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/filters/PriceFilter.tsx" coverage threshold for functions (80%) not met: 0%
+2025-06-06T09:07:57.2152177Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/filters/SortControl.tsx" coverage threshold for statements (80%) not met: 0%
+2025-06-06T09:07:57.2153999Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/filters/SortControl.tsx" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.2155789Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/filters/SortControl.tsx" coverage threshold for lines (80%) not met: 0%
+2025-06-06T09:07:57.2157583Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/filters/SortControl.tsx" coverage threshold for functions (80%) not met: 0%
+2025-06-06T09:07:57.2159372Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/events/EventCard.tsx" coverage threshold for statements (80%) not met: 0%
+2025-06-06T09:07:57.2161303Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/events/EventCard.tsx" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.2163052Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/events/EventCard.tsx" coverage threshold for lines (80%) not met: 0%
+2025-06-06T09:07:57.2164795Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/events/EventCard.tsx" coverage threshold for functions (80%) not met: 0%
+2025-06-06T09:07:57.2166854Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/events/EventDetailClient.tsx" coverage threshold for statements (80%) not met: 0%
+2025-06-06T09:07:57.2168748Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/events/EventDetailClient.tsx" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.2170835Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/events/EventDetailClient.tsx" coverage threshold for lines (80%) not met: 0%
+2025-06-06T09:07:57.2172741Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/events/EventDetailClient.tsx" coverage threshold for functions (80%) not met: 0%
+2025-06-06T09:07:57.2174578Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/events/EventForm.tsx" coverage threshold for statements (80%) not met: 0%
+2025-06-06T09:07:57.2176345Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/events/EventForm.tsx" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.2178082Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/events/EventForm.tsx" coverage threshold for lines (80%) not met: 0%
+2025-06-06T09:07:57.2179861Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/events/EventForm.tsx" coverage threshold for functions (80%) not met: 0%
+2025-06-06T09:07:57.2181855Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/events/EventImageGallery.tsx" coverage threshold for statements (80%) not met: 0%
+2025-06-06T09:07:57.2183771Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/events/EventImageGallery.tsx" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.2185638Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/events/EventImageGallery.tsx" coverage threshold for lines (80%) not met: 0%
+2025-06-06T09:07:57.2187521Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/events/EventImageGallery.tsx" coverage threshold for functions (80%) not met: 0%
+2025-06-06T09:07:57.2189370Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/events/EventList.tsx" coverage threshold for statements (80%) not met: 0%
+2025-06-06T09:07:57.2191341Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/events/EventList.tsx" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.2193078Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/events/EventList.tsx" coverage threshold for lines (80%) not met: 0%
+2025-06-06T09:07:57.2194862Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/events/EventList.tsx" coverage threshold for functions (80%) not met: 0%
+2025-06-06T09:07:57.2196885Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/events/EventMapWrapper.tsx" coverage threshold for statements (80%) not met: 0%
+2025-06-06T09:07:57.2198775Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/events/EventMapWrapper.tsx" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.2200845Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/events/EventMapWrapper.tsx" coverage threshold for lines (80%) not met: 0%
+2025-06-06T09:07:57.2202707Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/events/EventMapWrapper.tsx" coverage threshold for functions (80%) not met: 0%
+2025-06-06T09:07:57.2204614Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/events/RSVPTicketSection.tsx" coverage threshold for statements (80%) not met: 0%
+2025-06-06T09:07:57.2206530Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/events/RSVPTicketSection.tsx" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.2208421Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/events/RSVPTicketSection.tsx" coverage threshold for lines (80%) not met: 0%
+2025-06-06T09:07:57.2210504Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/events/RSVPTicketSection.tsx" coverage threshold for functions (80%) not met: 0%
+2025-06-06T09:07:57.2212647Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/events/TicketSelection.tsx" coverage threshold for statements (80%) not met: 0%
+2025-06-06T09:07:57.2214546Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/events/TicketSelection.tsx" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.2216382Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/events/TicketSelection.tsx" coverage threshold for lines (80%) not met: 0%
+2025-06-06T09:07:57.2218184Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/events/TicketSelection.tsx" coverage threshold for functions (80%) not met: 0%
+2025-06-06T09:07:57.2220083Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/events/TicketTypeManager.tsx" coverage threshold for statements (80%) not met: 0%
+2025-06-06T09:07:57.2222153Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/events/TicketTypeManager.tsx" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.2224025Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/events/TicketTypeManager.tsx" coverage threshold for lines (80%) not met: 0%
+2025-06-06T09:07:57.2225914Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/events/TicketTypeManager.tsx" coverage threshold for functions (80%) not met: 0%
+2025-06-06T09:07:57.2227718Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/events/index.ts" coverage threshold for statements (80%) not met: 0%
+2025-06-06T09:07:57.2229393Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/events/index.ts" coverage threshold for lines (80%) not met: 0%
+2025-06-06T09:07:57.2231404Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/homepage/HomePageClient.tsx" coverage threshold for statements (80%) not met: 0%
+2025-06-06T09:07:57.2233312Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/homepage/HomePageClient.tsx" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.2235184Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/homepage/HomePageClient.tsx" coverage threshold for lines (80%) not met: 0%
+2025-06-06T09:07:57.2237065Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/homepage/HomePageClient.tsx" coverage threshold for functions (80%) not met: 0%
+2025-06-06T09:07:57.2238825Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/ui/Card.tsx" coverage threshold for statements (80%) not met: 0%
+2025-06-06T09:07:57.2240801Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/ui/Card.tsx" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.2242451Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/ui/Card.tsx" coverage threshold for lines (80%) not met: 0%
+2025-06-06T09:07:57.2244063Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/ui/Card.tsx" coverage threshold for functions (80%) not met: 0%
+2025-06-06T09:07:57.2245767Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/ui/LoadingSpinner.tsx" coverage threshold for statements (80%) not met: 0%
+2025-06-06T09:07:57.2247567Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/ui/LoadingSpinner.tsx" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.2249325Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/ui/LoadingSpinner.tsx" coverage threshold for lines (80%) not met: 0%
+2025-06-06T09:07:57.2251303Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/ui/LoadingSpinner.tsx" coverage threshold for functions (80%) not met: 0%
+2025-06-06T09:07:57.2253033Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/ui/alert.tsx" coverage threshold for statements (80%) not met: 0%
+2025-06-06T09:07:57.2254674Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/ui/alert.tsx" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.2256490Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/ui/alert.tsx" coverage threshold for lines (80%) not met: 0%
+2025-06-06T09:07:57.2258093Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/ui/alert.tsx" coverage threshold for functions (80%) not met: 0%
+2025-06-06T09:07:57.2259724Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/ui/badge.tsx" coverage threshold for statements (80%) not met: 0%
+2025-06-06T09:07:57.2261496Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/ui/badge.tsx" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.2263104Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/ui/badge.tsx" coverage threshold for lines (80%) not met: 0%
+2025-06-06T09:07:57.2264723Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/ui/badge.tsx" coverage threshold for functions (80%) not met: 0%
+2025-06-06T09:07:57.2266405Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/ui/checkbox.tsx" coverage threshold for statements (80%) not met: 0%
+2025-06-06T09:07:57.2268068Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/ui/checkbox.tsx" coverage threshold for lines (80%) not met: 0%
+2025-06-06T09:07:57.2269727Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/ui/dialog.tsx" coverage threshold for statements (80%) not met: 0%
+2025-06-06T09:07:57.2271556Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/ui/dialog.tsx" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.2273197Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/ui/dialog.tsx" coverage threshold for lines (80%) not met: 0%
+2025-06-06T09:07:57.2274829Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/ui/dialog.tsx" coverage threshold for functions (80%) not met: 0%
+2025-06-06T09:07:57.2276466Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/ui/index.ts" coverage threshold for statements (80%) not met: 0%
+2025-06-06T09:07:57.2278058Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/ui/index.ts" coverage threshold for lines (80%) not met: 0%
+2025-06-06T09:07:57.2279733Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/ui/input.tsx" coverage threshold for statements (80%) not met: 0%
+2025-06-06T09:07:57.2281503Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/ui/input.tsx" coverage threshold for lines (80%) not met: 0%
+2025-06-06T09:07:57.2283127Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/ui/input.tsx" coverage threshold for functions (80%) not met: 0%
+2025-06-06T09:07:57.2284942Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/ui/label.tsx" coverage threshold for statements (80%) not met: 0%
+2025-06-06T09:07:57.2286570Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/ui/label.tsx" coverage threshold for lines (80%) not met: 0%
+2025-06-06T09:07:57.2288207Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/ui/select.tsx" coverage threshold for statements (80%) not met: 0%
+2025-06-06T09:07:57.2289849Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/ui/select.tsx" coverage threshold for branches (75%) not met: 0%
+2025-06-06T09:07:57.2291697Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/ui/select.tsx" coverage threshold for lines (80%) not met: 0%
+2025-06-06T09:07:57.2293312Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/ui/switch.tsx" coverage threshold for statements (80%) not met: 0%
+2025-06-06T09:07:57.2294983Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/ui/switch.tsx" coverage threshold for lines (80%) not met: 0%
+2025-06-06T09:07:57.2296630Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/ui/table.tsx" coverage threshold for statements (80%) not met: 0%
+2025-06-06T09:07:57.2298223Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/ui/table.tsx" coverage threshold for lines (80%) not met: 0%
+2025-06-06T09:07:57.2299998Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/ui/tabs.tsx" coverage threshold for statements (80%) not met: 0%
+2025-06-06T09:07:57.2301748Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/ui/tabs.tsx" coverage threshold for lines (80%) not met: 0%
+2025-06-06T09:07:57.2303388Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/ui/textarea.tsx" coverage threshold for statements (80%) not met: 0%
+2025-06-06T09:07:57.2305037Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/ui/textarea.tsx" coverage threshold for lines (80%) not met: 0%
+2025-06-06T09:07:57.2306709Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/components/ui/textarea.tsx" coverage threshold for functions (80%) not met: 0%
+2025-06-06T09:07:57.2308414Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/utils/ticket-utils.ts" coverage threshold for branches (85%) not met: 77.5%
+2025-06-06T09:07:57.2310119Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/utils/eventFilters.ts" coverage threshold for statements (90%) not met: 69.92%
+2025-06-06T09:07:57.2312097Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/utils/eventFilters.ts" coverage threshold for branches (85%) not met: 61.33%
+2025-06-06T09:07:57.2313787Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/utils/eventFilters.ts" coverage threshold for lines (90%) not met: 69.84%
+2025-06-06T09:07:57.2315503Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/utils/eventFilters.ts" coverage threshold for functions (90%) not met: 62.16%
+2025-06-06T09:07:57.2317119Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/utils.ts" coverage threshold for statements (90%) not met: 23.52%
+2025-06-06T09:07:57.2318602Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/utils.ts" coverage threshold for branches (85%) not met: 0%
+2025-06-06T09:07:57.2320051Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/utils.ts" coverage threshold for lines (90%) not met: 25%
+2025-06-06T09:07:57.2321706Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/utils.ts" coverage threshold for functions (90%) not met: 16.66%
+2025-06-06T09:07:57.2323258Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/auth-context.tsx" coverage threshold for statements (90%) not met: 0%
+2025-06-06T09:07:57.2324858Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/auth-context.tsx" coverage threshold for branches (85%) not met: 0%
+2025-06-06T09:07:57.2326417Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/auth-context.tsx" coverage threshold for lines (90%) not met: 0%
+2025-06-06T09:07:57.2328181Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/auth-context.tsx" coverage threshold for functions (90%) not met: 0%
+2025-06-06T09:07:57.2329731Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/auth.ts" coverage threshold for statements (90%) not met: 0%
+2025-06-06T09:07:57.2331412Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/auth.ts" coverage threshold for branches (85%) not met: 0%
+2025-06-06T09:07:57.2332817Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/auth.ts" coverage threshold for lines (90%) not met: 0%
+2025-06-06T09:07:57.2334244Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/auth.ts" coverage threshold for functions (90%) not met: 0%
+2025-06-06T09:07:57.2335706Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/config.ts" coverage threshold for statements (90%) not met: 0%
+2025-06-06T09:07:57.2337178Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/config.ts" coverage threshold for branches (85%) not met: 0%
+2025-06-06T09:07:57.2338664Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/config.ts" coverage threshold for lines (90%) not met: 0%
+2025-06-06T09:07:57.2340080Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/config.ts" coverage threshold for functions (90%) not met: 0%
+2025-06-06T09:07:57.2341947Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/csv-export.ts" coverage threshold for statements (90%) not met: 0%
+2025-06-06T09:07:57.2343444Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/csv-export.ts" coverage threshold for branches (85%) not met: 0%
+2025-06-06T09:07:57.2344903Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/csv-export.ts" coverage threshold for lines (90%) not met: 0%
+2025-06-06T09:07:57.2346419Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/csv-export.ts" coverage threshold for functions (90%) not met: 0%
+2025-06-06T09:07:57.2347987Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/email-service.ts" coverage threshold for statements (90%) not met: 0%
+2025-06-06T09:07:57.2349568Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/email-service.ts" coverage threshold for branches (85%) not met: 0%
+2025-06-06T09:07:57.2351342Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/email-service.ts" coverage threshold for lines (90%) not met: 0%
+2025-06-06T09:07:57.2352918Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/email-service.ts" coverage threshold for functions (90%) not met: 0%
+2025-06-06T09:07:57.2354485Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/google-auth.ts" coverage threshold for statements (90%) not met: 0%
+2025-06-06T09:07:57.2356026Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/google-auth.ts" coverage threshold for branches (85%) not met: 0%
+2025-06-06T09:07:57.2357543Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/google-auth.ts" coverage threshold for lines (90%) not met: 0%
+2025-06-06T09:07:57.2359080Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/google-auth.ts" coverage threshold for functions (90%) not met: 0%
+2025-06-06T09:07:57.2360819Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/google-calendar.ts" coverage threshold for statements (90%) not met: 0%
+2025-06-06T09:07:57.2362437Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/google-calendar.ts" coverage threshold for branches (85%) not met: 0%
+2025-06-06T09:07:57.2364023Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/google-calendar.ts" coverage threshold for lines (90%) not met: 0%
+2025-06-06T09:07:57.2365625Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/google-calendar.ts" coverage threshold for functions (90%) not met: 0%
+2025-06-06T09:07:57.2367173Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/stripe.ts" coverage threshold for statements (90%) not met: 0%
+2025-06-06T09:07:57.2368657Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/stripe.ts" coverage threshold for branches (85%) not met: 0%
+2025-06-06T09:07:57.2370486Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/stripe.ts" coverage threshold for lines (90%) not met: 0%
+2025-06-06T09:07:57.2372048Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/stripe.ts" coverage threshold for functions (90%) not met: 0%
+2025-06-06T09:07:57.2373609Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/stripe-client.ts" coverage threshold for statements (90%) not met: 0%
+2025-06-06T09:07:57.2375179Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/stripe-client.ts" coverage threshold for branches (85%) not met: 0%
+2025-06-06T09:07:57.2376732Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/stripe-client.ts" coverage threshold for lines (90%) not met: 0%
+2025-06-06T09:07:57.2378277Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/stripe-client.ts" coverage threshold for functions (90%) not met: 0%
+2025-06-06T09:07:57.2379853Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/supabase-server.ts" coverage threshold for statements (90%) not met: 0%
+2025-06-06T09:07:57.2381614Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/supabase-server.ts" coverage threshold for branches (85%) not met: 0%
+2025-06-06T09:07:57.2383199Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/supabase-server.ts" coverage threshold for lines (90%) not met: 0%
+2025-06-06T09:07:57.2384982Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/supabase-server.ts" coverage threshold for functions (90%) not met: 0%
+2025-06-06T09:07:57.2386534Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/supabase.ts" coverage threshold for statements (90%) not met: 0%
+2025-06-06T09:07:57.2388038Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/supabase.ts" coverage threshold for branches (85%) not met: 0%
+2025-06-06T09:07:57.2389508Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/supabase.ts" coverage threshold for lines (90%) not met: 0%
+2025-06-06T09:07:57.2391231Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/supabase.ts" coverage threshold for functions (90%) not met: 0%
+2025-06-06T09:07:57.2392916Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/emails/event-cancellation.tsx" coverage threshold for statements (90%) not met: 0%
+2025-06-06T09:07:57.2394742Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/emails/event-cancellation.tsx" coverage threshold for branches (85%) not met: 0%
+2025-06-06T09:07:57.2396508Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/emails/event-cancellation.tsx" coverage threshold for lines (90%) not met: 0%
+2025-06-06T09:07:57.2398267Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/emails/event-cancellation.tsx" coverage threshold for functions (90%) not met: 0%
+2025-06-06T09:07:57.2400005Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/emails/event-reminder.tsx" coverage threshold for statements (90%) not met: 0%
+2025-06-06T09:07:57.2401881Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/emails/event-reminder.tsx" coverage threshold for branches (85%) not met: 0%
+2025-06-06T09:07:57.2403584Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/emails/event-reminder.tsx" coverage threshold for lines (90%) not met: 0%
+2025-06-06T09:07:57.2405307Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/emails/event-reminder.tsx" coverage threshold for functions (90%) not met: 0%
+2025-06-06T09:07:57.2407047Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/emails/rsvp-cancellation.tsx" coverage threshold for statements (90%) not met: 0%
+2025-06-06T09:07:57.2408797Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/emails/rsvp-cancellation.tsx" coverage threshold for branches (85%) not met: 0%
+2025-06-06T09:07:57.2410731Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/emails/rsvp-cancellation.tsx" coverage threshold for lines (90%) not met: 0%
+2025-06-06T09:07:57.2412676Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/emails/rsvp-cancellation.tsx" coverage threshold for functions (90%) not met: 0%
+2025-06-06T09:07:57.2436842Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/emails/rsvp-confirmation.tsx" coverage threshold for statements (90%) not met: 0%
+2025-06-06T09:07:57.2438679Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/emails/rsvp-confirmation.tsx" coverage threshold for branches (85%) not met: 0%
+2025-06-06T09:07:57.2440672Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/emails/rsvp-confirmation.tsx" coverage threshold for lines (90%) not met: 0%
+2025-06-06T09:07:57.2442436Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/emails/rsvp-confirmation.tsx" coverage threshold for functions (90%) not met: 0%
+2025-06-06T09:07:57.2444282Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/emails/send-ticket-confirmation.ts" coverage threshold for statements (90%) not met: 0%
+2025-06-06T09:07:57.2446143Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/emails/send-ticket-confirmation.ts" coverage threshold for branches (85%) not met: 0%
+2025-06-06T09:07:57.2447976Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/emails/send-ticket-confirmation.ts" coverage threshold for lines (90%) not met: 0%
+2025-06-06T09:07:57.2449785Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/emails/send-ticket-confirmation.ts" coverage threshold for functions (90%) not met: 0%
+2025-06-06T09:07:57.2452427Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/emails/welcome-email.tsx" coverage threshold for statements (90%) not met: 0%
+2025-06-06T09:07:57.2454157Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/emails/welcome-email.tsx" coverage threshold for branches (85%) not met: 0%
+2025-06-06T09:07:57.2455835Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/emails/welcome-email.tsx" coverage threshold for lines (90%) not met: 0%
+2025-06-06T09:07:57.2457519Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/emails/welcome-email.tsx" coverage threshold for functions (90%) not met: 0%
+2025-06-06T09:07:57.2459239Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/middleware/performance.ts" coverage threshold for statements (90%) not met: 0%
+2025-06-06T09:07:57.2461147Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/middleware/performance.ts" coverage threshold for branches (85%) not met: 0%
+2025-06-06T09:07:57.2462859Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/middleware/performance.ts" coverage threshold for lines (90%) not met: 0%
+2025-06-06T09:07:57.2464545Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/middleware/performance.ts" coverage threshold for functions (90%) not met: 0%
+2025-06-06T09:07:57.2466220Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/hooks/useAuth.ts" coverage threshold for statements (90%) not met: 0%
+2025-06-06T09:07:57.2467798Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/hooks/useAuth.ts" coverage threshold for branches (85%) not met: 0%
+2025-06-06T09:07:57.2469349Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/hooks/useAuth.ts" coverage threshold for lines (90%) not met: 0%
+2025-06-06T09:07:57.2471133Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/hooks/useAuth.ts" coverage threshold for functions (90%) not met: 0%
+2025-06-06T09:07:57.2472831Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/hooks/useInfiniteScroll.ts" coverage threshold for statements (90%) not met: 0%
+2025-06-06T09:07:57.2474587Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/hooks/useInfiniteScroll.ts" coverage threshold for branches (85%) not met: 0%
+2025-06-06T09:07:57.2476330Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/hooks/useInfiniteScroll.ts" coverage threshold for lines (90%) not met: 0%
+2025-06-06T09:07:57.2478076Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/hooks/useInfiniteScroll.ts" coverage threshold for functions (90%) not met: 0%
+2025-06-06T09:07:57.2479975Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/hooks/usePagination.ts" coverage threshold for statements (90%) not met: 0%
+2025-06-06T09:07:57.2481846Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/hooks/usePagination.ts" coverage threshold for branches (85%) not met: 0%
+2025-06-06T09:07:57.2483518Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/hooks/usePagination.ts" coverage threshold for lines (90%) not met: 0%
+2025-06-06T09:07:57.2485172Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/hooks/usePagination.ts" coverage threshold for functions (90%) not met: 0%
+2025-06-06T09:07:57.2486773Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/utils/cache.ts" coverage threshold for statements (90%) not met: 0%
+2025-06-06T09:07:57.2488333Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/utils/cache.ts" coverage threshold for branches (85%) not met: 0%
+2025-06-06T09:07:57.2489857Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/utils/cache.ts" coverage threshold for lines (90%) not met: 0%
+2025-06-06T09:07:57.2491612Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/utils/cache.ts" coverage threshold for functions (90%) not met: 0%
+2025-06-06T09:07:57.2493280Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/utils/optimization.ts" coverage threshold for statements (90%) not met: 0%
+2025-06-06T09:07:57.2495238Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/utils/optimization.ts" coverage threshold for branches (85%) not met: 0%
+2025-06-06T09:07:57.2496906Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/utils/optimization.ts" coverage threshold for lines (90%) not met: 0%
+2025-06-06T09:07:57.2498569Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/utils/optimization.ts" coverage threshold for functions (90%) not met: 0%
+2025-06-06T09:07:57.2500242Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/utils/performance.ts" coverage threshold for statements (90%) not met: 0%
+2025-06-06T09:07:57.2502066Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/utils/performance.ts" coverage threshold for branches (85%) not met: 0%
+2025-06-06T09:07:57.2503692Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/utils/performance.ts" coverage threshold for lines (90%) not met: 0%
+2025-06-06T09:07:57.2505338Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/utils/performance.ts" coverage threshold for functions (90%) not met: 0%
+2025-06-06T09:07:57.2506979Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/types/filters.ts" coverage threshold for statements (90%) not met: 0%
+2025-06-06T09:07:57.2508550Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/types/filters.ts" coverage threshold for lines (90%) not met: 0%
+2025-06-06T09:07:57.2510123Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/types/filters.ts" coverage threshold for functions (90%) not met: 0%
+2025-06-06T09:07:57.2511923Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/types/index.ts" coverage threshold for statements (90%) not met: 0%
+2025-06-06T09:07:57.2513467Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/types/index.ts" coverage threshold for lines (90%) not met: 0%
+2025-06-06T09:07:57.2515307Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/emails/templates/RefundConfirmationEmail.tsx" coverage threshold for statements (90%) not met: 0%
+2025-06-06T09:07:57.2517406Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/emails/templates/RefundConfirmationEmail.tsx" coverage threshold for branches (85%) not met: 0%
+2025-06-06T09:07:57.2519471Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/emails/templates/RefundConfirmationEmail.tsx" coverage threshold for lines (90%) not met: 0%
+2025-06-06T09:07:57.2521671Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/emails/templates/RefundConfirmationEmail.tsx" coverage threshold for functions (90%) not met: 0%
+2025-06-06T09:07:57.2523944Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/emails/templates/TicketConfirmationEmail.tsx" coverage threshold for statements (90%) not met: 0%
+2025-06-06T09:07:57.2526043Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/emails/templates/TicketConfirmationEmail.tsx" coverage threshold for branches (85%) not met: 0%
+2025-06-06T09:07:57.2528111Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/emails/templates/TicketConfirmationEmail.tsx" coverage threshold for lines (90%) not met: 0%
+2025-06-06T09:07:57.2530170Z Jest: "/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/lib/emails/templates/TicketConfirmationEmail.tsx" coverage threshold for functions (90%) not met: 0%
+2025-06-06T09:07:57.2531631Z Test Suites: 7 passed, 7 total
+2025-06-06T09:07:57.2532111Z Tests:       125 passed, 125 total
+2025-06-06T09:07:57.2532530Z Snapshots:   0 total
+2025-06-06T09:07:57.2532895Z Time:        10.427 s
+2025-06-06T09:07:57.2533258Z Ran all test suites.
+2025-06-06T09:07:57.2534388Z 📊 Test reports generated in /home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/reports
+2025-06-06T09:07:57.2535095Z 📈 Coverage: 4%
+2025-06-06T09:07:57.2535522Z ⏱️  Total runtime: 2.66s
+2025-06-06T09:07:57.3036113Z ##[error]Process completed with exit code 1.
+2025-06-06T09:07:57.3135428Z Post job cleanup.
+2025-06-06T09:07:57.4100871Z [command]/usr/bin/git version
+2025-06-06T09:07:57.4141981Z git version 2.49.0
+2025-06-06T09:07:57.4188296Z Temporarily overriding HOME='/home/runner/work/_temp/df6d1b19-13f5-47e5-a012-d46d9da7dc17' before making global git config changes
+2025-06-06T09:07:57.4192066Z Adding repository directory to the temporary git global config as a safe directory
+2025-06-06T09:07:57.4195935Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3
+2025-06-06T09:07:57.4239378Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2025-06-06T09:07:57.4276521Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2025-06-06T09:07:57.4514529Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2025-06-06T09:07:57.4537859Z http.https://github.com/.extraheader
+2025-06-06T09:07:57.4552704Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2025-06-06T09:07:57.4587354Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2025-06-06T09:07:57.4932032Z Cleaning up orphan processes

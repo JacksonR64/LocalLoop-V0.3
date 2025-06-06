@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -117,13 +117,7 @@ export default function EventForm({ eventId, isEdit = false, onSuccess, onCancel
     const [showPreview, setShowPreview] = useState(false)
 
     // Load event data for editing
-    useEffect(() => {
-        if (isEdit && eventId) {
-            loadEventData()
-        }
-    }, [isEdit, eventId])
-
-    const loadEventData = async () => {
+    const loadEventData = useCallback(async () => {
         if (!eventId) return
 
         try {
@@ -169,7 +163,13 @@ export default function EventForm({ eventId, isEdit = false, onSuccess, onCancel
         } finally {
             setLoading(false)
         }
-    }
+    }, [eventId])
+
+    useEffect(() => {
+        if (isEdit && eventId) {
+            loadEventData()
+        }
+    }, [isEdit, eventId, loadEventData])
 
     const formatDateForInput = (dateString: string): string => {
         const date = new Date(dateString)

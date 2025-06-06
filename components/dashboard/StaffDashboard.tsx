@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -78,7 +78,7 @@ export default function StaffDashboard({ user }: StaffDashboardProps) {
     const [error, setError] = useState<string | null>(null)
     const [activeTab, setActiveTab] = useState('overview')
 
-    const fetchDashboardData = async () => {
+    const fetchDashboardData = useCallback(async () => {
         try {
             setLoading(true)
 
@@ -104,11 +104,11 @@ export default function StaffDashboard({ user }: StaffDashboardProps) {
         } finally {
             setLoading(false)
         }
-    }
+    }, [user.id])
 
     useEffect(() => {
         fetchDashboardData()
-    }, [user.id])
+    }, [fetchDashboardData])
 
     const formatCurrency = (amount: number) => {
         return new Intl.NumberFormat('en-US', {

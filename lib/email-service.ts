@@ -7,8 +7,18 @@ import EventReminderEmail from './emails/event-reminder';
 import EventCancellationEmail from './emails/event-cancellation';
 import RefundConfirmationEmail from './emails/templates/RefundConfirmationEmail';
 
-// Initialize Resend with API key
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Lazy-initialize Resend to prevent build-time failures
+let resendInstance: Resend | null = null;
+
+function getResendInstance(): Resend {
+    if (!resendInstance) {
+        if (!process.env.RESEND_API_KEY) {
+            throw new Error('RESEND_API_KEY environment variable is required');
+        }
+        resendInstance = new Resend(process.env.RESEND_API_KEY);
+    }
+    return resendInstance;
+}
 
 // ✨ DEVELOPMENT MODE: Override email for testing with Resend free tier
 const isDevelopment = process.env.NODE_ENV === 'development';
@@ -156,7 +166,7 @@ export async function sendRSVPConfirmationEmail(
         const emailHtml = await render(RSVPConfirmationEmail(props));
 
         // Send the email
-        const response = await resend.emails.send({
+        const response = await getResendInstance().emails.send({
             from: process.env.RESEND_FROM_EMAIL || 'LocalLoop <noreply@localloop.app>',
             to: getRecipientEmail(props.to),
             subject: `RSVP Confirmed: ${props.eventTitle}`,
@@ -262,7 +272,7 @@ export async function sendWelcomeEmail(
         }));
 
         // Send the email
-        const response = await resend.emails.send({
+        const response = await getResendInstance().emails.send({
             from: process.env.RESEND_FROM_EMAIL || 'LocalLoop <noreply@localloop.app>',
             to: getRecipientEmail(props.to),
             subject: 'Welcome to LocalLoop! 🎉',
@@ -369,7 +379,7 @@ export async function sendEventReminderEmail(
         };
 
         // Send the email
-        const response = await resend.emails.send({
+        const response = await getResendInstance().emails.send({
             from: process.env.RESEND_FROM_EMAIL || 'LocalLoop <noreply@localloop.app>',
             to: getRecipientEmail(props.to),
             subject: getReminderSubject(),
@@ -494,7 +504,7 @@ export async function sendEventCancellationEmail(
         const emailHtml = await render(EventCancellationEmail(props));
 
         // Send the email
-        const response = await resend.emails.send({
+        const response = await getResendInstance().emails.send({
             from: process.env.RESEND_FROM_EMAIL || 'LocalLoop <noreply@localloop.app>',
             to: getRecipientEmail(props.to),
             subject: `Event Cancelled: ${props.eventTitle}`,
@@ -606,7 +616,7 @@ export async function sendRSVPCancellationEmail(
         const emailHtml = await render(RSVPCancellationEmail(props));
 
         // Send the email
-        const response = await resend.emails.send({
+        const response = await getResendInstance().emails.send({
             from: process.env.RESEND_FROM_EMAIL || 'LocalLoop <noreply@localloop.app>',
             to: getRecipientEmail(props.to),
             subject: `RSVP Cancelled: ${props.eventTitle}`,
@@ -730,7 +740,7 @@ export async function sendRefundConfirmationEmail(
             : `Refund Confirmation: ${props.eventTitle}`;
 
         // Send the email
-        const response = await resend.emails.send({
+        const response = await getResendInstance().emails.send({
             from: process.env.RESEND_FROM_EMAIL || 'LocalLoop <noreply@localloop.app>',
             to: getRecipientEmail(props.to),
             subject: subject,

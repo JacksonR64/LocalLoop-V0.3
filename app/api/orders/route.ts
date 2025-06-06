@@ -1,6 +1,53 @@
 import { NextResponse } from 'next/server'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 
+// Database entity interfaces
+interface DatabaseEvent {
+    id: string
+    title: string
+    description: string | null
+    start_time: string
+    end_time: string
+    location: string
+    slug: string
+    cancelled: boolean
+}
+
+interface DatabaseTicketType {
+    id: string
+    name: string
+    description: string | null
+}
+
+interface DatabaseTicket {
+    id: string
+    quantity: number
+    unit_price: number
+    attendee_name: string
+    attendee_email: string
+    confirmation_code: string
+    check_in_time: string | null
+    ticket_types: DatabaseTicketType | DatabaseTicketType[]
+}
+
+interface DatabaseOrder {
+    id: string
+    created_at: string
+    updated_at: string
+    event_id: string
+    status: string
+    total_amount: number
+    currency: string
+    refunded_at: string | null
+    refund_amount: number | null
+    stripe_payment_intent_id: string | null
+    guest_email?: string
+    guest_name?: string
+    added_to_google_calendar?: boolean
+    events: DatabaseEvent | DatabaseEvent[]
+    tickets: DatabaseTicket[]
+}
+
 // Define proper types for the orders response
 interface OrderWithRelations {
     id: string
@@ -116,7 +163,7 @@ export async function GET() {
         }
 
         // Also get guest orders by email if user has email
-        let guestOrders: any[] = []
+        let guestOrders: DatabaseOrder[] = []
         if (user.email) {
             const { data: guestOrdersData, error: guestOrdersError } = await supabase
                 .from('orders')
@@ -168,17 +215,17 @@ export async function GET() {
         }
 
         // Helper function to calculate computed values for orders
-        const enrichOrderData = (order: any): OrderWithRelations => {
+        const enrichOrderData = (order: DatabaseOrder): OrderWithRelations => {
             const tickets = order.tickets || []
-            
+
             // Calculate computed values
-            const tickets_count = tickets.reduce((sum: number, ticket: any) => sum + (ticket.quantity || 0), 0)
+            const tickets_count = tickets.reduce((sum: number, ticket: DatabaseTicket) => sum + (ticket.quantity || 0), 0)
             const is_refundable = order.status === 'completed' && !order.refunded_at && order.refund_amount === 0
             const net_amount = order.total_amount - (order.refund_amount || 0)
             const calendar_integration_status = order.added_to_google_calendar ? 'added' : 'pending'
-            
+
             // Enrich tickets with computed values
-            const enrichedTickets = tickets.map((ticket: any) => ({
+            const enrichedTickets = tickets.map((ticket: DatabaseTicket) => ({
                 ...ticket,
                 total_price: (ticket.unit_price || 0) * (ticket.quantity || 0),
                 is_valid: !ticket.check_in_time && order.status === 'completed',
