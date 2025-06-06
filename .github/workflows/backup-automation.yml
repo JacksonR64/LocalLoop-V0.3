@@ -94,7 +94,7 @@ jobs:
         sudo apt-get install -y jq
         
         # Make backup scripts executable
-        chmod +x backup-scripts/*.sh
+        chmod +x scripts/ops/*.sh
     
     - name: 🗄️ Setup Supabase Environment (if database backup enabled)
       if: env.DB_BACKUP_ENABLED == 'true'
@@ -115,7 +115,7 @@ jobs:
         export LOG_FILE="./logs/backup-$(date +%Y%m%d_%H%M%S).log"
         
         # Run the master backup script
-        if ./backup-scripts/master-backup.sh; then
+        if ./scripts/ops/master-backup.sh; then
           echo "backup_status=success" >> $GITHUB_OUTPUT
           echo "✅ Backup completed successfully"
         else

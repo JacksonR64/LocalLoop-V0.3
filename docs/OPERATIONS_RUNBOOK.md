@@ -116,13 +116,13 @@ ORDER BY tablename, attname;
 #### **4. Backup Verification (Thursdays)**
 ```bash
 # Test backup script execution
-./backup-scripts/master-backup.sh
+./scripts/ops/master-backup.sh
 
 # Verify backup integrity
-./backup-scripts/verify-backup.sh [latest-backup-file]
+./scripts/ops/verify-backup.sh [latest-backup-file]
 
 # Test restore procedure (in staging)
-./backup-scripts/restore-backup.sh [backup-file] staging
+./scripts/ops/restore-backup.sh [backup-file] staging
 ```
 
 #### **5. Monitoring & Alerts Review (Fridays)**

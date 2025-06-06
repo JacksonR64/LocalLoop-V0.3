@@ -264,7 +264,7 @@ backup_deployment_checklist() {
 
 ## Recovery Procedures
 - Database Recovery: See docs/BACKUP_STRATEGY.md
-- Configuration Recovery: See backup-scripts/config-backup.sh
+- Configuration Recovery: See scripts/ops/config-backup.sh
 - Full System Recovery: See docs/DISASTER_RECOVERY.md
 EOF
     

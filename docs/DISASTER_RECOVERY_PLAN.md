@@ -106,7 +106,7 @@ vercel env rm PRODUCTION_API_KEYS  # Rotate compromised keys
 supabase auth admin user-ban --uid <compromised_users>
 
 # If database corruption detected
-./backup-scripts/emergency-db-snapshot.sh  # Create point-in-time snapshot
+./scripts/ops/emergency-db-snapshot.sh  # Create point-in-time snapshot
 ```
 
 #### **Rollback Procedures**
@@ -124,13 +124,13 @@ supabase db reset --db-url=$RECOVERY_DB_URL
 #### **Database Recovery**
 ```bash
 # Point-in-time recovery
-./backup-scripts/restore-database.sh --timestamp="2024-01-15T10:30:00Z"
+./scripts/ops/restore-database.sh --timestamp="2024-01-15T10:30:00Z"
 
 # Full database restoration
-./backup-scripts/restore-database.sh --backup-file="localloop_backup_20240115_103000.sql"
+./scripts/ops/restore-database.sh --backup-file="localloop_backup_20240115_103000.sql"
 
 # Verify data integrity
-./backup-scripts/verify-data-integrity.sh
+./scripts/ops/verify-data-integrity.sh
 ```
 
 #### **Application Recovery**
@@ -141,7 +141,7 @@ npm run build  # Clean build
 vercel deploy --prod  # Deploy to production
 
 # Configuration restoration
-./backup-scripts/restore-config.sh --env=production
+./scripts/ops/restore-config.sh --env=production
 ```
 
 #### **Third-Party Service Recovery**
