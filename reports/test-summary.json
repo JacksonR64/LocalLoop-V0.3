@@ -3,36 +3,6 @@
   "passed": 125,
   "failed": 0,
   "pending": 0,
-  "runtime": 979,
-  "coverage": {
-    "overall": {
-      "lines": 4.2,
-      "functions": 5.03,
-      "branches": 2.95,
-      "statements": 4.43,
-      "pct": 4
-    },
-    "details": {
-      "lines": {
-        "covered": 238,
-        "total": 5656,
-        "pct": 4.2
-      },
-      "functions": {
-        "covered": 50,
-        "total": 994,
-        "pct": 5.03
-      },
-      "branches": {
-        "covered": 96,
-        "total": 3251,
-        "pct": 2.95
-      },
-      "statements": {
-        "covered": 265,
-        "total": 5977,
-        "pct": 4.43
-      }
-    }
-  }
+  "runtime": 2226,
+  "coverage": null
 }

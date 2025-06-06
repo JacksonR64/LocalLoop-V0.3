@@ -1,71 +1,21 @@
 {
-  "timestamp": "2025-06-06T11:47:40.527Z",
+  "timestamp": "2025-06-06T16:12:19.504Z",
   "summary": {
     "total": 125,
     "passed": 125,
     "failed": 0,
     "pending": 0,
-    "runtime": 979,
-    "coverage": {
-      "overall": {
-        "lines": 4.2,
-        "functions": 5.03,
-        "branches": 2.95,
-        "statements": 4.43,
-        "pct": 4
-      },
-      "details": {
-        "lines": {
-          "covered": 238,
-          "total": 5656,
-          "pct": 4.2
-        },
-        "functions": {
-          "covered": 50,
-          "total": 994,
-          "pct": 5.03
-        },
-        "branches": {
-          "covered": 96,
-          "total": 3251,
-          "pct": 2.95
-        },
-        "statements": {
-          "covered": 265,
-          "total": 5977,
-          "pct": 4.43
-        }
-      }
-    }
+    "runtime": 2226,
+    "coverage": null
   },
   "testFiles": [
-    {
-      "file": "/components/ui/__tests__/button.test.tsx",
-      "status": "passed",
-      "tests": 15,
-      "passed": 15,
-      "failed": 0,
-      "runtime": 503,
-      "coverage": null,
-      "slowTests": []
-    },
-    {
-      "file": "/tests/integration/component-interactions.test.ts",
-      "status": "passed",
-      "tests": 8,
-      "passed": 8,
-      "failed": 0,
-      "runtime": 184,
-      "coverage": null,
-      "slowTests": []
-    },
     {
       "file": "/lib/utils/__tests__/eventFilters.test.ts",
       "status": "passed",
       "tests": 25,
       "passed": 25,
       "failed": 0,
-      "runtime": 60,
+      "runtime": 349,
       "coverage": null,
       "slowTests": []
     },
@@ -75,7 +25,7 @@
       "tests": 53,
       "passed": 53,
       "failed": 0,
-      "runtime": 66,
+      "runtime": 362,
       "coverage": null,
       "slowTests": []
     },
@@ -85,17 +35,7 @@
       "tests": 11,
       "passed": 11,
       "failed": 0,
-      "runtime": 43,
-      "coverage": null,
-      "slowTests": []
-    },
-    {
-      "file": "/app/api/events/__tests__/route.test.ts",
-      "status": "passed",
-      "tests": 2,
-      "passed": 2,
-      "failed": 0,
-      "runtime": 79,
+      "runtime": 373,
       "coverage": null,
       "slowTests": []
     },
@@ -105,7 +45,37 @@
       "tests": 11,
       "passed": 11,
       "failed": 0,
-      "runtime": 44,
+      "runtime": 100,
+      "coverage": null,
+      "slowTests": []
+    },
+    {
+      "file": "/app/api/events/__tests__/route.test.ts",
+      "status": "passed",
+      "tests": 2,
+      "passed": 2,
+      "failed": 0,
+      "runtime": 115,
+      "coverage": null,
+      "slowTests": []
+    },
+    {
+      "file": "/tests/integration/component-interactions.test.ts",
+      "status": "passed",
+      "tests": 8,
+      "passed": 8,
+      "failed": 0,
+      "runtime": 609,
+      "coverage": null,
+      "slowTests": []
+    },
+    {
+      "file": "/components/ui/__tests__/button.test.tsx",
+      "status": "passed",
+      "tests": 15,
+      "passed": 15,
+      "failed": 0,
+      "runtime": 318,
       "coverage": null,
       "slowTests": []
     }
@@ -113,12 +83,12 @@
   "performance": {
     "slowestTests": [],
     "averageTestDuration": 3,
-    "totalRuntime": 979
+    "totalRuntime": 2226
   },
   "trends": {
     "testCount": 125,
     "passRate": 100,
-    "runtime": 979,
-    "timestamp": "2025-06-06T11:47:40.529Z"
+    "runtime": 2226,
+    "timestamp": "2025-06-06T16:12:19.505Z"
   }
 }
