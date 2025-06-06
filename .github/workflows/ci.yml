@@ -120,7 +120,7 @@ jobs:
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
 
       - name: 🎭 Run E2E tests
-        run: npx playwright test --project=chromium
+        run: npx playwright test
         env:
           CI: true
 

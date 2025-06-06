@@ -39,8 +39,24 @@ export default defineConfig({
         navigationTimeout: 30000,
     },
 
-    /* Configure projects for comprehensive cross-browser and mobile testing */
-    projects: [
+    /* Configure projects - CI-optimized vs Full Local Testing */
+    projects: process.env.CI ? [
+        // CI: Minimal, fast, essential coverage only
+        {
+            name: 'chromium',
+            use: { ...devices['Desktop Chrome'] },
+        },
+        {
+            name: 'webkit',
+            use: { ...devices['Desktop Safari'] },
+        },
+        {
+            name: 'Mobile Chrome',
+            use: { ...devices['Pixel 5'] },
+        },
+    ] : [
+        // LOCAL: Full comprehensive testing across all devices and browsers
+
         // Desktop Browsers - Primary Testing
         {
             name: 'Desktop Chrome',
@@ -198,7 +214,7 @@ export default defineConfig({
 
         // High DPI Testing
         {
-            name: 'High DPI Desktop',
+            name: 'High DPI',
             use: {
                 ...devices['Desktop Chrome'],
                 viewport: { width: 1920, height: 1080 },
@@ -207,17 +223,17 @@ export default defineConfig({
         },
     ],
 
-    /* Run your local dev server before starting the tests */
-    webServer: {
-        command: 'npm run dev',
-        url: 'http://localhost:3000',
-        reuseExistingServer: !process.env.CI,
-        timeout: 120 * 1000, // 2 minutes
-    },
-
     /* Global setup and teardown */
     globalSetup: require.resolve('./e2e/global-setup.ts'),
     globalTeardown: require.resolve('./e2e/global-teardown.ts'),
+
+    /* Run your local dev server before starting the tests */
+    webServer: {
+        command: process.env.CI ? 'npm run build && npm run start' : 'npm run dev',
+        port: 3000,
+        reuseExistingServer: !process.env.CI,
+        timeout: 120000,
+    },
 
     /* Test timeout */
     timeout: 60 * 1000, // 60 seconds for cross-browser testing
