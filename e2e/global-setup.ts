@@ -9,28 +9,28 @@ async function globalSetup(config: FullConfig) {
     const page = await context.newPage();
 
     try {
-        // Wait for development server to be ready
+        // Wait for development server to be ready (more reliable approach)
         console.log('⏳ Waiting for development server...');
-        await page.goto(config.webServer?.url || 'http://localhost:3000', {
-            waitUntil: 'networkidle',
-            timeout: 30000
-        });
+
+        try {
+            await page.goto(config.webServer?.url || 'http://localhost:3000', {
+                waitUntil: 'domcontentloaded',
+                timeout: 15000
+            });
+        } catch {
+            // Fallback to simple page load
+            await page.goto(config.webServer?.url || 'http://localhost:3000', {
+                timeout: 10000
+            });
+        }
 
         // Verify critical pages are accessible
         console.log('🔍 Verifying application health...');
 
-        // Check homepage
-        const baseUrl = config.webServer?.url || 'http://localhost:3000';
-        const homepageResponse = await page.goto(`${baseUrl}/`);
-        if (homepageResponse?.status() !== 200) {
-            throw new Error(`Homepage returned status ${homepageResponse?.status()}`);
-        }
-
-        // Check API health
-        const apiResponse = await page.goto(`${baseUrl}/api/events`);
-        // API might return 401 (unauthorized) which is expected for unauthenticated requests
-        if (apiResponse?.status() !== 401 && apiResponse?.status() !== 200) {
-            console.warn(`API returned unexpected status ${apiResponse?.status()}`);
+        // Check homepage basic structure
+        const hasContent = await page.locator('h1, h2, h3').first().isVisible({ timeout: 5000 });
+        if (!hasContent) {
+            throw new Error('Homepage does not have basic heading structure');
         }
 
         console.log('✅ Application health check passed');

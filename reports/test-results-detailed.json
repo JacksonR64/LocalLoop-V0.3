@@ -1,81 +1,21 @@
 {
-  "timestamp": "2025-06-05T16:00:19.341Z",
+  "timestamp": "2025-06-06T16:12:19.504Z",
   "summary": {
-    "total": 95,
-    "passed": 95,
+    "total": 125,
+    "passed": 125,
     "failed": 0,
     "pending": 0,
-    "runtime": 997,
-    "coverage": {
-      "overall": {
-        "lines": 4.2,
-        "functions": 4.98,
-        "branches": 3,
-        "statements": 4.43,
-        "pct": 4
-      },
-      "details": {
-        "lines": {
-          "covered": 238,
-          "total": 5659,
-          "pct": 4.2
-        },
-        "functions": {
-          "covered": 50,
-          "total": 1003,
-          "pct": 4.98
-        },
-        "branches": {
-          "covered": 96,
-          "total": 3198,
-          "pct": 3
-        },
-        "statements": {
-          "covered": 265,
-          "total": 5980,
-          "pct": 4.43
-        }
-      }
-    }
+    "runtime": 2226,
+    "coverage": null
   },
   "testFiles": [
     {
-      "file": "/e2e/mobile-testing.spec.ts",
+      "file": "/lib/utils/__tests__/eventFilters.test.ts",
       "status": "passed",
-      "tests": 0,
-      "passed": 0,
+      "tests": 25,
+      "passed": 25,
       "failed": 0,
-      "runtime": 0,
-      "coverage": null,
-      "slowTests": []
-    },
-    {
-      "file": "/e2e/cross-browser-responsive.spec.ts",
-      "status": "passed",
-      "tests": 0,
-      "passed": 0,
-      "failed": 0,
-      "runtime": 0,
-      "coverage": null,
-      "slowTests": []
-    },
-    {
-      "file": "/components/ui/__tests__/button.test.tsx",
-      "status": "passed",
-      "tests": 15,
-      "passed": 15,
-      "failed": 0,
-      "runtime": 577,
-      "coverage": null,
-      "slowTests": []
-    },
-    {
-      "file": "/app/api/events/__tests__/route.test.ts",
-      "status": "passed",
-      "tests": 2,
-      "passed": 2,
-      "failed": 0,
-      "runtime": 162,
+      "runtime": 349,
       "coverage": null,
       "slowTests": []
     },
@@ -85,47 +25,57 @@
       "tests": 53,
       "passed": 53,
       "failed": 0,
-      "runtime": 149,
+      "runtime": 362,
       "coverage": null,
       "slowTests": []
     },
     {
-      "file": "/lib/utils/__tests__/eventFilters.test.ts",
+      "file": "/tests/integration/database-validation.test.ts",
       "status": "passed",
-      "tests": 25,
-      "passed": 25,
+      "tests": 11,
+      "passed": 11,
       "failed": 0,
-      "runtime": 109,
+      "runtime": 373,
       "coverage": null,
       "slowTests": []
     },
     {
-      "file": "/e2e/ticket-flow.spec.ts",
+      "file": "/tests/integration/api-routes.test.ts",
       "status": "passed",
-      "tests": 0,
-      "passed": 0,
+      "tests": 11,
+      "passed": 11,
       "failed": 0,
-      "runtime": 0,
+      "runtime": 100,
       "coverage": null,
       "slowTests": []
     },
     {
-      "file": "/e2e/rsvp-flow.spec.ts",
+      "file": "/app/api/events/__tests__/route.test.ts",
       "status": "passed",
-      "tests": 0,
-      "passed": 0,
+      "tests": 2,
+      "passed": 2,
       "failed": 0,
-      "runtime": 0,
+      "runtime": 115,
       "coverage": null,
       "slowTests": []
     },
     {
-      "file": "/e2e/example.spec.ts",
+      "file": "/tests/integration/component-interactions.test.ts",
       "status": "passed",
-      "tests": 0,
-      "passed": 0,
+      "tests": 8,
+      "passed": 8,
       "failed": 0,
-      "runtime": 0,
+      "runtime": 609,
+      "coverage": null,
+      "slowTests": []
+    },
+    {
+      "file": "/components/ui/__tests__/button.test.tsx",
+      "status": "passed",
+      "tests": 15,
+      "passed": 15,
+      "failed": 0,
+      "runtime": 318,
       "coverage": null,
       "slowTests": []
     }
@@ -133,12 +83,12 @@
   "performance": {
     "slowestTests": [],
     "averageTestDuration": 3,
-    "totalRuntime": 997
+    "totalRuntime": 2226
   },
   "trends": {
-    "testCount": 95,
+    "testCount": 125,
     "passRate": 100,
-    "runtime": 997,
-    "timestamp": "2025-06-05T16:00:19.346Z"
+    "runtime": 2226,
+    "timestamp": "2025-06-06T16:12:19.505Z"
   }
 }

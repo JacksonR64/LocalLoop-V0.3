@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -17,19 +17,19 @@ import {
     TableRow
 } from '@/components/ui/table'
 import {
-    Users,
     Search,
-    Mail,
     Download,
+    UserCheck,
+    MoreHorizontal,
+    RefreshCw,
+    Clock,
     CheckCircle,
     XCircle,
-    Clock,
+    Users,
     DollarSign,
     CalendarDays,
     MapPin,
-    UserCheck,
-    MoreHorizontal,
-    RefreshCw
+    Mail,
 } from 'lucide-react'
 import { format } from 'date-fns'
 
@@ -117,7 +117,7 @@ export default function AttendeeManagement() {
     // Available events for filtering
     const [events, setEvents] = useState<Array<{ id: string, title: string }>>([])
 
-    const fetchAttendees = async () => {
+    const fetchAttendees = useCallback(async () => {
         try {
             setLoading(true)
             setError(null)
@@ -160,11 +160,11 @@ export default function AttendeeManagement() {
         } finally {
             setLoading(false)
         }
-    }
+    }, [currentPage, search, eventFilter, statusFilter, checkedInFilter, sortBy, sortOrder])
 
     useEffect(() => {
         fetchAttendees()
-    }, [currentPage, search, eventFilter, statusFilter, checkedInFilter, sortBy, sortOrder])
+    }, [fetchAttendees])
 
     const handleSelectAttendee = (attendeeId: string, checked: boolean) => {
         const newSelected = new Set(selectedAttendees)

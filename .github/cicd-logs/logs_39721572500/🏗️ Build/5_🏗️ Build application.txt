@@ -1,0 +1,40 @@
+﻿2025-06-06T11:37:05.9194135Z ##[group]Run npm run build
+2025-06-06T11:37:05.9194475Z [36;1mnpm run build[0m
+2025-06-06T11:37:05.9247290Z shell: /usr/bin/bash -e {0}
+2025-06-06T11:37:05.9247535Z env:
+2025-06-06T11:37:05.9247706Z   NODE_VERSION: 18
+2025-06-06T11:37:05.9248350Z   NEXT_PUBLIC_SUPABASE_URL: ***
+2025-06-06T11:37:05.9249761Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+2025-06-06T11:37:05.9250050Z ##[endgroup]
+2025-06-06T11:37:06.0595974Z 
+2025-06-06T11:37:06.0603433Z > 1000x-app@0.1.0 build
+2025-06-06T11:37:06.0603882Z > next build
+2025-06-06T11:37:06.0604137Z 
+2025-06-06T11:37:06.7537868Z ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
+2025-06-06T11:37:06.7637500Z Attention: Next.js now collects completely anonymous telemetry regarding usage.
+2025-06-06T11:37:06.7639601Z This information is used to shape Next.js' roadmap and prioritize features.
+2025-06-06T11:37:06.7644193Z You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+2025-06-06T11:37:06.7645516Z https://nextjs.org/telemetry
+2025-06-06T11:37:06.7645818Z 
+2025-06-06T11:37:06.8729717Z    ▲ Next.js 15.3.2
+2025-06-06T11:37:06.8731260Z 
+2025-06-06T11:37:06.8988116Z    Creating an optimized production build ...
+2025-06-06T11:37:42.1527712Z  ✓ Compiled successfully in 34.0s
+2025-06-06T11:37:42.1585343Z    Skipping linting
+2025-06-06T11:37:42.1587846Z    Checking validity of types ...
+2025-06-06T11:38:09.5238561Z    Collecting page data ...
+2025-06-06T11:38:10.7347591Z Error: Neither apiKey nor config.authenticator provided
+2025-06-06T11:38:10.7351286Z     at r._setAuthenticator (.next/server/chunks/7877.js:1:83467)
+2025-06-06T11:38:10.7352013Z     at new r (.next/server/chunks/7877.js:1:78100)
+2025-06-06T11:38:10.7352667Z     at 101 (.next/server/app/api/refunds/route.js:1:110)
+2025-06-06T11:38:10.7353252Z     at t (.next/server/webpack-runtime.js:1:128)
+2025-06-06T11:38:10.7353802Z     at <unknown> (.next/server/app/api/refunds/route.js:1:1319)
+2025-06-06T11:38:10.7354426Z     at t.a (.next/server/webpack-runtime.js:1:891)
+2025-06-06T11:38:10.7355165Z     at 23608 (.next/server/app/api/refunds/route.js:1:1233)
+2025-06-06T11:38:10.7355663Z     at t (.next/server/webpack-runtime.js:1:128)
+2025-06-06T11:38:10.7356279Z     at <unknown> (.next/server/app/api/refunds/route.js:20:2812)
+2025-06-06T11:38:10.7356954Z     at t.a (.next/server/webpack-runtime.js:1:891)
+2025-06-06T11:38:10.7427096Z 
+2025-06-06T11:38:10.7427381Z > Build error occurred
+2025-06-06T11:38:10.7476994Z [Error: Failed to collect page data for /api/refunds] { type: 'Error' }
+2025-06-06T11:38:10.8098660Z ##[error]Process completed with exit code 1.

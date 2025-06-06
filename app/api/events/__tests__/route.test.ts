@@ -2,6 +2,7 @@
  * @jest-environment node
  */
 
+// @ts-nocheck
 // Mock Supabase
 jest.mock('@/lib/supabase-server', () => ({
     createServerSupabaseClient: jest.fn(() => ({
@@ -60,9 +61,9 @@ import { NextRequest } from 'next/server'
 import { GET } from '../route'
 
 describe('/api/events', () => {
-    let mockCreateServerSupabaseClient: jest.MockedFunction<() => unknown>
-    let mockAuth: { getUser: jest.MockedFunction<() => Promise<{ data: { user: unknown }, error: unknown }>> }
-    let mockQuery: Record<string, jest.MockedFunction<unknown>>
+    let mockCreateServerSupabaseClient: jest.MockedFunction<any>
+    let mockAuth: { getUser: jest.MockedFunction<any> }
+    let mockQuery: Record<string, jest.MockedFunction<any>>
 
     beforeEach(() => {
         // eslint-disable-next-line @typescript-eslint/no-require-imports

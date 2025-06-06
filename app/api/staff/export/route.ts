@@ -1,6 +1,99 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { authenticateStaff } from '@/lib/auth'
+import type { SupabaseClient } from '@supabase/supabase-js'
+
+// Database entity interfaces
+interface DatabaseEvent {
+    id: string
+    title: string
+    start_time: string
+    location?: string
+    organizer_id: string
+}
+
+interface DatabaseTicketType {
+    id: string
+    name: string
+    price: number
+}
+
+interface DatabaseOrder {
+    id: string
+    total: number
+    status: string
+    customer_email: string
+    customer_name: string
+    tickets?: DatabaseTicket[]
+}
+
+interface DatabaseTicket {
+    id: string
+    status: string
+    check_in_time?: string
+    created_at: string
+    attendee_name?: string
+    attendee_email?: string
+    confirmation_code: string
+    orders: DatabaseOrder | DatabaseOrder[]
+    ticket_types: DatabaseTicketType | DatabaseTicketType[]
+    events: DatabaseEvent | DatabaseEvent[]
+}
+
+// CSV export data interfaces
+interface AttendeeExportRow {
+    'Name': string
+    'Email': string
+    'Type': string
+    'Event': string
+    'Event Date': string
+    'Event Location': string
+    'Status': string
+    'Ticket Type': string
+    'Ticket Price': string
+    'Registration Date': string
+    'Check-in Status': string
+    'Check-in Time': string
+    'Confirmation Code': string
+    'Order ID': string
+    'Order Total': string
+    'Order Status': string
+    'Attendee Count': number
+    'User ID': string
+    'Event ID': string
+}
+
+interface AnalyticsExportRow {
+    'Event ID': string
+    'Event Title': string
+    'Event Date': string
+    'Event Location': string
+    'Total Attendees': number
+    'Checked In': number
+    'Check-in Rate': string
+    'Total Revenue': string
+    'RSVP Count': number
+    'Ticket Count': number
+}
+
+interface EventExportRow {
+    'Event ID': string
+    'Title': string
+    'Date': string
+    'Time': string
+    'Location': string
+    'Total Attendees': number
+    'Total Revenue': string
+    'Ticket Types': string
+    'Status': string
+}
+
+interface SummaryExportRow {
+    'Metric': string
+    'Value': string
+}
+
+type ExportRow = AttendeeExportRow | AnalyticsExportRow | EventExportRow | SummaryExportRow
 
 export async function POST(request: NextRequest) {
     try {
@@ -29,7 +122,7 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: 'Invalid export type' }, { status: 400 })
         }
 
-        let csvData: any[] = []
+        let csvData: ExportRow[] = []
         let filename = `${type}-export-${new Date().toISOString().split('T')[0]}.csv`
 
         switch (type) {
@@ -79,7 +172,12 @@ export async function POST(request: NextRequest) {
     }
 }
 
-async function exportAttendees(supabase: any, filters: Record<string, unknown>, userRole: string, userId: string) {
+async function exportAttendees(
+    supabase: SupabaseClient,
+    filters: Record<string, unknown>,
+    userRole: string,
+    userId: string
+): Promise<AttendeeExportRow[]> {
     const { eventId, status, checkedIn } = filters
 
     let query = supabase
@@ -159,17 +257,22 @@ async function exportAttendees(supabase: any, filters: Record<string, unknown>, 
     }
 
     // Transform and combine data
-    const attendeeData: Record<string, unknown>[] = []
+    const attendeeData: AttendeeExportRow[] = []
 
     // Add RSVP attendees
     rsvps?.forEach((rsvp: any) => {
+        // Handle events field (could be single object or array)
+        const eventData = Array.isArray(rsvp.events) ? rsvp.events[0] : rsvp.events
+        // Handle users field (could be single object or array)  
+        const userData = Array.isArray(rsvp.users) ? rsvp.users?.[0] : rsvp.users
+
         attendeeData.push({
-            'Name': rsvp.users?.display_name || rsvp.guest_name || 'Unknown',
-            'Email': rsvp.users?.email || rsvp.guest_email || 'Unknown',
+            'Name': userData?.display_name || rsvp.guest_name || 'Unknown',
+            'Email': userData?.email || rsvp.guest_email || 'Unknown',
             'Type': 'Free RSVP',
-            'Event': rsvp.events.title,
-            'Event Date': new Date(rsvp.events.start_time).toLocaleDateString(),
-            'Event Location': rsvp.events.location || 'Not specified',
+            'Event': eventData?.title || 'Unknown',
+            'Event Date': eventData?.start_time ? new Date(eventData.start_time).toLocaleDateString() : 'Unknown',
+            'Event Location': eventData?.location || 'Not specified',
             'Status': rsvp.status,
             'Ticket Type': 'Free RSVP',
             'Ticket Price': 'Free',
@@ -181,40 +284,50 @@ async function exportAttendees(supabase: any, filters: Record<string, unknown>, 
             'Order Total': '',
             'Order Status': '',
             'Attendee Count': 1,
-            'User ID': rsvp.users?.id || '',
-            'Event ID': rsvp.events.id
+            'User ID': userData?.id || '',
+            'Event ID': eventData?.id || ''
         })
     })
 
     // Add ticket attendees
     tickets?.forEach((ticket: any) => {
+        // Handle related fields (could be single objects or arrays)
+        const orderData = Array.isArray(ticket.orders) ? ticket.orders[0] : ticket.orders
+        const ticketTypeData = Array.isArray(ticket.ticket_types) ? ticket.ticket_types[0] : ticket.ticket_types
+        const eventData = Array.isArray(ticket.events) ? ticket.events[0] : ticket.events
+
         attendeeData.push({
-            'Name': ticket.attendee_name || ticket.orders.customer_name || 'Unknown',
-            'Email': ticket.attendee_email || ticket.orders.customer_email || 'Unknown',
+            'Name': ticket.attendee_name || orderData?.customer_name || 'Unknown',
+            'Email': ticket.attendee_email || orderData?.customer_email || 'Unknown',
             'Type': 'Paid Ticket',
-            'Event': ticket.events.title,
-            'Event Date': new Date(ticket.events.start_time).toLocaleDateString(),
-            'Event Location': ticket.events.location || 'Not specified',
+            'Event': eventData?.title || 'Unknown',
+            'Event Date': eventData?.start_time ? new Date(eventData.start_time).toLocaleDateString() : 'Unknown',
+            'Event Location': eventData?.location || 'Not specified',
             'Status': ticket.status,
-            'Ticket Type': ticket.ticket_types.name,
-            'Ticket Price': `$${(ticket.ticket_types.price / 100).toFixed(2)}`,
+            'Ticket Type': ticketTypeData?.name || 'Unknown',
+            'Ticket Price': ticketTypeData?.price ? `$${(ticketTypeData.price / 100).toFixed(2)}` : 'Unknown',
             'Registration Date': new Date(ticket.created_at).toLocaleDateString(),
             'Check-in Status': ticket.check_in_time ? 'Checked In' : 'Not Checked In',
             'Check-in Time': ticket.check_in_time ? new Date(ticket.check_in_time).toLocaleDateString() : '',
             'Confirmation Code': ticket.confirmation_code || '',
-            'Order ID': ticket.orders.id,
-            'Order Total': `$${(ticket.orders.total / 100).toFixed(2)}`,
-            'Order Status': ticket.orders.status,
+            'Order ID': orderData?.id || '',
+            'Order Total': orderData?.total ? `$${(orderData.total / 100).toFixed(2)}` : '',
+            'Order Status': orderData?.status || '',
             'Attendee Count': 1,
             'User ID': '',
-            'Event ID': ticket.events.id
+            'Event ID': eventData?.id || ''
         })
     })
 
     return attendeeData
 }
 
-async function exportAnalytics(supabase: any, filters: Record<string, unknown>, userRole: string, userId: string) {
+async function exportAnalytics(
+    supabase: SupabaseClient,
+    filters: Record<string, unknown>,
+    userRole: string,
+    userId: string
+): Promise<AnalyticsExportRow[]> {
     const { timeRange = '30d' } = filters
 
     // Calculate date range
@@ -244,6 +357,7 @@ async function exportAnalytics(supabase: any, filters: Record<string, unknown>, 
       id,
       title,
       start_time,
+      location,
       capacity,
       rsvps(id, status, check_in_time),
       orders(id, total, status, tickets(id, status, check_in_time))
@@ -276,39 +390,42 @@ async function exportAnalytics(supabase: any, filters: Record<string, unknown>, 
             'Event ID': event.id,
             'Event Title': event.title,
             'Event Date': new Date(event.start_time).toLocaleDateString(),
+            'Event Location': event.location || 'Not specified',
             'Total Attendees': totalAttendees,
+            'Checked In': checkedInCount,
+            'Check-in Rate': totalAttendees > 0 ? `${((checkedInCount / totalAttendees) * 100).toFixed(1)}%` : '0%',
             'Total Revenue': `$${(revenue / 100).toFixed(2)}`,
-            'Capacity': event.capacity || 0,
-            'Capacity Utilization': event.capacity ? `${((totalAttendees / event.capacity) * 100).toFixed(1)}%` : 'N/A',
             'RSVP Count': (event.rsvps?.filter((rsvp: any) => rsvp.status === 'confirmed').length || 0),
             'Ticket Count': (event.orders?.filter((order: any) => order.status === 'completed').length || 0),
-            'Check-in Rate': totalAttendees > 0 ? `${((checkedInCount / totalAttendees) * 100).toFixed(1)}%` : '0%',
-            'Revenue Per Attendee': totalAttendees > 0 ? `$${(revenue / 100 / totalAttendees).toFixed(2)}` : '$0.00'
         }
     }) || []
 
     return analyticsData
 }
 
-async function exportEvents(supabase: any, filters: Record<string, unknown>, userRole: string, userId: string) {
+async function exportEvents(
+    supabase: SupabaseClient,
+    filters: Record<string, unknown>,
+    userRole: string,
+    userId: string
+): Promise<EventExportRow[]> {
+    const { status } = filters
+
     let query = supabase
         .from('events')
         .select(`
       id,
       title,
-      description,
       start_time,
-      end_time,
       location,
-      capacity,
       status,
-      published,
-      created_at,
-      ticket_types(name, price),
+      capacity,
       rsvps(id, status),
-      orders(id, total, status)
+      orders(id, total, status),
+      ticket_types(id, name, price)
     `)
 
+    if (status) query = query.eq('status', status)
     if (userRole === 'organizer') {
         query = query.eq('organizer_id', userId)
     }
@@ -323,7 +440,7 @@ async function exportEvents(supabase: any, filters: Record<string, unknown>, use
         const totalAttendees = (event.rsvps?.filter((rsvp: any) => rsvp.status === 'confirmed').length || 0) +
             (event.orders?.filter((order: any) => order.status === 'completed').length || 0)
 
-        const totalRevenue = event.orders
+        const revenue = event.orders
             ?.filter((order: any) => order.status === 'completed')
             ?.reduce((sum: number, order: any) => sum + (order.total || 0), 0) || 0
 
@@ -332,65 +449,51 @@ async function exportEvents(supabase: any, filters: Record<string, unknown>, use
         return {
             'Event ID': event.id,
             'Title': event.title,
-            'Description': event.description?.replace(/\n/g, ' ').substring(0, 100) + '...' || '',
-            'Start Time': new Date(event.start_time).toLocaleDateString(),
-            'End Time': new Date(event.end_time).toLocaleDateString(),
+            'Date': new Date(event.start_time).toLocaleDateString(),
+            'Time': new Date(event.start_time).toLocaleTimeString(),
             'Location': event.location || 'Not specified',
-            'Capacity': event.capacity || 0,
-            'Status': event.status,
-            'Published': event.published ? 'Yes' : 'No',
-            'Created Date': new Date(event.created_at).toLocaleDateString(),
             'Total Attendees': totalAttendees,
-            'Total Revenue': `$${(totalRevenue / 100).toFixed(2)}`,
+            'Total Revenue': `$${(revenue / 100).toFixed(2)}`,
             'Ticket Types': ticketTypes,
-            'Capacity Utilization': event.capacity && event.capacity > 0
-                ? `${((totalAttendees / event.capacity) * 100).toFixed(1)}%`
-                : 'N/A'
+            'Status': event.status || 'active'
         }
     }) || []
 
     return eventData
 }
 
-async function exportSummary(supabase: any, filters: Record<string, unknown>) {
-    const { timeRange = '30d' } = filters
-
-    // This would typically aggregate data across all events
-    // For now, return a simple summary structure
-    const summaryData = [{
-        'Report Date': new Date().toLocaleDateString('en-US'),
-        'Time Range': timeRange,
-        'Total Events': 0,
-        'Total Attendees': 0,
-        'Total Revenue': '$0.00',
-        'Average Attendance': '0.0',
-        'Conversion Rate': '0.0%',
-        'Growth Rate': '0.0%'
-    }]
-
-    return summaryData
+async function exportSummary(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    supabase: SupabaseClient,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    filters: Record<string, unknown>
+): Promise<SummaryExportRow[]> {
+    // This would contain high-level summary metrics
+    // Implementation depends on specific requirements
+    return [
+        { 'Metric': 'Total Events', 'Value': '0' },
+        { 'Metric': 'Total Attendees', 'Value': '0' },
+        { 'Metric': 'Total Revenue', 'Value': '$0.00' }
+    ]
 }
 
-function generateCSV(data: Record<string, unknown>[]): string {
+function generateCSV(data: ExportRow[]): string {
     if (!data || data.length === 0) {
         return 'No data available for export'
     }
 
+    // Get headers from the first item
     const headers = Object.keys(data[0])
     const rows = [headers]
 
-    data.forEach((item: any) => {
+    data.forEach((item: ExportRow) => {
         const row = headers.map(header => {
-            const value = item[header]
-            if (value === null || value === undefined) {
-                return ''
+            const value: string | number | unknown = item[header as keyof ExportRow]
+            // Escape commas and quotes in CSV values
+            if (typeof value === 'string' && (value.includes(',') || value.includes('"'))) {
+                return `"${value.replace(/"/g, '""')}"`
             }
-            const str = String(value)
-            // Escape quotes and wrap in quotes if contains comma, quote, or newline
-            if (str.includes(',') || str.includes('"') || str.includes('\n')) {
-                return `"${str.replace(/"/g, '""')}"`
-            }
-            return str
+            return String(value || '')
         })
         rows.push(row)
     })

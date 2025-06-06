@@ -1,7 +1,18 @@
 import { Resend } from 'resend';
 import { TicketConfirmationEmail } from './templates/TicketConfirmationEmail';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Lazy-initialize Resend to prevent build-time failures
+let resendInstance: Resend | null = null;
+
+function getResendInstance(): Resend {
+    if (!resendInstance) {
+        if (!process.env.RESEND_API_KEY) {
+            throw new Error('RESEND_API_KEY environment variable is required');
+        }
+        resendInstance = new Resend(process.env.RESEND_API_KEY);
+    }
+    return resendInstance;
+}
 
 // ✨ DEVELOPMENT MODE: Override email for testing with Resend free tier
 const isDevelopment = process.env.NODE_ENV === 'development';
@@ -48,6 +59,7 @@ export async function sendTicketConfirmationEmail({
     ticketIds
 }: SendTicketConfirmationEmailProps) {
     try {
+        const resend = getResendInstance();
         const { data, error } = await resend.emails.send({
             from: 'LocalLoop Events <onboarding@resend.dev>',
             to: [getRecipientEmail(to)],

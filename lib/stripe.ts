@@ -1,10 +1,46 @@
 import Stripe from 'stripe';
 
-// Server-side Stripe configuration
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-    apiVersion: '2025-05-28.basil',
-    typescript: true,
-});
+// Lazy initialization for Stripe client
+let stripeInstance: Stripe | null = null;
+
+// Get Stripe instance with lazy initialization
+export const getStripe = (): Stripe => {
+    if (!stripeInstance) {
+        if (!process.env.STRIPE_SECRET_KEY) {
+            throw new Error('STRIPE_SECRET_KEY environment variable is not set');
+        }
+
+        stripeInstance = new Stripe(process.env.STRIPE_SECRET_KEY, {
+            apiVersion: '2025-05-28.basil',
+            typescript: true,
+        });
+    }
+
+    return stripeInstance;
+};
+
+// Backwards compatibility - export stripe as a getter property  
+export const stripe = {
+    get instance() {
+        return getStripe();
+    },
+    // Proxy common Stripe methods
+    get customers() {
+        return getStripe().customers;
+    },
+    get paymentIntents() {
+        return getStripe().paymentIntents;
+    },
+    get refunds() {
+        return getStripe().refunds;
+    },
+    get webhooks() {
+        return getStripe().webhooks;
+    },
+    get checkout() {
+        return getStripe().checkout;
+    }
+};
 
 // Stripe configuration validation
 export function validateStripeConfig(): boolean {
@@ -57,7 +93,7 @@ export function verifyWebhookSignature(
             throw new Error(`Malformed signature header: ${signature.substring(0, 50)}...`);
         }
 
-        return stripe.webhooks.constructEvent(payload, signature, secret);
+        return getStripe().webhooks.constructEvent(payload, signature, secret);
     } catch (error) {
         console.error('[ERROR] Webhook signature verification failed:', {
             error: error instanceof Error ? error.message : 'Unknown error',
@@ -97,7 +133,7 @@ export async function createStripeCustomer(params: {
     phone?: string;
     metadata?: Record<string, string>;
 }): Promise<Stripe.Customer> {
-    return await stripe.customers.create({
+    return await getStripe().customers.create({
         email: params.email,
         name: params.name,
         phone: params.phone,
@@ -110,7 +146,7 @@ export async function getOrCreateCustomer(
     name?: string
 ): Promise<Stripe.Customer> {
     // Try to find existing customer by email
-    const existingCustomers = await stripe.customers.list({
+    const existingCustomers = await getStripe().customers.list({
         email,
         limit: 1,
     });

@@ -79,7 +79,7 @@ describe('Button Component', () => {
     // When asChild is true, the Button component renders a span wrapper
     const span = screen.getByText('Link Button').closest('span')
     expect(span).toBeInTheDocument()
-    expect(span).toHaveClass('bg-blue-600') // Should still have button styles
+    expect(span!).toHaveClass('bg-blue-600') // Should still have button styles
   })
 
   it('should forward refs correctly', () => {
@@ -177,7 +177,7 @@ describe('Button Component', () => {
     )
 
     const span = screen.getByText('Prevented Link').closest('span')
-    await user.click(span)
+    await user.click(span!)
 
     expect(handleClick).toHaveBeenCalledTimes(1)
   })

@@ -6,12 +6,6 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: true,
   },
 
-  // Enable experimental features for better performance
-  experimental: {
-    optimizePackageImports: ['@radix-ui/react-icons', 'lucide-react'],
-    optimizeCss: true,
-  },
-
   // Image optimization
   images: {
     formats: ['image/avif', 'image/webp'],
@@ -23,21 +17,39 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
+        hostname: 'picsum.photos',
+      },
+      {
+        protocol: 'https',
         hostname: 'images.unsplash.com',
-        port: '',
-        pathname: '/**',
       },
       {
         protocol: 'https',
         hostname: 'plus.unsplash.com',
-        port: '',
-        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'source.unsplash.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'avatars.githubusercontent.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'cdn.jsdelivr.net',
+      },
+      {
+        protocol: 'https',
+        hostname: 'cdnjs.cloudflare.com',
       },
       {
         protocol: 'https',
         hostname: 'imgs.search.brave.com',
-        port: '',
-        pathname: '/**',
       },
     ],
   },
@@ -97,40 +109,39 @@ const nextConfig: NextConfig = {
 
   // Webpack optimizations  
   webpack: (config, { dev, isServer }) => {
-    // Production optimizations
-    if (!dev) {
+    // Handle client-side only libraries
+    if (isServer) {
+      config.resolve = config.resolve || {}
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        'leaflet': false,
+        'react-leaflet': false,
+        'web-vitals': false,
+        '@vercel/analytics': false,
+        '@stripe/stripe-js': false,
+        '@stripe/react-stripe-js': false,
+      }
+
+      // Also exclude from externals
+      config.externals = config.externals || []
+      if (Array.isArray(config.externals)) {
+        config.externals.push(
+          'leaflet',
+          'react-leaflet',
+          'web-vitals',
+          '@vercel/analytics',
+          '@stripe/stripe-js',
+          '@stripe/react-stripe-js'
+        )
+      }
+    }
+
+    // Simplified production optimizations
+    if (!dev && !isServer) {
       config.optimization = {
         ...config.optimization,
         sideEffects: false,
-        splitChunks: {
-          chunks: 'all',
-          cacheGroups: {
-            default: false,
-            vendors: false,
-            // Vendor chunk for common libraries
-            vendor: {
-              name: 'vendor',
-              chunks: 'all',
-              test: /node_modules/,
-              enforce: true,
-            },
-            // UI libraries chunk
-            ui: {
-              name: 'ui',
-              chunks: 'all',
-              test: /node_modules\/(lucide-react|@radix-ui)/,
-              enforce: true,
-            },
-            // Common chunk for frequently used modules
-            common: {
-              name: 'common',
-              minChunks: 2,
-              chunks: 'all',
-              enforce: true,
-            },
-          },
-        },
-      };
+      }
     }
 
     // Bundle analyzer in development (optional)

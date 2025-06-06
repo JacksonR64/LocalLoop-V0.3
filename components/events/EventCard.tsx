@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { Calendar, MapPin, Users, Clock, Tag, ExternalLink } from 'lucide-react';
+import { Calendar, MapPin, Users, Clock, Tag, ExternalLink, ImageIcon } from 'lucide-react';
 import { Card, CardHeader, CardContent, CardFooter, CardTitle, CardDescription } from '@/components/ui';
 import { formatDateTime, formatPrice, truncateText } from '@/lib/utils';
 
@@ -64,6 +64,55 @@ interface CardComponentProps {
     lowestPrice: number;
 }
 
+// Safe Image component with error handling
+function SafeImage({
+    src,
+    alt,
+    fill,
+    className,
+    sizes,
+    placeholder,
+    blurDataURL,
+    ...props
+}: {
+    src: string;
+    alt: string;
+    fill?: boolean;
+    className?: string;
+    sizes?: string;
+    placeholder?: "blur" | "empty" | undefined;
+    blurDataURL?: string;
+} & Omit<React.ComponentProps<typeof Image>, 'src' | 'alt' | 'fill' | 'className' | 'sizes' | 'placeholder' | 'blurDataURL'>) {
+    const [hasError, setHasError] = React.useState(false);
+
+    // Reset error state when src changes
+    React.useEffect(() => {
+        setHasError(false);
+    }, [src]);
+
+    if (hasError || !src) {
+        return (
+            <div className={`bg-gray-200 flex items-center justify-center ${className}`}>
+                <ImageIcon className="w-8 h-8 text-gray-400" />
+            </div>
+        );
+    }
+
+    return (
+        <Image
+            src={src}
+            alt={alt}
+            fill={fill}
+            className={className}
+            sizes={sizes}
+            placeholder={placeholder}
+            blurDataURL={blurDataURL}
+            onError={() => setHasError(true)}
+            {...props}
+        />
+    );
+}
+
 // Default Event Card Component
 export function EventCard({
     event,
@@ -118,7 +167,7 @@ function DefaultCard({ event, size, featured, showImage, className, onClick, spo
         >
             {showImage && event.image_url && (
                 <div className="relative w-full h-48 overflow-hidden rounded-t-lg">
-                    <Image
+                    <SafeImage
                         src={event.image_url}
                         alt={event.image_alt_text || event.title}
                         fill
@@ -211,7 +260,7 @@ function PreviewListCard({ event, className, onClick, isUpcoming, hasPrice, lowe
             <div className="flex items-start gap-4 p-4">
                 {event.image_url && (
                     <div className="relative w-20 h-20 flex-shrink-0 overflow-hidden rounded-lg">
-                        <Image
+                        <SafeImage
                             src={event.image_url}
                             alt={event.image_alt_text || event.title}
                             fill
@@ -277,7 +326,7 @@ function FullListCard({ event, className, onClick, spotsRemaining, isUpcoming, h
         >
             {event.image_url && (
                 <div className="relative w-full h-56 overflow-hidden rounded-t-lg">
-                    <Image
+                    <SafeImage
                         src={event.image_url}
                         alt={event.image_alt_text || event.title}
                         fill

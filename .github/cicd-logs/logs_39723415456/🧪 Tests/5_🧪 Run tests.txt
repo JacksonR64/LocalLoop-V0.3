@@ -1,0 +1,430 @@
+﻿2025-06-06T12:19:02.1236513Z ##[group]Run npm run test:ci
+2025-06-06T12:19:02.1236837Z [36;1mnpm run test:ci[0m
+2025-06-06T12:19:02.1292097Z shell: /usr/bin/bash -e {0}
+2025-06-06T12:19:02.1292342Z env:
+2025-06-06T12:19:02.1292510Z   NODE_VERSION: 18
+2025-06-06T12:19:02.1292711Z ##[endgroup]
+2025-06-06T12:19:02.2664046Z 
+2025-06-06T12:19:02.2665182Z > 1000x-app@0.1.0 test:ci
+2025-06-06T12:19:02.2666784Z > jest --ci --coverage --watchAll=false
+2025-06-06T12:19:02.2667166Z 
+2025-06-06T12:19:03.3360722Z jest-haste-map: Haste module naming collision: 1000x-app
+2025-06-06T12:19:03.3365386Z   The following files share their name; please adjust your hasteImpl:
+2025-06-06T12:19:03.3369353Z     * <rootDir>/package.json
+2025-06-06T12:19:03.3372247Z     * <rootDir>/copy/package.json
+2025-06-06T12:19:03.3374371Z 
+2025-06-06T12:19:04.5274737Z PASS lib/utils/__tests__/ticket-utils.test.ts
+2025-06-06T12:19:04.5277437Z   Ticket Utils
+2025-06-06T12:19:04.5281837Z     formatPrice
+2025-06-06T12:19:04.5288775Z       ✓ should format price correctly for paid tickets (15 ms)
+2025-06-06T12:19:04.5301052Z       ✓ should display "Free" for zero price
+2025-06-06T12:19:04.5302065Z       ✓ should handle different currencies (1 ms)
+2025-06-06T12:19:04.5303024Z       ✓ should handle large amounts (1 ms)
+2025-06-06T12:19:04.5304456Z       ✓ should handle small amounts
+2025-06-06T12:19:04.5304922Z     convertToStripeAmount
+2025-06-06T12:19:04.5305514Z       ✓ should convert dollars to cents correctly
+2025-06-06T12:19:04.5306097Z       ✓ should handle zero amount (1 ms)
+2025-06-06T12:19:04.5306767Z       ✓ should round properly for precision issues
+2025-06-06T12:19:04.5307417Z       ✓ should handle large amounts (1 ms)
+2025-06-06T12:19:04.5307950Z     convertToDollars
+2025-06-06T12:19:04.5308594Z       ✓ should convert cents to dollars correctly (1 ms)
+2025-06-06T12:19:04.5309246Z       ✓ should handle zero amount
+2025-06-06T12:19:04.5309825Z       ✓ should handle single cents (1 ms)
+2025-06-06T12:19:04.5310475Z     calculateStripeFee
+2025-06-06T12:19:04.5311107Z       ✓ should calculate Stripe fees correctly (1 ms)
+2025-06-06T12:19:04.5311794Z       ✓ should handle zero amount (2 ms)
+2025-06-06T12:19:04.5312466Z       ✓ should handle small amounts (1 ms)
+2025-06-06T12:19:04.5313097Z       ✓ should handle large amounts (6 ms)
+2025-06-06T12:19:04.5313618Z     calculateCustomerTotal
+2025-06-06T12:19:04.5314265Z       ✓ should calculate total amount customer pays
+2025-06-06T12:19:04.5314920Z       ✓ should handle free tickets
+2025-06-06T12:19:04.5315377Z     checkTicketAvailability
+2025-06-06T12:19:04.5316121Z       ✓ should return availability for tickets with capacity (1 ms)
+2025-06-06T12:19:04.5316876Z       ✓ should handle tickets without capacity limits
+2025-06-06T12:19:04.5317544Z       ✓ should detect sold out tickets (1 ms)
+2025-06-06T12:19:04.5318213Z       ✓ should handle tickets with sale periods
+2025-06-06T12:19:04.5318850Z       ✓ should detect ended sales (1 ms)
+2025-06-06T12:19:04.5319326Z     formatAvailabilityStatus
+2025-06-06T12:19:04.5319881Z       ✓ should format available status
+2025-06-06T12:19:04.5320737Z       ✓ should format unlimited availability
+2025-06-06T12:19:04.5321319Z       ✓ should format sold out status (1 ms)
+2025-06-06T12:19:04.5321760Z     validateTicketPrice
+2025-06-06T12:19:04.5322328Z       ✓ should validate correct prices (1 ms)
+2025-06-06T12:19:04.5322959Z       ✓ should reject negative prices
+2025-06-06T12:19:04.5323640Z       ✓ should reject prices below minimum for paid tickets
+2025-06-06T12:19:04.5324313Z       ✓ should reject prices above maximum (1 ms)
+2025-06-06T12:19:04.5324825Z     calculateRefundAmount
+2025-06-06T12:19:04.5325555Z       ✓ should calculate customer refund with Stripe fee deduction
+2025-06-06T12:19:04.5414128Z       ✓ should calculate full refund for event cancellation (1 ms)
+2025-06-06T12:19:04.5414873Z       ✓ should handle small amounts
+2025-06-06T12:19:04.5415332Z     getTicketTypeDisplayName
+2025-06-06T12:19:04.5415959Z       ✓ should return the ticket type name with price
+2025-06-06T12:19:04.5416656Z       ✓ should handle empty or undefined names
+2025-06-06T12:19:04.5417751Z     sortTicketTypes
+2025-06-06T12:19:04.5418331Z       ✓ should sort ticket types by price ascending
+2025-06-06T12:19:04.5418853Z     getActiveTicketTypes
+2025-06-06T12:19:04.5419509Z       ✓ should filter only active ticket types (1 ms)
+2025-06-06T12:19:04.5420518Z       ✓ should maintain order of active tickets
+2025-06-06T12:19:04.5421027Z     calculateTotalRevenue
+2025-06-06T12:19:04.5421740Z       ✓ should calculate total revenue from sold tickets (1 ms)
+2025-06-06T12:19:04.5422474Z       ✓ should handle tickets with no sales
+2025-06-06T12:19:04.5422920Z     formatSaleDate
+2025-06-06T12:19:04.5423391Z       ✓ should format date strings (4 ms)
+2025-06-06T12:19:04.5424037Z       ✓ should handle different date formats (1 ms)
+2025-06-06T12:19:04.5424490Z     hasCapacityLimit
+2025-06-06T12:19:04.5424977Z       ✓ should return true for tickets with capacity
+2025-06-06T12:19:04.5425644Z       ✓ should return false for unlimited tickets
+2025-06-06T12:19:04.5426123Z     getMinimumTicketPrice
+2025-06-06T12:19:04.5426750Z       ✓ should return minimum price from ticket types (1 ms)
+2025-06-06T12:19:04.5427440Z       ✓ should return null for empty array
+2025-06-06T12:19:04.5428137Z       ✓ should exclude inactive tickets from price calculation
+2025-06-06T12:19:04.5429000Z     getMaximumTicketPrice
+2025-06-06T12:19:04.5429720Z       ✓ should return maximum price from ticket types (1 ms)
+2025-06-06T12:19:04.5430737Z       ✓ should return null for empty array
+2025-06-06T12:19:04.5431177Z     formatPriceRange
+2025-06-06T12:19:04.5431746Z       ✓ should format price range for mixed ticket types
+2025-06-06T12:19:04.5432395Z       ✓ should handle single price point (1 ms)
+2025-06-06T12:19:04.5432973Z       ✓ should handle all free tickets
+2025-06-06T12:19:04.5433500Z       ✓ should handle empty array
+2025-06-06T12:19:04.5433776Z 
+2025-06-06T12:19:04.9291955Z PASS lib/utils/__tests__/eventFilters.test.ts
+2025-06-06T12:19:04.9308153Z   Event Filters
+2025-06-06T12:19:04.9308910Z     applyFilters
+2025-06-06T12:19:04.9310051Z       ✓ should return all events with empty filters (1 ms)
+2025-06-06T12:19:04.9310996Z       ✓ should filter by categories
+2025-06-06T12:19:04.9311753Z       ✓ should filter by price type (free) (1 ms)
+2025-06-06T12:19:04.9312446Z       ✓ should filter by price type (paid)
+2025-06-06T12:19:04.9313172Z       ✓ should filter by search query (1 ms)
+2025-06-06T12:19:04.9313913Z       ✓ should sort by date ascending (1 ms)
+2025-06-06T12:19:04.9320373Z       ✓ should sort by date descending
+2025-06-06T12:19:04.9322417Z       ✓ should sort by title ascending (1 ms)
+2025-06-06T12:19:04.9327323Z       ✓ should combine multiple filters (1 ms)
+2025-06-06T12:19:04.9332940Z     getEventCategories
+2025-06-06T12:19:04.9334217Z       ✓ should return unique categories with counts (1 ms)
+2025-06-06T12:19:04.9335363Z       ✓ should handle empty events array
+2025-06-06T12:19:04.9336516Z       ✓ should sort categories alphabetically (1 ms)
+2025-06-06T12:19:04.9337306Z     getEventPriceCounts
+2025-06-06T12:19:04.9338541Z       ✓ should count free and paid events (1 ms)
+2025-06-06T12:19:04.9347289Z       ✓ should handle empty events array (7 ms)
+2025-06-06T12:19:04.9348511Z       ✓ should handle all free events
+2025-06-06T12:19:04.9349274Z     hasActiveFilters
+2025-06-06T12:19:04.9350498Z       ✓ should return false for empty filters (1 ms)
+2025-06-06T12:19:04.9351653Z       ✓ should return true when categories are selected
+2025-06-06T12:19:04.9352796Z       ✓ should return true when price type is filtered
+2025-06-06T12:19:04.9353957Z       ✓ should return true when search query is present (1 ms)
+2025-06-06T12:19:04.9354727Z     getFilterSummary
+2025-06-06T12:19:04.9355642Z       ✓ should generate filter summary
+2025-06-06T12:19:04.9356619Z       ✓ should handle no filters applied
+2025-06-06T12:19:04.9357345Z     filtersToQueryParams
+2025-06-06T12:19:04.9358587Z       ✓ should convert filters to query params (1 ms)
+2025-06-06T12:19:04.9359634Z       ✓ should skip empty values
+2025-06-06T12:19:04.9387160Z     queryParamsToFilters
+2025-06-06T12:19:04.9388131Z       ✓ should convert query params to filters (1 ms)
+2025-06-06T12:19:04.9388973Z       ✓ should handle empty params
+2025-06-06T12:19:04.9389413Z 
+2025-06-06T12:19:05.3677110Z   console.log
+2025-06-06T12:19:05.3698360Z     🧪 Component integration test framework working correctly
+2025-06-06T12:19:05.3701017Z 
+2025-06-06T12:19:05.3701746Z       at Object.log (tests/integration/component-interactions.test.ts:254:21)
+2025-06-06T12:19:05.3702480Z 
+2025-06-06T12:19:05.3705808Z PASS tests/integration/component-interactions.test.ts
+2025-06-06T12:19:05.3706711Z   Component Interactions Integration
+2025-06-06T12:19:05.3707373Z     Event Filters and Event List Integration
+2025-06-06T12:19:05.3708362Z       ✓ should filter events when filter options are selected (1 ms)
+2025-06-06T12:19:05.3709134Z     Authentication Flow Integration
+2025-06-06T12:19:05.3710100Z       ✓ should handle authentication state changes across components (1 ms)
+2025-06-06T12:19:05.3711262Z     Form Submission and Data Persistence Integration
+2025-06-06T12:19:05.3712236Z       ✓ should handle form submission with validation and API calls (3 ms)
+2025-06-06T12:19:05.3713111Z     Error Handling and User Feedback Integration
+2025-06-06T12:19:05.3715329Z       ✓ should display appropriate error messages when API calls fail (1 ms)
+2025-06-06T12:19:05.3716016Z     State Management Integration
+2025-06-06T12:19:05.3716718Z       ✓ should maintain consistent state across component updates
+2025-06-06T12:19:05.3717309Z     Real-time Updates Integration
+2025-06-06T12:19:05.3717953Z       ✓ should handle real-time data updates correctly (1 ms)
+2025-06-06T12:19:05.3718557Z     Performance and Loading States Integration
+2025-06-06T12:19:05.3719405Z       ✓ should handle loading states appropriately during data fetching (101 ms)
+2025-06-06T12:19:05.3720088Z     Integration Test Framework Verification
+2025-06-06T12:19:05.3721128Z       ✓ should verify component integration test setup is working (19 ms)
+2025-06-06T12:19:05.3721610Z 
+2025-06-06T12:19:05.5234540Z   console.log
+2025-06-06T12:19:05.5236118Z     🧪 Database validation integration tests working correctly
+2025-06-06T12:19:05.5237320Z 
+2025-06-06T12:19:05.5238152Z       at Object.log (tests/integration/database-validation.test.ts:219:21)
+2025-06-06T12:19:05.5239325Z 
+2025-06-06T12:19:05.5293632Z PASS tests/integration/database-validation.test.ts
+2025-06-06T12:19:05.5296048Z   Database Validation Integration
+2025-06-06T12:19:05.5298199Z     Data Structure Validation
+2025-06-06T12:19:05.5300807Z       ✓ should validate event data structure (2 ms)
+2025-06-06T12:19:05.5302836Z       ✓ should validate RSVP data structure (1 ms)
+2025-06-06T12:19:05.5304358Z       ✓ should validate ticket type data structure (2 ms)
+2025-06-06T12:19:05.5306040Z     API Response Format Validation
+2025-06-06T12:19:05.5307768Z       ✓ should validate events API response format (3 ms)
+2025-06-06T12:19:05.5309744Z       ✓ should validate error response format (5 ms)
+2025-06-06T12:19:05.5310610Z     Business Logic Validation
+2025-06-06T12:19:05.5311226Z       ✓ should validate event capacity logic (1 ms)
+2025-06-06T12:19:05.5311895Z       ✓ should validate ticket pricing logic (1 ms)
+2025-06-06T12:19:05.5312538Z       ✓ should validate date logic for events
+2025-06-06T12:19:05.5312992Z     Data Transformation Logic
+2025-06-06T12:19:05.5313619Z       ✓ should transform event data for API responses (1 ms)
+2025-06-06T12:19:05.5314345Z       ✓ should handle pagination logic correctly (1 ms)
+2025-06-06T12:19:05.5314923Z     Integration Test Framework Verification
+2025-06-06T12:19:05.5315697Z       ✓ should verify database integration test setup is working (4 ms)
+2025-06-06T12:19:05.5316171Z 
+2025-06-06T12:19:05.6648102Z   console.log
+2025-06-06T12:19:05.6660908Z     🧪 API integration test framework working correctly
+2025-06-06T12:19:05.6661298Z 
+2025-06-06T12:19:05.6661623Z       at Object.log (tests/integration/api-routes.test.ts:198:21)
+2025-06-06T12:19:05.6662014Z 
+2025-06-06T12:19:05.6670525Z PASS tests/integration/api-routes.test.ts
+2025-06-06T12:19:05.6672896Z   API Routes Integration
+2025-06-06T12:19:05.6674345Z     API Route Structure Validation
+2025-06-06T12:19:05.6676133Z       ✓ should validate API endpoint configurations (3 ms)
+2025-06-06T12:19:05.6678302Z       ✓ should validate HTTP method patterns (3 ms)
+2025-06-06T12:19:05.6678856Z     Request/Response Format Validation
+2025-06-06T12:19:05.6679587Z       ✓ should validate event creation request format (1 ms)
+2025-06-06T12:19:05.6680562Z       ✓ should validate RSVP creation request format (1 ms)
+2025-06-06T12:19:05.6681406Z       ✓ should validate performance analytics data format (1 ms)
+2025-06-06T12:19:05.6681964Z     Error Handling Patterns
+2025-06-06T12:19:05.6682562Z       ✓ should validate error response structure (7 ms)
+2025-06-06T12:19:05.6683207Z       ✓ should validate success response structure
+2025-06-06T12:19:05.6683745Z     Authentication Integration Patterns
+2025-06-06T12:19:05.6684465Z       ✓ should validate authentication header patterns (1 ms)
+2025-06-06T12:19:05.6685191Z       ✓ should validate user session data structure
+2025-06-06T12:19:05.6685740Z     Integration Test Framework Verification
+2025-06-06T12:19:05.6686744Z       ✓ should verify API integration test setup is working (3 ms)
+2025-06-06T12:19:05.6687434Z       ✓ should validate test data consistency
+2025-06-06T12:19:05.6687762Z 
+2025-06-06T12:19:06.2372149Z PASS components/ui/__tests__/button.test.tsx
+2025-06-06T12:19:06.2372945Z   Button Component
+2025-06-06T12:19:06.2373666Z     ✓ should render with default props (69 ms)
+2025-06-06T12:19:06.2374336Z     ✓ should render different variants correctly (31 ms)
+2025-06-06T12:19:06.2375038Z     ✓ should render different sizes correctly (27 ms)
+2025-06-06T12:19:06.2375628Z     ✓ should handle click events (23 ms)
+2025-06-06T12:19:06.2376277Z     ✓ should be disabled when disabled prop is true (6 ms)
+2025-06-06T12:19:06.2377073Z     ✓ should render as different HTML elements when asChild is used (4 ms)
+2025-06-06T12:19:06.2377766Z     ✓ should forward refs correctly (3 ms)
+2025-06-06T12:19:06.2378269Z     ✓ should accept custom className (7 ms)
+2025-06-06T12:19:06.2378825Z     ✓ should handle keyboard navigation (20 ms)
+2025-06-06T12:19:06.2379487Z     ✓ should have proper accessibility attributes (6 ms)
+2025-06-06T12:19:06.2380109Z     ✓ should render loading state correctly (6 ms)
+2025-06-06T12:19:06.2380931Z     ✓ should handle focus and blur events (27 ms)
+2025-06-06T12:19:06.2381586Z     ✓ should prevent default behavior when needed (13 ms)
+2025-06-06T12:19:06.2382172Z     ✓ should render with icons (3 ms)
+2025-06-06T12:19:06.2382739Z     ✓ should handle rapid clicks gracefully (33 ms)
+2025-06-06T12:19:06.2383118Z 
+2025-06-06T12:19:06.5432401Z PASS app/api/events/__tests__/route.test.ts
+2025-06-06T12:19:06.5434261Z   /api/events
+2025-06-06T12:19:06.5436202Z     ✓ should return 401 when user is not authenticated (7 ms)
+2025-06-06T12:19:06.5438211Z     ✓ should return events when user is authenticated (2 ms)
+2025-06-06T12:19:06.5439387Z 
+2025-06-06T12:19:13.3745838Z ----------------------------------|---------|----------|---------|---------|---------------------------------------------------
+2025-06-06T12:19:13.3748773Z File                              | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s                                 
+2025-06-06T12:19:13.3751551Z ----------------------------------|---------|----------|---------|---------|---------------------------------------------------
+2025-06-06T12:19:13.3762705Z All files                         |    4.43 |     2.95 |    5.03 |     4.2 |                                                   
+2025-06-06T12:19:13.3765034Z  app                              |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3769541Z   robots.ts                       |       0 |        0 |       0 |       0 | 3-6                                               
+2025-06-06T12:19:13.3774213Z   sitemap.ts                      |       0 |        0 |       0 |       0 | 3-25                                              
+2025-06-06T12:19:13.3779185Z  app/about                        |       0 |      100 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3783771Z   page.tsx                        |       0 |      100 |       0 |       0 | 1-4                                               
+2025-06-06T12:19:13.3788307Z  app/api/analytics/performance    |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3793051Z   route.ts                        |       0 |        0 |       0 |       0 | 1-231                                             
+2025-06-06T12:19:13.3797930Z  app/api/auth/google/callback     |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3801698Z   route.ts                        |       0 |        0 |       0 |       0 | 1-269                                             
+2025-06-06T12:19:13.3804747Z  app/api/auth/google/connect      |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3807676Z   route.ts                        |       0 |        0 |       0 |       0 | 1-118                                             
+2025-06-06T12:19:13.3822114Z  app/api/auth/google/disconnect   |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3823085Z   route.ts                        |       0 |        0 |       0 |       0 | 1-106                                             
+2025-06-06T12:19:13.3823974Z  app/api/auth/google/status       |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3824859Z   route.ts                        |       0 |        0 |       0 |       0 | 1-185                                             
+2025-06-06T12:19:13.3825691Z  app/api/auth/welcome             |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3826547Z   route.ts                        |       0 |        0 |       0 |       0 | 1-127                                             
+2025-06-06T12:19:13.3837737Z  app/api/calendar/add-to-calendar |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3840444Z   route.ts                        |       0 |        0 |       0 |       0 | 1-218                                             
+2025-06-06T12:19:13.3841880Z  app/api/calendar/create-event    |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3845299Z   route.ts                        |       0 |        0 |       0 |       0 | 1-94                                              
+2025-06-06T12:19:13.3846163Z  app/api/checkout                 |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3858061Z   route.ts                        |       0 |        0 |       0 |       0 | 1-289                                             
+2025-06-06T12:19:13.3858939Z  app/api/events                   |   37.71 |    18.51 |   66.66 |   39.44 |                                                   
+2025-06-06T12:19:13.3859896Z   route.ts                        |   37.71 |    18.51 |   66.66 |   39.44 | 7-163,209,213,217,221,231-245,271,290-300,321-322 
+2025-06-06T12:19:13.3861010Z  app/api/events/[id]              |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3861847Z   route.ts                        |       0 |        0 |       0 |       0 | 1-327                                             
+2025-06-06T12:19:13.3862748Z  app/api/events/cancellation      |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3863616Z   route.ts                        |       0 |        0 |       0 |       0 | 1-293                                             
+2025-06-06T12:19:13.3864862Z  app/api/events/reminders         |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3865719Z   route.ts                        |       0 |        0 |       0 |       0 | 1-322                                             
+2025-06-06T12:19:13.3866507Z  app/api/orders                   |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3867331Z   route.ts                        |       0 |        0 |       0 |       0 | 1-269                                             
+2025-06-06T12:19:13.3868158Z  app/api/refunds                  |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3868990Z   route.ts                        |       0 |        0 |       0 |       0 | 1-309                                             
+2025-06-06T12:19:13.3869796Z  app/api/rsvps                    |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3872686Z   route.ts                        |       0 |        0 |       0 |       0 | 1-334                                             
+2025-06-06T12:19:13.3873811Z  app/api/rsvps/[id]               |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3874631Z   route.ts                        |       0 |        0 |       0 |       0 | 1-315                                             
+2025-06-06T12:19:13.3875470Z  app/api/staff/analytics          |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3876356Z   route.ts                        |       0 |        0 |       0 |       0 | 1-207                                             
+2025-06-06T12:19:13.3877263Z  app/api/staff/attendees          |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3878164Z   route.ts                        |       0 |        0 |       0 |       0 | 1-272                                             
+2025-06-06T12:19:13.3879067Z  app/api/staff/dashboard          |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3879977Z   route.ts                        |       0 |        0 |       0 |       0 | 1-168                                             
+2025-06-06T12:19:13.3881098Z  app/api/staff/export             |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3881966Z   route.ts                        |       0 |        0 |       0 |       0 | 1-501                                             
+2025-06-06T12:19:13.3882782Z  app/api/test-env                 |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3883603Z   route.ts                        |       0 |        0 |       0 |       0 | 1-4                                               
+2025-06-06T12:19:13.3884408Z  app/api/test-upgrade-role        |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3885259Z   route.ts                        |       0 |        0 |       0 |       0 | 1-40                                              
+2025-06-06T12:19:13.3886110Z  app/api/ticket-types             |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3886969Z   route.ts                        |       0 |        0 |       0 |       0 | 1-373                                             
+2025-06-06T12:19:13.3887797Z  app/api/ticket-types/[id]        |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3888639Z   route.ts                        |       0 |        0 |       0 |       0 | 1-358                                             
+2025-06-06T12:19:13.3889808Z  app/api/update-customer-info     |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3891011Z   route.ts                        |       0 |        0 |       0 |       0 | 1-61                                              
+2025-06-06T12:19:13.3891922Z  app/api/webhooks/stripe          |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3892811Z   route.ts                        |       0 |        0 |       0 |       0 | 1-665                                             
+2025-06-06T12:19:13.3893662Z  app/auth/callback                |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3894517Z   page.tsx                        |       0 |        0 |       0 |       0 | 3-37                                              
+2025-06-06T12:19:13.3895429Z  app/auth/google/callback         |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3896340Z   page.tsx                        |       0 |        0 |       0 |       0 | 3-193                                             
+2025-06-06T12:19:13.3897368Z  app/auth/login                   |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3898191Z   page.tsx                        |       0 |        0 |       0 |       0 | 3-112                                             
+2025-06-06T12:19:13.3899089Z  app/auth/reset-password          |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3899969Z   page.tsx                        |       0 |        0 |       0 |       0 | 3-56                                              
+2025-06-06T12:19:13.3901000Z  app/auth/signup                  |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3901836Z   page.tsx                        |       0 |        0 |       0 |       0 | 3-103                                             
+2025-06-06T12:19:13.3902736Z  app/auth/update-password         |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3903637Z   page.tsx                        |       0 |      100 |       0 |       0 | 3-6                                               
+2025-06-06T12:19:13.3904554Z   update-password-form.tsx        |       0 |        0 |       0 |       0 | 3-103                                             
+2025-06-06T12:19:13.3905473Z  app/contact                      |       0 |      100 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3906271Z   page.tsx                        |       0 |      100 |       0 |       0 | 1-4                                               
+2025-06-06T12:19:13.3907101Z  app/create-event                 |       0 |      100 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3907941Z   page.tsx                        |       0 |      100 |       0 |       0 | 1-4                                               
+2025-06-06T12:19:13.3908740Z  app/demo                         |       0 |      100 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3909526Z   page.tsx                        |       0 |      100 |       0 |       0 | 3-249                                             
+2025-06-06T12:19:13.3910673Z  app/demo/lists                   |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3911509Z   page.tsx                        |       0 |        0 |       0 |       0 | 3-254                                             
+2025-06-06T12:19:13.3912335Z  app/events/[id]                  |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3913424Z   page.tsx                        |       0 |        0 |       0 |       0 | 1-127                                             
+2025-06-06T12:19:13.3914222Z  app/my-events                    |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3915021Z   page.tsx                        |       0 |        0 |       0 |       0 | 2-18                                              
+2025-06-06T12:19:13.3915820Z  app/privacy                      |       0 |      100 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3916639Z   page.tsx                        |       0 |      100 |       0 |       0 | 1-4                                               
+2025-06-06T12:19:13.3917418Z  app/staff                        |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3918215Z   page.tsx                        |       0 |        0 |       0 |       0 | 1-36                                              
+2025-06-06T12:19:13.3919073Z  app/staff/dashboard              |       0 |      100 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3920147Z   page.tsx                        |       0 |      100 |       0 |       0 | 1-5                                               
+2025-06-06T12:19:13.3921200Z  app/staff/events/[id]/edit       |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3922187Z   StaffEventEditClient.tsx        |       0 |      100 |       0 |       0 | 3-19                                              
+2025-06-06T12:19:13.3923089Z   page.tsx                        |       0 |        0 |       0 |       0 | 1-45                                              
+2025-06-06T12:19:13.3923960Z  app/staff/events/create          |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3924974Z   StaffEventCreateClient.tsx      |       0 |      100 |       0 |       0 | 3-15                                              
+2025-06-06T12:19:13.3925891Z   page.tsx                        |       0 |        0 |       0 |       0 | 1-24                                              
+2025-06-06T12:19:13.3926668Z  app/terms                        |       0 |      100 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3927439Z   page.tsx                        |       0 |      100 |       0 |       0 | 1-4                                               
+2025-06-06T12:19:13.3928213Z  app/test-auth                    |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3928999Z   page.tsx                        |       0 |        0 |       0 |       0 | 1-23                                              
+2025-06-06T12:19:13.3929793Z  components                       |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3930929Z   GoogleCalendarConnect.tsx       |       0 |        0 |       0 |       0 | 3-420                                             
+2025-06-06T12:19:13.3931735Z  components/analytics             |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3932503Z   PerformanceMonitor.tsx          |       0 |        0 |       0 |       0 | 3-50                                              
+2025-06-06T12:19:13.3933397Z  components/auth                  |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3934294Z   ProfileDropdown.tsx             |       0 |        0 |       0 |       0 | 3-52                                              
+2025-06-06T12:19:13.3935243Z   ProtectedRoute.tsx              |       0 |        0 |       0 |       0 | 3-148                                             
+2025-06-06T12:19:13.3936415Z  components/checkout              |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3937332Z   CheckoutForm.tsx                |       0 |        0 |       0 |       0 | 3-528                                             
+2025-06-06T12:19:13.3938317Z   GoogleCalendarAddButton.tsx     |       0 |        0 |       0 |       0 | 3-14                                              
+2025-06-06T12:19:13.3939348Z  components/dashboard             |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3940475Z   Analytics.tsx                   |       0 |        0 |       0 |       0 | 3-423                                             
+2025-06-06T12:19:13.3941414Z   AttendeeManagement.tsx          |       0 |        0 |       0 |       0 | 3-613                                             
+2025-06-06T12:19:13.3942438Z   PerformanceDashboard.tsx        |       0 |        0 |       0 |       0 | 3-237                                             
+2025-06-06T12:19:13.3943408Z   RefundDialog.tsx                |       0 |        0 |       0 |       0 | 3-303                                             
+2025-06-06T12:19:13.3944528Z   StaffDashboard.tsx              |       0 |        0 |       0 |       0 | 3-438                                             
+2025-06-06T12:19:13.3945431Z   UserDashboard.tsx               |       0 |        0 |       0 |       0 | 3-693                                             
+2025-06-06T12:19:13.3946330Z  components/events                |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3947217Z   EventCard.tsx                   |       0 |        0 |       0 |       0 | 3-527                                             
+2025-06-06T12:19:13.3948132Z   EventDetailClient.tsx           |       0 |        0 |       0 |       0 | 3-283                                             
+2025-06-06T12:19:13.3949072Z   EventForm.tsx                   |       0 |        0 |       0 |       0 | 3-825                                             
+2025-06-06T12:19:13.3949979Z   EventImageGallery.tsx           |       0 |        0 |       0 |       0 | 3-276                                             
+2025-06-06T12:19:13.3951114Z   EventList.tsx                   |       0 |        0 |       0 |       0 | 3-407                                             
+2025-06-06T12:19:13.3951992Z   EventMapWrapper.tsx             |       0 |        0 |       0 |       0 | 3-13                                              
+2025-06-06T12:19:13.3952951Z   RSVPTicketSection.tsx           |       0 |        0 |       0 |       0 | 3-464                                             
+2025-06-06T12:19:13.3953932Z   TicketSelection.tsx             |       0 |        0 |       0 |       0 | 3-294                                             
+2025-06-06T12:19:13.3954914Z   TicketTypeManager.tsx           |       0 |        0 |       0 |       0 | 3-500                                             
+2025-06-06T12:19:13.3955824Z   index.ts                        |       0 |      100 |     100 |       0 | 5-44                                              
+2025-06-06T12:19:13.3956704Z  components/filters               |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3957622Z   ActiveFilters.tsx               |       0 |        0 |       0 |       0 | 3-62                                              
+2025-06-06T12:19:13.3958567Z   CategoryFilter.tsx              |       0 |        0 |       0 |       0 | 3-104                                             
+2025-06-06T12:19:13.3959470Z   DateFilter.tsx                  |       0 |        0 |       0 |       0 | 3-167                                             
+2025-06-06T12:19:13.3960699Z   EventFilters.tsx                |       0 |        0 |       0 |       0 | 3-206                                             
+2025-06-06T12:19:13.3961883Z   PriceFilter.tsx                 |       0 |        0 |       0 |       0 | 3-90                                              
+2025-06-06T12:19:13.3962796Z   SortControl.tsx                 |       0 |        0 |       0 |       0 | 3-71                                              
+2025-06-06T12:19:13.3963711Z  components/homepage              |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3964706Z   HomePageClient.tsx              |       0 |        0 |       0 |       0 | 3-294                                             
+2025-06-06T12:19:13.3965616Z  components/ui                    |    4.59 |       16 |    5.26 |    5.26 |                                                   
+2025-06-06T12:19:13.3966460Z   Card.tsx                        |       0 |        0 |       0 |       0 | 3-161                                             
+2025-06-06T12:19:13.3967327Z   LoadingSpinner.tsx              |       0 |        0 |       0 |       0 | 1-20                                              
+2025-06-06T12:19:13.3968196Z   alert.tsx                       |       0 |        0 |       0 |       0 | 1-44                                              
+2025-06-06T12:19:13.3969220Z   badge.tsx                       |       0 |        0 |       0 |       0 | 1-33                                              
+2025-06-06T12:19:13.3970041Z   button.tsx                      |     100 |      100 |     100 |     100 |                                                   
+2025-06-06T12:19:13.3971009Z   checkbox.tsx                    |       0 |      100 |     100 |       0 | 3-30                                              
+2025-06-06T12:19:13.3971738Z   dialog.tsx                      |       0 |        0 |       0 |       0 | 1-87                                              
+2025-06-06T12:19:13.3972433Z   index.ts                        |       0 |      100 |     100 |       0 | 3-49                                              
+2025-06-06T12:19:13.3973146Z   input.tsx                       |       0 |      100 |       0 |       0 | 1-26                                              
+2025-06-06T12:19:13.3973863Z   label.tsx                       |       0 |      100 |     100 |       0 | 3-26                                              
+2025-06-06T12:19:13.3974624Z   select.tsx                      |       0 |        0 |     100 |       0 | 3-159                                             
+2025-06-06T12:19:13.3975421Z   switch.tsx                      |       0 |      100 |     100 |       0 | 3-29                                              
+2025-06-06T12:19:13.3976249Z   table.tsx                       |       0 |      100 |     100 |       0 | 1-116                                             
+2025-06-06T12:19:13.3977068Z   tabs.tsx                        |       0 |      100 |     100 |       0 | 3-55                                              
+2025-06-06T12:19:13.3977913Z   textarea.tsx                    |       0 |      100 |       0 |       0 | 1-25                                              
+2025-06-06T12:19:13.3978721Z  lib                              |    0.58 |        0 |    0.76 |    0.61 |                                                   
+2025-06-06T12:19:13.3979538Z   auth-context.tsx                |       0 |        0 |       0 |       0 | 3-143                                             
+2025-06-06T12:19:13.3980533Z   auth.ts                         |       0 |        0 |       0 |       0 | 1-280                                             
+2025-06-06T12:19:13.3981306Z   config.ts                       |       0 |        0 |       0 |       0 | 2-25                                              
+2025-06-06T12:19:13.3982127Z   csv-export.ts                   |       0 |        0 |       0 |       0 | 66-278                                            
+2025-06-06T12:19:13.3982991Z   email-service.ts                |       0 |        0 |       0 |       0 | 1-817                                             
+2025-06-06T12:19:13.3984463Z   google-auth.ts                  |       0 |        0 |       0 |       0 | 1-569                                             
+2025-06-06T12:19:13.3985305Z   google-calendar.ts              |       0 |        0 |       0 |       0 | 1-336                                             
+2025-06-06T12:19:13.3986175Z   stripe-client.ts                |       0 |        0 |       0 |       0 | 1-155                                             
+2025-06-06T12:19:13.3986976Z   stripe.ts                       |       0 |        0 |       0 |       0 | 1-159                                             
+2025-06-06T12:19:13.3987784Z   supabase-server.ts              |       0 |        0 |       0 |       0 | 1-28                                              
+2025-06-06T12:19:13.3988608Z   supabase.ts                     |       0 |        0 |       0 |       0 | 1-12                                              
+2025-06-06T12:19:13.3989399Z   utils.ts                        |   23.52 |        0 |   16.66 |      25 | 20-77                                             
+2025-06-06T12:19:13.3990404Z  lib/emails                       |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3991490Z   event-cancellation.tsx          |       0 |        0 |       0 |       0 | 14-498                                            
+2025-06-06T12:19:13.3992385Z   event-reminder.tsx              |       0 |        0 |       0 |       0 | 14-473                                            
+2025-06-06T12:19:13.3993295Z   rsvp-cancellation.tsx           |       0 |        0 |       0 |       0 | 14-329                                            
+2025-06-06T12:19:13.3994243Z   rsvp-confirmation.tsx           |       0 |        0 |       0 |       0 | 14-350                                            
+2025-06-06T12:19:13.3995222Z   send-ticket-confirmation.ts     |       0 |        0 |       0 |       0 | 1-116                                             
+2025-06-06T12:19:13.3996188Z   welcome-email.tsx               |       0 |        0 |       0 |       0 | 14-311                                            
+2025-06-06T12:19:13.3997107Z  lib/emails/templates             |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T12:19:13.3998133Z   RefundConfirmationEmail.tsx     |       0 |        0 |       0 |       0 | 13-491                                            
+2025-06-06T12:19:13.3999205Z   TicketConfirmationEmail.tsx     |       0 |        0 |       0 |       0 | 13-380                                            
+2025-06-06T12:19:13.4000112Z  lib/hooks                        |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T12:19:13.4001088Z   useAuth.ts                      |       0 |        0 |       0 |       0 | 4-139                                             
+2025-06-06T12:19:13.4001926Z   useInfiniteScroll.ts            |       0 |        0 |       0 |       0 | 3-61                                              
+2025-06-06T12:19:13.4002829Z   usePagination.ts                |       0 |        0 |       0 |       0 | 3-91                                              
+2025-06-06T12:19:13.4003694Z  lib/middleware                   |       0 |        0 |       0 |       0 |                                                   
+2025-06-06T12:19:13.4004542Z   performance.ts                  |       0 |        0 |       0 |       0 | 1-203                                             
+2025-06-06T12:19:13.4005355Z  lib/types                        |       0 |      100 |       0 |       0 |                                                   
+2025-06-06T12:19:13.4006144Z   filters.ts                      |       0 |      100 |       0 |       0 | 46-151                                            
+2025-06-06T12:19:13.4006919Z   index.ts                        |       0 |      100 |     100 |       0 | 10-13                                             
+2025-06-06T12:19:13.4007929Z  lib/utils                        |   45.83 |    45.29 |   38.01 |   44.93 |                                                   
+2025-06-06T12:19:13.4008722Z   cache.ts                        |       0 |        0 |       0 |       0 | 11-182                                            
+2025-06-06T12:19:13.4009582Z   eventFilters.ts                 |   69.92 |    61.33 |   62.16 |   69.84 | 16-27,43-45,103-115,185-245,273,277,294-295,327   
+2025-06-06T12:19:13.4010712Z   optimization.ts                 |       0 |        0 |       0 |       0 | 1-135                                             
+2025-06-06T12:19:13.4011570Z   performance.ts                  |       0 |        0 |       0 |       0 | 17-279                                            
+2025-06-06T12:19:13.4012443Z   ticket-utils.ts                 |    92.8 |     77.5 |     100 |   93.06 | 136,140,225,242-243,248-249                       
+2025-06-06T12:19:13.4013480Z ----------------------------------|---------|----------|---------|---------|---------------------------------------------------
+2025-06-06T12:19:13.4014025Z 
+2025-06-06T12:19:13.4014390Z =============================== Coverage summary ===============================
+2025-06-06T12:19:13.4015151Z Statements   : 4.43% ( 265/5977 )
+2025-06-06T12:19:13.4015617Z Branches     : 2.95% ( 96/3251 )
+2025-06-06T12:19:13.4016062Z Functions    : 5.03% ( 50/994 )
+2025-06-06T12:19:13.4016504Z Lines        : 4.2% ( 238/5656 )
+2025-06-06T12:19:13.4017051Z ================================================================================
+2025-06-06T12:19:13.9812794Z Test Suites: 7 passed, 7 total
+2025-06-06T12:19:13.9826392Z Tests:       125 passed, 125 total
+2025-06-06T12:19:13.9826877Z Snapshots:   0 total
+2025-06-06T12:19:13.9827273Z Time:        10.618 s
+2025-06-06T12:19:13.9827647Z Ran all test suites.
+2025-06-06T12:19:13.9886298Z 📊 Test reports generated in /home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/reports
+2025-06-06T12:19:13.9892416Z 📈 Coverage: 4%
+2025-06-06T12:19:13.9892876Z ⏱️  Total runtime: 2.67s

@@ -1,0 +1,97 @@
+﻿2025-06-06T12:19:01.4934784Z ##[group]Run npm run build
+2025-06-06T12:19:01.4935110Z [36;1mnpm run build[0m
+2025-06-06T12:19:01.4987349Z shell: /usr/bin/bash -e {0}
+2025-06-06T12:19:01.4987606Z env:
+2025-06-06T12:19:01.4987781Z   NODE_VERSION: 18
+2025-06-06T12:19:01.4988440Z   NEXT_PUBLIC_SUPABASE_URL: ***
+2025-06-06T12:19:01.4989939Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+2025-06-06T12:19:01.4990219Z ##[endgroup]
+2025-06-06T12:19:01.6325718Z 
+2025-06-06T12:19:01.6326726Z > 1000x-app@0.1.0 build
+2025-06-06T12:19:01.6327877Z > next build
+2025-06-06T12:19:01.6329029Z 
+2025-06-06T12:19:02.3336422Z ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
+2025-06-06T12:19:02.3343090Z Attention: Next.js now collects completely anonymous telemetry regarding usage.
+2025-06-06T12:19:02.3344262Z This information is used to shape Next.js' roadmap and prioritize features.
+2025-06-06T12:19:02.3345764Z You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+2025-06-06T12:19:02.3346908Z https://nextjs.org/telemetry
+2025-06-06T12:19:02.3347205Z 
+2025-06-06T12:19:02.4358578Z    ▲ Next.js 15.3.2
+2025-06-06T12:19:02.4378348Z 
+2025-06-06T12:19:02.4635443Z    Creating an optimized production build ...
+2025-06-06T12:19:37.2025776Z  ✓ Compiled successfully in 34.0s
+2025-06-06T12:19:37.2064751Z    Skipping linting
+2025-06-06T12:19:37.2069182Z    Checking validity of types ...
+2025-06-06T12:20:03.1543644Z    Collecting page data ...
+2025-06-06T12:20:07.1098844Z    Generating static pages (0/47) ...
+2025-06-06T12:20:14.2910747Z  ⚠ metadataBase property in metadata export is not set for resolving social open graph or twitter images, using "http://localhost:3000". See https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase
+2025-06-06T12:20:14.2912768Z    Generating static pages (11/47) 
+2025-06-06T12:20:14.2913312Z    Generating static pages (23/47) 
+2025-06-06T12:20:14.2913815Z    Generating static pages (35/47) 
+2025-06-06T12:20:14.2914543Z  ✓ Generating static pages (47/47)
+2025-06-06T12:20:14.7339003Z    Finalizing page optimization ...
+2025-06-06T12:20:14.7343702Z    Collecting build traces ...
+2025-06-06T12:20:21.8442757Z 
+2025-06-06T12:20:21.8611399Z Route (app)                                 Size  First Load JS
+2025-06-06T12:20:21.8612751Z ┌ ƒ /                                    7.61 kB         230 kB
+2025-06-06T12:20:21.8613601Z ├ ○ /_not-found                            981 B         102 kB
+2025-06-06T12:20:21.8614468Z ├ ○ /about                                 189 B         105 kB
+2025-06-06T12:20:21.8615238Z ├ ƒ /api/analytics/performance             224 B         101 kB
+2025-06-06T12:20:21.8615978Z ├ ƒ /api/auth/google/callback              224 B         101 kB
+2025-06-06T12:20:21.8616735Z ├ ƒ /api/auth/google/connect               224 B         101 kB
+2025-06-06T12:20:21.8617451Z ├ ƒ /api/auth/google/disconnect            224 B         101 kB
+2025-06-06T12:20:21.8618365Z ├ ƒ /api/auth/google/status                224 B         101 kB
+2025-06-06T12:20:21.8640178Z ├ ƒ /api/auth/welcome                      224 B         101 kB
+2025-06-06T12:20:21.8641146Z ├ ƒ /api/calendar/add-to-calendar          224 B         101 kB
+2025-06-06T12:20:21.8642351Z ├ ƒ /api/calendar/create-event             224 B         101 kB
+2025-06-06T12:20:21.8643075Z ├ ƒ /api/checkout                          224 B         101 kB
+2025-06-06T12:20:21.8643690Z ├ ƒ /api/events                            224 B         101 kB
+2025-06-06T12:20:21.8644303Z ├ ƒ /api/events/[id]                       224 B         101 kB
+2025-06-06T12:20:21.8644941Z ├ ƒ /api/events/cancellation               224 B         101 kB
+2025-06-06T12:20:21.8645597Z ├ ƒ /api/events/reminders                  224 B         101 kB
+2025-06-06T12:20:21.8646220Z ├ ƒ /api/orders                            224 B         101 kB
+2025-06-06T12:20:21.8646827Z ├ ƒ /api/refunds                           224 B         101 kB
+2025-06-06T12:20:21.8647425Z ├ ƒ /api/rsvps                             224 B         101 kB
+2025-06-06T12:20:21.8648359Z ├ ƒ /api/rsvps/[id]                        224 B         101 kB
+2025-06-06T12:20:21.8649022Z ├ ƒ /api/staff/analytics                   224 B         101 kB
+2025-06-06T12:20:21.8654660Z ├ ƒ /api/staff/attendees                   224 B         101 kB
+2025-06-06T12:20:21.8655610Z ├ ƒ /api/staff/dashboard                   224 B         101 kB
+2025-06-06T12:20:21.8656445Z ├ ƒ /api/staff/export                      224 B         101 kB
+2025-06-06T12:20:21.8657228Z ├ ƒ /api/test-env                          224 B         101 kB
+2025-06-06T12:20:21.8658029Z ├ ƒ /api/test-upgrade-role                 224 B         101 kB
+2025-06-06T12:20:21.8659023Z ├ ƒ /api/ticket-types                      224 B         101 kB
+2025-06-06T12:20:21.8659993Z ├ ƒ /api/ticket-types/[id]                 224 B         101 kB
+2025-06-06T12:20:21.8660827Z ├ ƒ /api/update-customer-info              224 B         101 kB
+2025-06-06T12:20:21.8661497Z ├ ƒ /api/webhooks/stripe                   224 B         101 kB
+2025-06-06T12:20:21.8662563Z ├ ○ /auth/callback                         956 B         141 kB
+2025-06-06T12:20:21.8663243Z ├ ○ /auth/google/callback                 2.3 kB         103 kB
+2025-06-06T12:20:21.8664126Z ├ ○ /auth/login                          3.29 kB         146 kB
+2025-06-06T12:20:21.8664792Z ├ ○ /auth/reset-password                 2.08 kB         145 kB
+2025-06-06T12:20:21.8665460Z ├ ○ /auth/signup                         3.25 kB         146 kB
+2025-06-06T12:20:21.8666094Z ├ ○ /auth/update-password                2.47 kB         145 kB
+2025-06-06T12:20:21.8666730Z ├ ○ /contact                               189 B         105 kB
+2025-06-06T12:20:21.8667406Z ├ ○ /create-event                          189 B         105 kB
+2025-06-06T12:20:21.8668179Z ├ ○ /demo                                2.93 kB         225 kB
+2025-06-06T12:20:21.8668904Z ├ ○ /demo/lists                          3.78 kB         226 kB
+2025-06-06T12:20:21.8669655Z ├ ƒ /events/[id]                          2.1 kB         210 kB
+2025-06-06T12:20:21.8670326Z ├ ƒ /my-events                            7.4 kB         126 kB
+2025-06-06T12:20:21.8670924Z ├ ○ /privacy                               189 B         105 kB
+2025-06-06T12:20:21.8671540Z ├ ○ /robots.txt                            224 B         101 kB
+2025-06-06T12:20:21.8672404Z ├ ○ /sitemap.xml                           224 B         101 kB
+2025-06-06T12:20:21.8673210Z ├ ƒ /staff                               14.6 kB         160 kB
+2025-06-06T12:20:21.8673834Z ├ ○ /staff/dashboard                       224 B         101 kB
+2025-06-06T12:20:21.8674467Z ├ ƒ /staff/events/[id]/edit              1.94 kB         157 kB
+2025-06-06T12:20:21.8675142Z ├ ƒ /staff/events/create                 1.92 kB         157 kB
+2025-06-06T12:20:21.8675827Z ├ ○ /terms                                 189 B         105 kB
+2025-06-06T12:20:21.8676579Z └ ƒ /test-auth                             224 B         101 kB
+2025-06-06T12:20:21.8677201Z + First Load JS shared by all             101 kB
+2025-06-06T12:20:21.8677868Z   ├ chunks/1684-0df89d9f25c583b2.js      45.9 kB
+2025-06-06T12:20:21.8678408Z   ├ chunks/4bd1b696-b638aa3d70fba23c.js  53.2 kB
+2025-06-06T12:20:21.8678911Z   └ other shared chunks (total)          1.96 kB
+2025-06-06T12:20:21.8679187Z 
+2025-06-06T12:20:21.8679198Z 
+2025-06-06T12:20:21.8679471Z ƒ Middleware                             65.2 kB
+2025-06-06T12:20:21.8679734Z 
+2025-06-06T12:20:21.8679997Z ○  (Static)   prerendered as static content
+2025-06-06T12:20:21.8680494Z ƒ  (Dynamic)  server-rendered on demand
+2025-06-06T12:20:21.8680740Z 

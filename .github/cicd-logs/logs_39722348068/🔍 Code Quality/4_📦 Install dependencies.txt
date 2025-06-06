@@ -1,0 +1,22 @@
+﻿2025-06-06T11:54:21.6140844Z ##[group]Run npm ci --legacy-peer-deps
+2025-06-06T11:54:21.6141252Z [36;1mnpm ci --legacy-peer-deps[0m
+2025-06-06T11:54:21.6322247Z shell: /usr/bin/bash -e {0}
+2025-06-06T11:54:21.6322573Z env:
+2025-06-06T11:54:21.6322766Z   NODE_VERSION: 18
+2025-06-06T11:54:21.6322973Z ##[endgroup]
+2025-06-06T11:54:29.3236138Z npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+2025-06-06T11:54:29.6021582Z npm warn deprecated abab@2.0.6: Use your platform's native atob() and btoa() methods instead
+2025-06-06T11:54:29.7237742Z npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+2025-06-06T11:54:29.8337188Z npm warn deprecated domexception@4.0.0: Use your platform's native DOMException instead
+2025-06-06T11:54:41.4952133Z 
+2025-06-06T11:54:41.4977015Z > 1000x-app@0.1.0 prepare
+2025-06-06T11:54:41.4977858Z > husky install
+2025-06-06T11:54:41.4978629Z 
+2025-06-06T11:54:41.5573140Z husky - install command is DEPRECATED
+2025-06-06T11:54:41.5831272Z 
+2025-06-06T11:54:41.5833018Z added 811 packages, and audited 812 packages in 20s
+2025-06-06T11:54:41.5834596Z 
+2025-06-06T11:54:41.5834959Z 183 packages are looking for funding
+2025-06-06T11:54:41.5835569Z   run `npm fund` for details
+2025-06-06T11:54:41.5853216Z 
+2025-06-06T11:54:41.5854799Z found 0 vulnerabilities

@@ -203,8 +203,8 @@ export async function GET(request: NextRequest) {
 
         // Apply sorting
         allAttendees.sort((a, b) => {
-            let aValue: any = a[sortBy as keyof typeof a]
-            let bValue: any = b[sortBy as keyof typeof b]
+            let aValue: string | number | null = a[sortBy as keyof typeof a] as string | number | null
+            let bValue: string | number | null = b[sortBy as keyof typeof b] as string | number | null
 
             // Handle date sorting
             if (sortBy === 'created_at' || sortBy === 'checkedInAt' || sortBy === 'eventStartTime') {
@@ -215,11 +215,23 @@ export async function GET(request: NextRequest) {
             // Handle string sorting
             if (typeof aValue === 'string') {
                 aValue = aValue.toLowerCase()
-                bValue = (bValue || '').toLowerCase()
+                bValue = typeof bValue === 'string' ? bValue.toLowerCase() : ''
             }
 
-            if (aValue < bValue) return sortOrder === 'asc' ? -1 : 1
-            if (aValue > bValue) return sortOrder === 'asc' ? 1 : -1
+            // Ensure we have numeric values for comparison
+            const numericAValue = typeof aValue === 'number' ? aValue : 0
+            const numericBValue = typeof bValue === 'number' ? bValue : 0
+            const stringAValue = typeof aValue === 'string' ? aValue : ''
+            const stringBValue = typeof bValue === 'string' ? bValue : ''
+
+            // Compare values
+            if (typeof aValue === 'number' && typeof bValue === 'number') {
+                if (numericAValue < numericBValue) return sortOrder === 'asc' ? -1 : 1
+                if (numericAValue > numericBValue) return sortOrder === 'asc' ? 1 : -1
+            } else {
+                if (stringAValue < stringBValue) return sortOrder === 'asc' ? -1 : 1
+                if (stringAValue > stringBValue) return sortOrder === 'asc' ? 1 : -1
+            }
             return 0
         })
 
