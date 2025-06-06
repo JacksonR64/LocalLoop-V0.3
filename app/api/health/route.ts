@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { createServerSupabaseClient } from '@/lib/supabase-server';
 
 /**
@@ -7,7 +7,7 @@ import { createServerSupabaseClient } from '@/lib/supabase-server';
  * Provides comprehensive system health verification for deployment validation.
  * Returns JSON response with status of critical services and components.
  */
-export async function GET(request: NextRequest) {
+export async function GET() {
     const startTime = Date.now();
 
     const healthCheck = {
@@ -39,7 +39,7 @@ export async function GET(request: NextRequest) {
         const supabase = await createServerSupabaseClient();
 
         // Simple connectivity test
-        const { data, error } = await supabase
+        const { error } = await supabase
             .from('users')
             .select('count')
             .limit(1)
@@ -111,7 +111,7 @@ export async function GET(request: NextRequest) {
     const totalResponseTime = Date.now() - startTime;
 
     // Add response time to health check
-    (healthCheck as any).responseTime = totalResponseTime;
+    (healthCheck as Record<string, unknown>).responseTime = totalResponseTime;
 
     // Determine HTTP status code based on health
     let statusCode = 200;
@@ -134,7 +134,7 @@ export async function GET(request: NextRequest) {
 /**
  * Handle POST requests for more detailed health checks
  */
-export async function POST(request: NextRequest) {
+export async function POST() {
     // Future: Add more detailed health checks if needed
-    return GET(request);
+    return GET();
 } 
