@@ -1,0 +1,209 @@
+# Task ID: 26
+# Title: Code Repository Cleanup and Organization
+# Status: pending
+# Dependencies: 25
+# Priority: high
+# Description: Create a feature branch for comprehensive cleanup of development files, reorganize misplaced files, remove temporary files via .gitignore, and ensure all file references are correct while maintaining functionality.
+# Details:
+This task involves a systematic cleanup and organization of the codebase to improve maintainability and developer experience:
+
+1. Create a new feature branch named `cleanup/repo-organization` from the main development branch.
+
+2. File Organization:
+   - Identify and move misplaced files to their appropriate directories based on project structure conventions
+   - Group related components, utilities, and test files logically
+   - Ensure consistent naming conventions across the codebase
+   - Update import paths in all affected files
+
+3. .gitignore Management:
+   - Review and update the .gitignore file to exclude:
+     - Temporary files (*.tmp, *.temp)
+     - IDE-specific files (.vscode/, .idea/)
+     - Build artifacts (dist/, build/, .next/)
+     - Environment files (.env.local, .env.development.local)
+     - Log files (*.log)
+     - Node modules (node_modules/)
+   - Ensure that any necessary local configuration files are kept locally but not committed
+
+4. Dependency Cleanup:
+   - Remove unused dependencies from package.json
+   - Update outdated dependencies to compatible versions
+   - Resolve any dependency conflicts
+
+5. Code Standardization:
+   - Ensure consistent code formatting across the codebase
+   - Apply ESLint and Prettier rules uniformly
+   - Fix any linting errors or warnings
+
+6. Test File Organization:
+   - Reorganize test files to match the structure of the source files they test
+   - Ensure all data-test-id selectors are properly referenced after file moves
+   - Update import paths in test files
+
+7. Documentation Updates:
+   - Update README.md with the new project structure
+   - Document any changes to development workflows
+   - Update comments in code where necessary
+
+8. Incremental Testing:
+   - After each significant change, run the test suite to ensure functionality is maintained
+   - Fix any broken references or paths immediately
+
+9. Create a detailed pull request documenting all changes made and the rationale behind them.
+
+# Test Strategy:
+The testing strategy will verify that the cleanup maintains full functionality while improving code organization:
+
+1. Incremental Testing:
+   - After each significant reorganization step, run the full test suite to catch issues early
+   - Document any test failures and their resolutions
+
+2. Automated Tests:
+   - Run all unit tests to verify component functionality remains intact
+   - Execute all E2E tests using the data-test-id selectors to ensure UI flows still work
+   - Verify that all integration tests pass with the reorganized code structure
+
+3. Build Verification:
+   - Perform a complete build of the application to ensure no build errors
+   - Check for any warnings related to file paths or imports
+   - Verify that the build output is consistent with previous builds
+
+4. Manual Testing:
+   - Test critical user flows manually:
+     - RSVP functionality for free events
+     - Ticketing and payment system
+     - Google Calendar integration
+     - Authentication flows
+   - Verify that all UI elements render correctly
+
+5. Git Operations:
+   - Verify that .gitignore changes correctly exclude temporary files
+   - Confirm that necessary local files are preserved
+   - Check that no sensitive information is committed
+
+6. Cross-browser Testing:
+   - Verify application functionality in Chrome, Firefox, and Safari
+   - Test responsive design on different screen sizes
+   - Ensure mobile functionality works as expected
+
+7. Performance Check:
+   - Compare application load times before and after cleanup
+   - Verify that bundle size hasn't increased significantly
+
+8. Code Review:
+   - Have at least two team members review the changes
+   - Verify that the new organization improves code readability and maintainability
+
+9. Documentation Testing:
+   - Verify that all documentation accurately reflects the new structure
+   - Ensure README instructions work with the reorganized codebase
+
+# Subtasks:
+## 1. Create Feature Branch and Analyze Repository Structure [done]
+### Dependencies: None
+### Description: Create a new feature branch for the cleanup work and perform an initial analysis of the repository structure to identify misplaced files, unused dependencies, and areas needing organization.
+### Details:
+1. Create a new feature branch named `cleanup/repo-organization` from the main development branch
+2. Analyze the current repository structure to identify:
+   - Files in incorrect directories
+   - Inconsistent naming patterns
+   - Temporary files that should be excluded
+   - Unused dependencies in package.json
+3. Document findings in a structured format (e.g., spreadsheet or markdown file)
+4. Create a plan for reorganization based on project conventions
+<info added on 2025-06-06T19:26:03.922Z>
+**FEATURE BRANCH CREATED ✅**
+
+**Status**: Branch created and repository analysis in progress
+
+**Completed**:
+- ✅ **Feature Branch**: `feature/repository-cleanup` created and checked out
+- 🔄 **Repository Analysis**: Starting comprehensive structure review
+
+**Initial Repository Structure Analysis**:
+
+**Current Directory Structure**:
+```
+LocalLoop-V0.3/
+├── app/                    # Next.js app directory (✅ correct)
+├── components/             # React components (✅ correct)
+├── lib/                    # Utilities and configurations (✅ correct)
+├── public/                 # Static assets (✅ correct)
+├── tests/                  # Test files (✅ correct)
+├── e2e/                    # E2E tests (✅ correct)
+├── docs/                   # Documentation (✅ correct)
+├── scripts/                # Build/utility scripts (✅ correct)
+├── .github/                # GitHub workflows (✅ correct)
+└── DEPLOYMENT_TASKS.md     # 🔍 Temporary file - should be in docs/
+```
+
+**Next Steps**:
+1. Complete detailed file analysis for misplaced items
+2. Identify temporary/development files for .gitignore
+3. Check for unused dependencies
+4. Document findings for systematic cleanup
+</info added on 2025-06-06T19:26:03.922Z>
+
+## 2. Update .gitignore and Remove Temporary Files [pending]
+### Dependencies: 26.1
+### Description: Review and update the .gitignore file to properly exclude temporary files, build artifacts, and environment-specific configurations while ensuring necessary files remain tracked.
+### Details:
+1. Review current .gitignore file and identify missing patterns
+2. Update .gitignore to exclude:
+   - Temporary files (*.tmp, *.temp)
+   - IDE-specific files (.vscode/, .idea/)
+   - Build artifacts (dist/, build/, .next/)
+   - Environment files (.env.local, .env.development.local)
+   - Log files (*.log)
+   - Node modules (node_modules/)
+3. Run `git status` to verify the correct files are now ignored
+4. Remove any tracked files that should be ignored using `git rm --cached`
+5. Commit these changes separately
+
+## 3. Reorganize Source Files and Update Import Paths [pending]
+### Dependencies: 26.1
+### Description: Move misplaced files to their appropriate directories according to project conventions and update all import paths to maintain functionality.
+### Details:
+1. Based on the analysis, systematically move files to their correct locations
+2. Maintain consistent naming conventions across the codebase
+3. Update import paths in all affected files
+4. Group related components, utilities, and modules logically
+5. Commit changes in logical groups (e.g., by module or feature)
+6. Document structural changes for the README update
+
+## 4. Clean Up Dependencies and Package Configuration [pending]
+### Dependencies: 26.1
+### Description: Review package.json to remove unused dependencies, update outdated ones, and resolve any conflicts to optimize the project's dependency tree.
+### Details:
+1. Analyze package.json for unused dependencies using tools like `depcheck`
+2. Remove confirmed unused dependencies
+3. Update outdated dependencies to compatible versions
+4. Resolve any dependency conflicts
+5. Run npm/yarn install to update lock files
+6. Document significant dependency changes for the README update
+
+## 5. Reorganize Test Files and Apply Code Standardization [pending]
+### Dependencies: 26.3
+### Description: Reorganize test files to match source structure and apply consistent code formatting and linting rules across the codebase.
+### Details:
+1. Reorganize test files to mirror the structure of their corresponding source files
+2. Update test import paths and data-test-id selectors
+3. Apply ESLint and Prettier rules uniformly across the codebase
+4. Fix any linting errors or warnings
+5. Ensure consistent code style and formatting
+6. Run the test suite to verify all tests pass after reorganization
+
+## 6. Update Documentation and Create Pull Request [pending]
+### Dependencies: 26.2, 26.3, 26.4, 26.5
+### Description: Update project documentation to reflect the new structure and create a detailed pull request documenting all changes made during the cleanup process.
+### Details:
+1. Update README.md with the new project structure
+2. Document any changes to development workflows
+3. Update comments in code where necessary
+4. Create a comprehensive pull request that includes:
+   - Summary of all changes made
+   - Rationale behind structural decisions
+   - Benefits of the cleanup
+   - Instructions for team members on any workflow changes
+5. Request code review from appropriate team members
+
