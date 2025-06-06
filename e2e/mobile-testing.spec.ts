@@ -1,13 +1,77 @@
 // @ts-nocheck
 import { test, expect, devices } from '@playwright/test';
-import {
-    VIEWPORTS,
-    testTouchInteraction,
-    testNavigationResponsiveness,
-    testFormResponsiveness,
-    checkResponsiveImages,
-    testScrollBehavior
-} from './utils/browser-testing';
+
+// Configure device at the top level to avoid worker issues
+test.use({ ...devices['iPhone 14'] });
+
+const VIEWPORTS = {
+    mobile: { width: 375, height: 667 },
+    tablet: { width: 768, height: 1024 },
+    desktop: { width: 1280, height: 720 }
+};
+
+async function testTouchInteraction(page: any, selector: string) {
+    const element = page.locator(selector);
+    if (await element.count() > 0) {
+        const box = await element.first().boundingBox();
+        if (box) {
+            // Test touch target size (should be at least 44px)
+            expect(box.height).toBeGreaterThanOrEqual(44);
+            expect(box.width).toBeGreaterThanOrEqual(44);
+        }
+    }
+}
+
+async function testNavigationResponsiveness(page: any, viewport: any) {
+    await page.setViewportSize(viewport);
+
+    // Test navigation elements
+    const nav = page.locator('nav, header');
+    if (await nav.count() > 0) {
+        await expect(nav.first()).toBeVisible();
+    }
+}
+
+async function testFormResponsiveness(page: any, formSelector: string, viewport: any) {
+    await page.setViewportSize(viewport);
+    const form = page.locator(formSelector);
+    if (await form.count() > 0) {
+        await expect(form).toBeVisible();
+
+        // Check form doesn't overflow viewport
+        const formBox = await form.boundingBox();
+        if (formBox) {
+            expect(formBox.width).toBeLessThanOrEqual(viewport.width);
+        }
+    }
+}
+
+async function checkResponsiveImages(page: any) {
+    const images = page.locator('img');
+    const imageCount = await images.count();
+
+    for (let i = 0; i < Math.min(imageCount, 3); i++) {
+        const img = images.nth(i);
+        if (await img.isVisible()) {
+            const box = await img.boundingBox();
+            if (box) {
+                expect(box.width).toBeGreaterThan(0);
+                expect(box.height).toBeGreaterThan(0);
+            }
+        }
+    }
+}
+
+async function testScrollBehavior(page: any, viewport: any) {
+    await page.setViewportSize(viewport);
+
+    // Test scroll behavior
+    await page.evaluate(() => window.scrollTo(0, 200));
+    await page.waitForTimeout(500);
+
+    const scrollY = await page.evaluate(() => window.scrollY);
+    expect(scrollY).toBeGreaterThan(0);
+}
 
 /**
  * Mobile Testing Suite
@@ -246,8 +310,6 @@ test.describe('Mobile Device Testing', () => {
     });
 
     test.describe('Mobile Accessibility', () => {
-        test.use({ ...devices['iPhone 12'] });
-
         test('should be accessible on mobile devices', async ({ page }) => {
             await page.goto('/');
 
@@ -294,8 +356,6 @@ test.describe('Mobile Device Testing', () => {
     });
 
     test.describe('Mobile Orientation', () => {
-        test.use({ ...devices['iPhone 12'] });
-
         test('should handle orientation changes', async ({ page }) => {
             await page.goto('/');
 
@@ -320,8 +380,6 @@ test.describe('Mobile Device Testing', () => {
     });
 
     test.describe('Mobile Edge Cases', () => {
-        test.use({ ...devices['iPhone 12'] });
-
         test('should handle mobile browser quirks', async ({ page }) => {
             await page.goto('/');
 

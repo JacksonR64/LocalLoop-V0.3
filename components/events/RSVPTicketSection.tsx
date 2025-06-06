@@ -230,9 +230,9 @@ const RSVPTicketSection: React.FC<RSVPTicketSectionProps> = ({
     }
 
     return (
-        <Card className={cn("w-full", className)}>
+        <Card className={cn("w-full", className)} data-test-id="rsvp-card">
             <CardHeader>
-                <CardTitle className="flex items-center gap-2">
+                <CardTitle className="flex items-center gap-2" data-test-id="rsvp-title">
                     <CalendarDays className="h-5 w-5" />
                     Event RSVP
                 </CardTitle>
@@ -240,18 +240,18 @@ const RSVPTicketSection: React.FC<RSVPTicketSectionProps> = ({
 
             <CardContent className="space-y-6">
                 {/* Event Summary */}
-                <div className="bg-gray-50 p-4 rounded-lg space-y-2">
-                    <h3 className="font-medium text-lg">{eventTitle}</h3>
+                <div className="bg-gray-50 p-4 rounded-lg space-y-2" data-test-id="event-summary">
+                    <h3 className="font-medium text-lg" data-test-id="event-title">{eventTitle}</h3>
                     <div className="space-y-1 text-sm text-gray-600">
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2" data-test-id="event-date">
                             <CalendarDays className="h-4 w-4" />
                             <span>{eventDate}</span>
                         </div>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2" data-test-id="event-time">
                             <Clock className="h-4 w-4" />
                             <span>{eventTime}</span>
                         </div>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2" data-test-id="event-location">
                             <MapPin className="h-4 w-4" />
                             <span>{eventLocation}</span>
                         </div>
@@ -259,17 +259,17 @@ const RSVPTicketSection: React.FC<RSVPTicketSectionProps> = ({
                 </div>
 
                 {/* Registration Status */}
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between" data-test-id="registration-status">
                     <div className="flex items-center gap-2">
                         <Users className="h-4 w-4" />
-                        <span className="text-sm">
+                        <span className="text-sm" data-test-id="rsvp-count">
                             {currentRSVPs} RSVP{currentRSVPs !== 1 ? 's' : ''}
                             {capacity && ` / ${capacity} capacity`}
                         </span>
                     </div>
 
                     {spotsLeft !== null && (
-                        <Badge variant={spotsLeft <= 5 ? "destructive" : "secondary"}>
+                        <Badge variant={spotsLeft <= 5 ? "destructive" : "secondary"} data-test-id="spots-left-badge">
                             {spotsLeft === 0 ? 'Full' : `${spotsLeft} spots left`}
                         </Badge>
                     )}
@@ -277,14 +277,14 @@ const RSVPTicketSection: React.FC<RSVPTicketSectionProps> = ({
 
                 {/* Status Messages */}
                 {error && (
-                    <Alert variant="destructive">
+                    <Alert variant="destructive" data-test-id="error-message">
                         <XCircle className="h-4 w-4" />
                         <AlertDescription>{error}</AlertDescription>
                     </Alert>
                 )}
 
                 {success && (
-                    <Alert className="border-green-200 bg-green-50">
+                    <Alert className="border-green-200 bg-green-50" data-test-id="success-message">
                         <CheckCircle className="h-4 w-4 text-green-600" />
                         <AlertDescription className="text-green-700">{success}</AlertDescription>
                     </Alert>
@@ -292,7 +292,7 @@ const RSVPTicketSection: React.FC<RSVPTicketSectionProps> = ({
 
                 {/* Registration Closed */}
                 {!isRegistrationOpen && (
-                    <Alert variant="destructive">
+                    <Alert variant="destructive" data-test-id="registration-closed-message">
                         <AlertTriangle className="h-4 w-4" />
                         <AlertDescription>
                             Registration for this event is currently closed.
@@ -302,7 +302,7 @@ const RSVPTicketSection: React.FC<RSVPTicketSectionProps> = ({
 
                 {/* At Capacity */}
                 {isAtCapacity && isRegistrationOpen && (
-                    <Alert variant="destructive">
+                    <Alert variant="destructive" data-test-id="capacity-full-message">
                         <AlertTriangle className="h-4 w-4" />
                         <AlertDescription>
                             This event is at full capacity. Registration is currently unavailable.
@@ -312,12 +312,12 @@ const RSVPTicketSection: React.FC<RSVPTicketSectionProps> = ({
 
                 {/* Existing RSVP - Show cancellation option */}
                 {existingRSVP && (
-                    <div className="bg-green-50 border border-green-200 p-4 rounded-lg">
+                    <div className="bg-green-50 border border-green-200 p-4 rounded-lg" data-test-id="existing-rsvp">
                         <div className="flex items-center gap-2 mb-3">
                             <CheckCircle className="h-5 w-5 text-green-600" />
-                            <span className="font-medium text-green-800">You&apos;re attending this event!</span>
+                            <span className="font-medium text-green-800" data-test-id="rsvp-confirmed-text">You&apos;re attending this event!</span>
                         </div>
-                        <p className="text-sm text-green-700 mb-3">
+                        <p className="text-sm text-green-700 mb-3" data-test-id="rsvp-confirmed-date">
                             RSVP confirmed on {new Date(existingRSVP.created_at).toLocaleDateString()}
                         </p>
                         <Button
@@ -326,6 +326,7 @@ const RSVPTicketSection: React.FC<RSVPTicketSectionProps> = ({
                             onClick={handleCancel}
                             disabled={submitting}
                             className="border-red-300 text-red-700 hover:bg-red-50"
+                            data-test-id="cancel-rsvp-button"
                         >
                             {submitting ? (
                                 <>
@@ -341,21 +342,21 @@ const RSVPTicketSection: React.FC<RSVPTicketSectionProps> = ({
 
                 {/* RSVP Form - Show if no existing RSVP and registration is open */}
                 {!existingRSVP && isRegistrationOpen && !isAtCapacity && (
-                    <form onSubmit={handleSubmit} className="space-y-4">
+                    <form onSubmit={handleSubmit} className="space-y-4" data-test-id="rsvp-form">
                         {/* User Info Section */}
                         <div className="space-y-4">
                             {user ? (
-                                <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg">
+                                <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg" data-test-id="authenticated-user-info">
                                     <div className="flex items-center gap-2 mb-2">
                                         <User className="h-4 w-4 text-blue-600" />
-                                        <span className="font-medium text-blue-800">
+                                        <span className="font-medium text-blue-800" data-test-id="user-display-name">
                                             RSVPing as {getUserDisplayName()}
                                         </span>
                                     </div>
-                                    <p className="text-sm text-blue-700">{user.email}</p>
+                                    <p className="text-sm text-blue-700" data-test-id="user-email">{user.email}</p>
                                 </div>
                             ) : (
-                                <div className="space-y-3">
+                                <div className="space-y-3" data-test-id="guest-info-section">
                                     <h4 className="font-medium flex items-center gap-2">
                                         <Mail className="h-4 w-4" />
                                         Guest Information
@@ -374,6 +375,7 @@ const RSVPTicketSection: React.FC<RSVPTicketSectionProps> = ({
                                                 onChange={(e) => handleInputChange('guestName', e.target.value)}
                                                 required
                                                 disabled={submitting}
+                                                data-test-id="guest-name-input"
                                             />
                                         </div>
 
@@ -389,6 +391,7 @@ const RSVPTicketSection: React.FC<RSVPTicketSectionProps> = ({
                                                 onChange={(e) => handleInputChange('guestEmail', e.target.value)}
                                                 required
                                                 disabled={submitting}
+                                                data-test-id="guest-email-input"
                                             />
                                         </div>
                                     </div>
@@ -408,6 +411,7 @@ const RSVPTicketSection: React.FC<RSVPTicketSectionProps> = ({
                                 onChange={(e) => handleInputChange('notes', e.target.value)}
                                 disabled={submitting}
                                 rows={3}
+                                data-test-id="rsvp-notes-textarea"
                             />
                         </div>
 
@@ -417,6 +421,7 @@ const RSVPTicketSection: React.FC<RSVPTicketSectionProps> = ({
                             disabled={submitting}
                             className="w-full"
                             size="lg"
+                            data-test-id="rsvp-submit-button"
                         >
                             {submitting ? (
                                 <>
@@ -432,7 +437,7 @@ const RSVPTicketSection: React.FC<RSVPTicketSectionProps> = ({
 
                 {/* Login Prompt for Better Experience */}
                 {!user && isRegistrationOpen && !existingRSVP && (
-                    <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg">
+                    <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg" data-test-id="login-prompt">
                         <p className="text-sm text-blue-700 mb-2">
                             <strong>Want to manage your RSVPs easily?</strong>
                         </p>
@@ -441,10 +446,10 @@ const RSVPTicketSection: React.FC<RSVPTicketSectionProps> = ({
                             and never miss an update.
                         </p>
                         <div className="flex gap-2">
-                            <Button variant="outline" size="sm" asChild>
+                            <Button variant="outline" size="sm" asChild data-test-id="signup-button">
                                 <a href="/auth/signup">Sign Up</a>
                             </Button>
-                            <Button variant="ghost" size="sm" asChild>
+                            <Button variant="ghost" size="sm" asChild data-test-id="login-button">
                                 <a href="/auth/login">Log In</a>
                             </Button>
                         </div>
@@ -452,7 +457,7 @@ const RSVPTicketSection: React.FC<RSVPTicketSectionProps> = ({
                 )}
 
                 {existingRSVP && (
-                    <p className="text-sm text-gray-600 mb-4">
+                    <p className="text-sm text-gray-600 mb-4" data-test-id="rsvp-confirmed-description">
                         You&apos;re all set! We&apos;ve confirmed your RSVP for this event.
                     </p>
                 )}

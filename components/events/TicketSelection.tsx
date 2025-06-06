@@ -169,10 +169,10 @@ export default function TicketSelection({
     }
 
     return (
-        <div className="space-y-6">
-            <Card>
+        <div className="space-y-6" data-test-id="ticket-selection-container">
+            <Card data-test-id="ticket-types-card">
                 <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
+                    <CardTitle className="flex items-center gap-2" data-test-id="ticket-section-title">
                         <ShoppingCart className="h-5 w-5" />
                         Get Your Tickets
                     </CardTitle>
@@ -204,17 +204,18 @@ export default function TicketSelection({
                             <div
                                 key={ticket.id}
                                 className={`p-4 border rounded-lg ${!isAvailable || !saleActive ? 'bg-gray-50' : 'bg-white'}`}
+                                data-test-id={`ticket-type-${ticket.id}`}
                             >
                                 <div className="flex justify-between items-start mb-2">
                                     <div className="flex-1">
-                                        <h3 className="font-semibold text-lg">{ticket.name}</h3>
-                                        <p className="text-gray-600 text-sm mb-2">{ticket.description}</p>
+                                        <h3 className="font-semibold text-lg" data-test-id="ticket-type-name">{ticket.name}</h3>
+                                        <p className="text-gray-600 text-sm mb-2" data-test-id="ticket-type-description">{ticket.description}</p>
                                         <div className="flex items-center gap-4 text-sm text-gray-500">
-                                            <span className="flex items-center gap-1">
+                                            <span className="flex items-center gap-1" data-test-id="ticket-availability">
                                                 <Users className="h-4 w-4" />
                                                 {`${available} / ${capacity} available`}
                                             </span>
-                                            <span className="font-semibold text-lg text-gray-900">
+                                            <span className="font-semibold text-lg text-gray-900" data-test-id="ticket-price">
                                                 {formatPrice(ticket.price)}
                                             </span>
                                         </div>
@@ -222,17 +223,17 @@ export default function TicketSelection({
                                 </div>
 
                                 {!saleActive ? (
-                                    <div className="flex items-center gap-2 text-amber-600">
+                                    <div className="flex items-center gap-2 text-amber-600" data-test-id="sale-ended-message">
                                         <AlertCircle className="h-4 w-4" />
                                         <span className="text-sm">Sales period has ended</span>
                                     </div>
                                 ) : !isAvailable ? (
-                                    <div className="flex items-center gap-2 text-red-600">
+                                    <div className="flex items-center gap-2 text-red-600" data-test-id="sold-out-message">
                                         <AlertCircle className="h-4 w-4" />
                                         <span className="text-sm">Sold out</span>
                                     </div>
                                 ) : (
-                                    <div className="flex items-center justify-between">
+                                    <div className="flex items-center justify-between" data-test-id="quantity-controls">
                                         <div className="flex items-center gap-2">
                                             <span className="text-sm font-medium">Quantity:</span>
                                             <div className="flex items-center gap-2">
@@ -242,6 +243,7 @@ export default function TicketSelection({
                                                     onClick={() => updateQuantity(ticket.id, quantity - 1)}
                                                     disabled={quantity <= 0}
                                                     className="h-8 w-8 p-0"
+                                                    data-test-id="decrease-quantity-button"
                                                 >
                                                     <Minus className="h-4 w-4" />
                                                 </Button>
@@ -252,6 +254,7 @@ export default function TicketSelection({
                                                     value={quantity}
                                                     onChange={(e) => updateQuantity(ticket.id, parseInt(e.target.value) || 0)}
                                                     className="w-16 text-center"
+                                                    data-test-id="quantity-input"
                                                 />
                                                 <Button
                                                     variant="outline"
@@ -259,6 +262,7 @@ export default function TicketSelection({
                                                     onClick={() => updateQuantity(ticket.id, quantity + 1)}
                                                     disabled={quantity >= available}
                                                     className="h-8 w-8 p-0"
+                                                    data-test-id="increase-quantity-button"
                                                 >
                                                     <Plus className="h-4 w-4" />
                                                 </Button>
@@ -266,9 +270,9 @@ export default function TicketSelection({
                                         </div>
 
                                         {quantity > 0 && (
-                                            <div className="text-right">
+                                            <div className="text-right" data-test-id="ticket-subtotal">
                                                 <div className="text-sm text-gray-600">Subtotal:</div>
-                                                <div className="font-semibold">
+                                                <div className="font-semibold" data-test-id="subtotal-amount">
                                                     {formatPrice(ticket.price * quantity)}
                                                 </div>
                                             </div>
@@ -282,21 +286,21 @@ export default function TicketSelection({
             </Card>
 
             {totalQuantity > 0 && (
-                <Card>
+                <Card data-test-id="ticket-summary-card">
                     <CardContent className="py-4">
                         <div className="flex justify-between items-center">
                             <div>
-                                <div className="font-semibold">
+                                <div className="font-semibold" data-test-id="total-quantity">
                                     Total: {totalQuantity} ticket{totalQuantity !== 1 ? 's' : ''}
                                 </div>
-                                <div className="text-sm text-gray-600">
+                                <div className="text-sm text-gray-600" data-test-id="ticket-breakdown">
                                     {(selectedTickets || []).map(ticket =>
                                         `${ticket.quantity}x ${ticket.ticket_type.name}`
                                     ).join(', ')}
                                 </div>
                             </div>
                             <div className="text-right">
-                                <div className="text-2xl font-bold">
+                                <div className="text-2xl font-bold" data-test-id="total-price">
                                     {formatPrice(totalPrice)}
                                 </div>
                             </div>
