@@ -1804,8 +1804,8 @@
           "dependencies": [
             1
           ],
-          "details": "1. Based on the analysis, systematically move files to their correct locations\n2. Maintain consistent naming conventions across the codebase\n3. Update import paths in all affected files\n4. Group related components, utilities, and modules logically\n5. Commit changes in logical groups (e.g., by module or feature)\n6. Document structural changes for the README update",
-          "status": "in-progress",
+          "details": "1. Based on the analysis, systematically move files to their correct locations\n2. Maintain consistent naming conventions across the codebase\n3. Update import paths in all affected files\n4. Group related components, utilities, and modules logically\n5. Commit changes in logical groups (e.g., by module or feature)\n6. Document structural changes for the README update\n<info added on 2025-06-06T20:14:52.824Z>\nSuccessfully completed source file reorganization and import path updates:\n\n1. Operational Scripts Consolidation:\n   - Moved all backup scripts from `backup-scripts/` to `scripts/ops/`\n   - Relocated files: database-backup.sh, config-backup.sh, master-backup.sh, setup-cron.sh, init-working.sh\n   - Created logical grouping for operational maintenance scripts\n\n2. Reference Updates:\n   - Updated all import paths in GitHub workflows (.github/workflows/backup-automation.yml)\n   - Updated references in documentation (docs/OPERATIONS_RUNBOOK.md, docs/DISASTER_RECOVERY_PLAN.md)\n   - Fixed paths in configuration files (scripts/ops/config-backup.sh)\n   - Updated .gitignore to reflect new structure\n\n3. Directory Cleanup:\n   - Removed empty `copy/` directory\n   - Removed now-empty `backup-scripts/` directory\n\n4. Verification Testing:\n   - Build test passed successfully (3.0s compile time)\n   - No broken references detected\n   - All changes properly committed with clean git status\n\n5. Impact:\n   - Improved project organization with logical script grouping\n   - Maintained all functionality while enhancing maintainability\n   - Repository structure now ready for production\n</info added on 2025-06-06T20:14:52.824Z>",
+          "status": "done",
           "testStrategy": "After each significant set of moves, run the application and tests to ensure functionality is maintained. Fix any broken references immediately."
         },
         {
@@ -1816,7 +1816,7 @@
             1
           ],
           "details": "1. Analyze package.json for unused dependencies using tools like `depcheck`\n2. Remove confirmed unused dependencies\n3. Update outdated dependencies to compatible versions\n4. Resolve any dependency conflicts\n5. Run npm/yarn install to update lock files\n6. Document significant dependency changes for the README update",
-          "status": "pending",
+          "status": "in-progress",
           "testStrategy": "After dependency changes, run the full test suite to ensure application functionality is maintained. Check build processes to verify no new errors are introduced."
         },
         {
