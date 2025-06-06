@@ -1,0 +1,38 @@
+﻿2025-06-06T11:36:44.6558016Z Current runner version: '2.325.0'
+2025-06-06T11:36:44.6594247Z ##[group]Runner Image Provisioner
+2025-06-06T11:36:44.6595633Z Hosted Compute Agent
+2025-06-06T11:36:44.6596529Z Version: 20250508.323
+2025-06-06T11:36:44.6597646Z Commit: 81b259f29879f73b4213d199e42d8c3465dae986
+2025-06-06T11:36:44.6598803Z Build Date: 2025-05-08T19:40:08Z
+2025-06-06T11:36:44.6599785Z ##[endgroup]
+2025-06-06T11:36:44.6600590Z ##[group]Operating System
+2025-06-06T11:36:44.6601598Z Ubuntu
+2025-06-06T11:36:44.6602539Z 24.04.2
+2025-06-06T11:36:44.6603351Z LTS
+2025-06-06T11:36:44.6604198Z ##[endgroup]
+2025-06-06T11:36:44.6605025Z ##[group]Runner Image
+2025-06-06T11:36:44.6605931Z Image: ubuntu-24.04
+2025-06-06T11:36:44.6606857Z Version: 20250511.1.0
+2025-06-06T11:36:44.6608727Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20250511.1/images/ubuntu/Ubuntu2404-Readme.md
+2025-06-06T11:36:44.6611185Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20250511.1
+2025-06-06T11:36:44.6613511Z ##[endgroup]
+2025-06-06T11:36:44.6615513Z ##[group]GITHUB_TOKEN Permissions
+2025-06-06T11:36:44.6618110Z Contents: read
+2025-06-06T11:36:44.6618974Z Metadata: read
+2025-06-06T11:36:44.6619967Z Packages: read
+2025-06-06T11:36:44.6620811Z ##[endgroup]
+2025-06-06T11:36:44.6624182Z Secret source: Actions
+2025-06-06T11:36:44.6625632Z Prepare workflow directory
+2025-06-06T11:36:44.7415255Z Prepare all required actions
+2025-06-06T11:36:44.7472861Z Getting action download info
+2025-06-06T11:36:45.2427664Z ##[group]Download immutable action package 'actions/checkout@v4'
+2025-06-06T11:36:45.2428776Z Version: 4.2.2
+2025-06-06T11:36:45.2429792Z Digest: sha256:ccb2698953eaebd21c7bf6268a94f9c26518a7e38e27e0b83c1fe1ad049819b1
+2025-06-06T11:36:45.2430894Z Source commit SHA: 11bd71901bbe5b1630ceea73d27597364c9af683
+2025-06-06T11:36:45.2431740Z ##[endgroup]
+2025-06-06T11:36:45.3130912Z ##[group]Download immutable action package 'actions/setup-node@v4'
+2025-06-06T11:36:45.3131723Z Version: 4.4.0
+2025-06-06T11:36:45.3132825Z Digest: sha256:9427cefe82346e992fb5b949e3569b39d537ae41aa3086483b14eceebfc16bc1
+2025-06-06T11:36:45.3133796Z Source commit SHA: 49933ea5288caeca8642d1e84afbd3f7d6820020
+2025-06-06T11:36:45.3134471Z ##[endgroup]
+2025-06-06T11:36:45.4748433Z Complete job name: 🧪 Tests
