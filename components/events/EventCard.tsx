@@ -80,7 +80,7 @@ function SafeImage({
     fill?: boolean;
     className?: string;
     sizes?: string;
-    placeholder?: string;
+    placeholder?: "blur" | "empty" | undefined;
     blurDataURL?: string;
     [key: string]: any;
 }) {
