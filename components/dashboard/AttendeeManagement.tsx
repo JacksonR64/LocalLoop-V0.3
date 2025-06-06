@@ -29,6 +29,10 @@ import {
     XCircle,
     FileDown,
     Users,
+    DollarSign,
+    CalendarDays,
+    MapPin,
+    Mail,
 } from 'lucide-react'
 import { format } from 'date-fns'
 
