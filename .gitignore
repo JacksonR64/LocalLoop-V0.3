@@ -50,10 +50,13 @@ next-env.d.ts
 logs
 *.log
 dev-debug.log
+
 # Dependency directories
 node_modules/
+
 # Environment variables
 .env
+
 # Editor directories and files
 .idea
 .vscode
@@ -62,7 +65,27 @@ node_modules/
 *.njsproj
 *.sln
 *.sw?
-# OS specific
-# Task files
-tasks.json
-tasks/ 
+
+# IDE-specific files (additional)
+.windsurfrules
+.roomodes
+.roo/
+
+# Build artifacts and reports
+test-results/
+playwright-report/
+reports/
+coverage/
+.swc/
+
+# Temporary files
+*.tmp
+*.temp
+copy/
+
+# OS specific files
+.DS_Store
+
+# Task files (keep tasks/ but ignore individual task files if needed)
+# tasks.json
+# tasks/ 
