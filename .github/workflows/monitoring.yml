@@ -1,0 +1,263 @@
+name: 📊 Monitoring & Alerting
+
+on:
+  # Run after deployments
+  workflow_run:
+    workflows: ["🚀 CI/CD Pipeline"]
+    types:
+      - completed
+  
+  # Scheduled health monitoring
+  schedule:
+    - cron: '*/15 * * * *'  # Every 15 minutes
+  
+  # Manual monitoring trigger
+  workflow_dispatch:
+    inputs:
+      monitoring_type:
+        description: 'Type of monitoring to perform'
+        required: false
+        default: 'full'
+        type: choice
+        options:
+          - 'full'
+          - 'health-only'
+          - 'performance-only'
+
+jobs:
+  monitor-deployment:
+    runs-on: ubuntu-latest
+    if: github.event.workflow_run.conclusion != 'skipped' || github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+        
+      - name: 📊 Check Deployment Status
+        id: deployment-status
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_run" ]; then
+            WORKFLOW_CONCLUSION="${{ github.event.workflow_run.conclusion }}"
+            echo "deployment_status=$WORKFLOW_CONCLUSION" >> $GITHUB_OUTPUT
+            echo "triggered_by=workflow_run" >> $GITHUB_OUTPUT
+            
+            if [ "$WORKFLOW_CONCLUSION" = "failure" ]; then
+              echo "🚨 Deployment failed - CI/CD Pipeline concluded with failure"
+              echo "deployment_failed=true" >> $GITHUB_OUTPUT
+            else
+              echo "✅ Deployment completed successfully"
+              echo "deployment_failed=false" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "deployment_status=scheduled_check" >> $GITHUB_OUTPUT
+            echo "triggered_by=schedule" >> $GITHUB_OUTPUT
+            echo "deployment_failed=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: 🏥 Application Health Monitoring
+        id: health-monitoring
+        if: github.event.inputs.monitoring_type != 'performance-only'
+        run: |
+          echo "🏥 Starting comprehensive health monitoring..."
+          
+          HEALTH_URL="https://local-loop.vercel.app/api/health"
+          MAIN_URL="https://local-loop.vercel.app"
+          
+          # Initialize status tracking
+          OVERALL_STATUS="healthy"
+          ISSUES_FOUND=""
+          
+          # Test health endpoint
+          echo "Testing health endpoint..."
+          HEALTH_RESPONSE=$(curl -s -w "%{http_code}" "$HEALTH_URL" || echo "000connection_failed")
+          HEALTH_HTTP_CODE="${HEALTH_RESPONSE: -3}"
+          HEALTH_BODY="${HEALTH_RESPONSE%???}"
+          
+          echo "Health endpoint HTTP code: $HEALTH_HTTP_CODE"
+          
+          if [ "$HEALTH_HTTP_CODE" = "200" ]; then
+            echo "✅ Health endpoint responding correctly"
+            # Parse health check details
+            if echo "$HEALTH_BODY" | jq -e '.status == "healthy"' > /dev/null 2>&1; then
+              echo "✅ Application reports healthy status"
+            else
+              echo "⚠️ Application reports non-healthy status"
+              OVERALL_STATUS="degraded"
+              ISSUES_FOUND="$ISSUES_FOUND\n- Application health status not healthy"
+            fi
+          else
+            echo "❌ Health endpoint failed with HTTP $HEALTH_HTTP_CODE"
+            OVERALL_STATUS="unhealthy"
+            ISSUES_FOUND="$ISSUES_FOUND\n- Health endpoint returning HTTP $HEALTH_HTTP_CODE"
+          fi
+          
+          # Test main application endpoint
+          echo "Testing main application..."
+          MAIN_RESPONSE=$(curl -s -w "%{http_code}" "$MAIN_URL" || echo "000")
+          MAIN_HTTP_CODE="${MAIN_RESPONSE: -3}"
+          
+          echo "Main app HTTP code: $MAIN_HTTP_CODE"
+          
+          if [ "$MAIN_HTTP_CODE" = "200" ]; then
+            echo "✅ Main application responding correctly"
+          else
+            echo "❌ Main application failed with HTTP $MAIN_HTTP_CODE"
+            OVERALL_STATUS="unhealthy"
+            ISSUES_FOUND="$ISSUES_FOUND\n- Main application returning HTTP $MAIN_HTTP_CODE"
+          fi
+          
+          # Test critical API endpoints
+          echo "Testing critical API endpoints..."
+          EVENTS_RESPONSE=$(curl -s -w "%{http_code}" "$MAIN_URL/api/events" || echo "000")
+          EVENTS_HTTP_CODE="${EVENTS_RESPONSE: -3}"
+          
+          if [ "$EVENTS_HTTP_CODE" = "200" ]; then
+            echo "✅ Events API responding correctly"
+          else
+            echo "⚠️ Events API returned HTTP $EVENTS_HTTP_CODE"
+            if [ "$OVERALL_STATUS" = "healthy" ]; then
+              OVERALL_STATUS="degraded"
+            fi
+            ISSUES_FOUND="$ISSUES_FOUND\n- Events API returning HTTP $EVENTS_HTTP_CODE"
+          fi
+          
+          # Set outputs
+          echo "overall_status=$OVERALL_STATUS" >> $GITHUB_OUTPUT
+          echo "health_http_code=$HEALTH_HTTP_CODE" >> $GITHUB_OUTPUT
+          echo "main_http_code=$MAIN_HTTP_CODE" >> $GITHUB_OUTPUT
+          echo "events_http_code=$EVENTS_HTTP_CODE" >> $GITHUB_OUTPUT
+          
+          if [ -n "$ISSUES_FOUND" ]; then
+            # Remove leading newline
+            ISSUES_CLEAN=$(echo -e "$ISSUES_FOUND" | sed '/^$/d')
+            echo "issues_found<<EOF" >> $GITHUB_OUTPUT
+            echo "$ISSUES_CLEAN" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          fi
+
+      - name: ⚡ Performance Monitoring
+        id: performance-monitoring
+        if: github.event.inputs.monitoring_type != 'health-only'
+        run: |
+          echo "⚡ Starting performance monitoring..."
+          
+          MAIN_URL="https://local-loop.vercel.app"
+          HEALTH_URL="https://local-loop.vercel.app/api/health"
+          
+          # Measure response times
+          echo "Measuring response times..."
+          
+          # Main page response time
+          MAIN_TIME=$(curl -o /dev/null -s -w "%{time_total}" "$MAIN_URL" || echo "0")
+          echo "Main page response time: ${MAIN_TIME}s"
+          
+          # Health endpoint response time
+          HEALTH_TIME=$(curl -o /dev/null -s -w "%{time_total}" "$HEALTH_URL" || echo "0")
+          echo "Health endpoint response time: ${HEALTH_TIME}s"
+          
+          # API response time
+          API_TIME=$(curl -o /dev/null -s -w "%{time_total}" "$MAIN_URL/api/events" || echo "0")
+          echo "API response time: ${API_TIME}s"
+          
+          # Performance thresholds (in seconds)
+          MAIN_THRESHOLD=3.0
+          HEALTH_THRESHOLD=1.0
+          API_THRESHOLD=2.0
+          
+          PERFORMANCE_ISSUES=""
+          
+          # Check thresholds
+          if [ "$(echo "$MAIN_TIME > $MAIN_THRESHOLD" | bc -l 2>/dev/null || echo 0)" = "1" ]; then
+            echo "⚠️ Main page response time exceeds threshold (${MAIN_TIME}s > ${MAIN_THRESHOLD}s)"
+            PERFORMANCE_ISSUES="$PERFORMANCE_ISSUES\n- Main page slow: ${MAIN_TIME}s"
+          fi
+          
+          if [ "$(echo "$HEALTH_TIME > $HEALTH_THRESHOLD" | bc -l 2>/dev/null || echo 0)" = "1" ]; then
+            echo "⚠️ Health endpoint response time exceeds threshold (${HEALTH_TIME}s > ${HEALTH_THRESHOLD}s)"
+            PERFORMANCE_ISSUES="$PERFORMANCE_ISSUES\n- Health endpoint slow: ${HEALTH_TIME}s"
+          fi
+          
+          if [ "$(echo "$API_TIME > $API_THRESHOLD" | bc -l 2>/dev/null || echo 0)" = "1" ]; then
+            echo "⚠️ API response time exceeds threshold (${API_TIME}s > ${API_THRESHOLD}s)"
+            PERFORMANCE_ISSUES="$PERFORMANCE_ISSUES\n- API slow: ${API_TIME}s"
+          fi
+          
+          # Set outputs
+          echo "main_response_time=$MAIN_TIME" >> $GITHUB_OUTPUT
+          echo "health_response_time=$HEALTH_TIME" >> $GITHUB_OUTPUT
+          echo "api_response_time=$API_TIME" >> $GITHUB_OUTPUT
+          
+          if [ -n "$PERFORMANCE_ISSUES" ]; then
+            echo "performance_issues<<EOF" >> $GITHUB_OUTPUT
+            echo -e "$PERFORMANCE_ISSUES" | sed '/^$/d' >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          fi
+
+      - name: 🚨 Alert on Critical Issues
+        if: |
+          steps.deployment-status.outputs.deployment_failed == 'true' ||
+          steps.health-monitoring.outputs.overall_status == 'unhealthy' ||
+          (steps.health-monitoring.outputs.overall_status == 'degraded' && github.event_name == 'workflow_run')
+        run: |
+          echo "🚨 CRITICAL ALERT: Production issues detected!"
+          echo "=========================="
+          echo "Timestamp: $(date -u +%Y-%m-%dT%H:%M:%S.%3NZ)"
+          echo "Trigger: ${{ steps.deployment-status.outputs.triggered_by }}"
+          
+          if [ "${{ steps.deployment-status.outputs.deployment_failed }}" = "true" ]; then
+            echo "🔴 DEPLOYMENT FAILURE"
+            echo "- CI/CD Pipeline failed"
+            echo "- Check workflow: https://github.com/${{ github.repository }}/actions/runs/${{ github.event.workflow_run.id }}"
+          fi
+          
+          if [ "${{ steps.health-monitoring.outputs.overall_status }}" = "unhealthy" ]; then
+            echo "🔴 APPLICATION UNHEALTHY"
+            echo "Issues found:"
+            echo "${{ steps.health-monitoring.outputs.issues_found }}"
+          elif [ "${{ steps.health-monitoring.outputs.overall_status }}" = "degraded" ]; then
+            echo "🟡 APPLICATION DEGRADED"
+            echo "Issues found:"
+            echo "${{ steps.health-monitoring.outputs.issues_found }}"
+          fi
+          
+          echo ""
+          echo "🔗 Monitor dashboard: https://github.com/${{ github.repository }}/actions"
+          echo "🏥 Health check: https://local-loop.vercel.app/api/health"
+          echo "📊 Application: https://local-loop.vercel.app"
+
+      - name: ⚠️ Alert on Performance Issues
+        if: steps.performance-monitoring.outputs.performance_issues != ''
+        run: |
+          echo "⚠️ PERFORMANCE ALERT: Slow response times detected"
+          echo "=========================="
+          echo "Timestamp: $(date -u +%Y-%m-%dT%H:%M:%S.%3NZ)"
+          echo ""
+          echo "Performance issues:"
+          echo "${{ steps.performance-monitoring.outputs.performance_issues }}"
+          echo ""
+          echo "Current response times:"
+          echo "- Main page: ${{ steps.performance-monitoring.outputs.main_response_time }}s"
+          echo "- Health endpoint: ${{ steps.performance-monitoring.outputs.health_response_time }}s"
+          echo "- API: ${{ steps.performance-monitoring.outputs.api_response_time }}s"
+
+      - name: 📊 Log Monitoring Summary
+        if: always()
+        run: |
+          echo "📊 Monitoring Summary"
+          echo "===================="
+          echo "Timestamp: $(date -u +%Y-%m-%dT%H:%M:%S.%3NZ)"
+          echo "Trigger: ${{ steps.deployment-status.outputs.triggered_by }}"
+          echo "Deployment Status: ${{ steps.deployment-status.outputs.deployment_status }}"
+          
+          if [ "${{ github.event.inputs.monitoring_type }}" != "performance-only" ]; then
+            echo "Health Status: ${{ steps.health-monitoring.outputs.overall_status }}"
+            echo "Health Endpoint: HTTP ${{ steps.health-monitoring.outputs.health_http_code }}"
+            echo "Main App: HTTP ${{ steps.health-monitoring.outputs.main_http_code }}"
+            echo "Events API: HTTP ${{ steps.health-monitoring.outputs.events_http_code }}"
+          fi
+          
+          if [ "${{ github.event.inputs.monitoring_type }}" != "health-only" ]; then
+            echo "Main Response Time: ${{ steps.performance-monitoring.outputs.main_response_time }}s"
+            echo "Health Response Time: ${{ steps.performance-monitoring.outputs.health_response_time }}s"
+            echo "API Response Time: ${{ steps.performance-monitoring.outputs.api_response_time }}s"
+          fi 

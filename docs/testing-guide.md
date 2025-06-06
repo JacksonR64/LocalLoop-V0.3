@@ -60,7 +60,7 @@
 ### File Organization
 
 ```
-LocalLoop-V0.3/
+LocalLoop/
 ├── tests/
 │   ├── unit/                    # Unit tests
 │   ├── integration/             # Integration tests

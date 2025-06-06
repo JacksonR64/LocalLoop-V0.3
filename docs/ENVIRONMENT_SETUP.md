@@ -5,7 +5,7 @@
 LocalLoop follows Next.js standard environment file conventions:
 
 ```
-LocalLoop-V0.3/
+LocalLoop/
 ├── .env                    # Server-side only, committed to git
 ├── .env.local             # Local development, gitignored (ADD YOUR SECRETS HERE)
 ├── .env.example           # Template showing required variables, committed to git
@@ -102,7 +102,7 @@ When working with this project:
 
 1. **Primary File**: Always check `.env.local` first for current configuration
 2. **Adding Variables**: Use terminal commands to append to `.env.local`
-3. **File Locations**: All .env files are in project root (`/Users/jacksonrhoden/Code/LocalLoop-V0.3/`)
+3. **File Locations**: All .env files are in project root (`/Users/jacksonrhoden/Code/LocalLoop/`)
 4. **Security**: Never attempt to read secret values, only verify structure
 5. **Restart Required**: Remind user to restart dev server after env changes
 

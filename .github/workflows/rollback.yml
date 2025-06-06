@@ -1,0 +1,147 @@
+name: 🔄 Rollback Deployment
+
+on:
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Reason for rollback'
+        required: true
+        default: 'Manual rollback requested'
+      target_deployment:
+        description: 'Deployment ID to rollback to (leave empty for previous)'
+        required: false
+        default: ''
+
+jobs:
+  rollback:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+        
+      - name: 🔍 Get Previous Successful Deployment
+        id: get-previous
+        run: |
+          echo "🔍 Finding previous successful deployment..."
+          
+          # Get list of deployments from Vercel
+          DEPLOYMENTS=$(curl -s \
+            -H "Authorization: Bearer ${{ secrets.VERCEL_TOKEN }}" \
+            "https://api.vercel.com/v6/deployments?projectId=${{ secrets.VERCEL_PROJECT_ID }}&limit=10")
+          
+          # Find the most recent successful deployment that isn't the current one
+          CURRENT_DEPLOYMENT=$(echo "$DEPLOYMENTS" | jq -r '.deployments[0].uid // empty')
+          
+          # Look for previous successful deployment
+          PREVIOUS_DEPLOYMENT=""
+          for i in $(seq 1 9); do
+            DEPLOYMENT=$(echo "$DEPLOYMENTS" | jq -r ".deployments[$i] // empty")
+            if [ "$DEPLOYMENT" != "null" ] && [ "$DEPLOYMENT" != "" ]; then
+              STATE=$(echo "$DEPLOYMENT" | jq -r '.state // empty')
+              UID=$(echo "$DEPLOYMENT" | jq -r '.uid // empty')
+              
+              if [ "$STATE" = "READY" ] && [ "$UID" != "$CURRENT_DEPLOYMENT" ]; then
+                PREVIOUS_DEPLOYMENT="$UID"
+                echo "Found previous successful deployment: $PREVIOUS_DEPLOYMENT"
+                break
+              fi
+            fi
+          done
+          
+          if [ -z "$PREVIOUS_DEPLOYMENT" ]; then
+            echo "❌ No previous successful deployment found"
+            exit 1
+          fi
+          
+          echo "previous_deployment=$PREVIOUS_DEPLOYMENT" >> $GITHUB_OUTPUT
+
+      - name: 🔄 Execute Rollback
+        id: rollback
+        run: |
+          TARGET_DEPLOYMENT="${{ github.event.inputs.target_deployment }}"
+          if [ -z "$TARGET_DEPLOYMENT" ]; then
+            TARGET_DEPLOYMENT="${{ steps.get-previous.outputs.previous_deployment }}"
+          fi
+          
+          echo "🔄 Rolling back to deployment: $TARGET_DEPLOYMENT"
+          echo "📝 Reason: ${{ github.event.inputs.reason }}"
+          
+          # Promote the previous deployment to production
+          ROLLBACK_RESPONSE=$(curl -s -X PATCH \
+            -H "Authorization: Bearer ${{ secrets.VERCEL_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            "https://api.vercel.com/v9/projects/${{ secrets.VERCEL_PROJECT_ID }}/deployments/$TARGET_DEPLOYMENT/promote" \
+            -d '{"target":"production"}')
+          
+          echo "Rollback response: $ROLLBACK_RESPONSE"
+          
+          # Check if rollback was successful
+          if echo "$ROLLBACK_RESPONSE" | jq -e '.error' > /dev/null; then
+            echo "❌ Rollback failed:"
+            echo "$ROLLBACK_RESPONSE" | jq '.error'
+            exit 1
+          fi
+          
+          echo "✅ Rollback initiated successfully"
+          echo "deployment_id=$TARGET_DEPLOYMENT" >> $GITHUB_OUTPUT
+
+      - name: ⏳ Wait for Rollback to Complete
+        run: |
+          echo "⏳ Waiting for rollback to complete..."
+          sleep 60
+          
+      - name: 🏥 Verify Rollback Health
+        run: |
+          echo "🏥 Verifying rolled-back deployment health..."
+          
+          MAX_ATTEMPTS=3
+          DELAY=20
+          URL="https://local-loop.vercel.app/api/health"
+          
+          for i in $(seq 1 $MAX_ATTEMPTS); do
+            echo "Health check attempt $i/$MAX_ATTEMPTS..."
+            
+            RESPONSE=$(curl -s -w "%{http_code}" "$URL" || echo "000")
+            HTTP_CODE="${RESPONSE: -3}"
+            BODY="${RESPONSE%???}"
+            
+            echo "HTTP Code: $HTTP_CODE"
+            
+            if [ "$HTTP_CODE" = "200" ]; then
+              echo "✅ Rollback health check passed!"
+              echo "🔄 Successfully rolled back to deployment: ${{ steps.rollback.outputs.deployment_id }}"
+              echo "📝 Rollback reason: ${{ github.event.inputs.reason }}"
+              exit 0
+            else
+              echo "⚠️ Health check failed with HTTP $HTTP_CODE"
+              echo "Response: $BODY"
+            fi
+            
+            if [ $i -lt $MAX_ATTEMPTS ]; then
+              echo "⏳ Waiting ${DELAY}s before retry..."
+              sleep $DELAY
+            fi
+          done
+          
+          echo "❌ Rollback health verification failed"
+          echo "🚨 Manual intervention required"
+          exit 1
+
+      - name: 📝 Log Rollback Event
+        if: always()
+        run: |
+          echo "📝 Logging rollback event..."
+          echo "Timestamp: $(date -u +%Y-%m-%dT%H:%M:%S.%3NZ)"
+          echo "Deployment rolled back to: ${{ steps.rollback.outputs.deployment_id }}"
+          echo "Reason: ${{ github.event.inputs.reason }}"
+          echo "Triggered by: ${{ github.actor }}"
+          echo "Workflow run: ${{ github.run_id }}"
+
+      - name: 🚨 Notify Team on Failure
+        if: failure()
+        run: |
+          echo "🚨 CRITICAL: Rollback operation failed!"
+          echo "⚠️ Manual intervention is required immediately"
+          echo "🔗 Check workflow: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          echo "📧 Please notify the development team immediately" 

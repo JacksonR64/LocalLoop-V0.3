@@ -425,6 +425,6 @@
 2025-06-06T12:19:13.9826877Z Snapshots:   0 total
 2025-06-06T12:19:13.9827273Z Time:        10.618 s
 2025-06-06T12:19:13.9827647Z Ran all test suites.
-2025-06-06T12:19:13.9886298Z 📊 Test reports generated in /home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/reports
+2025-06-06T12:19:13.9886298Z 📊 Test reports generated in /home/runner/work/LocalLoop/LocalLoop/reports
 2025-06-06T12:19:13.9892416Z 📈 Coverage: 4%
 2025-06-06T12:19:13.9892876Z ⏱️  Total runtime: 2.67s

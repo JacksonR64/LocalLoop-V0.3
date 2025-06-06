@@ -13,7 +13,7 @@ playwright-report/
 2025-06-06T16:39:26.6585661Z   NODE_VERSION: 18
 2025-06-06T16:39:26.6585839Z ##[endgroup]
 2025-06-06T16:39:27.0948520Z Multiple search paths detected. Calculating the least common ancestor of all paths
-2025-06-06T16:39:27.0950529Z The least common ancestor is /home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3. This will be the root directory of the artifact
+2025-06-06T16:39:27.0950529Z The least common ancestor is /home/runner/work/LocalLoop/LocalLoop. This will be the root directory of the artifact
 2025-06-06T16:39:27.0951693Z With the provided path, there will be 503 files uploaded
 2025-06-06T16:39:27.0955163Z Artifact name is valid!
 2025-06-06T16:39:27.0955647Z Root directory input is valid!
@@ -28,4 +28,4 @@ playwright-report/
 2025-06-06T16:39:29.2848743Z Finalizing artifact upload
 2025-06-06T16:39:29.3708798Z Artifact e2e-results.zip successfully finalized. Artifact ID 3277438998
 2025-06-06T16:39:29.3710332Z Artifact e2e-results has been successfully uploaded! Final size is 33641435 bytes. Artifact ID is 3277438998
-2025-06-06T16:39:29.3718830Z Artifact download URL: https://github.com/JacksonR64/LocalLoop-V0.3/actions/runs/15495148720/artifacts/3277438998
+2025-06-06T16:39:29.3718830Z Artifact download URL: https://github.com/JacksonR64/LocalLoop/actions/runs/15495148720/artifacts/3277438998

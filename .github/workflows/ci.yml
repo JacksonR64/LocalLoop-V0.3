@@ -141,65 +141,76 @@ jobs:
     name: 🚀 Deploy
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    needs: [build, test]
+    needs: [build, test, e2e]
 
     steps:
       - name: 📥 Checkout code
         uses: actions/checkout@v4
 
       - name: 🚀 Deploy to Vercel
-        id: deploy
         uses: amondnet/vercel-action@v25
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          vercel-args: '--prod'
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel-args: '--prod'
 
-      - name: 🏥 Verify Health Check
+  health-check:
+    needs: [deploy]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+      - name: 🏥 Wait for deployment to be ready
+        run: sleep 30
+        
+      - name: 🏥 Health Check with Retry Logic
+        id: health-check
         run: |
-          echo "Waiting for deployment to be ready..."
-          sleep 30
+          MAX_ATTEMPTS=5
+          DELAY=15
+          URL="https://local-loop.vercel.app/api/health"
           
-          # Test health endpoint
-          HEALTH_URL="${{ steps.deploy.outputs.preview-url }}/api/health"
-          if [ -z "$HEALTH_URL" ]; then
-            HEALTH_URL="https://local-loop.vercel.app/api/health"
-          fi
+          echo "🔍 Starting health check for $URL"
           
-          echo "Testing health endpoint: $HEALTH_URL"
-          
-          for i in {1..5}; do
-            echo "Health check attempt $i/5..."
+          for i in $(seq 1 $MAX_ATTEMPTS); do
+            echo "Attempt $i/$MAX_ATTEMPTS..."
             
-            RESPONSE=$(curl -s -w "%{http_code}" -o response.json "$HEALTH_URL" || echo "000")
-            HTTP_CODE=${RESPONSE: -3}
+            RESPONSE=$(curl -s -w "%{http_code}" "$URL" || echo "000")
+            HTTP_CODE="${RESPONSE: -3}"
+            BODY="${RESPONSE%???}"
+            
+            echo "HTTP Code: $HTTP_CODE"
             
             if [ "$HTTP_CODE" = "200" ]; then
               echo "✅ Health check passed!"
-              echo "Response:"
-              cat response.json | jq .
+              echo "Response: $BODY"
+              echo "success=true" >> $GITHUB_OUTPUT
               exit 0
+            elif [ "$HTTP_CODE" = "503" ]; then
+              echo "⚠️ Service temporarily unavailable (503). Retrying..."
             else
-              echo "❌ Health check failed with status: $HTTP_CODE"
-              if [ -f response.json ]; then
-                echo "Response body:"
-                cat response.json
-              fi
+              echo "❌ Health check failed with HTTP $HTTP_CODE"
+              echo "Response: $BODY"
             fi
             
-            if [ $i -lt 5 ]; then
-              echo "Retrying in 15 seconds..."
-              sleep 15
+            if [ $i -lt $MAX_ATTEMPTS ]; then
+              echo "⏳ Waiting ${DELAY}s before retry..."
+              sleep $DELAY
             fi
           done
           
-          echo "❌ Health check failed after 5 attempts"
+          echo "❌ Health check failed after $MAX_ATTEMPTS attempts"
+          echo "success=false" >> $GITHUB_OUTPUT
           exit 1
 
-      - name: 🎉 Deployment Success
-        if: success()
+      - name: 🚨 Trigger Rollback on Health Check Failure  
+        if: steps.health-check.outputs.success == 'false'
         run: |
-          echo "🎉 LocalLoop successfully deployed to production!"
-          echo "🔗 URL: ${{ steps.deploy.outputs.preview-url || 'https://local-loop.vercel.app' }}"
-          echo "✅ Health checks: PASSED"
+          echo "🚨 Deployment health check failed - triggering rollback workflow"
+          curl -X POST \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/${{ github.repository }}/actions/workflows/rollback.yml/dispatches \
+            -d '{"ref":"main","inputs":{"reason":"Health check failure after deployment"}}'

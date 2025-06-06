@@ -3,7 +3,7 @@
 2025-06-06T11:55:11.2440254Z git version 2.49.0
 2025-06-06T11:55:11.2487488Z Temporarily overriding HOME='/home/runner/work/_temp/6f1e0c44-8feb-4790-92db-6641a8cad39b' before making global git config changes
 2025-06-06T11:55:11.2489668Z Adding repository directory to the temporary git global config as a safe directory
-2025-06-06T11:55:11.2494520Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3
+2025-06-06T11:55:11.2494520Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/LocalLoop/LocalLoop
 2025-06-06T11:55:11.2539919Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
 2025-06-06T11:55:11.2577855Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
 2025-06-06T11:55:11.2916528Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader

@@ -38,7 +38,7 @@
 2025-06-06T12:17:36.0800752Z Complete job name: 🔍 Code Quality
 2025-06-06T12:17:36.1462049Z ##[group]Run actions/checkout@v4
 2025-06-06T12:17:36.1462907Z with:
-2025-06-06T12:17:36.1463313Z   repository: JacksonR64/LocalLoop-V0.3
+2025-06-06T12:17:36.1463313Z   repository: JacksonR64/LocalLoop
 2025-06-06T12:17:36.1464007Z   token: ***
 2025-06-06T12:17:36.1464376Z   ssh-strict: true
 2025-06-06T12:17:36.1464949Z   ssh-user: git
@@ -54,18 +54,18 @@
 2025-06-06T12:17:36.1469309Z env:
 2025-06-06T12:17:36.1469668Z   NODE_VERSION: 18
 2025-06-06T12:17:36.1470041Z ##[endgroup]
-2025-06-06T12:17:36.2665957Z Syncing repository: JacksonR64/LocalLoop-V0.3
+2025-06-06T12:17:36.2665957Z Syncing repository: JacksonR64/LocalLoop
 2025-06-06T12:17:36.2668664Z ##[group]Getting Git version info
-2025-06-06T12:17:36.2669940Z Working directory is '/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3'
+2025-06-06T12:17:36.2669940Z Working directory is '/home/runner/work/LocalLoop/LocalLoop'
 2025-06-06T12:17:36.2671625Z [command]/usr/bin/git version
 2025-06-06T12:17:36.2755542Z git version 2.49.0
 2025-06-06T12:17:36.2784464Z ##[endgroup]
 2025-06-06T12:17:36.2801896Z Temporarily overriding HOME='/home/runner/work/_temp/91e83e5a-9e16-459e-9507-35cf5cbd5d82' before making global git config changes
 2025-06-06T12:17:36.2805610Z Adding repository directory to the temporary git global config as a safe directory
-2025-06-06T12:17:36.2820498Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3
-2025-06-06T12:17:36.3681357Z Deleting the contents of '/home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3'
+2025-06-06T12:17:36.2820498Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/LocalLoop/LocalLoop
+2025-06-06T12:17:36.3681357Z Deleting the contents of '/home/runner/work/LocalLoop/LocalLoop'
 2025-06-06T12:17:36.3683890Z ##[group]Initializing the repository
-2025-06-06T12:17:36.3685708Z [command]/usr/bin/git init /home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3
+2025-06-06T12:17:36.3685708Z [command]/usr/bin/git init /home/runner/work/LocalLoop/LocalLoop
 2025-06-06T12:17:36.3688616Z hint: Using 'master' as the name for the initial branch. This default branch name
 2025-06-06T12:17:36.3690164Z hint: is subject to change. To configure the initial branch name to use in all
 2025-06-06T12:17:36.3691629Z hint: of your new repositories, which will suppress this warning, call:
@@ -76,8 +76,8 @@
 2025-06-06T12:17:36.3697029Z hint: 'development'. The just-created branch can be renamed via this command:
 2025-06-06T12:17:36.3698258Z hint:
 2025-06-06T12:17:36.3698890Z hint: 	git branch -m <name>
-2025-06-06T12:17:36.3700117Z Initialized empty Git repository in /home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3/.git/
-2025-06-06T12:17:36.3702897Z [command]/usr/bin/git remote add origin https://github.com/JacksonR64/LocalLoop-V0.3
+2025-06-06T12:17:36.3700117Z Initialized empty Git repository in /home/runner/work/LocalLoop/LocalLoop/.git/
+2025-06-06T12:17:36.3702897Z [command]/usr/bin/git remote add origin https://github.com/JacksonR64/LocalLoop
 2025-06-06T12:17:36.3706094Z ##[endgroup]
 2025-06-06T12:17:36.3707282Z ##[group]Disabling automatic garbage collection
 2025-06-06T12:17:36.3708316Z [command]/usr/bin/git config --local gc.auto 0
@@ -91,7 +91,7 @@
 2025-06-06T12:17:36.3959430Z ##[endgroup]
 2025-06-06T12:17:36.3962440Z ##[group]Fetching the repository
 2025-06-06T12:17:36.3980433Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +65f6327f578ea8183f74c15d5d3002d8d48b3a57:refs/remotes/origin/fix/ci-pipeline
-2025-06-06T12:17:37.2371077Z From https://github.com/JacksonR64/LocalLoop-V0.3
+2025-06-06T12:17:37.2371077Z From https://github.com/JacksonR64/LocalLoop
 2025-06-06T12:17:37.2372827Z  * [new ref]         65f6327f578ea8183f74c15d5d3002d8d48b3a57 -> origin/fix/ci-pipeline
 2025-06-06T12:17:37.2400468Z ##[endgroup]
 2025-06-06T12:17:37.2401839Z ##[group]Determining the checkout info
@@ -128,7 +128,7 @@
 2025-06-06T12:17:40.7889272Z Received 134217728 of 201999962 (66.4%), 63.9 MBs/sec
 2025-06-06T12:17:41.2712701Z Received 201999962 of 201999962 (100.0%), 77.5 MBs/sec
 2025-06-06T12:17:41.2723102Z Cache Size: ~193 MB (201999962 B)
-2025-06-06T12:17:41.2748524Z [command]/usr/bin/tar -xf /home/runner/work/_temp/731e0fe4-cfe1-4a76-8313-f065fb76f688/cache.tzst -P -C /home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3 --use-compress-program unzstd
+2025-06-06T12:17:41.2748524Z [command]/usr/bin/tar -xf /home/runner/work/_temp/731e0fe4-cfe1-4a76-8313-f065fb76f688/cache.tzst -P -C /home/runner/work/LocalLoop/LocalLoop --use-compress-program unzstd
 2025-06-06T12:17:41.7449432Z Cache restored successfully
 2025-06-06T12:17:41.7866647Z Cache restored from key: node-cache-Linux-x64-npm-2be94d80918732632554aac3646f7ebd6a7b87a8da6fd4ec5f1428c609b1c779
 2025-06-06T12:17:41.8043510Z ##[group]Run npm ci --legacy-peer-deps
@@ -215,7 +215,7 @@
 2025-06-06T12:18:29.5802296Z git version 2.49.0
 2025-06-06T12:18:29.5849073Z Temporarily overriding HOME='/home/runner/work/_temp/3eb5c504-a919-4a06-92bb-2ec5388ad001' before making global git config changes
 2025-06-06T12:18:29.5851823Z Adding repository directory to the temporary git global config as a safe directory
-2025-06-06T12:18:29.5856471Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3
+2025-06-06T12:18:29.5856471Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/LocalLoop/LocalLoop
 2025-06-06T12:18:29.5904131Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
 2025-06-06T12:18:29.5940020Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
 2025-06-06T12:18:29.6246457Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader

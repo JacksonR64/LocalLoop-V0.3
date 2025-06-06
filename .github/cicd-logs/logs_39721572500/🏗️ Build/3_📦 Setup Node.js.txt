@@ -20,6 +20,6 @@
 2025-06-06T11:36:45.9934946Z Received 130023424 of 201999962 (64.4%), 123.9 MBs/sec
 2025-06-06T11:36:46.5090755Z Received 201999962 of 201999962 (100.0%), 127.1 MBs/sec
 2025-06-06T11:36:46.5100439Z Cache Size: ~193 MB (201999962 B)
-2025-06-06T11:36:46.5158324Z [command]/usr/bin/tar -xf /home/runner/work/_temp/db76505f-9d31-417e-8109-702c23b5cf8d/cache.tzst -P -C /home/runner/work/LocalLoop-V0.3/LocalLoop-V0.3 --use-compress-program unzstd
+2025-06-06T11:36:46.5158324Z [command]/usr/bin/tar -xf /home/runner/work/_temp/db76505f-9d31-417e-8109-702c23b5cf8d/cache.tzst -P -C /home/runner/work/LocalLoop/LocalLoop --use-compress-program unzstd
 2025-06-06T11:36:47.0003932Z Cache restored successfully
 2025-06-06T11:36:47.0410833Z Cache restored from key: node-cache-Linux-x64-npm-2be94d80918732632554aac3646f7ebd6a7b87a8da6fd4ec5f1428c609b1c779
