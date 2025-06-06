@@ -1,11 +1,11 @@
 {
-  "timestamp": "2025-06-06T19:20:17.235Z",
+  "timestamp": "2025-06-06T19:34:15.164Z",
   "summary": {
     "total": 125,
     "passed": 125,
     "failed": 0,
     "pending": 0,
-    "runtime": 933,
+    "runtime": 929,
     "coverage": null
   },
   "testFiles": [
@@ -15,37 +15,7 @@
       "tests": 8,
       "passed": 8,
       "failed": 0,
-      "runtime": 436,
-      "coverage": null,
-      "slowTests": []
-    },
-    {
-      "file": "/tests/integration/database-validation.test.ts",
-      "status": "passed",
-      "tests": 11,
-      "passed": 11,
-      "failed": 0,
-      "runtime": 62,
-      "coverage": null,
-      "slowTests": []
-    },
-    {
-      "file": "/lib/utils/__tests__/ticket-utils.test.ts",
-      "status": "passed",
-      "tests": 53,
-      "passed": 53,
-      "failed": 0,
-      "runtime": 56,
-      "coverage": null,
-      "slowTests": []
-    },
-    {
-      "file": "/lib/utils/__tests__/eventFilters.test.ts",
-      "status": "passed",
-      "tests": 25,
-      "passed": 25,
-      "failed": 0,
-      "runtime": 45,
+      "runtime": 425,
       "coverage": null,
       "slowTests": []
     },
@@ -55,7 +25,7 @@
       "tests": 15,
       "passed": 15,
       "failed": 0,
-      "runtime": 216,
+      "runtime": 231,
       "coverage": null,
       "slowTests": []
     },
@@ -65,7 +35,27 @@
       "tests": 2,
       "passed": 2,
       "failed": 0,
-      "runtime": 71,
+      "runtime": 73,
+      "coverage": null,
+      "slowTests": []
+    },
+    {
+      "file": "/tests/integration/database-validation.test.ts",
+      "status": "passed",
+      "tests": 11,
+      "passed": 11,
+      "failed": 0,
+      "runtime": 56,
+      "coverage": null,
+      "slowTests": []
+    },
+    {
+      "file": "/lib/utils/__tests__/ticket-utils.test.ts",
+      "status": "passed",
+      "tests": 53,
+      "passed": 53,
+      "failed": 0,
+      "runtime": 55,
       "coverage": null,
       "slowTests": []
     },
@@ -75,20 +65,30 @@
       "tests": 11,
       "passed": 11,
       "failed": 0,
-      "runtime": 47,
+      "runtime": 45,
+      "coverage": null,
+      "slowTests": []
+    },
+    {
+      "file": "/lib/utils/__tests__/eventFilters.test.ts",
+      "status": "passed",
+      "tests": 25,
+      "passed": 25,
+      "failed": 0,
+      "runtime": 44,
       "coverage": null,
       "slowTests": []
     }
   ],
   "performance": {
     "slowestTests": [],
-    "averageTestDuration": 2,
-    "totalRuntime": 933
+    "averageTestDuration": 3,
+    "totalRuntime": 929
   },
   "trends": {
     "testCount": 125,
     "passRate": 100,
-    "runtime": 933,
-    "timestamp": "2025-06-06T19:20:17.236Z"
+    "runtime": 929,
+    "timestamp": "2025-06-06T19:34:15.164Z"
   }
 }
