@@ -1,294 +1,260 @@
-# LocalLoop Database Deployment Guide
+# 🚀 LocalLoop Production Deployment Guide
 
-This guide covers deploying the LocalLoop database schema to Supabase, including all tables, constraints, computed columns, indexes, and Row-Level Security policies.
+## Overview
 
-## 🎯 Overview
+LocalLoop uses a fully automated CI/CD pipeline with GitHub Actions and Vercel for production deployments. This guide covers the complete deployment process, monitoring, and rollback procedures.
 
-The LocalLoop database schema includes:
-- **6 core tables**: users, events, rsvps, orders, tickets, ticket_types
-- **Google Calendar API integration**: OAuth token storage, event templates, integration tracking
-- **31 strategic indexes**: Performance optimization for search, filtering, and Google Calendar operations
-- **35+ constraints**: Business logic enforcement and data integrity
-- **21 computed columns**: Real-time calculations for dashboards and analytics
-- **Comprehensive RLS policies**: Multi-tenant security with role-based access
+## 📋 Deployment Architecture
 
-## 🚀 Quick Deployment (Recommended)
+```
+┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
+│   GitHub        │    │  GitHub Actions  │    │     Vercel      │
+│   Repository    │───▶│   CI/CD Pipeline │───▶│   Production    │
+│   (main branch) │    │                  │    │   Environment   │
+└─────────────────┘    └──────────────────┘    └─────────────────┘
+                                │
+                                ▼
+                       ┌──────────────────┐
+                       │   Monitoring &   │
+                       │     Alerting     │
+                       └──────────────────┘
+```
 
-### Option 1: Single Script Deployment
+## 🔄 CI/CD Pipeline Stages
 
-1. **Open Supabase Dashboard**
-   - Go to [supabase.com](https://supabase.com) 
-   - Open your project
-   - Navigate to SQL Editor
+### 1. **Code Quality & Build**
+- ESLint code quality checks
+- TypeScript compilation verification
+- Next.js production build generation
+- Asset optimization and bundling
 
-2. **Execute Deployment Script**
-   ```sql
-   -- Copy and paste the entire contents of scripts/deploy-to-supabase.sql
-   -- into the Supabase SQL Editor and run it
+### 2. **Testing**
+- Unit tests (Jest)
+- Integration tests
+- E2E tests (Playwright cross-browser)
+- Test coverage verification
+
+### 3. **Deployment**
+- Vercel production deployment
+- Environment variable validation
+- Database connectivity verification
+
+### 4. **Post-Deployment Verification**
+- Health check endpoint testing (5 attempts, 15s intervals)
+- Smoke tests for critical functionality
+- Performance monitoring
+- Automatic rollback on failure
+
+### 5. **Monitoring**
+- Continuous health monitoring (every 15 minutes)
+- Performance metrics tracking
+- Alert notifications on issues
+
+## 🚀 Deployment Process
+
+### Automatic Deployment (Recommended)
+
+1. **Push to Main Branch**
+   ```bash
+   git push origin main
    ```
 
-3. **Verify Deployment**
-   - Check that all tables are created in the Table Editor
-   - Verify RLS policies are enabled
-   - Test basic operations
+2. **Pipeline Execution**
+   - GitHub Actions automatically triggers CI/CD pipeline
+   - All stages run sequentially with failure protection
+   - Deployment occurs only if all tests pass
 
-### Option 2: Supabase CLI Deployment
+3. **Verification**
+   - Monitor pipeline progress at: `https://github.com/JacksonR64/LocalLoop/actions`
+   - Check deployment status: `https://local-loop.vercel.app/api/health`
 
-```bash
-# Install Supabase CLI if not already installed
-npm install -g supabase
+### Manual Deployment
 
-# Login to Supabase
-supabase login
+1. **Trigger via GitHub Actions UI**
+   - Navigate to Actions tab in GitHub repository
+   - Select "🚀 CI/CD Pipeline" workflow
+   - Click "Run workflow" and select main branch
 
-# Initialize local project (if not done)
-supabase init
+## 📊 Health Monitoring
 
-# Link to your remote project
-supabase link --project-ref YOUR_PROJECT_REF
+### Health Check Endpoint
+- **URL**: `https://local-loop.vercel.app/api/health`
+- **Response Format**:
+  ```json
+  {
+    "status": "healthy",
+    "environment": "production",
+    "timestamp": "2024-01-01T00:00:00.000Z",
+    "responseTime": 150,
+    "services": {
+      "database": {
+        "status": "healthy",
+        "responseTime": 45
+      },
+      "app": {
+        "status": "healthy",
+        "uptime": 3600000,
+        "memoryUsage": "85.2 MB"
+      }
+    }
+  }
+  ```
 
-# Deploy the schema
-supabase db push
+### Monitoring Capabilities
+- **Automatic**: Triggered after deployments
+- **Scheduled**: Every 15 minutes
+- **Manual**: Via GitHub Actions UI
+- **Endpoints Monitored**:
+  - Health endpoint (`/api/health`)
+  - Main application (`/`)
+  - Events API (`/api/events`)
 
-# Or apply migration directly
-psql -h YOUR_DB_HOST -U postgres -d postgres -f scripts/deploy-to-supabase.sql
-```
+### Performance Thresholds
+- Main Application: 3 seconds
+- Health Endpoint: 1 second
+- API Endpoints: 2 seconds
 
-## 📋 Manual Step-by-Step Deployment
+## 🔄 Rollback Procedures
 
-If you prefer to deploy in stages or need to troubleshoot:
+### Automatic Rollback
+- Triggers when health checks fail 5 consecutive times
+- Reverts to previous successful deployment
+- Sends notifications to team
+- Re-runs health checks after rollback
 
-### Step 1: Enable Extensions
-```sql
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-CREATE EXTENSION IF NOT EXISTS "pgcrypto";
-```
+### Manual Rollback
 
-### Step 2: Create Helper Functions
-```sql
--- Copy from scripts/deploy-to-supabase.sql
--- STEP 2: HELPER FUNCTIONS section
-```
+1. **Via GitHub Actions UI**:
+   - Go to Actions → "🔄 Rollback Deployment"
+   - Click "Run workflow"
+   - Provide rollback reason
+   - Optionally specify target deployment ID
 
-### Step 3: Create Tables
-```sql
--- Copy from scripts/deploy-to-supabase.sql
--- STEP 3: CREATE TABLES section
-```
+2. **Emergency Command Line** (if needed):
+   ```bash
+   # Via Vercel CLI (requires setup)
+   vercel rollback <deployment-url>
+   ```
 
-### Step 4: Add Computed Columns
-```sql
--- Copy from scripts/deploy-to-supabase.sql
--- STEP 4: CREATE COMPUTED COLUMNS section
-```
+## 🏗️ Environment Configuration
 
-### Step 5: Create Indexes
-```sql
--- Copy from scripts/deploy-to-supabase.sql
--- STEP 5: CREATE INDEXES section
-```
+### Production Environment Variables
+Located in GitHub Secrets and Vercel environment:
 
-### Step 6: Set Up Triggers
-```sql
--- Copy from scripts/deploy-to-supabase.sql
--- STEP 6: CREATE TRIGGERS section
-```
+#### Required Variables
+- `SUPABASE_URL` - Production Supabase URL
+- `SUPABASE_ANON_KEY` - Production Supabase anonymous key
+- `SUPABASE_SERVICE_ROLE_KEY` - Service role key
+- `STRIPE_SECRET_KEY` - Stripe secret key
+- `STRIPE_PUBLISHABLE_KEY` - Stripe publishable key
+- `STRIPE_WEBHOOK_SECRET` - Webhook endpoint secret
+- `GOOGLE_CLIENT_ID` - Google OAuth client ID
+- `GOOGLE_CLIENT_SECRET` - Google OAuth secret
+- `NEXTAUTH_SECRET` - NextAuth secret
+- `NEXTAUTH_URL` - Production URL
 
-### Step 7: Enable RLS and Create Policies
-```sql
--- Copy from scripts/deploy-to-supabase.sql
--- STEP 7-9: RLS sections
-```
+#### CI/CD Secrets
+- `VERCEL_TOKEN` - Vercel deployment token
+- `VERCEL_ORG_ID` - Vercel organization ID
+- `VERCEL_PROJECT_ID` - Vercel project ID
 
-## 🔧 Configuration After Deployment
-
-### 1. Environment Variables
-
-Add these to your Next.js application's `.env.local`:
-
-```env
-# Supabase Configuration
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
-
-# Google Calendar API (CLIENT REQUIREMENT)
-GOOGLE_CLIENT_ID=your_google_oauth_client_id
-GOOGLE_CLIENT_SECRET=your_google_oauth_client_secret
-GOOGLE_REDIRECT_URI=http://localhost:3000/api/auth/google/callback
-
-# Stripe (for paid events)
-STRIPE_SECRET_KEY=your_stripe_secret_key
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
-```
-
-### 2. Google Calendar API Setup
-
-1. **Create Google Cloud Project**
-   - Go to [Google Cloud Console](https://console.cloud.google.com)
-   - Create a new project or select existing one
-
-2. **Enable Google Calendar API**
-   - Navigate to APIs & Services > Library
-   - Search for "Google Calendar API" and enable it
-
-3. **Create OAuth 2.0 Credentials**
-   - Go to APIs & Services > Credentials
-   - Create OAuth 2.0 Client ID
-   - Add authorized redirect URIs:
-     - `http://localhost:3000/api/auth/google/callback` (development)
-     - `https://your-domain.com/api/auth/google/callback` (production)
-
-4. **Configure OAuth Consent Screen**
-   - Add necessary scopes: `https://www.googleapis.com/auth/calendar`
-   - Add test users during development
-
-### 3. Stripe Setup (for paid events)
-
-1. **Create Stripe Account**
-   - Sign up at [stripe.com](https://stripe.com)
-   - Complete account verification
-
-2. **Get API Keys**
-   - Navigate to Developers > API Keys
-   - Copy Publishable Key and Secret Key
-
-3. **Configure Webhooks**
-   - Add webhook endpoint: `https://your-domain.com/api/webhooks/stripe`
-   - Select events: `payment_intent.succeeded`, `payment_intent.payment_failed`
-
-## ✅ Testing the Schema
-
-Run the comprehensive test suite:
-
-```bash
-# Test schema files for syntax and consistency
-node scripts/test-schema.js
-
-# Validate SQL syntax
-node scripts/validate-sql.js
-```
-
-Expected output:
-```
-✅ All 25+ tests passed! 🎉
-Database schema is ready for deployment.
-```
-
-## 🔍 Verification Checklist
-
-After deployment, verify these components:
-
-### Tables and Structure
-- [ ] All 6 tables created (users, events, rsvps, orders, tickets, ticket_types)
-- [ ] All columns present with correct data types
-- [ ] Primary keys and foreign keys properly configured
-- [ ] Google Calendar integration fields present
-
-### Indexes and Performance
-- [ ] 31 indexes created successfully
-- [ ] Full-text search index on events working
-- [ ] Google Calendar integration indexes present
-- [ ] Query performance optimized for expected workloads
-
-### Security (RLS)
-- [ ] Row-Level Security enabled on all tables
-- [ ] User can only see their own data
-- [ ] Event organizers can manage their events
-- [ ] Guest users (email-based) access working
-- [ ] Admin users have appropriate access
-
-### Business Logic
-- [ ] Constraints prevent invalid data states
-- [ ] Time validation working (start < end time)
-- [ ] Capacity checks functioning
-- [ ] Google Calendar token consistency enforced
-
-### Computed Columns
-- [ ] Event status calculated correctly
-- [ ] RSVP counts accurate
-- [ ] Calendar integration status working
-- [ ] Dashboard analytics functioning
-
-## 🐛 Troubleshooting
+## 🔧 Troubleshooting
 
 ### Common Issues
 
-**1. Extension Errors**
-```sql
--- If uuid-ossp extension fails
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp" SCHEMA public;
+#### Health Check Failures
+```bash
+# Check production logs
+vercel logs <deployment-url>
+
+# Test health endpoint locally
+curl https://local-loop.vercel.app/api/health
 ```
 
-**2. RLS Policy Errors**
-```sql
--- Check if policies already exist
-SELECT schemaname, tablename, policyname 
-FROM pg_policies 
-WHERE tablename IN ('users', 'events', 'rsvps', 'orders', 'tickets', 'ticket_types');
-```
+#### Database Connection Issues
+- Verify Supabase credentials in environment
+- Check Supabase service status
+- Review connection pool settings
 
-**3. Index Creation Failures**
-```sql
--- Check existing indexes
-SELECT indexname, tablename 
-FROM pg_indexes 
-WHERE tablename IN ('users', 'events', 'rsvps', 'orders', 'tickets', 'ticket_types');
-```
+#### Build Failures
+- Check GitHub Actions logs
+- Verify all dependencies are installed
+- Ensure TypeScript compilation passes
 
-**4. Function Errors**
-```sql
--- Verify auth schema functions
-SELECT routine_name 
-FROM information_schema.routines 
-WHERE routine_schema = 'auth';
-```
+#### Deployment Failures
+- Review Vercel deployment logs
+- Check environment variable configuration
+- Verify domain configuration
 
-### Performance Monitoring
+### Emergency Contacts
+- **Platform Issues**: Check Vercel status page
+- **Database Issues**: Check Supabase status page
+- **CI/CD Issues**: Review GitHub Actions logs
 
-Monitor these key metrics after deployment:
+## 📈 Performance Monitoring
 
-```sql
--- Check index usage
-SELECT schemaname, tablename, attname, n_distinct, correlation
-FROM pg_stats
-WHERE tablename IN ('events', 'rsvps', 'orders');
+### Key Metrics
+- Response time monitoring
+- Error rate tracking
+- Database query performance
+- User session analytics
 
--- Monitor query performance
-SELECT query, mean_time, calls
-FROM pg_stat_statements
-WHERE query ILIKE '%events%'
-ORDER BY mean_time DESC;
-```
+### Monitoring Tools
+- Built-in health checks
+- GitHub Actions monitoring
+- Vercel analytics dashboard
+- Supabase dashboard
 
-## 📚 Next Steps
+## 🔐 Security
 
-After successful deployment:
+### Deployment Security
+- All secrets stored in GitHub Secrets
+- Environment variable encryption
+- Secure token management
+- Access control for production
 
-1. **Test Google Calendar Integration**
-   - Implement OAuth flow in application
-   - Test event creation and calendar syncing
-   - Verify retry logic for failed calendar operations
+### Code Security
+- Automated dependency scanning
+- ESLint security rules
+- Production build optimization
+- Secure headers configuration
 
-2. **Implement Application Layer**
-   - Create Supabase client configuration
-   - Build API routes for CRUD operations
-   - Add error handling and validation
+## 📝 Deployment Checklist
 
-3. **Set Up Monitoring**
-   - Enable Supabase database insights
-   - Configure alerts for critical metrics
-   - Set up logging for Google Calendar API calls
+### Pre-Deployment
+- [ ] All tests passing locally
+- [ ] Code reviewed and approved
+- [ ] Environment variables verified
+- [ ] Database migrations tested
 
-4. **Security Review**
-   - Test RLS policies with different user roles
-   - Validate data access patterns
-   - Review and audit permissions
+### During Deployment
+- [ ] Monitor CI/CD pipeline progress
+- [ ] Watch for build/test failures
+- [ ] Verify deployment completion
+- [ ] Check health endpoint response
 
-## 🎉 Success!
+### Post-Deployment
+- [ ] Verify critical functionality
+- [ ] Check performance metrics
+- [ ] Monitor error rates
+- [ ] Confirm monitoring active
 
-If all verification steps pass, your LocalLoop database schema is successfully deployed and ready for application development with full Google Calendar API integration support!
+### Rollback (if needed)
+- [ ] Identify root cause
+- [ ] Execute rollback procedure
+- [ ] Verify rollback success
+- [ ] Plan fix deployment
+
+## 📞 Support
+
+For deployment issues:
+1. Check this documentation
+2. Review GitHub Actions logs
+3. Check Vercel deployment logs
+4. Contact development team
 
 ---
 
-*For additional support, refer to the [Supabase Documentation](https://supabase.com/docs) and [Google Calendar API Documentation](https://developers.google.com/calendar).* 
+**Last Updated**: January 2024  
+**Document Version**: 1.0  
+**Pipeline Version**: Latest CI/CD with health checks and rollback 
