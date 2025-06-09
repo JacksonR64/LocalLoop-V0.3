@@ -57,7 +57,7 @@ export async function signInWithGoogle() {
     const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-            redirectTo: `${window.location.origin}/auth/callback`,
+            redirectTo: `${process.env.NEXT_PUBLIC_APP_URL || window.location.origin}/auth/callback`,
         },
     })
 
@@ -73,7 +73,7 @@ export async function signInWithApple() {
     const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'apple',
         options: {
-            redirectTo: `${window.location.origin}/auth/callback`,
+            redirectTo: `${process.env.NEXT_PUBLIC_APP_URL || window.location.origin}/auth/callback`,
         },
     })
 
@@ -118,7 +118,7 @@ export async function getUser(): Promise<User | null> {
 // Reset password
 export async function resetPassword(email: string) {
     const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/auth/reset-password`,
+        redirectTo: `${process.env.NEXT_PUBLIC_APP_URL || window.location.origin}/auth/reset-password`,
     })
 
     if (error) {
