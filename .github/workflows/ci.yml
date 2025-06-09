@@ -170,7 +170,7 @@ jobs:
         run: |
           MAX_ATTEMPTS=5
           DELAY=15
-          URL="https://local-loop.vercel.app/api/health"
+          URL="https://local-loop-qa.vercel.app/api/health"
           
           echo "🔍 Starting health check for $URL"
           

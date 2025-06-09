@@ -4,6 +4,8 @@
 > **Connect Communities Through Events** 🌟  
 > Complete event management solution with Google Calendar integration, Stripe payments, and real-time analytics.
 
+🚀 **[Live Application](https://local-loop-qa.vercel.app)** | 📱 **Mobile-First Design** | 🔒 **Production Ready**
+
 ---
 
 ## 📋 **Client Brief Achievement Summary**
@@ -70,33 +72,98 @@
 🎫 **RSVP Management** - Handle registrations with capacity limits and waitlists  
 📧 **Automated Communications** - Email confirmations, reminders, and updates  
 🔒 **Secure Authentication** - Google OAuth integration with role-based access  
-📱 **Mobile-First Design** - Responsive interface for all devices  
+📱 **Mobile-First Design** - Responsive interface optimized for all devices  
 
 ---
 
-## 🧪 **Test Account Information**
+## 🚀 **Getting Started**
 
-### **Staff/Organizer Account**
-- **Email**: `staff@localloop.demo`
-- **Password**: `LocalLoop2024!`
-- **Access Level**: Full event management capabilities
+### **For Event Organizers**
+1. **Visit**: [https://local-loop-qa.vercel.app](https://local-loop-qa.vercel.app)
+2. **Sign in** with your Google account
+3. **Create your first event** using the intuitive event creation flow
+4. **Manage attendees** through the comprehensive staff dashboard
+5. **Track performance** with real-time analytics and reporting
 
-### **Regular User Account**
-- **Email**: `user@localloop.demo`  
-- **Password**: `LocalLoop2024!`
-- **Access Level**: Event browsing and RSVP functionality
-
-### **Demo Google Calendar**
-- **Email**: `demo@localloop.calendar`
-- **Purpose**: Pre-configured for calendar integration testing
-
-> **Note**: Use Google OAuth for the best experience with calendar integration
+### **For Event Attendees**
+1. **Browse events** in your local area
+2. **RSVP or purchase tickets** with secure payment processing
+3. **Add events to your calendar** with one-click Google Calendar integration
+4. **Receive automated reminders** and updates about your events
 
 ---
 
-## 🚀 **Quick Start**
+## 🛠️ **Core Features**
 
-### **1. Clone & Setup**
+### **🎪 Event Management**
+- **Rich Event Creation**: Detailed event descriptions, images, and scheduling
+- **Multiple Ticket Types**: Various pricing tiers and capacity management
+- **Waitlist Handling**: Automatic waitlist when events reach capacity
+- **Event Categories**: Organize by type, location, and target audience
+
+### **📅 Calendar Integration**
+- **Google Calendar Sync**: Two-way synchronization with Google Calendar
+- **Add to Calendar**: One-click calendar additions for attendees
+- **Smart Reminders**: Automated email reminders before events
+- **Conflict Detection**: Intelligent scheduling conflict resolution
+
+### **💳 Payment Processing**
+- **Stripe Integration**: Secure, PCI-compliant payment processing
+- **Multiple Payment Methods**: Credit cards, digital wallets, and more
+- **Refund Management**: Automated refund processing with configurable policies
+- **Revenue Analytics**: Real-time revenue tracking and comprehensive reporting
+
+### **👥 User Management**
+- **Role-Based Access**: Organizers, staff, and attendee permission levels
+- **Google OAuth**: Secure authentication with Google accounts
+- **Profile Management**: User profiles with event history and preferences
+- **Staff Dashboard**: Administrative interface for comprehensive event management
+
+### **📊 Analytics & Reporting**
+- **Event Performance**: Track attendance rates, revenue, and engagement metrics
+- **Real-time Dashboards**: Live event monitoring and analytics
+- **Export Capabilities**: CSV exports for external analysis and reporting
+- **Custom Reports**: Configurable reporting for different stakeholder needs
+
+---
+
+## 🏗️ **Technical Architecture**
+
+### **Frontend**
+- **Next.js 15**: React framework with App Router for optimal performance
+- **TypeScript**: Full type safety across the entire application
+- **Tailwind CSS**: Utility-first styling with custom design system
+- **Shadcn/UI**: Modern component library with built-in accessibility
+
+### **Backend**
+- **Supabase**: PostgreSQL database with real-time subscriptions
+- **Row Level Security**: Database-level security policies for data protection
+- **Edge Functions**: Serverless functions for complex business operations
+- **Real-time Updates**: Live event updates and instant notifications
+
+### **Integrations**
+- **Google Calendar API**: Complete calendar synchronization and management
+- **Stripe API**: Payment processing and comprehensive webhook handling
+- **Resend**: Reliable transactional email delivery
+- **Vercel**: Professional deployment and hosting platform
+
+### **Quality & Testing**
+- **Playwright**: End-to-end testing across multiple browsers
+- **Jest**: Comprehensive unit testing for components and utilities
+- **ESLint**: Code quality enforcement and consistency
+- **TypeScript**: Compile-time error detection and prevention
+
+---
+
+## 🚀 **Development Setup**
+
+### **Prerequisites**
+- Node.js 18+ and npm
+- Supabase account and project
+- Google Cloud Console project with Calendar API enabled
+- Stripe account with API keys
+
+### **1. Clone & Install**
 ```bash
 git clone https://github.com/JacksonR64/LocalLoop.git
 cd LocalLoop
@@ -106,86 +173,21 @@ npm install
 ### **2. Environment Configuration**
 ```bash
 cp .env.example .env.local
-# Edit .env.local with your API keys and configuration
+# Configure your environment variables (see below)
 ```
 
 ### **3. Database Setup**
 ```bash
-# Setup Supabase database
-npm run db:setup
-
-# Run migrations
-npm run db:migrate
+# Initialize Supabase database with schema
+npx supabase db push
 ```
 
-### **4. Start Development**
+### **4. Start Development Server**
 ```bash
 npm run dev
 ```
 
-**That's it!** 🎉 Open http://localhost:3000 and start managing events.
-
----
-
-## 🛠️ **Core Features**
-
-### **🎪 Event Management**
-- **Create Events**: Rich event creation with descriptions, images, and scheduling
-- **Ticket Types**: Multiple ticket tiers with different pricing and capacity
-- **Capacity Management**: Automatic waitlist handling when events reach capacity
-- **Event Categories**: Organize events by type, location, and audience
-
-### **📅 Calendar Integration**
-- **Google Calendar Sync**: Two-way synchronization with Google Calendar
-- **Add to Calendar**: One-click calendar additions for attendees
-- **Reminder System**: Automated email reminders before events
-- **Schedule Conflicts**: Intelligent conflict detection and resolution
-
-### **💳 Payment Processing**
-- **Stripe Integration**: Secure payment processing with PCI compliance
-- **Multiple Payment Methods**: Credit cards, digital wallets, and bank transfers
-- **Refund Management**: Automated refund processing with configurable policies
-- **Revenue Analytics**: Real-time revenue tracking and reporting
-
-### **👥 User Management**
-- **Role-Based Access**: Organizers, staff, and attendee permissions
-- **Google OAuth**: Secure authentication with Google accounts
-- **Profile Management**: User profiles with event history and preferences
-- **Staff Dashboard**: Administrative interface for event management
-
-### **📊 Analytics & Reporting**
-- **Event Performance**: Attendance rates, revenue, and engagement metrics
-- **Real-time Dashboards**: Live event monitoring and analytics
-- **Export Capabilities**: CSV exports for external analysis
-- **Custom Reports**: Configurable reporting for different stakeholders
-
----
-
-## 🏗️ **Technical Architecture**
-
-### **Frontend**
-- **Next.js 15**: React framework with App Router
-- **TypeScript**: Full type safety across the application
-- **Tailwind CSS**: Utility-first styling with custom design system
-- **Shadcn/UI**: Modern component library with accessibility
-
-### **Backend**
-- **Supabase**: PostgreSQL database with real-time subscriptions
-- **Row Level Security**: Database-level security policies
-- **Edge Functions**: Serverless functions for complex operations
-- **Real-time Updates**: Live event updates and notifications
-
-### **Integrations**
-- **Google Calendar API**: Calendar synchronization and management
-- **Stripe API**: Payment processing and webhook handling
-- **Resend**: Transactional email delivery
-- **Vercel**: Deployment and hosting platform
-
-### **Testing & Quality**
-- **Playwright**: End-to-end testing across browsers
-- **Jest**: Unit testing for components and utilities
-- **ESLint**: Code quality and consistency
-- **TypeScript**: Compile-time error detection
+Open [http://localhost:3000](http://localhost:3000) to access the development environment.
 
 ---
 
@@ -195,173 +197,98 @@ npm run dev
 
 | Variable | Purpose | Where to Get |
 |----------|---------|--------------|
+| `NEXT_PUBLIC_APP_URL` | Production URL | Your deployment URL |
 | `SUPABASE_URL` | Database connection | [Supabase Dashboard](https://supabase.com/dashboard/project/_/settings/api) |
-| `SUPABASE_ANON_KEY` | Client-side access | [Supabase Dashboard](https://supabase.com/dashboard/project/_/settings/api) |
-| `SUPABASE_SERVICE_ROLE_KEY` | Admin operations | [Supabase Dashboard](https://supabase.com/dashboard/project/_/settings/api) |
-| `GOOGLE_CLIENT_ID` | Google OAuth | [Google Cloud Console](https://console.cloud.google.com/apis/credentials) |
-| `GOOGLE_CLIENT_SECRET` | Google OAuth | [Google Cloud Console](https://console.cloud.google.com/apis/credentials) |
-| `STRIPE_PUBLISHABLE_KEY` | Payment processing | [Stripe Dashboard](https://dashboard.stripe.com/apikeys) |
-| `STRIPE_SECRET_KEY` | Payment processing | [Stripe Dashboard](https://dashboard.stripe.com/apikeys) |
-| `STRIPE_WEBHOOK_SECRET` | Webhook verification | [Stripe Dashboard](https://dashboard.stripe.com/webhooks) |
-| `RESEND_API_KEY` | Email delivery | [Resend Dashboard](https://resend.com/api-keys) |
+| `SUPABASE_ANON_KEY` | Client-side database access | [Supabase Dashboard](https://supabase.com/dashboard/project/_/settings/api) |
+| `SUPABASE_SERVICE_ROLE_KEY` | Admin database operations | [Supabase Dashboard](https://supabase.com/dashboard/project/_/settings/api) |
+| `GOOGLE_CLIENT_ID` | Google OAuth authentication | [Google Cloud Console](https://console.cloud.google.com/apis/credentials) |
+| `GOOGLE_CLIENT_SECRET` | Google OAuth authentication | [Google Cloud Console](https://console.cloud.google.com/apis/credentials) |
+| `GOOGLE_REDIRECT_URI` | OAuth callback URL | `{YOUR_DOMAIN}/api/auth/google/callback` |
+| `STRIPE_PUBLISHABLE_KEY` | Client-side payment processing | [Stripe Dashboard](https://dashboard.stripe.com/apikeys) |
+| `STRIPE_SECRET_KEY` | Server-side payment processing | [Stripe Dashboard](https://dashboard.stripe.com/apikeys) |
+| `STRIPE_WEBHOOK_SECRET` | Webhook signature verification | [Stripe Dashboard](https://dashboard.stripe.com/webhooks) |
+| `RESEND_API_KEY` | Email notifications | [Resend Dashboard](https://resend.com/api-keys) |
 
-### **Optional Configuration**
-
-| Variable | Purpose | Default |
-|----------|---------|---------|
-| `NEXT_PUBLIC_APP_URL` | Application URL | `http://localhost:3000` |
-| `NEXTAUTH_SECRET` | Session encryption | Auto-generated |
-| `NEXTAUTH_URL` | Auth callback URL | `NEXT_PUBLIC_APP_URL` |
-
----
-
-## 🚀 **Deployment**
-
-### **Vercel (Recommended)**
-1. Connect your GitHub repository to Vercel
-2. Configure environment variables in Vercel dashboard
-3. Deploy automatically on every push to main
-
-### **Manual Deployment**
+### **Development Environment**
 ```bash
-# Build the application
-npm run build
-
-# Start production server
-npm start
-```
-
-### **CI/CD Pipeline**
-Automated deployment pipeline includes:
-- ✅ TypeScript compilation
-- ✅ ESLint code quality checks
-- ✅ Playwright end-to-end tests
-- ✅ Build verification
-- ✅ Deployment to production
-
----
-
-## 📁 **Project Structure**
-
-```text
-LocalLoop/
-├── 📁 app/                   # Next.js App Router
-│   ├── api/                 # API routes
-│   ├── auth/                # Authentication pages
-│   ├── events/              # Event management
-│   └── staff/               # Staff dashboard
-├── 📁 components/           # React components
-│   ├── auth/                # Authentication components
-│   ├── events/              # Event-related components
-│   ├── dashboard/           # Dashboard components
-│   └── ui/                  # Reusable UI components
-├── 📁 lib/                  # Utilities and configurations
-│   ├── database/            # Database utilities
-│   ├── emails/              # Email templates
-│   ├── hooks/               # Custom React hooks
-│   └── utils/               # Helper functions
-├── 📁 e2e/                  # Playwright tests
-├── 📁 docs/                 # Documentation
-├── 📁 scripts/              # Utility scripts
-└── 📁 memory-bank/          # Development context
+# Example .env.local
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+SUPABASE_URL=your_supabase_url
+SUPABASE_ANON_KEY=your_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+GOOGLE_REDIRECT_URI=http://localhost:3000/api/auth/google/callback
+STRIPE_PUBLISHABLE_KEY=pk_test_...
+STRIPE_SECRET_KEY=sk_test_...
+RESEND_API_KEY=re_...
 ```
 
 ---
 
 ## 🧪 **Testing**
 
-### **End-to-End Testing**
+### **Run Test Suite**
 ```bash
-# Run all E2E tests
+# Unit tests
+npm test
+
+# End-to-end tests
 npm run test:e2e
 
-# Run tests in headed mode
-npm run test:e2e:headed
-
-# Run specific test file
-npx playwright test auth.spec.ts
+# All tests with coverage
+npm run test:ci
 ```
 
-### **Unit Testing**
-```bash
-# Run unit tests
-npm run test
-
-# Run tests in watch mode
-npm run test:watch
-
-# Generate coverage report
-npm run test:coverage
-```
-
-### **Performance Testing**
-```bash
-# Run Lighthouse performance tests
-npm run test:performance
-
-# Run load testing
-npm run test:load
-```
+### **Test Coverage**
+- **Unit Tests**: Component logic and utility functions
+- **Integration Tests**: API endpoints and database operations
+- **E2E Tests**: Complete user workflows across browsers
+- **Performance Tests**: Load testing and optimization validation
 
 ---
 
-## 🔧 **Development**
+## 📦 **Deployment**
 
-### **Database Management**
+### **Production Deployment**
+The application is automatically deployed to Vercel on every push to the `main` branch.
+
+**Live URL**: [https://local-loop-qa.vercel.app](https://local-loop-qa.vercel.app)
+
+### **Manual Deployment**
 ```bash
-# Reset database
-npm run db:reset
+# Build for production
+npm run build
 
-# Generate types
-npm run db:types
-
-# Run migrations
-npm run db:migrate
+# Deploy to Vercel
+npx vercel --prod
 ```
 
-### **Code Quality**
-```bash
-# Run linting
-npm run lint
-
-# Fix linting issues
-npm run lint:fix
-
-# Format code
-npm run format
-```
-
-### **Development Tools**
-- **Hot Reload**: Instant updates during development
-- **Type Safety**: Full TypeScript integration
-- **Error Boundaries**: Graceful error handling
-- **Development Logging**: Detailed logging for debugging
-
----
-
-## 📊 **Performance**
-
-### **Metrics**
-- **Lighthouse Score**: 95+ across all categories
-- **Core Web Vitals**: Optimized for user experience
-- **Bundle Size**: Optimized with code splitting
-- **Database Performance**: Indexed queries and caching
-
-### **Optimizations**
-- **Image Optimization**: Next.js automatic image optimization
-- **Code Splitting**: Route-based and component-based splitting
-- **Caching**: Strategic caching at multiple levels
-- **CDN**: Global content delivery via Vercel Edge Network
+### **Environment Setup**
+1. Configure all required environment variables in your deployment platform
+2. Set up Supabase database with production credentials
+3. Configure Google Cloud Console with production redirect URIs
+4. Set up Stripe webhooks pointing to your production domain
+5. Configure Resend for transactional email delivery
 
 ---
 
 ## 🤝 **Contributing**
 
+### **Development Workflow**
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+3. Make your changes with appropriate tests
+4. Ensure all tests pass (`npm run test:ci`)
+5. Commit your changes (`git commit -m 'Add amazing feature'`)
+6. Push to the branch (`git push origin feature/amazing-feature`)
+7. Open a Pull Request
+
+### **Code Standards**
+- **TypeScript**: All code must be properly typed
+- **Testing**: New features require corresponding tests
+- **Linting**: Code must pass ESLint checks
+- **Documentation**: Update documentation for significant changes
 
 ---
 
@@ -371,17 +298,14 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-## 🙏 **Built With**
+## 🙏 **Acknowledgments**
 
-- [Next.js 15](https://nextjs.org/) - React framework
-- [Supabase](https://supabase.com/) - Backend as a service
-- [TypeScript](https://www.typescriptlang.org/) - Type safety
-- [Tailwind CSS](https://tailwindcss.com/) - Styling framework
-- [Stripe](https://stripe.com/) - Payment processing
-- [Google Calendar API](https://developers.google.com/calendar) - Calendar integration
-- [Playwright](https://playwright.dev/) - End-to-end testing
-- [Resend](https://resend.com/) - Email delivery
+- **Next.js Team** for the outstanding React framework
+- **Supabase** for the comprehensive backend platform
+- **Stripe** for secure payment processing infrastructure
+- **Google** for Calendar API integration capabilities
+- **Vercel** for seamless deployment and hosting
 
 ---
 
-**Ready to connect your community through events? Let's get started! 🚀**
+**🎪 Ready to transform your local community events? [Get started now!](https://local-loop-qa.vercel.app)**

@@ -66,6 +66,16 @@ Thumbs.db
 *.sln
 *.sw?
 
+# AI and Development Process Files (keep local only)
+.cursor/
+memory-bank/
+.taskmasterconfig
+tasks/
+scripts/
+docs/
+reports/
+reports-temp/
+
 # Temporary files
 *.tmp
 *.temp
@@ -89,7 +99,6 @@ coverage/
 .swc/
 
 # Build tools and reports
-reports/
 lighthouse-report/
 
 # Local configuration
