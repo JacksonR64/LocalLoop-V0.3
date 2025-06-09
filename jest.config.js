@@ -118,8 +118,7 @@ const customJestConfig = {
   // Restore mocks after each test
   restoreMocks: true,
   
-  // Enhanced test result processing
-  testResultsProcessor: '<rootDir>/scripts/test-results-processor.js',
+  // Enhanced test result processing - removed processor file during cleanup
   
   // Report slow tests
   slowTestThreshold: 5,
