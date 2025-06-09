@@ -34,7 +34,8 @@ export async function GET(request: NextRequest) {
         // Handle OAuth authorization denied
         if (error) {
             console.log(`[ERROR] OAuth authorization denied: ${error}`)
-            const redirectUrl = new URL('/auth/google/callback', request.url)
+            const baseUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'
+            const redirectUrl = new URL('/auth/google/callback', baseUrl)
             redirectUrl.searchParams.set('error', 'access_denied')
             redirectUrl.searchParams.set('message', 'Google Calendar access was denied')
             return NextResponse.redirect(redirectUrl)
@@ -43,7 +44,8 @@ export async function GET(request: NextRequest) {
         // Validate required parameters
         if (!code || !state) {
             console.error('[ERROR] Missing required OAuth parameters:', { code: !!code, state: !!state })
-            const redirectUrl = new URL('/auth/google/callback', request.url)
+            const baseUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'
+            const redirectUrl = new URL('/auth/google/callback', baseUrl)
             redirectUrl.searchParams.set('error', 'invalid_request')
             redirectUrl.searchParams.set('message', 'Invalid OAuth callback parameters')
             return NextResponse.redirect(redirectUrl)
@@ -58,7 +60,8 @@ export async function GET(request: NextRequest) {
             console.log('[DEBUG] OAuth state parsed successfully:', { userId: oAuthState.userId, action: oAuthState.action })
         } catch (stateError) {
             console.error('[ERROR] Invalid OAuth state parameter:', stateError)
-            const redirectUrl = new URL('/auth/google/callback', request.url)
+            const baseUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'
+            const redirectUrl = new URL('/auth/google/callback', baseUrl)
             redirectUrl.searchParams.set('error', 'invalid_state')
             redirectUrl.searchParams.set('message', 'Invalid security token')
             return NextResponse.redirect(redirectUrl)
@@ -75,7 +78,8 @@ export async function GET(request: NextRequest) {
         // Validate user ID format (basic security check)
         if (!userId || typeof userId !== 'string' || userId.length < 10) {
             console.error('[ERROR] Invalid user ID in OAuth state:', userId)
-            const redirectUrl = new URL('/auth/login', request.url)
+            const baseUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'
+            const redirectUrl = new URL('/auth/login', baseUrl)
             redirectUrl.searchParams.set('message', 'Invalid user session')
             return NextResponse.redirect(redirectUrl)
         }
@@ -90,7 +94,8 @@ export async function GET(request: NextRequest) {
                 stateUserId: oAuthState.userId,
                 currentUserId: user.id
             })
-            const redirectUrl = new URL('/auth/google/callback', request.url)
+            const baseUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'
+            const redirectUrl = new URL('/auth/google/callback', baseUrl)
             redirectUrl.searchParams.set('error', 'user_mismatch')
             redirectUrl.searchParams.set('message', 'Security validation failed')
             return NextResponse.redirect(redirectUrl)
@@ -108,7 +113,8 @@ export async function GET(request: NextRequest) {
             console.log(`[DEBUG] Token exchange successful for user ${user.id}`)
         } catch (tokenError) {
             console.error('[ERROR] Failed to exchange code for tokens:', tokenError)
-            const redirectUrl = new URL('/auth/google/callback', request.url)
+            const baseUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'
+            const redirectUrl = new URL('/auth/google/callback', baseUrl)
             redirectUrl.searchParams.set('error', 'token_exchange_failed')
             redirectUrl.searchParams.set('message', 'Failed to obtain Google Calendar access')
             return NextResponse.redirect(redirectUrl)
@@ -124,7 +130,8 @@ export async function GET(request: NextRequest) {
         const storeResult = await storeCalendarTokens(user.id, tokens)
         if (!storeResult.success) {
             console.error('[ERROR] Failed to store calendar tokens:', storeResult.error)
-            const redirectUrl = new URL('/auth/google/callback', request.url)
+            const baseUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'
+            const redirectUrl = new URL('/auth/google/callback', baseUrl)
             redirectUrl.searchParams.set('error', 'storage_failed')
             redirectUrl.searchParams.set('message', 'Failed to save Google Calendar connection')
             return NextResponse.redirect(redirectUrl)
@@ -168,7 +175,8 @@ export async function GET(request: NextRequest) {
         }
 
         // Redirect to success page with appropriate context
-        const redirectUrl = new URL('/auth/google/callback', request.url)
+        const baseUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.NEXT_PUBLIC_BASE_URL || request.url
+        const redirectUrl = new URL('/auth/google/callback', baseUrl)
         redirectUrl.searchParams.set('success', 'true')
         redirectUrl.searchParams.set('action', oAuthState.action || 'connect')
         redirectUrl.searchParams.set('returnUrl', oAuthState.returnUrl || '/dashboard')
@@ -180,7 +188,8 @@ export async function GET(request: NextRequest) {
     } catch (error) {
         console.error('Unexpected error in OAuth callback:', error)
 
-        const redirectUrl = new URL('/auth/google/callback', request.url)
+        const baseUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'
+        const redirectUrl = new URL('/auth/google/callback', baseUrl)
         redirectUrl.searchParams.set('error', 'unexpected_error')
         redirectUrl.searchParams.set('message', 'An unexpected error occurred')
 
