@@ -103,7 +103,7 @@ const nextConfig: NextConfig = {
   // Force consistent port and set dynamic environment
   env: {
     NEXT_PUBLIC_APP_URL: process.env.NODE_ENV === 'production'
-      ? 'https://your-domain.com'
+      ? 'https://local-loop-qa.vercel.app'
       : 'http://localhost:3000',
   },
 
