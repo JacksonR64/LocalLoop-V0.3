@@ -1,5 +1,0 @@
-2025-06-06T11:55:13.2146094Z Requested labels: ubuntu-latest
-2025-06-06T11:55:13.2146094Z Job defined at: JacksonR64/LocalLoop/.github/workflows/ci.yml@refs/heads/fix/ci-pipeline
-2025-06-06T11:55:13.2146094Z Waiting for a runner to pick up this job...
-2025-06-06T11:55:13.5056536Z Job is waiting for a hosted runner to come online.
-2025-06-06T11:55:13.5056594Z Job is about to start running on the hosted runner: GitHub Actions 1000000134

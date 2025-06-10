@@ -1,5 +1,0 @@
-﻿2025-06-06T09:07:07.6759761Z Post job cleanup.
-2025-06-06T09:07:07.8478658Z [command]/usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /home/runner/work/LocalLoop/LocalLoop --files-from manifest.txt --use-compress-program zstdmt
-2025-06-06T09:07:09.7517136Z Sent 673370 of 201999962 (0.3%), 0.6 MBs/sec
-2025-06-06T09:07:10.7523929Z Sent 201999962 of 201999962 (100.0%), 96.2 MBs/sec
-2025-06-06T09:07:11.0121788Z Cache saved with the key: node-cache-Linux-x64-npm-2be94d80918732632554aac3646f7ebd6a7b87a8da6fd4ec5f1428c609b1c779
