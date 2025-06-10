@@ -8,7 +8,7 @@ on:
 
 # Permissions for GitHub token
 permissions:
-  contents: read
+  contents: write  # Changed to write to allow commit comments
   pull-requests: write
   issues: write
   deployments: write
