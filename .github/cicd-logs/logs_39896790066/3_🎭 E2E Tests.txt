@@ -1,0 +1,568 @@
+﻿2025-06-10T15:27:46.2740456Z Current runner version: '2.325.0'
+2025-06-10T15:27:46.2763828Z ##[group]Runner Image Provisioner
+2025-06-10T15:27:46.2764671Z Hosted Compute Agent
+2025-06-10T15:27:46.2765291Z Version: 20250508.323
+2025-06-10T15:27:46.2765888Z Commit: 81b259f29879f73b4213d199e42d8c3465dae986
+2025-06-10T15:27:46.2766554Z Build Date: 2025-05-08T19:40:08Z
+2025-06-10T15:27:46.2767171Z ##[endgroup]
+2025-06-10T15:27:46.2767713Z ##[group]Operating System
+2025-06-10T15:27:46.2768245Z Ubuntu
+2025-06-10T15:27:46.2768783Z 24.04.2
+2025-06-10T15:27:46.2769251Z LTS
+2025-06-10T15:27:46.2769879Z ##[endgroup]
+2025-06-10T15:27:46.2770437Z ##[group]Runner Image
+2025-06-10T15:27:46.2771008Z Image: ubuntu-24.04
+2025-06-10T15:27:46.2771498Z Version: 20250511.1.0
+2025-06-10T15:27:46.2772552Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20250511.1/images/ubuntu/Ubuntu2404-Readme.md
+2025-06-10T15:27:46.2774018Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20250511.1
+2025-06-10T15:27:46.2775087Z ##[endgroup]
+2025-06-10T15:27:46.2776312Z ##[group]GITHUB_TOKEN Permissions
+2025-06-10T15:27:46.2778209Z Contents: read
+2025-06-10T15:27:46.2778738Z Deployments: write
+2025-06-10T15:27:46.2779241Z Issues: write
+2025-06-10T15:27:46.2780060Z Metadata: read
+2025-06-10T15:27:46.2780573Z PullRequests: write
+2025-06-10T15:27:46.2781063Z ##[endgroup]
+2025-06-10T15:27:46.2783220Z Secret source: Actions
+2025-06-10T15:27:46.2783916Z Prepare workflow directory
+2025-06-10T15:27:46.3202690Z Prepare all required actions
+2025-06-10T15:27:46.3259547Z Getting action download info
+2025-06-10T15:27:46.8040800Z ##[group]Download immutable action package 'actions/checkout@v4'
+2025-06-10T15:27:46.8041933Z Version: 4.2.2
+2025-06-10T15:27:46.8042988Z Digest: sha256:ccb2698953eaebd21c7bf6268a94f9c26518a7e38e27e0b83c1fe1ad049819b1
+2025-06-10T15:27:46.8044119Z Source commit SHA: 11bd71901bbe5b1630ceea73d27597364c9af683
+2025-06-10T15:27:46.8044901Z ##[endgroup]
+2025-06-10T15:27:46.8935045Z ##[group]Download immutable action package 'actions/setup-node@v4'
+2025-06-10T15:27:46.8935868Z Version: 4.4.0
+2025-06-10T15:27:46.8936594Z Digest: sha256:9427cefe82346e992fb5b949e3569b39d537ae41aa3086483b14eceebfc16bc1
+2025-06-10T15:27:46.8937633Z Source commit SHA: 49933ea5288caeca8642d1e84afbd3f7d6820020
+2025-06-10T15:27:46.8938322Z ##[endgroup]
+2025-06-10T15:27:46.9798241Z ##[group]Download immutable action package 'actions/upload-artifact@v4'
+2025-06-10T15:27:46.9799131Z Version: 4.6.2
+2025-06-10T15:27:46.9800176Z Digest: sha256:290722aa3281d5caf23d0acdc3dbeb3424786a1a01a9cc97e72f147225e37c38
+2025-06-10T15:27:46.9801164Z Source commit SHA: ea165f8d65b6e75b540449e92b4886f43607fa02
+2025-06-10T15:27:46.9801961Z ##[endgroup]
+2025-06-10T15:27:47.1653306Z Complete job name: 🎭 E2E Tests
+2025-06-10T15:27:47.2327753Z ##[group]Run actions/checkout@v4
+2025-06-10T15:27:47.2328579Z with:
+2025-06-10T15:27:47.2328979Z   repository: JacksonR64/LocalLoop
+2025-06-10T15:27:47.2329631Z   token: ***
+2025-06-10T15:27:47.2330400Z   ssh-strict: true
+2025-06-10T15:27:47.2330825Z   ssh-user: git
+2025-06-10T15:27:47.2331224Z   persist-credentials: true
+2025-06-10T15:27:47.2331668Z   clean: true
+2025-06-10T15:27:47.2332059Z   sparse-checkout-cone-mode: true
+2025-06-10T15:27:47.2332542Z   fetch-depth: 1
+2025-06-10T15:27:47.2332924Z   fetch-tags: false
+2025-06-10T15:27:47.2333320Z   show-progress: true
+2025-06-10T15:27:47.2333710Z   lfs: false
+2025-06-10T15:27:47.2334076Z   submodules: false
+2025-06-10T15:27:47.2334476Z   set-safe-directory: true
+2025-06-10T15:27:47.2335198Z env:
+2025-06-10T15:27:47.2335559Z   NODE_VERSION: 18
+2025-06-10T15:27:47.2335944Z ##[endgroup]
+2025-06-10T15:27:47.3464086Z Syncing repository: JacksonR64/LocalLoop
+2025-06-10T15:27:47.3465788Z ##[group]Getting Git version info
+2025-06-10T15:27:47.3466524Z Working directory is '/home/runner/work/LocalLoop/LocalLoop'
+2025-06-10T15:27:47.3467464Z [command]/usr/bin/git version
+2025-06-10T15:27:47.3540559Z git version 2.49.0
+2025-06-10T15:27:47.3583428Z ##[endgroup]
+2025-06-10T15:27:47.3603184Z Temporarily overriding HOME='/home/runner/work/_temp/58d1185a-6b33-4973-9a66-f86ec88ef815' before making global git config changes
+2025-06-10T15:27:47.3605085Z Adding repository directory to the temporary git global config as a safe directory
+2025-06-10T15:27:47.3620101Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/LocalLoop/LocalLoop
+2025-06-10T15:27:47.3658818Z Deleting the contents of '/home/runner/work/LocalLoop/LocalLoop'
+2025-06-10T15:27:47.3663246Z ##[group]Initializing the repository
+2025-06-10T15:27:47.3668127Z [command]/usr/bin/git init /home/runner/work/LocalLoop/LocalLoop
+2025-06-10T15:27:47.3736426Z hint: Using 'master' as the name for the initial branch. This default branch name
+2025-06-10T15:27:47.3738090Z hint: is subject to change. To configure the initial branch name to use in all
+2025-06-10T15:27:47.3739158Z hint: of your new repositories, which will suppress this warning, call:
+2025-06-10T15:27:47.3740573Z hint:
+2025-06-10T15:27:47.3741682Z hint: 	git config --global init.defaultBranch <name>
+2025-06-10T15:27:47.3742676Z hint:
+2025-06-10T15:27:47.3743637Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2025-06-10T15:27:47.3745245Z hint: 'development'. The just-created branch can be renamed via this command:
+2025-06-10T15:27:47.3746488Z hint:
+2025-06-10T15:27:47.3747154Z hint: 	git branch -m <name>
+2025-06-10T15:27:47.3748416Z Initialized empty Git repository in /home/runner/work/LocalLoop/LocalLoop/.git/
+2025-06-10T15:27:47.3756391Z [command]/usr/bin/git remote add origin https://github.com/JacksonR64/LocalLoop
+2025-06-10T15:27:47.3791209Z ##[endgroup]
+2025-06-10T15:27:47.3792471Z ##[group]Disabling automatic garbage collection
+2025-06-10T15:27:47.3796144Z [command]/usr/bin/git config --local gc.auto 0
+2025-06-10T15:27:47.3827802Z ##[endgroup]
+2025-06-10T15:27:47.3829032Z ##[group]Setting up auth
+2025-06-10T15:27:47.3835825Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2025-06-10T15:27:47.3868989Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2025-06-10T15:27:47.4172580Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2025-06-10T15:27:47.4202701Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2025-06-10T15:27:47.4423486Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2025-06-10T15:27:47.4466647Z ##[endgroup]
+2025-06-10T15:27:47.4475837Z ##[group]Fetching the repository
+2025-06-10T15:27:47.4478170Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +042635fd6b080b91aed36584d81ef8112bb522b5:refs/remotes/origin/main
+2025-06-10T15:27:48.5102309Z From https://github.com/JacksonR64/LocalLoop
+2025-06-10T15:27:48.5106981Z  * [new ref]         042635fd6b080b91aed36584d81ef8112bb522b5 -> origin/main
+2025-06-10T15:27:48.5129254Z ##[endgroup]
+2025-06-10T15:27:48.5131250Z ##[group]Determining the checkout info
+2025-06-10T15:27:48.5133010Z ##[endgroup]
+2025-06-10T15:27:48.5135864Z [command]/usr/bin/git sparse-checkout disable
+2025-06-10T15:27:48.5172996Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2025-06-10T15:27:48.5199011Z ##[group]Checking out the ref
+2025-06-10T15:27:48.5202691Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2025-06-10T15:27:48.5860240Z Switched to a new branch 'main'
+2025-06-10T15:27:48.5862084Z branch 'main' set up to track 'origin/main'.
+2025-06-10T15:27:48.5872940Z ##[endgroup]
+2025-06-10T15:27:48.5911728Z [command]/usr/bin/git log -1 --format=%H
+2025-06-10T15:27:48.5935625Z 042635fd6b080b91aed36584d81ef8112bb522b5
+2025-06-10T15:27:48.6238274Z ##[group]Run actions/setup-node@v4
+2025-06-10T15:27:48.6239866Z with:
+2025-06-10T15:27:48.6240729Z   node-version: 18
+2025-06-10T15:27:48.6241649Z   cache: npm
+2025-06-10T15:27:48.6242540Z   always-auth: false
+2025-06-10T15:27:48.6243519Z   check-latest: false
+2025-06-10T15:27:48.6244754Z   token: ***
+2025-06-10T15:27:48.6245609Z env:
+2025-06-10T15:27:48.6246431Z   NODE_VERSION: 18
+2025-06-10T15:27:48.6247392Z ##[endgroup]
+2025-06-10T15:27:48.8042394Z Found in cache @ /opt/hostedtoolcache/node/18.20.8/x64
+2025-06-10T15:27:48.8046424Z ##[group]Environment details
+2025-06-10T15:27:49.1470766Z node: v18.20.8
+2025-06-10T15:27:49.1471273Z npm: 10.8.2
+2025-06-10T15:27:49.1471516Z yarn: 1.22.22
+2025-06-10T15:27:49.1472215Z ##[endgroup]
+2025-06-10T15:27:49.1496237Z [command]/opt/hostedtoolcache/node/18.20.8/x64/bin/npm config get cache
+2025-06-10T15:27:49.2839878Z /home/runner/.npm
+2025-06-10T15:27:49.6153767Z Cache hit for: node-cache-Linux-x64-npm-c12c6ac637b018150c9ab8486a2ab8d5c875f0013e7356ae5e08bc546e10a4bd
+2025-06-10T15:27:50.9314644Z Received 4194304 of 202515877 (2.1%), 4.0 MBs/sec
+2025-06-10T15:27:51.9321115Z Received 134217728 of 202515877 (66.3%), 63.9 MBs/sec
+2025-06-10T15:27:52.6002854Z Received 202515877 of 202515877 (100.0%), 72.3 MBs/sec
+2025-06-10T15:27:52.6003984Z Cache Size: ~193 MB (202515877 B)
+2025-06-10T15:27:52.6128907Z [command]/usr/bin/tar -xf /home/runner/work/_temp/ae2e5dce-0e0c-42a7-8a04-1573874a52f6/cache.tzst -P -C /home/runner/work/LocalLoop/LocalLoop --use-compress-program unzstd
+2025-06-10T15:27:53.0257263Z Cache restored successfully
+2025-06-10T15:27:53.0652306Z Cache restored from key: node-cache-Linux-x64-npm-c12c6ac637b018150c9ab8486a2ab8d5c875f0013e7356ae5e08bc546e10a4bd
+2025-06-10T15:27:53.0798717Z ##[group]Run npm ci --legacy-peer-deps
+2025-06-10T15:27:53.0799130Z [36;1mnpm ci --legacy-peer-deps[0m
+2025-06-10T15:27:53.0967140Z shell: /usr/bin/bash -e {0}
+2025-06-10T15:27:53.0967442Z env:
+2025-06-10T15:27:53.0967645Z   NODE_VERSION: 18
+2025-06-10T15:27:53.0967866Z ##[endgroup]
+2025-06-10T15:27:58.1963612Z npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+2025-06-10T15:27:58.4005135Z npm warn deprecated abab@2.0.6: Use your platform's native atob() and btoa() methods instead
+2025-06-10T15:27:58.5083478Z npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+2025-06-10T15:27:58.5866134Z npm warn deprecated domexception@4.0.0: Use your platform's native DOMException instead
+2025-06-10T15:28:06.8330807Z 
+2025-06-10T15:28:06.8331408Z > localloop@0.1.0 prepare
+2025-06-10T15:28:06.8331862Z > husky install
+2025-06-10T15:28:06.8332010Z 
+2025-06-10T15:28:06.8947353Z husky - install command is DEPRECATED
+2025-06-10T15:28:06.9185407Z 
+2025-06-10T15:28:06.9186507Z added 822 packages, and audited 823 packages in 14s
+2025-06-10T15:28:06.9187082Z 
+2025-06-10T15:28:06.9187438Z 184 packages are looking for funding
+2025-06-10T15:28:06.9188169Z   run `npm fund` for details
+2025-06-10T15:28:06.9205868Z 
+2025-06-10T15:28:06.9206121Z found 0 vulnerabilities
+2025-06-10T15:28:07.0075131Z ##[group]Run npx playwright install --with-deps chromium webkit firefox
+2025-06-10T15:28:07.0075657Z [36;1mnpx playwright install --with-deps chromium webkit firefox[0m
+2025-06-10T15:28:07.0127793Z shell: /usr/bin/bash -e {0}
+2025-06-10T15:28:07.0128048Z env:
+2025-06-10T15:28:07.0128227Z   NODE_VERSION: 18
+2025-06-10T15:28:07.0128423Z ##[endgroup]
+2025-06-10T15:28:07.8951514Z Installing dependencies...
+2025-06-10T15:28:07.9016859Z Switching to root user to install dependencies...
+2025-06-10T15:28:07.9811464Z Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]
+2025-06-10T15:28:08.0082516Z Hit:2 http://azure.archive.ubuntu.com/ubuntu noble InRelease
+2025-06-10T15:28:08.0106751Z Get:6 https://packages.microsoft.com/repos/azure-cli noble InRelease [3564 B]
+2025-06-10T15:28:08.0133651Z Get:3 http://azure.archive.ubuntu.com/ubuntu noble-updates InRelease [126 kB]
+2025-06-10T15:28:08.0160770Z Get:7 https://packages.microsoft.com/ubuntu/24.04/prod noble InRelease [3600 B]
+2025-06-10T15:28:08.0165832Z Get:4 http://azure.archive.ubuntu.com/ubuntu noble-backports InRelease [126 kB]
+2025-06-10T15:28:08.0212930Z Get:5 http://azure.archive.ubuntu.com/ubuntu noble-security InRelease [126 kB]
+2025-06-10T15:28:08.1465561Z Get:8 https://packages.microsoft.com/repos/azure-cli noble/main amd64 Packages [1377 B]
+2025-06-10T15:28:08.1846489Z Get:9 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 Packages [1118 kB]
+2025-06-10T15:28:08.1906703Z Get:10 http://azure.archive.ubuntu.com/ubuntu noble-updates/main Translation-en [238 kB]
+2025-06-10T15:28:08.1935166Z Get:11 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 Components [161 kB]
+2025-06-10T15:28:08.1954042Z Get:12 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe amd64 Packages [1078 kB]
+2025-06-10T15:28:08.2018028Z Get:13 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe Translation-en [274 kB]
+2025-06-10T15:28:08.2038768Z Get:14 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe amd64 Components [376 kB]
+2025-06-10T15:28:08.2064243Z Get:15 http://azure.archive.ubuntu.com/ubuntu noble-updates/restricted amd64 Packages [1179 kB]
+2025-06-10T15:28:08.2148366Z Get:16 http://azure.archive.ubuntu.com/ubuntu noble-updates/restricted Translation-en [245 kB]
+2025-06-10T15:28:08.2175341Z Get:17 http://azure.archive.ubuntu.com/ubuntu noble-updates/restricted amd64 Components [212 B]
+2025-06-10T15:28:08.2182783Z Get:18 http://azure.archive.ubuntu.com/ubuntu noble-updates/multiverse amd64 Components [940 B]
+2025-06-10T15:28:08.2340791Z Get:19 https://packages.microsoft.com/ubuntu/24.04/prod noble/main amd64 Packages [33.8 kB]
+2025-06-10T15:28:08.2373977Z Get:20 https://packages.microsoft.com/ubuntu/24.04/prod noble/main arm64 Packages [21.0 kB]
+2025-06-10T15:28:08.2407902Z Get:21 https://packages.microsoft.com/ubuntu/24.04/prod noble/main armhf Packages [8488 B]
+2025-06-10T15:28:08.3314478Z Get:22 http://azure.archive.ubuntu.com/ubuntu noble-backports/main amd64 Packages [39.2 kB]
+2025-06-10T15:28:08.3326216Z Get:23 http://azure.archive.ubuntu.com/ubuntu noble-backports/main amd64 Components [7092 B]
+2025-06-10T15:28:08.3336645Z Get:24 http://azure.archive.ubuntu.com/ubuntu noble-backports/universe amd64 Packages [27.1 kB]
+2025-06-10T15:28:08.3344940Z Get:25 http://azure.archive.ubuntu.com/ubuntu noble-backports/universe amd64 Components [16.3 kB]
+2025-06-10T15:28:08.3365164Z Get:26 http://azure.archive.ubuntu.com/ubuntu noble-backports/restricted amd64 Components [216 B]
+2025-06-10T15:28:08.3407862Z Get:27 http://azure.archive.ubuntu.com/ubuntu noble-backports/multiverse amd64 Components [212 B]
+2025-06-10T15:28:08.3416722Z Get:28 http://azure.archive.ubuntu.com/ubuntu noble-security/main amd64 Packages [868 kB]
+2025-06-10T15:28:08.3465038Z Get:29 http://azure.archive.ubuntu.com/ubuntu noble-security/main Translation-en [160 kB]
+2025-06-10T15:28:08.3480301Z Get:30 http://azure.archive.ubuntu.com/ubuntu noble-security/main amd64 Components [21.6 kB]
+2025-06-10T15:28:08.3489502Z Get:31 http://azure.archive.ubuntu.com/ubuntu noble-security/universe amd64 Packages [849 kB]
+2025-06-10T15:28:08.3536768Z Get:32 http://azure.archive.ubuntu.com/ubuntu noble-security/universe Translation-en [187 kB]
+2025-06-10T15:28:08.3555070Z Get:33 http://azure.archive.ubuntu.com/ubuntu noble-security/universe amd64 Components [52.1 kB]
+2025-06-10T15:28:08.3565179Z Get:34 http://azure.archive.ubuntu.com/ubuntu noble-security/restricted amd64 Packages [1138 kB]
+2025-06-10T15:28:08.3633150Z Get:35 http://azure.archive.ubuntu.com/ubuntu noble-security/restricted Translation-en [236 kB]
+2025-06-10T15:28:08.4071493Z Get:36 http://azure.archive.ubuntu.com/ubuntu noble-security/restricted amd64 Components [212 B]
+2025-06-10T15:28:08.4080799Z Get:37 http://azure.archive.ubuntu.com/ubuntu noble-security/multiverse amd64 Components [212 B]
+2025-06-10T15:28:14.2801392Z Fetched 8722 kB in 1s (8067 kB/s)
+2025-06-10T15:28:14.9206135Z Reading package lists...
+2025-06-10T15:28:14.9451901Z Reading package lists...
+2025-06-10T15:28:15.1110310Z Building dependency tree...
+2025-06-10T15:28:15.1117083Z Reading state information...
+2025-06-10T15:28:15.1287033Z libasound2t64 is already the newest version (1.2.11-1build2).
+2025-06-10T15:28:15.1287877Z libasound2t64 set to manually installed.
+2025-06-10T15:28:15.1288592Z libatk-bridge2.0-0t64 is already the newest version (2.52.0-1build1).
+2025-06-10T15:28:15.1289298Z libatk-bridge2.0-0t64 set to manually installed.
+2025-06-10T15:28:15.1290159Z libatk1.0-0t64 is already the newest version (2.52.0-1build1).
+2025-06-10T15:28:15.1290666Z libatk1.0-0t64 set to manually installed.
+2025-06-10T15:28:15.1291206Z libatspi2.0-0t64 is already the newest version (2.52.0-1build1).
+2025-06-10T15:28:15.1291718Z libatspi2.0-0t64 set to manually installed.
+2025-06-10T15:28:15.1292276Z libcairo2 is already the newest version (1.18.0-3build1).
+2025-06-10T15:28:15.1292734Z libcairo2 set to manually installed.
+2025-06-10T15:28:15.1293275Z libcups2t64 is already the newest version (2.4.7-1.2ubuntu7.3).
+2025-06-10T15:28:15.1293782Z libcups2t64 set to manually installed.
+2025-06-10T15:28:15.1294287Z libdbus-1-3 is already the newest version (1.14.10-4ubuntu4.1).
+2025-06-10T15:28:15.1294763Z libdbus-1-3 set to manually installed.
+2025-06-10T15:28:15.1295277Z libdrm2 is already the newest version (2.4.122-1~ubuntu0.24.04.1).
+2025-06-10T15:28:15.1295757Z libdrm2 set to manually installed.
+2025-06-10T15:28:15.1296249Z libgbm1 is already the newest version (24.2.8-1ubuntu1~24.04.1).
+2025-06-10T15:28:15.1296722Z libgbm1 set to manually installed.
+2025-06-10T15:28:15.1297198Z libnspr4 is already the newest version (2:4.35-1.1build1).
+2025-06-10T15:28:15.1297657Z libnspr4 set to manually installed.
+2025-06-10T15:28:15.1298111Z libnss3 is already the newest version (2:3.98-1build1).
+2025-06-10T15:28:15.1298548Z libnss3 set to manually installed.
+2025-06-10T15:28:15.1299044Z libpango-1.0-0 is already the newest version (1.52.1+ds-1build1).
+2025-06-10T15:28:15.1299557Z libpango-1.0-0 set to manually installed.
+2025-06-10T15:28:15.1300228Z libx11-6 is already the newest version (2:1.8.7-1build1).
+2025-06-10T15:28:15.1300573Z libx11-6 set to manually installed.
+2025-06-10T15:28:15.1300914Z libxcb1 is already the newest version (1.15-1ubuntu2).
+2025-06-10T15:28:15.1301248Z libxcb1 set to manually installed.
+2025-06-10T15:28:15.1301630Z libxcomposite1 is already the newest version (1:0.4.5-1build3).
+2025-06-10T15:28:15.1302022Z libxcomposite1 set to manually installed.
+2025-06-10T15:28:15.1302494Z libxdamage1 is already the newest version (1:1.1.6-1build1).
+2025-06-10T15:28:15.1302857Z libxdamage1 set to manually installed.
+2025-06-10T15:28:15.1303222Z libxext6 is already the newest version (2:1.3.4-1build2).
+2025-06-10T15:28:15.1303557Z libxext6 set to manually installed.
+2025-06-10T15:28:15.1303930Z libxfixes3 is already the newest version (1:6.0.0-2build1).
+2025-06-10T15:28:15.1304294Z libxfixes3 set to manually installed.
+2025-06-10T15:28:15.1304690Z libxkbcommon0 is already the newest version (1.6.0-1build1).
+2025-06-10T15:28:15.1305449Z libxkbcommon0 set to manually installed.
+2025-06-10T15:28:15.1305854Z libxrandr2 is already the newest version (2:1.5.2-2build1).
+2025-06-10T15:28:15.1306208Z libxrandr2 set to manually installed.
+2025-06-10T15:28:15.1306573Z xvfb is already the newest version (2:21.1.12-1ubuntu1.3).
+2025-06-10T15:28:15.1307069Z fonts-noto-color-emoji is already the newest version (2.047-0ubuntu0.24.04.1).
+2025-06-10T15:28:15.1307598Z libfontconfig1 is already the newest version (2.15.0-1.1ubuntu2).
+2025-06-10T15:28:15.1307993Z libfontconfig1 set to manually installed.
+2025-06-10T15:28:15.1308405Z libfreetype6 is already the newest version (2.13.2+dfsg-1build3).
+2025-06-10T15:28:15.1308792Z libfreetype6 set to manually installed.
+2025-06-10T15:28:15.1309189Z fonts-liberation is already the newest version (1:2.1.5-3).
+2025-06-10T15:28:15.1309588Z fonts-liberation set to manually installed.
+2025-06-10T15:28:15.1310375Z libicu74 is already the newest version (74.2-1ubuntu3.1).
+2025-06-10T15:28:15.1310733Z libicu74 set to manually installed.
+2025-06-10T15:28:15.1311128Z libatomic1 is already the newest version (14.2.0-4ubuntu2~24.04).
+2025-06-10T15:28:15.1311503Z libatomic1 set to manually installed.
+2025-06-10T15:28:15.1311903Z libcairo-gobject2 is already the newest version (1.18.0-3build1).
+2025-06-10T15:28:15.1312307Z libcairo-gobject2 set to manually installed.
+2025-06-10T15:28:15.1312710Z libenchant-2-2 is already the newest version (2.3.3-2build2).
+2025-06-10T15:28:15.1313078Z libenchant-2-2 set to manually installed.
+2025-06-10T15:28:15.1313471Z libepoxy0 is already the newest version (1.5.10-1build1).
+2025-06-10T15:28:15.1313835Z libepoxy0 set to manually installed.
+2025-06-10T15:28:15.1314275Z libgdk-pixbuf-2.0-0 is already the newest version (2.42.10+dfsg-3ubuntu3.1).
+2025-06-10T15:28:15.1314736Z libgdk-pixbuf-2.0-0 set to manually installed.
+2025-06-10T15:28:15.1315177Z libgstreamer1.0-0 is already the newest version (1.24.2-1ubuntu0.1).
+2025-06-10T15:28:15.1315595Z libgstreamer1.0-0 set to manually installed.
+2025-06-10T15:28:15.1315998Z libharfbuzz0b is already the newest version (8.3.0-2build2).
+2025-06-10T15:28:15.1316370Z libharfbuzz0b set to manually installed.
+2025-06-10T15:28:15.1316761Z libjpeg-turbo8 is already the newest version (2.1.5-2ubuntu2).
+2025-06-10T15:28:15.1317144Z libjpeg-turbo8 set to manually installed.
+2025-06-10T15:28:15.1317512Z liblcms2-2 is already the newest version (2.14-2build1).
+2025-06-10T15:28:15.1317861Z liblcms2-2 set to manually installed.
+2025-06-10T15:28:15.1318281Z libpangocairo-1.0-0 is already the newest version (1.52.1+ds-1build1).
+2025-06-10T15:28:15.1318715Z libpangocairo-1.0-0 set to manually installed.
+2025-06-10T15:28:15.1319125Z libpng16-16t64 is already the newest version (1.6.43-5build1).
+2025-06-10T15:28:15.1319500Z libpng16-16t64 set to manually installed.
+2025-06-10T15:28:15.1320028Z libwayland-client0 is already the newest version (1.22.0-2.1build1).
+2025-06-10T15:28:15.1320455Z libwayland-client0 set to manually installed.
+2025-06-10T15:28:15.1320880Z libwayland-egl1 is already the newest version (1.22.0-2.1build1).
+2025-06-10T15:28:15.1321270Z libwayland-egl1 set to manually installed.
+2025-06-10T15:28:15.1321692Z libwayland-server0 is already the newest version (1.22.0-2.1build1).
+2025-06-10T15:28:15.1322097Z libwayland-server0 set to manually installed.
+2025-06-10T15:28:15.2741743Z libwebp7 is already the newest version (1.3.2-0.4build3).
+2025-06-10T15:28:15.2742547Z libwebp7 set to manually installed.
+2025-06-10T15:28:15.2743513Z libwebpdemux2 is already the newest version (1.3.2-0.4build3).
+2025-06-10T15:28:15.2744166Z libwebpdemux2 set to manually installed.
+2025-06-10T15:28:15.2744745Z libxml2 is already the newest version (2.9.14+dfsg-1.3ubuntu3.3).
+2025-06-10T15:28:15.2745373Z libxml2 set to manually installed.
+2025-06-10T15:28:15.2746230Z libxslt1.1 is already the newest version (1.1.39-0exp1ubuntu0.24.04.2).
+2025-06-10T15:28:15.2746837Z libxslt1.1 set to manually installed.
+2025-06-10T15:28:15.2747391Z libgtk-3-0t64 is already the newest version (3.24.41-4ubuntu1.3).
+2025-06-10T15:28:15.2748413Z libgtk-3-0t64 set to manually installed.
+2025-06-10T15:28:15.2749168Z libx11-xcb1 is already the newest version (2:1.8.7-1build1).
+2025-06-10T15:28:15.2749993Z libx11-xcb1 set to manually installed.
+2025-06-10T15:28:15.2750566Z libxcb-shm0 is already the newest version (1.15-1ubuntu2).
+2025-06-10T15:28:15.2751078Z libxcb-shm0 set to manually installed.
+2025-06-10T15:28:15.2751621Z libxcursor1 is already the newest version (1:1.2.1-1build1).
+2025-06-10T15:28:15.2752211Z libxcursor1 set to manually installed.
+2025-06-10T15:28:15.2752729Z libxi6 is already the newest version (2:1.8.1-1build1).
+2025-06-10T15:28:15.2753168Z libxi6 set to manually installed.
+2025-06-10T15:28:15.2753663Z libxrender1 is already the newest version (1:0.9.10-1.1build1).
+2025-06-10T15:28:15.2754150Z libxrender1 set to manually installed.
+2025-06-10T15:28:15.2754615Z The following additional packages will be installed:
+2025-06-10T15:28:15.2755336Z   gir1.2-glib-2.0 glib-networking glib-networking-common
+2025-06-10T15:28:15.2756179Z   glib-networking-services gsettings-desktop-schemas libaa1 libabsl20220623t64
+2025-06-10T15:28:15.2756900Z   libass9 libasyncns0 libavc1394-0 libavcodec60 libavfilter9 libavformat60
+2025-06-10T15:28:15.2757603Z   libavtp0 libavutil58 libblas3 libbluray2 libbs2b0 libcaca0
+2025-06-10T15:28:15.2758222Z   libcairo-script-interpreter2 libcdparanoia0 libchromaprint1 libcjson1
+2025-06-10T15:28:15.2758816Z   libcodec2-1.2 libdav1d7 libdc1394-25 libdca0 libdecor-0-0
+2025-06-10T15:28:15.2759460Z   libdirectfb-1.7-7t64 libdv4t64 libdvdnav4 libdvdread8t64 libegl-mesa0
+2025-06-10T15:28:15.2760215Z   libegl1 libfaad2 libflac12t64 libfluidsynth3 libfreeaptx0 libgav1-1
+2025-06-10T15:28:15.2760821Z   libglib2.0-bin libglib2.0-data libgme0 libgraphene-1.0-0 libgsm1
+2025-06-10T15:28:15.2761476Z   libgssdp-1.6-0 libgstreamer-plugins-good1.0-0 libgtk-4-common libgupnp-1.6-0
+2025-06-10T15:28:15.2762123Z   libgupnp-igd-1.6-0 libhwy1t64 libiec61883-0 libimath-3-1-29t64
+2025-06-10T15:28:15.2762716Z   libinstpatch-1.0-2 libjack-jackd2-0 libjxl0.7 liblapack3 liblc3-1
+2025-06-10T15:28:15.2763246Z   libldacbt-enc2 liblilv-0-0 liblrdf0 libltc11 libmbedcrypto7t64 libmfx1
+2025-06-10T15:28:15.2763713Z   libmjpegutils-2.1-0t64 libmodplug1 libmp3lame0 libmpcdec6
+2025-06-10T15:28:15.2764161Z   libmpeg2encpp-2.1-0t64 libmpg123-0t64 libmplex2-2.1-0t64 libmysofa1
+2025-06-10T15:28:15.2764633Z   libneon27t64 libnice10 libopenal-data libopenal1 libopenexr-3-1-30
+2025-06-10T15:28:15.2765187Z   libopenh264-7 libopenmpt0t64 libopenni2-0 liborc-0.4-0t64
+2025-06-10T15:28:15.2765629Z   libpipewire-0.3-0t64 libplacebo338 libpocketsphinx3 libpostproc57
+2025-06-10T15:28:15.2766122Z   libproxy1v5 libpulse0 libqrencode4 libraptor2-0 librav1e0 libraw1394-11
+2025-06-10T15:28:15.2766625Z   librist4 librsvg2-2 librubberband2 libsamplerate0 libsbc1 libsdl2-2.0-0
+2025-06-10T15:28:15.2767130Z   libsecret-common libserd-0-0 libshine3 libshout3 libsndfile1 libsndio7.0
+2025-06-10T15:28:15.2767629Z   libsord-0-0 libsoundtouch1 libsoup-3.0-0 libsoup-3.0-common libsoxr0
+2025-06-10T15:28:15.2768135Z   libspa-0.2-modules libspandsp2t64 libspeex1 libsphinxbase3t64 libsratom-0-0
+2025-06-10T15:28:15.2768656Z   libsrt1.5-gnutls libsrtp2-1 libssh-gcrypt-4 libsvtav1enc1d1 libswresample4
+2025-06-10T15:28:15.2769172Z   libswscale7 libtag1v5 libtag1v5-vanilla libtheora0 libtwolame0 libudfread0
+2025-06-10T15:28:15.2769878Z   libunibreak5 libv4l-0t64 libv4lconvert0t64 libva-drm2 libva-x11-2 libva2
+2025-06-10T15:28:15.2770386Z   libvdpau1 libvidstab1.1 libvisual-0.4-0 libvo-aacenc0 libvo-amrwbenc0
+2025-06-10T15:28:15.2770913Z   libvorbisenc2 libvpl2 libwavpack1 libwebrtc-audio-processing1 libwildmidi2
+2025-06-10T15:28:15.2771480Z   libx265-199 libxcb-xkb1 libxkbcommon-x11-0 libxvidcore4 libyuv0 libzbar0t64
+2025-06-10T15:28:15.2772002Z   libzimg2 libzix-0-0 libzvbi-common libzvbi0t64 libzxing3 ocl-icd-libopencl1
+2025-06-10T15:28:15.2772520Z   session-migration timgm6mb-soundfont xfonts-encodings xfonts-utils
+2025-06-10T15:28:15.2772902Z Suggested packages:
+2025-06-10T15:28:15.2773414Z   frei0r-plugins gvfs libcuda1 libnvcuvid1 libnvidia-encode1 libbluray-bdj
+2025-06-10T15:28:15.2773934Z   libdirectfb-extra libdv-bin oss-compat libdvdcss2 low-memory-monitor
+2025-06-10T15:28:15.2774441Z   libvisual-0.4-plugins jackd2 liblrdf0-dev libportaudio2 opus-tools pipewire
+2025-06-10T15:28:15.2774964Z   pulseaudio raptor2-utils libraw1394-doc librsvg2-bin serdi sndiod sordi
+2025-06-10T15:28:15.2775419Z   speex libwildmidi-config opencl-icd fluid-soundfont-gm
+2025-06-10T15:28:15.2775751Z Recommended packages:
+2025-06-10T15:28:15.2776085Z   fonts-ipafont-mincho fonts-tlwg-loma gstreamer1.0-x libaacs0
+2025-06-10T15:28:15.2776558Z   default-libdecor-0-plugin-1 | libdecor-0-plugin-1 gstreamer1.0-gl
+2025-06-10T15:28:15.2777080Z   libgtk-4-bin librsvg2-common libgtk-4-media-gstreamer libpipewire-0.3-common
+2025-06-10T15:28:15.2777625Z   pocketsphinx-en-us va-driver-all | va-driver vdpau-driver-all | vdpau-driver
+2025-06-10T15:28:15.2778131Z   libmagickcore-6.q16-7-extra
+2025-06-10T15:28:15.3476186Z The following NEW packages will be installed:
+2025-06-10T15:28:15.3477276Z   fonts-freefont-ttf fonts-ipafont-gothic fonts-tlwg-loma-otf fonts-unifont
+2025-06-10T15:28:15.3478166Z   fonts-wqy-zenhei glib-networking glib-networking-common
+2025-06-10T15:28:15.3479249Z   glib-networking-services gsettings-desktop-schemas gstreamer1.0-libav
+2025-06-10T15:28:15.3480408Z   gstreamer1.0-plugins-bad gstreamer1.0-plugins-base gstreamer1.0-plugins-good
+2025-06-10T15:28:15.3481109Z   libaa1 libabsl20220623t64 libass9 libasyncns0 libavc1394-0 libavcodec60
+2025-06-10T15:28:15.3481902Z   libavfilter9 libavformat60 libavif16 libavtp0 libavutil58 libblas3
+2025-06-10T15:28:15.3483046Z   libbluray2 libbs2b0 libcaca0 libcairo-script-interpreter2 libcdparanoia0
+2025-06-10T15:28:15.3484164Z   libchromaprint1 libcjson1 libcodec2-1.2 libdav1d7 libdc1394-25 libdca0
+2025-06-10T15:28:15.3485083Z   libdecor-0-0 libdirectfb-1.7-7t64 libdv4t64 libdvdnav4 libdvdread8t64
+2025-06-10T15:28:15.3486047Z   libegl-mesa0 libegl1 libevent-2.1-7t64 libfaad2 libflac12t64 libflite1
+2025-06-10T15:28:15.3486752Z   libfluidsynth3 libfreeaptx0 libgav1-1 libgles2 libgme0 libgraphene-1.0-0
+2025-06-10T15:28:15.3487438Z   libgsm1 libgssdp-1.6-0 libgstreamer-gl1.0-0 libgstreamer-plugins-bad1.0-0
+2025-06-10T15:28:15.3488131Z   libgstreamer-plugins-base1.0-0 libgstreamer-plugins-good1.0-0 libgtk-4-1
+2025-06-10T15:28:15.3488784Z   libgtk-4-common libgupnp-1.6-0 libgupnp-igd-1.6-0 libharfbuzz-icu0
+2025-06-10T15:28:15.3489428Z   libhwy1t64 libhyphen0 libiec61883-0 libimath-3-1-29t64 libinstpatch-1.0-2
+2025-06-10T15:28:15.3490440Z   libjack-jackd2-0 libjxl0.7 liblapack3 liblc3-1 libldacbt-enc2 liblilv-0-0
+2025-06-10T15:28:15.3491053Z   liblrdf0 libltc11 libmanette-0.2-0 libmbedcrypto7t64 libmfx1
+2025-06-10T15:28:15.3491605Z   libmjpegutils-2.1-0t64 libmodplug1 libmp3lame0 libmpcdec6
+2025-06-10T15:28:15.3492193Z   libmpeg2encpp-2.1-0t64 libmpg123-0t64 libmplex2-2.1-0t64 libmysofa1
+2025-06-10T15:28:15.3492825Z   libneon27t64 libnice10 libopenal-data libopenal1 libopenexr-3-1-30
+2025-06-10T15:28:15.3493433Z   libopenh264-7 libopenmpt0t64 libopenni2-0 libopus0 liborc-0.4-0t64
+2025-06-10T15:28:15.3494045Z   libpipewire-0.3-0t64 libplacebo338 libpocketsphinx3 libpostproc57
+2025-06-10T15:28:15.3494576Z   libproxy1v5 libpulse0 libqrencode4 libraptor2-0 librav1e0 libraw1394-11
+2025-06-10T15:28:15.3495078Z   librist4 librsvg2-2 librubberband2 libsamplerate0 libsbc1 libsdl2-2.0-0
+2025-06-10T15:28:15.3495649Z   libsecret-1-0 libsecret-common libserd-0-0 libshine3 libshout3 libsndfile1
+2025-06-10T15:28:15.3496286Z   libsndio7.0 libsord-0-0 libsoundtouch1 libsoup-3.0-0 libsoup-3.0-common
+2025-06-10T15:28:15.3496778Z   libsoxr0 libspa-0.2-modules libspandsp2t64 libspeex1 libsphinxbase3t64
+2025-06-10T15:28:15.3497269Z   libsratom-0-0 libsrt1.5-gnutls libsrtp2-1 libssh-gcrypt-4 libsvtav1enc1d1
+2025-06-10T15:28:15.3497752Z   libswresample4 libswscale7 libtag1v5 libtag1v5-vanilla libtheora0
+2025-06-10T15:28:15.3498223Z   libtwolame0 libudfread0 libunibreak5 libv4l-0t64 libv4lconvert0t64
+2025-06-10T15:28:15.3499074Z   libva-drm2 libva-x11-2 libva2 libvdpau1 libvidstab1.1 libvisual-0.4-0
+2025-06-10T15:28:15.3499585Z   libvo-aacenc0 libvo-amrwbenc0 libvorbisenc2 libvpl2 libvpx9 libwavpack1
+2025-06-10T15:28:15.3500380Z   libwebrtc-audio-processing1 libwildmidi2 libwoff1 libx264-164 libx265-199
+2025-06-10T15:28:15.3500893Z   libxcb-xkb1 libxkbcommon-x11-0 libxvidcore4 libyuv0 libzbar0t64 libzimg2
+2025-06-10T15:28:15.3501370Z   libzix-0-0 libzvbi-common libzvbi0t64 libzxing3 ocl-icd-libopencl1
+2025-06-10T15:28:15.3501850Z   session-migration timgm6mb-soundfont xfonts-cyrillic xfonts-encodings
+2025-06-10T15:28:15.3502248Z   xfonts-scalable xfonts-utils
+2025-06-10T15:28:15.3502578Z The following packages will be upgraded:
+2025-06-10T15:28:15.3502958Z   gir1.2-glib-2.0 libglib2.0-0t64 libglib2.0-bin libglib2.0-data
+2025-06-10T15:28:15.3718491Z 4 upgraded, 179 newly installed, 0 to remove and 67 not upgraded.
+2025-06-10T15:28:15.3719538Z Need to get 116 MB of archives.
+2025-06-10T15:28:15.3720470Z After this operation, 363 MB of additional disk space will be used.
+2025-06-10T15:28:15.3721261Z Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]
+2025-06-10T15:28:15.5867099Z Get:2 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 fonts-ipafont-gothic all 00303-21ubuntu1 [3513 kB]
+2025-06-10T15:30:25.5730816Z Get:3 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libglib2.0-data all 2.80.0-6ubuntu3.4 [48.7 kB]
+2025-06-10T15:30:30.5340191Z Get:4 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libglib2.0-bin amd64 2.80.0-6ubuntu3.4 [97.9 kB]
+2025-06-10T15:30:59.4833494Z Get:5 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 gir1.2-glib-2.0 amd64 2.80.0-6ubuntu3.4 [183 kB]
+2025-06-10T15:31:17.1707725Z Get:6 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libglib2.0-0t64 amd64 2.80.0-6ubuntu3.4 [1544 kB]
+2025-06-10T15:31:21.1716862Z Get:7 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 fonts-freefont-ttf all 20211204+svn4273-2 [5641 kB]
+2025-06-10T15:31:38.0674877Z Get:8 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 fonts-tlwg-loma-otf all 1:0.7.3-1 [107 kB]
+2025-06-10T15:31:38.4942735Z Get:9 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 fonts-unifont all 1:15.1.01-1build1 [2993 kB]
+2025-06-10T15:31:48.1425797Z Get:10 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 fonts-wqy-zenhei all 0.9.45-8 [7472 kB]
+2025-06-10T15:32:12.8634278Z Get:11 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libproxy1v5 amd64 0.5.4-4build1 [26.5 kB]
+2025-06-10T15:32:12.9785837Z Get:12 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 glib-networking-common all 2.80.0-1build1 [6702 B]
+2025-06-10T15:32:13.1488387Z Get:13 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 glib-networking-services amd64 2.80.0-1build1 [12.8 kB]
+2025-06-10T15:32:13.2628616Z Get:14 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 session-migration amd64 0.3.9build1 [9034 B]
+2025-06-10T15:32:13.3552517Z Get:15 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 gsettings-desktop-schemas all 46.1-0ubuntu1 [35.6 kB]
+2025-06-10T15:32:13.5976235Z Get:16 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 glib-networking amd64 2.80.0-1build1 [64.1 kB]
+2025-06-10T15:32:13.9682881Z Get:17 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libva2 amd64 2.20.0-2build1 [66.2 kB]
+2025-06-10T15:32:14.1845079Z Get:18 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libva-drm2 amd64 2.20.0-2build1 [7124 B]
+2025-06-10T15:32:14.3051815Z Get:19 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libva-x11-2 amd64 2.20.0-2build1 [12.0 kB]
+2025-06-10T15:32:14.4164540Z Get:20 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libvdpau1 amd64 1.5-2build1 [27.8 kB]
+2025-06-10T15:32:14.5289947Z Get:21 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libvpl2 amd64 2023.3.0-1build1 [99.8 kB]
+2025-06-10T15:32:15.0304897Z Get:22 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 ocl-icd-libopencl1 amd64 2.3.2-1build1 [38.5 kB]
+2025-06-10T15:32:15.1675497Z Get:23 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libavutil58 amd64 7:6.1.1-3ubuntu5 [401 kB]
+2025-06-10T15:32:16.4487185Z Get:24 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libcodec2-1.2 amd64 1.2.0-2build1 [8998 kB]
+2025-06-10T15:32:45.8534840Z Get:25 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libdav1d7 amd64 1.4.1-1build1 [604 kB]
+2025-06-10T15:32:47.6577937Z Get:26 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libgsm1 amd64 1.0.22-1build1 [27.8 kB]
+2025-06-10T15:32:47.7632585Z Get:27 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libhwy1t64 amd64 1.0.7-8.1build1 [584 kB]
+2025-06-10T15:32:49.5661968Z Get:28 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libjxl0.7 amd64 0.7.0-10.2ubuntu6 [999 kB]
+2025-06-10T15:32:52.4346870Z Get:29 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libmp3lame0 amd64 3.100-6build1 [142 kB]
+2025-06-10T15:32:53.1914168Z Get:30 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libopus0 amd64 1.4-1build1 [208 kB]
+2025-06-10T15:32:54.1325545Z Get:31 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 librav1e0 amd64 0.7.1-2 [1022 kB]
+2025-06-10T15:32:57.3108031Z Get:32 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 librsvg2-2 amd64 2.58.0+dfsg-1build1 [2135 kB]
+2025-06-10T15:33:05.1509291Z Get:33 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libshine3 amd64 3.1.1-2build1 [23.2 kB]
+2025-06-10T15:33:05.2528072Z Get:34 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libspeex1 amd64 1.2.1-2ubuntu2.24.04.1 [59.6 kB]
+2025-06-10T15:33:05.5390805Z Get:35 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libsvtav1enc1d1 amd64 1.7.0+dfsg-2build1 [2425 kB]
+2025-06-10T15:33:14.2959316Z Get:36 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libsoxr0 amd64 0.1.3-4build3 [80.0 kB]
+2025-06-10T15:33:14.6009922Z Get:37 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libswresample4 amd64 7:6.1.1-3ubuntu5 [63.8 kB]
+2025-06-10T15:33:14.7358239Z Get:38 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libtheora0 amd64 1.1.1+dfsg.1-16.1build3 [211 kB]
+2025-06-10T15:33:14.9677838Z Get:39 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libtwolame0 amd64 0.4.0-2build3 [52.3 kB]
+2025-06-10T15:33:15.0665021Z Get:40 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libvorbisenc2 amd64 1.3.7-1build3 [80.8 kB]
+2025-06-10T15:33:15.1544601Z Get:41 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libvpx9 amd64 1.14.0-1ubuntu2.2 [1143 kB]
+2025-06-10T15:33:15.3364257Z Get:42 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libx264-164 amd64 2:0.164.3108+git31e19f9-1 [604 kB]
+2025-06-10T15:33:15.5121513Z Get:43 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libx265-199 amd64 3.5-2build1 [1226 kB]
+2025-06-10T15:33:15.7684916Z Get:44 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libxvidcore4 amd64 2:1.3.7-1build1 [219 kB]
+2025-06-10T15:33:15.9338363Z Get:45 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libzvbi-common all 0.2.42-2 [42.4 kB]
+2025-06-10T15:33:16.0356261Z Get:46 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libzvbi0t64 amd64 0.2.42-2 [261 kB]
+2025-06-10T15:33:16.2084125Z Get:47 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libavcodec60 amd64 7:6.1.1-3ubuntu5 [5851 kB]
+2025-06-10T15:33:16.8754342Z Get:48 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libunibreak5 amd64 5.1-2build1 [25.0 kB]
+2025-06-10T15:33:16.9630241Z Get:49 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libass9 amd64 1:0.17.1-2build1 [104 kB]
+2025-06-10T15:33:44.8608362Z Get:50 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libudfread0 amd64 1.1.2-1build1 [19.0 kB]
+2025-06-10T15:33:44.9694665Z Get:51 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libbluray2 amd64 1:1.3.4-1build1 [159 kB]
+2025-06-10T15:33:45.1325725Z Get:52 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libchromaprint1 amd64 1.5.1-5 [30.5 kB]
+2025-06-10T15:33:45.2250982Z Get:53 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libgme0 amd64 0.6.3-7build1 [134 kB]
+2025-06-10T15:33:45.3676847Z Get:54 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libmpg123-0t64 amd64 1.32.5-1ubuntu1.1 [169 kB]
+2025-06-10T15:33:45.5350672Z Get:55 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libopenmpt0t64 amd64 0.7.3-1.1build3 [647 kB]
+2025-06-10T15:33:45.8196864Z Get:56 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libcjson1 amd64 1.7.17-1 [24.8 kB]
+2025-06-10T15:33:45.9094011Z Get:57 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libmbedcrypto7t64 amd64 2.28.8-1 [209 kB]
+2025-06-10T15:33:46.0087708Z Get:58 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 librist4 amd64 0.2.10+dfsg-2 [74.9 kB]
+2025-06-10T15:33:46.0981865Z Get:59 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libsrt1.5-gnutls amd64 1.5.3-1build2 [316 kB]
+2025-06-10T15:33:46.2657130Z Get:60 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libssh-gcrypt-4 amd64 0.10.6-2build2 [223 kB]
+2025-06-10T15:33:46.4357495Z Get:61 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libavformat60 amd64 7:6.1.1-3ubuntu5 [1153 kB]
+2025-06-10T15:33:46.7741530Z Get:62 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libbs2b0 amd64 3.1.0+dfsg-7build1 [10.6 kB]
+2025-06-10T15:33:46.8566979Z Get:63 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libflite1 amd64 2.2-6build3 [13.6 MB]
+2025-06-10T15:33:49.9408230Z Get:64 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libserd-0-0 amd64 0.32.2-1 [43.6 kB]
+2025-06-10T15:33:50.0318099Z Get:65 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libzix-0-0 amd64 0.4.2-2build1 [23.6 kB]
+2025-06-10T15:33:50.1187419Z Get:66 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libsord-0-0 amd64 0.16.16-2build1 [15.8 kB]
+2025-06-10T15:33:51.7042383Z Get:67 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libsratom-0-0 amd64 0.6.16-1build1 [17.3 kB]
+2025-06-10T15:33:51.7884656Z Get:68 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 liblilv-0-0 amd64 0.24.22-1build1 [41.0 kB]
+2025-06-10T15:33:54.6937269Z Get:69 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libmysofa1 amd64 1.3.2+dfsg-2ubuntu2 [1158 kB]
+2025-06-10T15:33:55.0238079Z Get:70 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libplacebo338 amd64 6.338.2-2build1 [2654 kB]
+2025-06-10T15:33:56.1850097Z Get:71 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libblas3 amd64 3.12.0-3build1.1 [238 kB]
+2025-06-10T15:33:56.3495059Z Get:72 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 liblapack3 amd64 3.12.0-3build1.1 [2646 kB]
+2025-06-10T15:33:56.7606399Z Get:73 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libasyncns0 amd64 0.8-6build4 [11.3 kB]
+2025-06-10T15:33:56.8461323Z Get:74 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libflac12t64 amd64 1.4.3+ds-2.1ubuntu2 [197 kB]
+2025-06-10T15:33:56.9418592Z Get:75 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libsndfile1 amd64 1.2.2-1ubuntu5.24.04.1 [209 kB]
+2025-06-10T15:33:57.0314922Z Get:76 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libpulse0 amd64 1:16.1+dfsg1-2ubuntu10.1 [292 kB]
+2025-06-10T15:33:57.1987559Z Get:77 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libsphinxbase3t64 amd64 0.8+5prealpha+1-17build2 [126 kB]
+2025-06-10T15:33:57.2852564Z Get:78 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libpocketsphinx3 amd64 0.8.0+real5prealpha+1-15ubuntu5 [133 kB]
+2025-06-10T15:33:57.3727741Z Get:79 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libpostproc57 amd64 7:6.1.1-3ubuntu5 [49.9 kB]
+2025-06-10T15:33:57.4644161Z Get:80 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libsamplerate0 amd64 0.2.2-4build1 [1344 kB]
+2025-06-10T15:33:57.7353354Z Get:81 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 librubberband2 amd64 3.3.0+dfsg-2build1 [130 kB]
+2025-06-10T15:33:57.8661700Z Get:82 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libswscale7 amd64 7:6.1.1-3ubuntu5 [193 kB]
+2025-06-10T15:33:57.9664012Z Get:83 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libvidstab1.1 amd64 1.1.0-2build1 [38.5 kB]
+2025-06-10T15:33:58.0538087Z Get:84 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libzimg2 amd64 3.0.5+ds1-1build1 [254 kB]
+2025-06-10T15:33:58.1582236Z Get:85 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libavfilter9 amd64 7:6.1.1-3ubuntu5 [4235 kB]
+2025-06-10T15:33:58.8564541Z Get:86 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 liborc-0.4-0t64 amd64 1:0.4.38-1ubuntu0.1 [207 kB]
+2025-06-10T15:33:59.0131109Z Get:87 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libgstreamer-plugins-base1.0-0 amd64 1.24.2-1ubuntu0.2 [862 kB]
+2025-06-10T15:33:59.4723727Z Get:88 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 gstreamer1.0-libav amd64 1.24.1-1build1 [103 kB]
+2025-06-10T15:33:59.5980106Z Get:89 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libcdparanoia0 amd64 3.10.2+debian-14build3 [48.5 kB]
+2025-06-10T15:34:14.6874651Z Get:90 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libvisual-0.4-0 amd64 0.4.2-2build1 [115 kB]
+2025-06-10T15:34:26.2782934Z Get:91 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 gstreamer1.0-plugins-base amd64 1.24.2-1ubuntu0.2 [721 kB]
+2025-06-10T15:34:26.5277945Z Get:92 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libaa1 amd64 1.4p5-51.1 [49.9 kB]
+2025-06-10T15:34:26.6116485Z Get:93 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libraw1394-11 amd64 2.1.2-2build3 [26.2 kB]
+2025-06-10T15:34:26.6978357Z Get:94 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libavc1394-0 amd64 0.5.4-5build3 [15.4 kB]
+2025-06-10T15:34:26.7811795Z Get:95 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libcaca0 amd64 0.99.beta20-4build2 [208 kB]
+2025-06-10T15:34:26.8774010Z Get:96 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libdv4t64 amd64 1.0.0-17.1build1 [63.2 kB]
+2025-06-10T15:34:26.9613162Z Get:97 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libgstreamer-plugins-good1.0-0 amd64 1.24.2-1ubuntu1.1 [32.9 kB]
+2025-06-10T15:34:27.0484270Z Get:98 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libiec61883-0 amd64 1.2.0-6build1 [24.5 kB]
+2025-06-10T15:34:27.1354318Z Get:99 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libshout3 amd64 2.4.6-1build2 [50.3 kB]
+2025-06-10T15:34:27.2185414Z Get:100 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libtag1v5-vanilla amd64 1.13.1-1build1 [326 kB]
+2025-06-10T15:34:27.3091898Z Get:101 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libtag1v5 amd64 1.13.1-1build1 [11.7 kB]
+2025-06-10T15:34:27.3923969Z Get:102 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libv4lconvert0t64 amd64 1.26.1-4build3 [87.6 kB]
+2025-06-10T15:34:27.4940949Z Get:103 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libv4l-0t64 amd64 1.26.1-4build3 [46.9 kB]
+2025-06-10T15:34:27.6802204Z Get:104 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libwavpack1 amd64 5.6.0-1build1 [84.6 kB]
+2025-06-10T15:34:27.8998330Z Get:105 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libsoup-3.0-common all 3.4.4-5ubuntu0.4 [11.1 kB]
+2025-06-10T15:34:28.0068740Z Get:106 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libsoup-3.0-0 amd64 3.4.4-5ubuntu0.4 [290 kB]
+2025-06-10T15:34:29.2781891Z Get:107 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 gstreamer1.0-plugins-good amd64 1.24.2-1ubuntu1.1 [2238 kB]
+2025-06-10T15:34:33.4934969Z Get:108 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libabsl20220623t64 amd64 20220623.1-3.1ubuntu3.2 [423 kB]
+2025-06-10T15:34:34.6889212Z Get:109 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libgav1-1 amd64 0.18.0-1build3 [357 kB]
+2025-06-10T15:34:35.3591663Z Get:110 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libyuv0 amd64 0.0~git202401110.af6ac82-1 [178 kB]
+2025-06-10T15:34:35.7293419Z Get:111 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libavif16 amd64 1.0.4-1ubuntu3 [91.2 kB]
+2025-06-10T15:34:35.9448205Z Get:112 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libavtp0 amd64 0.2.0-1build1 [6414 B]
+2025-06-10T15:34:36.0579346Z Get:113 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libcairo-script-interpreter2 amd64 1.18.0-3build1 [60.3 kB]
+2025-06-10T15:34:36.2631180Z Get:114 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libdc1394-25 amd64 2.2.6-4build1 [90.1 kB]
+2025-06-10T15:34:36.5150604Z Get:115 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libdecor-0-0 amd64 0.2.2-1build2 [16.5 kB]
+2025-06-10T15:34:36.6929547Z Get:116 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libgles2 amd64 1.7.0-1build1 [17.1 kB]
+2025-06-10T15:34:36.8775965Z Get:117 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libdirectfb-1.7-7t64 amd64 1.7.7-11.1ubuntu2 [1035 kB]
+2025-06-10T15:34:38.8756108Z Get:118 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libdvdread8t64 amd64 6.1.3-1.1build1 [54.7 kB]
+2025-06-10T15:34:39.0503945Z Get:119 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libdvdnav4 amd64 6.1.1-3build1 [39.5 kB]
+2025-06-10T15:34:39.2758171Z Get:120 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libegl-mesa0 amd64 24.2.8-1ubuntu1~24.04.1 [129 kB]
+2025-06-10T15:34:39.7385245Z Get:121 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libevent-2.1-7t64 amd64 2.1.12-stable-9ubuntu2 [145 kB]
+2025-06-10T15:34:40.0394018Z Get:122 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libfaad2 amd64 2.11.1-1build1 [207 kB]
+2025-06-10T15:34:40.8020061Z Get:123 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libinstpatch-1.0-2 amd64 1.1.6-1build2 [251 kB]
+2025-06-10T15:34:41.3702703Z Get:124 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libjack-jackd2-0 amd64 1.9.21~dfsg-3ubuntu3 [289 kB]
+2025-06-10T15:34:42.4577490Z Get:125 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libwebrtc-audio-processing1 amd64 0.3.1-0ubuntu6 [290 kB]
+2025-06-10T15:34:42.9392288Z Get:126 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libspa-0.2-modules amd64 1.0.5-1ubuntu3 [626 kB]
+2025-06-10T15:34:44.6368975Z Get:127 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libpipewire-0.3-0t64 amd64 1.0.5-1ubuntu3 [252 kB]
+2025-06-10T15:34:45.3133690Z Get:128 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libsdl2-2.0-0 amd64 2.30.0+dfsg-1ubuntu3.1 [686 kB]
+2025-06-10T15:34:46.3264883Z Get:129 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 timgm6mb-soundfont all 1.3-5 [5427 kB]
+2025-06-10T15:34:57.0489325Z Get:130 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libfluidsynth3 amd64 2.3.4-1build3 [249 kB]
+2025-06-10T15:35:18.7425681Z Get:131 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libfreeaptx0 amd64 0.1.1-2build1 [13.5 kB]
+2025-06-10T15:35:19.5817402Z Get:132 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libgraphene-1.0-0 amd64 1.10.8-3build2 [46.2 kB]
+2025-06-10T15:35:19.9338161Z Get:133 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libgssdp-1.6-0 amd64 1.6.3-1build3 [40.4 kB]
+2025-06-10T15:35:27.4244653Z Get:134 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libegl1 amd64 1.7.0-1build1 [28.7 kB]
+2025-06-10T15:35:29.1798523Z Get:135 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libgstreamer-gl1.0-0 amd64 1.24.2-1ubuntu0.2 [214 kB]
+2025-06-10T15:35:43.6784531Z Get:136 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libgtk-4-common all 4.14.2+ds-1ubuntu3 [1496 kB]
+2025-06-10T15:37:58.3650486Z ##[error]The operation was canceled.
+2025-06-10T15:37:58.3723406Z ##[group]Run actions/upload-artifact@v4
+2025-06-10T15:37:58.3723688Z with:
+2025-06-10T15:37:58.3723869Z   name: e2e-results
+2025-06-10T15:37:58.3724097Z   path: test-results/
+playwright-report/
+
+2025-06-10T15:37:58.3724373Z   retention-days: 7
+2025-06-10T15:37:58.3724570Z   if-no-files-found: warn
+2025-06-10T15:37:58.3724795Z   compression-level: 6
+2025-06-10T15:37:58.3724999Z   overwrite: false
+2025-06-10T15:37:58.3725208Z   include-hidden-files: false
+2025-06-10T15:37:58.3725432Z env:
+2025-06-10T15:37:58.3725598Z   NODE_VERSION: 18
+2025-06-10T15:37:58.3725777Z ##[endgroup]
+2025-06-10T15:37:58.5829577Z Multiple search paths detected. Calculating the least common ancestor of all paths
+2025-06-10T15:37:58.5832190Z The least common ancestor is /home/runner/work/LocalLoop/LocalLoop. This will be the root directory of the artifact
+2025-06-10T15:37:58.5846612Z ##[warning]No files were found with the provided path: test-results/
+playwright-report/. No artifacts will be uploaded.
+2025-06-10T15:37:58.5972493Z Post job cleanup.
+2025-06-10T15:37:58.6908160Z [command]/usr/bin/git version
+2025-06-10T15:37:58.6944384Z git version 2.49.0
+2025-06-10T15:37:58.6995504Z Temporarily overriding HOME='/home/runner/work/_temp/c92457d3-c464-4e7c-b744-b485b788a722' before making global git config changes
+2025-06-10T15:37:58.6996973Z Adding repository directory to the temporary git global config as a safe directory
+2025-06-10T15:37:58.7002108Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/LocalLoop/LocalLoop
+2025-06-10T15:37:58.7037074Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2025-06-10T15:37:58.7069400Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2025-06-10T15:37:58.7298495Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2025-06-10T15:37:58.7318343Z http.https://github.com/.extraheader
+2025-06-10T15:37:58.7331105Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2025-06-10T15:37:58.7360996Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2025-06-10T15:37:58.7687250Z Cleaning up orphan processes
+2025-06-10T15:37:58.7910437Z Terminate orphan process: pid (2162) (npm exec playwright install --with-deps chromium webkit firefox)
+2025-06-10T15:37:58.7938207Z Terminate orphan process: pid (2173) (sh)
+2025-06-10T15:37:58.7965736Z Terminate orphan process: pid (2174) (node)

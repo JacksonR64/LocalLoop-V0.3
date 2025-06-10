@@ -1,0 +1,284 @@
+﻿2025-06-09T16:39:58.9355949Z Current runner version: '2.325.0'
+2025-06-09T16:39:58.9390832Z ##[group]Runner Image Provisioner
+2025-06-09T16:39:58.9392250Z Hosted Compute Agent
+2025-06-09T16:39:58.9393533Z Version: 20250508.323
+2025-06-09T16:39:58.9394650Z Commit: 81b259f29879f73b4213d199e42d8c3465dae986
+2025-06-09T16:39:58.9395805Z Build Date: 2025-05-08T19:40:08Z
+2025-06-09T16:39:58.9396896Z ##[endgroup]
+2025-06-09T16:39:58.9397740Z ##[group]Operating System
+2025-06-09T16:39:58.9398651Z Ubuntu
+2025-06-09T16:39:58.9399509Z 24.04.2
+2025-06-09T16:39:58.9400216Z LTS
+2025-06-09T16:39:58.9401014Z ##[endgroup]
+2025-06-09T16:39:58.9402038Z ##[group]Runner Image
+2025-06-09T16:39:58.9403196Z Image: ubuntu-24.04
+2025-06-09T16:39:58.9404053Z Version: 20250511.1.0
+2025-06-09T16:39:58.9405938Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20250511.1/images/ubuntu/Ubuntu2404-Readme.md
+2025-06-09T16:39:58.9408788Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20250511.1
+2025-06-09T16:39:58.9410755Z ##[endgroup]
+2025-06-09T16:39:58.9412923Z ##[group]GITHUB_TOKEN Permissions
+2025-06-09T16:39:58.9415670Z Contents: read
+2025-06-09T16:39:58.9416568Z Metadata: read
+2025-06-09T16:39:58.9417395Z Packages: read
+2025-06-09T16:39:58.9418447Z ##[endgroup]
+2025-06-09T16:39:58.9421396Z Secret source: Actions
+2025-06-09T16:39:58.9422671Z Prepare workflow directory
+2025-06-09T16:39:58.9988593Z Prepare all required actions
+2025-06-09T16:39:59.0026122Z Getting action download info
+2025-06-09T16:39:59.4311999Z ##[group]Download immutable action package 'actions/checkout@v4'
+2025-06-09T16:39:59.4313384Z Version: 4.2.2
+2025-06-09T16:39:59.4314391Z Digest: sha256:ccb2698953eaebd21c7bf6268a94f9c26518a7e38e27e0b83c1fe1ad049819b1
+2025-06-09T16:39:59.4315496Z Source commit SHA: 11bd71901bbe5b1630ceea73d27597364c9af683
+2025-06-09T16:39:59.4316651Z ##[endgroup]
+2025-06-09T16:39:59.5183476Z ##[group]Download immutable action package 'actions/setup-node@v4'
+2025-06-09T16:39:59.5184402Z Version: 4.4.0
+2025-06-09T16:39:59.5185160Z Digest: sha256:9427cefe82346e992fb5b949e3569b39d537ae41aa3086483b14eceebfc16bc1
+2025-06-09T16:39:59.5186098Z Source commit SHA: 49933ea5288caeca8642d1e84afbd3f7d6820020
+2025-06-09T16:39:59.5186867Z ##[endgroup]
+2025-06-09T16:39:59.6833430Z Complete job name: 🏗️ Build
+2025-06-09T16:39:59.7491903Z ##[group]Run actions/checkout@v4
+2025-06-09T16:39:59.7493042Z with:
+2025-06-09T16:39:59.7493511Z   repository: JacksonR64/LocalLoop
+2025-06-09T16:39:59.7494175Z   token: ***
+2025-06-09T16:39:59.7494552Z   ssh-strict: true
+2025-06-09T16:39:59.7494956Z   ssh-user: git
+2025-06-09T16:39:59.7495362Z   persist-credentials: true
+2025-06-09T16:39:59.7495802Z   clean: true
+2025-06-09T16:39:59.7496206Z   sparse-checkout-cone-mode: true
+2025-06-09T16:39:59.7496687Z   fetch-depth: 1
+2025-06-09T16:39:59.7497077Z   fetch-tags: false
+2025-06-09T16:39:59.7497474Z   show-progress: true
+2025-06-09T16:39:59.7497877Z   lfs: false
+2025-06-09T16:39:59.7498254Z   submodules: false
+2025-06-09T16:39:59.7498674Z   set-safe-directory: true
+2025-06-09T16:39:59.7499339Z env:
+2025-06-09T16:39:59.7499809Z   NODE_VERSION: 18
+2025-06-09T16:39:59.7500200Z ##[endgroup]
+2025-06-09T16:39:59.8610106Z Syncing repository: JacksonR64/LocalLoop
+2025-06-09T16:39:59.8611892Z ##[group]Getting Git version info
+2025-06-09T16:39:59.8612909Z Working directory is '/home/runner/work/LocalLoop/LocalLoop'
+2025-06-09T16:39:59.8613871Z [command]/usr/bin/git version
+2025-06-09T16:39:59.8697115Z git version 2.49.0
+2025-06-09T16:39:59.8724085Z ##[endgroup]
+2025-06-09T16:39:59.8744574Z Temporarily overriding HOME='/home/runner/work/_temp/ce92e700-5fe1-4b0b-9f84-3c2c48b2a90c' before making global git config changes
+2025-06-09T16:39:59.8749658Z Adding repository directory to the temporary git global config as a safe directory
+2025-06-09T16:39:59.8750761Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/LocalLoop/LocalLoop
+2025-06-09T16:39:59.8787121Z Deleting the contents of '/home/runner/work/LocalLoop/LocalLoop'
+2025-06-09T16:39:59.8790652Z ##[group]Initializing the repository
+2025-06-09T16:39:59.8794782Z [command]/usr/bin/git init /home/runner/work/LocalLoop/LocalLoop
+2025-06-09T16:39:59.8885824Z hint: Using 'master' as the name for the initial branch. This default branch name
+2025-06-09T16:39:59.8886865Z hint: is subject to change. To configure the initial branch name to use in all
+2025-06-09T16:39:59.8887767Z hint: of your new repositories, which will suppress this warning, call:
+2025-06-09T16:39:59.8888750Z hint:
+2025-06-09T16:39:59.8889307Z hint: 	git config --global init.defaultBranch <name>
+2025-06-09T16:39:59.8889882Z hint:
+2025-06-09T16:39:59.8890426Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2025-06-09T16:39:59.8891315Z hint: 'development'. The just-created branch can be renamed via this command:
+2025-06-09T16:39:59.8892017Z hint:
+2025-06-09T16:39:59.8892398Z hint: 	git branch -m <name>
+2025-06-09T16:39:59.8894605Z Initialized empty Git repository in /home/runner/work/LocalLoop/LocalLoop/.git/
+2025-06-09T16:39:59.8906243Z [command]/usr/bin/git remote add origin https://github.com/JacksonR64/LocalLoop
+2025-06-09T16:39:59.8943428Z ##[endgroup]
+2025-06-09T16:39:59.8944700Z ##[group]Disabling automatic garbage collection
+2025-06-09T16:39:59.8947712Z [command]/usr/bin/git config --local gc.auto 0
+2025-06-09T16:39:59.8979207Z ##[endgroup]
+2025-06-09T16:39:59.8980402Z ##[group]Setting up auth
+2025-06-09T16:39:59.8986325Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2025-06-09T16:39:59.9018712Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2025-06-09T16:39:59.9383552Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2025-06-09T16:39:59.9418440Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2025-06-09T16:39:59.9653777Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2025-06-09T16:39:59.9693924Z ##[endgroup]
+2025-06-09T16:39:59.9695663Z ##[group]Fetching the repository
+2025-06-09T16:39:59.9704591Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +347924a6a8fee257cd300c025765969c7c9e9217:refs/remotes/origin/main
+2025-06-09T16:40:01.0917257Z From https://github.com/JacksonR64/LocalLoop
+2025-06-09T16:40:01.0918837Z  * [new ref]         347924a6a8fee257cd300c025765969c7c9e9217 -> origin/main
+2025-06-09T16:40:01.0958073Z ##[endgroup]
+2025-06-09T16:40:01.0959486Z ##[group]Determining the checkout info
+2025-06-09T16:40:01.0961273Z ##[endgroup]
+2025-06-09T16:40:01.0966377Z [command]/usr/bin/git sparse-checkout disable
+2025-06-09T16:40:01.1018159Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2025-06-09T16:40:01.1047029Z ##[group]Checking out the ref
+2025-06-09T16:40:01.1051059Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2025-06-09T16:40:01.1728022Z Switched to a new branch 'main'
+2025-06-09T16:40:01.1729720Z branch 'main' set up to track 'origin/main'.
+2025-06-09T16:40:01.1739690Z ##[endgroup]
+2025-06-09T16:40:01.1775923Z [command]/usr/bin/git log -1 --format=%H
+2025-06-09T16:40:01.1797727Z 347924a6a8fee257cd300c025765969c7c9e9217
+2025-06-09T16:40:01.2080496Z ##[group]Run actions/setup-node@v4
+2025-06-09T16:40:01.2081615Z with:
+2025-06-09T16:40:01.2082570Z   node-version: 18
+2025-06-09T16:40:01.2083440Z   cache: npm
+2025-06-09T16:40:01.2084278Z   always-auth: false
+2025-06-09T16:40:01.2085194Z   check-latest: false
+2025-06-09T16:40:01.2086371Z   token: ***
+2025-06-09T16:40:01.2087189Z env:
+2025-06-09T16:40:01.2087983Z   NODE_VERSION: 18
+2025-06-09T16:40:01.2088825Z ##[endgroup]
+2025-06-09T16:40:01.3879860Z Found in cache @ /opt/hostedtoolcache/node/18.20.8/x64
+2025-06-09T16:40:01.3885333Z ##[group]Environment details
+2025-06-09T16:40:01.7389366Z node: v18.20.8
+2025-06-09T16:40:01.7391262Z npm: 10.8.2
+2025-06-09T16:40:01.7391672Z yarn: 1.22.22
+2025-06-09T16:40:01.7393315Z ##[endgroup]
+2025-06-09T16:40:01.7418325Z [command]/opt/hostedtoolcache/node/18.20.8/x64/bin/npm config get cache
+2025-06-09T16:40:01.8790191Z /home/runner/.npm
+2025-06-09T16:40:02.1918645Z Cache hit for: node-cache-Linux-x64-npm-c12c6ac637b018150c9ab8486a2ab8d5c875f0013e7356ae5e08bc546e10a4bd
+2025-06-09T16:40:03.5122116Z Received 4194304 of 202515877 (2.1%), 4.0 MBs/sec
+2025-06-09T16:40:04.5737428Z Received 134217728 of 202515877 (66.3%), 62.1 MBs/sec
+2025-06-09T16:40:05.2488624Z Received 202515877 of 202515877 (100.0%), 70.6 MBs/sec
+2025-06-09T16:40:05.2489792Z Cache Size: ~193 MB (202515877 B)
+2025-06-09T16:40:05.2608866Z [command]/usr/bin/tar -xf /home/runner/work/_temp/86cfb414-40c2-49d9-9e15-8412929e19e0/cache.tzst -P -C /home/runner/work/LocalLoop/LocalLoop --use-compress-program unzstd
+2025-06-09T16:40:05.6527306Z Cache restored successfully
+2025-06-09T16:40:05.6922192Z Cache restored from key: node-cache-Linux-x64-npm-c12c6ac637b018150c9ab8486a2ab8d5c875f0013e7356ae5e08bc546e10a4bd
+2025-06-09T16:40:05.7065561Z ##[group]Run npm ci --legacy-peer-deps
+2025-06-09T16:40:05.7065939Z [36;1mnpm ci --legacy-peer-deps[0m
+2025-06-09T16:40:05.7288069Z shell: /usr/bin/bash -e {0}
+2025-06-09T16:40:05.7288363Z env:
+2025-06-09T16:40:05.7288562Z   NODE_VERSION: 18
+2025-06-09T16:40:05.7288779Z ##[endgroup]
+2025-06-09T16:40:10.8706484Z npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+2025-06-09T16:40:11.0950479Z npm warn deprecated abab@2.0.6: Use your platform's native atob() and btoa() methods instead
+2025-06-09T16:40:11.1936059Z npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+2025-06-09T16:40:11.2894379Z npm warn deprecated domexception@4.0.0: Use your platform's native DOMException instead
+2025-06-09T16:40:19.6281540Z 
+2025-06-09T16:40:19.6282631Z > localloop@0.1.0 prepare
+2025-06-09T16:40:19.6283204Z > husky install
+2025-06-09T16:40:19.6283478Z 
+2025-06-09T16:40:19.6896614Z husky - install command is DEPRECATED
+2025-06-09T16:40:19.7143105Z 
+2025-06-09T16:40:19.7144053Z added 822 packages, and audited 823 packages in 14s
+2025-06-09T16:40:19.7145841Z 
+2025-06-09T16:40:19.7146221Z 184 packages are looking for funding
+2025-06-09T16:40:19.7146782Z   run `npm fund` for details
+2025-06-09T16:40:19.7159460Z 
+2025-06-09T16:40:19.7159778Z found 0 vulnerabilities
+2025-06-09T16:40:19.8038553Z ##[group]Run npm run build
+2025-06-09T16:40:19.8038844Z [36;1mnpm run build[0m
+2025-06-09T16:40:19.8099679Z shell: /usr/bin/bash -e {0}
+2025-06-09T16:40:19.8099926Z env:
+2025-06-09T16:40:19.8100101Z   NODE_VERSION: 18
+2025-06-09T16:40:19.8100608Z   NEXT_PUBLIC_SUPABASE_URL: ***
+2025-06-09T16:40:19.8102074Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+2025-06-09T16:40:19.8102349Z ##[endgroup]
+2025-06-09T16:40:19.9413938Z 
+2025-06-09T16:40:19.9414552Z > localloop@0.1.0 build
+2025-06-09T16:40:19.9415206Z > next build
+2025-06-09T16:40:19.9415440Z 
+2025-06-09T16:40:20.5775894Z ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
+2025-06-09T16:40:20.5849219Z Attention: Next.js now collects completely anonymous telemetry regarding usage.
+2025-06-09T16:40:20.5850367Z This information is used to shape Next.js' roadmap and prioritize features.
+2025-06-09T16:40:20.5851900Z You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+2025-06-09T16:40:20.5853248Z https://nextjs.org/telemetry
+2025-06-09T16:40:20.5853558Z 
+2025-06-09T16:40:20.6897659Z    ▲ Next.js 15.3.2
+2025-06-09T16:40:20.6897958Z 
+2025-06-09T16:40:20.7277975Z    Creating an optimized production build ...
+2025-06-09T16:40:45.9581867Z <w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (100kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+2025-06-09T16:40:50.3658236Z  ⚠ Compiled with warnings in 29.0s
+2025-06-09T16:40:50.3658697Z 
+2025-06-09T16:40:50.3659206Z ./node_modules/@supabase/realtime-js/dist/main/RealtimeClient.js
+2025-06-09T16:40:50.3660150Z Critical dependency: the request of a dependency is an expression
+2025-06-09T16:40:50.3660568Z 
+2025-06-09T16:40:50.3660973Z Import trace for requested module:
+2025-06-09T16:40:50.3661706Z ./node_modules/@supabase/realtime-js/dist/main/RealtimeClient.js
+2025-06-09T16:40:50.3662835Z ./node_modules/@supabase/realtime-js/dist/main/index.js
+2025-06-09T16:40:50.3663614Z ./node_modules/@supabase/supabase-js/dist/module/index.js
+2025-06-09T16:40:50.3664410Z ./node_modules/@supabase/ssr/dist/module/createBrowserClient.js
+2025-06-09T16:40:50.3665178Z ./node_modules/@supabase/ssr/dist/module/index.js
+2025-06-09T16:40:50.3665730Z ./lib/supabase-server.ts
+2025-06-09T16:40:50.3666201Z ./app/page.tsx
+2025-06-09T16:40:50.3666407Z 
+2025-06-09T16:40:50.3702706Z    Skipping linting
+2025-06-09T16:40:50.3705474Z    Checking validity of types ...
+2025-06-09T16:41:09.3529501Z    Collecting page data ...
+2025-06-09T16:41:12.9429314Z    Generating static pages (0/49) ...
+2025-06-09T16:41:19.4745233Z  ⚠ metadataBase property in metadata export is not set for resolving social open graph or twitter images, using "http://localhost:3000". See https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase
+2025-06-09T16:41:19.4749279Z    Generating static pages (12/49) 
+2025-06-09T16:41:19.4751216Z    Generating static pages (24/49) 
+2025-06-09T16:41:19.4754081Z    Generating static pages (36/49) 
+2025-06-09T16:41:19.4757067Z  ✓ Generating static pages (49/49)
+2025-06-09T16:41:19.4762592Z  ⚠ metadataBase property in metadata export is not set for resolving social open graph or twitter images, using "http://localhost:3000". See https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase
+2025-06-09T16:41:19.8712387Z    Finalizing page optimization ...
+2025-06-09T16:41:19.8718594Z    Collecting build traces ...
+2025-06-09T16:41:26.7231265Z 
+2025-06-09T16:41:26.7361189Z Route (app)                                 Size  First Load JS
+2025-06-09T16:41:26.7362361Z ┌ ƒ /                                    7.95 kB         232 kB
+2025-06-09T16:41:26.7363338Z ├ ○ /_not-found                            981 B         102 kB
+2025-06-09T16:41:26.7363977Z ├ ○ /about                                 188 B         105 kB
+2025-06-09T16:41:26.7365020Z ├ ƒ /api/analytics/performance             228 B         101 kB
+2025-06-09T16:41:26.7365733Z ├ ƒ /api/auth/google/callback              228 B         101 kB
+2025-06-09T16:41:26.7366489Z ├ ƒ /api/auth/google/connect               228 B         101 kB
+2025-06-09T16:41:26.7367453Z ├ ƒ /api/auth/google/disconnect            228 B         101 kB
+2025-06-09T16:41:26.7368400Z ├ ƒ /api/auth/google/status                228 B         101 kB
+2025-06-09T16:41:26.7369315Z ├ ƒ /api/auth/welcome                      228 B         101 kB
+2025-06-09T16:41:26.7370112Z ├ ƒ /api/calendar/add-to-calendar          228 B         101 kB
+2025-06-09T16:41:26.7370952Z ├ ƒ /api/calendar/create-event             228 B         101 kB
+2025-06-09T16:41:26.7371875Z ├ ƒ /api/checkout                          228 B         101 kB
+2025-06-09T16:41:26.7372993Z ├ ƒ /api/debug-oauth                       228 B         101 kB
+2025-06-09T16:41:26.7373921Z ├ ƒ /api/events                            228 B         101 kB
+2025-06-09T16:41:26.7374827Z ├ ƒ /api/events/[id]                       228 B         101 kB
+2025-06-09T16:41:26.7375668Z ├ ƒ /api/events/cancellation               228 B         101 kB
+2025-06-09T16:41:26.7376724Z ├ ƒ /api/events/reminders                  228 B         101 kB
+2025-06-09T16:41:26.7377458Z ├ ƒ /api/health                            228 B         101 kB
+2025-06-09T16:41:26.7377935Z ├ ƒ /api/orders                            228 B         101 kB
+2025-06-09T16:41:26.7378651Z ├ ƒ /api/refunds                           228 B         101 kB
+2025-06-09T16:41:26.7379108Z ├ ƒ /api/rsvps                             228 B         101 kB
+2025-06-09T16:41:26.7379558Z ├ ƒ /api/rsvps/[id]                        228 B         101 kB
+2025-06-09T16:41:26.7380011Z ├ ƒ /api/staff/analytics                   228 B         101 kB
+2025-06-09T16:41:26.7380469Z ├ ƒ /api/staff/attendees                   228 B         101 kB
+2025-06-09T16:41:26.7380920Z ├ ƒ /api/staff/dashboard                   228 B         101 kB
+2025-06-09T16:41:26.7381379Z ├ ƒ /api/staff/export                      228 B         101 kB
+2025-06-09T16:41:26.7381817Z ├ ƒ /api/test-env                          228 B         101 kB
+2025-06-09T16:41:26.7382261Z ├ ƒ /api/test-upgrade-role                 228 B         101 kB
+2025-06-09T16:41:26.7383026Z ├ ƒ /api/ticket-types                      228 B         101 kB
+2025-06-09T16:41:26.7383506Z ├ ƒ /api/ticket-types/[id]                 228 B         101 kB
+2025-06-09T16:41:26.7383978Z ├ ƒ /api/update-customer-info              228 B         101 kB
+2025-06-09T16:41:26.7384451Z ├ ƒ /api/webhooks/stripe                   228 B         101 kB
+2025-06-09T16:41:26.7384902Z ├ ○ /auth/callback                         957 B         142 kB
+2025-06-09T16:41:26.7385354Z ├ ○ /auth/google/callback                2.29 kB         103 kB
+2025-06-09T16:41:26.7385801Z ├ ○ /auth/login                          3.29 kB         148 kB
+2025-06-09T16:41:26.7386248Z ├ ○ /auth/reset-password                 2.09 kB         146 kB
+2025-06-09T16:41:26.7386704Z ├ ○ /auth/signup                         3.26 kB         148 kB
+2025-06-09T16:41:26.7387153Z ├ ○ /auth/update-password                2.48 kB         147 kB
+2025-06-09T16:41:26.7387595Z ├ ○ /contact                               188 B         105 kB
+2025-06-09T16:41:26.7388018Z ├ ○ /create-event                          188 B         105 kB
+2025-06-09T16:41:26.7388431Z ├ ○ /demo                                2.93 kB         227 kB
+2025-06-09T16:41:26.7388848Z ├ ○ /demo/lists                          3.78 kB         228 kB
+2025-06-09T16:41:26.7389271Z ├ ƒ /events/[id]                          2.1 kB         212 kB
+2025-06-09T16:41:26.7389692Z ├ ƒ /my-events                            7.4 kB         126 kB
+2025-06-09T16:41:26.7390104Z ├ ○ /privacy                               188 B         105 kB
+2025-06-09T16:41:26.7390520Z ├ ○ /robots.txt                            228 B         101 kB
+2025-06-09T16:41:26.7390949Z ├ ○ /sitemap.xml                           228 B         101 kB
+2025-06-09T16:41:26.7391539Z ├ ƒ /staff                               14.6 kB         160 kB
+2025-06-09T16:41:26.7391983Z ├ ○ /staff/dashboard                       228 B         101 kB
+2025-06-09T16:41:26.7392772Z ├ ƒ /staff/events/[id]/edit              1.94 kB         157 kB
+2025-06-09T16:41:26.7393673Z ├ ƒ /staff/events/create                 1.92 kB         157 kB
+2025-06-09T16:41:26.7394476Z ├ ○ /terms                                 188 B         105 kB
+2025-06-09T16:41:26.7395263Z └ ƒ /test-auth                             228 B         101 kB
+2025-06-09T16:41:26.7395906Z + First Load JS shared by all             101 kB
+2025-06-09T16:41:26.7396531Z   ├ chunks/1684-0df89d9f25c583b2.js      45.9 kB
+2025-06-09T16:41:26.7397227Z   ├ chunks/4bd1b696-b638aa3d70fba23c.js  53.2 kB
+2025-06-09T16:41:26.7397843Z   └ other shared chunks (total)          1.96 kB
+2025-06-09T16:41:26.7398163Z 
+2025-06-09T16:41:26.7398173Z 
+2025-06-09T16:41:26.7398504Z ƒ Middleware                             66.2 kB
+2025-06-09T16:41:26.7398824Z 
+2025-06-09T16:41:26.7399186Z ○  (Static)   prerendered as static content
+2025-06-09T16:41:26.7399799Z ƒ  (Dynamic)  server-rendered on demand
+2025-06-09T16:41:26.7400090Z 
+2025-06-09T16:41:26.8580676Z Post job cleanup.
+2025-06-09T16:41:27.0214403Z Cache hit occurred on the primary key node-cache-Linux-x64-npm-c12c6ac637b018150c9ab8486a2ab8d5c875f0013e7356ae5e08bc546e10a4bd, not saving cache.
+2025-06-09T16:41:27.0349807Z Post job cleanup.
+2025-06-09T16:41:27.1339388Z [command]/usr/bin/git version
+2025-06-09T16:41:27.1380536Z git version 2.49.0
+2025-06-09T16:41:27.1426645Z Temporarily overriding HOME='/home/runner/work/_temp/1987c284-9d6f-4ea9-a668-15ead1ac5cbe' before making global git config changes
+2025-06-09T16:41:27.1428117Z Adding repository directory to the temporary git global config as a safe directory
+2025-06-09T16:41:27.1433470Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/LocalLoop/LocalLoop
+2025-06-09T16:41:27.1474883Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2025-06-09T16:41:27.1509525Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2025-06-09T16:41:27.1768348Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2025-06-09T16:41:27.1795661Z http.https://github.com/.extraheader
+2025-06-09T16:41:27.1809408Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2025-06-09T16:41:27.1846534Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2025-06-09T16:41:27.2234820Z Cleaning up orphan processes

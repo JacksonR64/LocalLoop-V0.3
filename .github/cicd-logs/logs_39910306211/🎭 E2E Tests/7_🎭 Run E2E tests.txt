@@ -1,0 +1,386 @@
+﻿2025-06-10T19:05:39.6792596Z ##[group]Run npx playwright test --config=playwright.ci.config.ts
+2025-06-10T19:05:39.6793103Z [36;1mnpx playwright test --config=playwright.ci.config.ts[0m
+2025-06-10T19:05:39.6793517Z shell: sh -e {0}
+2025-06-10T19:05:39.6793694Z env:
+2025-06-10T19:05:39.6793938Z   NODE_VERSION: 18
+2025-06-10T19:05:39.6794142Z   CI: true
+2025-06-10T19:05:39.6794792Z   NEXT_PUBLIC_SUPABASE_URL: ***
+2025-06-10T19:05:39.6796101Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+2025-06-10T19:05:39.6796346Z ##[endgroup]
+2025-06-10T19:05:41.3746787Z [WebServer] 
+2025-06-10T19:05:41.3747366Z [WebServer] > localloop@0.1.0 start
+2025-06-10T19:05:41.3747900Z [WebServer] > next start
+2025-06-10T19:05:41.3748277Z [WebServer] 
+2025-06-10T19:05:41.6736432Z [WebServer]    [1m[38;2;173;127;168m▲ Next.js 15.3.2[39m[22m
+2025-06-10T19:05:41.6737856Z [WebServer]    - Local:        http://localhost:3000
+2025-06-10T19:05:41.6738652Z [WebServer]    - Network:      http://172.18.0.2:3000
+2025-06-10T19:05:41.6739183Z [WebServer] 
+2025-06-10T19:05:41.6739881Z [WebServer]  [32m[1m✓[22m[39m Starting...
+2025-06-10T19:05:41.9395310Z [WebServer]  [32m[1m✓[22m[39m Ready in 458ms
+2025-06-10T19:05:42.6885451Z [WebServer]  [33m[1m⚠[22m[39m metadataBase property in metadata export is not set for resolving social open graph or twitter images, using "http://localhost:3000". See https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase
+2025-06-10T19:05:43.4822262Z 
+2025-06-10T19:05:43.4822930Z Running 12 tests using 1 worker
+2025-06-10T19:05:45.6665081Z Homepage basic structure loaded successfully
+2025-06-10T19:05:46.2952098Z ·Navigation elements are present and responsive
+2025-06-10T19:05:48.0075151Z ·Basic responsive layout works correctly
+2025-06-10T19:05:52.4669580Z ·Homepage basic structure loaded successfully
+2025-06-10T19:05:53.5449757Z ·Navigation elements are present and responsive
+2025-06-10T19:05:55.5097452Z ·Basic responsive layout works correctly
+2025-06-10T19:06:05.0876787Z ·××F××F××FHomepage basic structure loaded successfully
+2025-06-10T19:06:06.0419391Z ·Navigation elements are present and responsive
+2025-06-10T19:06:08.1090395Z ·Basic responsive layout works correctly
+2025-06-10T19:06:09.1956563Z ·
+2025-06-10T19:06:09.1965234Z 
+2025-06-10T19:06:09.1975030Z   1) [CI Firefox] › e2e/example.spec.ts:3:5 › homepage loads basic structure ───────────────────────
+2025-06-10T19:06:09.1975708Z 
+2025-06-10T19:06:09.1976184Z     Error: browserType.launch: Target page, context or browser has been closed
+2025-06-10T19:06:09.1976882Z     Browser logs:
+2025-06-10T19:06:09.1977104Z 
+2025-06-10T19:06:09.1977919Z     ╔═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
+2025-06-10T19:06:09.1979143Z     ║ Firefox is unable to launch if the $HOME folder isn't owned by the current user.                                  ║
+2025-06-10T19:06:09.1980701Z     ║ Workaround: Set the HOME=/root environment variable in your GitHub Actions workflow file when running Playwright. ║
+2025-06-10T19:06:09.1982224Z     ╚═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝
+2025-06-10T19:06:09.1982841Z     Call log:
+2025-06-10T19:06:09.1984590Z     [2m  - <launching> /ms-playwright/firefox-1482/firefox/firefox -no-remote -headless -profile /tmp/playwright_firefoxdev_profile-qWWjF7 -juggler-pipe -silent[22m
+2025-06-10T19:06:09.1986007Z     [2m  - <launched> pid=1370[22m
+2025-06-10T19:06:09.1987352Z     [2m  - [pid=1370][err] Running Nightly as root in a regular user's session is not supported.  ($HOME is /github/home which is owned by uid 1001.)[22m
+2025-06-10T19:06:09.1989151Z     [2m  - [pid=1370] <process did exit: exitCode=1, signal=null>[22m
+2025-06-10T19:06:09.1990038Z     [2m  - [pid=1370] starting temporary directories cleanup[22m
+2025-06-10T19:06:09.1990452Z 
+2025-06-10T19:06:09.1990468Z 
+2025-06-10T19:06:09.1991088Z     Error Context: test-results/example-homepage-loads-basic-structure-CI-Firefox/error-context.md
+2025-06-10T19:06:09.1992203Z 
+2025-06-10T19:06:09.1992880Z     Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+2025-06-10T19:06:09.1993344Z 
+2025-06-10T19:06:09.1993800Z     Error: browserType.launch: Target page, context or browser has been closed
+2025-06-10T19:06:09.1994675Z     Browser logs:
+2025-06-10T19:06:09.1994894Z 
+2025-06-10T19:06:09.1995641Z     ╔═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
+2025-06-10T19:06:09.1996886Z     ║ Firefox is unable to launch if the $HOME folder isn't owned by the current user.                                  ║
+2025-06-10T19:06:09.1998488Z     ║ Workaround: Set the HOME=/root environment variable in your GitHub Actions workflow file when running Playwright. ║
+2025-06-10T19:06:09.1999993Z     ╚═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝
+2025-06-10T19:06:09.2000568Z     Call log:
+2025-06-10T19:06:09.2002107Z     [2m  - <launching> /ms-playwright/firefox-1482/firefox/firefox -no-remote -headless -profile /tmp/playwright_firefoxdev_profile-66A0mb -juggler-pipe -silent[22m
+2025-06-10T19:06:09.2003490Z     [2m  - <launched> pid=1385[22m
+2025-06-10T19:06:09.2005074Z     [2m  - [pid=1385][err] Running Nightly as root in a regular user's session is not supported.  ($HOME is /github/home which is owned by uid 1001.)[22m
+2025-06-10T19:06:09.2006453Z     [2m  - [pid=1385] <process did exit: exitCode=1, signal=null>[22m
+2025-06-10T19:06:09.2007361Z     [2m  - [pid=1385] starting temporary directories cleanup[22m
+2025-06-10T19:06:09.2007828Z 
+2025-06-10T19:06:09.2007849Z 
+2025-06-10T19:06:09.2008537Z     Error Context: test-results/example-homepage-loads-basic-structure-CI-Firefox-retry1/error-context.md
+2025-06-10T19:06:09.2009296Z 
+2025-06-10T19:06:09.2010088Z     attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+2025-06-10T19:06:09.2011177Z     test-results/example-homepage-loads-basic-structure-CI-Firefox-retry1/trace.zip
+2025-06-10T19:06:09.2011951Z     Usage:
+2025-06-10T19:06:09.2012132Z 
+2025-06-10T19:06:09.2012830Z         npx playwright show-trace test-results/example-homepage-loads-basic-structure-CI-Firefox-retry1/trace.zip
+2025-06-10T19:06:09.2013614Z 
+2025-06-10T19:06:09.2014419Z     ────────────────────────────────────────────────────────────────────────────────────────────────
+2025-06-10T19:06:09.2014806Z 
+2025-06-10T19:06:09.2015389Z     Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
+2025-06-10T19:06:09.2016106Z 
+2025-06-10T19:06:09.2016546Z     Error: browserType.launch: Target page, context or browser has been closed
+2025-06-10T19:06:09.2017201Z     Browser logs:
+2025-06-10T19:06:09.2017408Z 
+2025-06-10T19:06:09.2018136Z     ╔═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
+2025-06-10T19:06:09.2019295Z     ║ Firefox is unable to launch if the $HOME folder isn't owned by the current user.                                  ║
+2025-06-10T19:06:09.2021097Z     ║ Workaround: Set the HOME=/root environment variable in your GitHub Actions workflow file when running Playwright. ║
+2025-06-10T19:06:09.2022586Z     ╚═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝
+2025-06-10T19:06:09.2023162Z     Call log:
+2025-06-10T19:06:09.2024862Z     [2m  - <launching> /ms-playwright/firefox-1482/firefox/firefox -no-remote -headless -profile /tmp/playwright_firefoxdev_profile-bSzWld -juggler-pipe -silent[22m
+2025-06-10T19:06:09.2026269Z     [2m  - <launched> pid=1400[22m
+2025-06-10T19:06:09.2027578Z     [2m  - [pid=1400][err] Running Nightly as root in a regular user's session is not supported.  ($HOME is /github/home which is owned by uid 1001.)[22m
+2025-06-10T19:06:09.2028878Z     [2m  - [pid=1400] <process did exit: exitCode=1, signal=null>[22m
+2025-06-10T19:06:09.2029782Z     [2m  - [pid=1400] starting temporary directories cleanup[22m
+2025-06-10T19:06:09.2030205Z 
+2025-06-10T19:06:09.2030220Z 
+2025-06-10T19:06:09.2030903Z     Error Context: test-results/example-homepage-loads-basic-structure-CI-Firefox-retry2/error-context.md
+2025-06-10T19:06:09.2031655Z 
+2025-06-10T19:06:09.2032427Z   2) [CI Firefox] › e2e/example.spec.ts:31:5 › navigation elements are present ─────────────────────
+2025-06-10T19:06:09.2033010Z 
+2025-06-10T19:06:09.2033459Z     Error: browserType.launch: Target page, context or browser has been closed
+2025-06-10T19:06:09.2034128Z     Browser logs:
+2025-06-10T19:06:09.2034539Z 
+2025-06-10T19:06:09.2035291Z     ╔═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
+2025-06-10T19:06:09.2036530Z     ║ Firefox is unable to launch if the $HOME folder isn't owned by the current user.                                  ║
+2025-06-10T19:06:09.2038058Z     ║ Workaround: Set the HOME=/root environment variable in your GitHub Actions workflow file when running Playwright. ║
+2025-06-10T19:06:09.2039533Z     ╚═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝
+2025-06-10T19:06:09.2040103Z     Call log:
+2025-06-10T19:06:09.2041577Z     [2m  - <launching> /ms-playwright/firefox-1482/firefox/firefox -no-remote -headless -profile /tmp/playwright_firefoxdev_profile-yOxGkZ -juggler-pipe -silent[22m
+2025-06-10T19:06:09.2042923Z     [2m  - <launched> pid=1415[22m
+2025-06-10T19:06:09.2044424Z     [2m  - [pid=1415][err] Running Nightly as root in a regular user's session is not supported.  ($HOME is /github/home which is owned by uid 1001.)[22m
+2025-06-10T19:06:09.2046007Z     [2m  - [pid=1415] <process did exit: exitCode=1, signal=null>[22m
+2025-06-10T19:06:09.2046838Z     [2m  - [pid=1415] starting temporary directories cleanup[22m
+2025-06-10T19:06:09.2047217Z 
+2025-06-10T19:06:09.2047229Z 
+2025-06-10T19:06:09.2047791Z     Error Context: test-results/example-navigation-elements-are-present-CI-Firefox/error-context.md
+2025-06-10T19:06:09.2048864Z 
+2025-06-10T19:06:09.2049467Z     Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+2025-06-10T19:06:09.2049857Z 
+2025-06-10T19:06:09.2050233Z     Error: browserType.launch: Target page, context or browser has been closed
+2025-06-10T19:06:09.2050815Z     Browser logs:
+2025-06-10T19:06:09.2050991Z 
+2025-06-10T19:06:09.2051613Z     ╔═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
+2025-06-10T19:06:09.2052760Z     ║ Firefox is unable to launch if the $HOME folder isn't owned by the current user.                                  ║
+2025-06-10T19:06:09.2054128Z     ║ Workaround: Set the HOME=/root environment variable in your GitHub Actions workflow file when running Playwright. ║
+2025-06-10T19:06:09.2055631Z     ╚═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝
+2025-06-10T19:06:09.2056174Z     Call log:
+2025-06-10T19:06:09.2057596Z     [2m  - <launching> /ms-playwright/firefox-1482/firefox/firefox -no-remote -headless -profile /tmp/playwright_firefoxdev_profile-xI1ozW -juggler-pipe -silent[22m
+2025-06-10T19:06:09.2058937Z     [2m  - <launched> pid=1430[22m
+2025-06-10T19:06:09.2060244Z     [2m  - [pid=1430][err] Running Nightly as root in a regular user's session is not supported.  ($HOME is /github/home which is owned by uid 1001.)[22m
+2025-06-10T19:06:09.2061478Z     [2m  - [pid=1430] <process did exit: exitCode=1, signal=null>[22m
+2025-06-10T19:06:09.2062357Z     [2m  - [pid=1430] starting temporary directories cleanup[22m
+2025-06-10T19:06:09.2062779Z 
+2025-06-10T19:06:09.2062793Z 
+2025-06-10T19:06:09.2063488Z     Error Context: test-results/example-navigation-elements-are-present-CI-Firefox-retry1/error-context.md
+2025-06-10T19:06:09.2064480Z 
+2025-06-10T19:06:09.2065193Z     attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+2025-06-10T19:06:09.2066304Z     test-results/example-navigation-elements-are-present-CI-Firefox-retry1/trace.zip
+2025-06-10T19:06:09.2067063Z     Usage:
+2025-06-10T19:06:09.2067244Z 
+2025-06-10T19:06:09.2067985Z         npx playwright show-trace test-results/example-navigation-elements-are-present-CI-Firefox-retry1/trace.zip
+2025-06-10T19:06:09.2068807Z 
+2025-06-10T19:06:09.2069451Z     ────────────────────────────────────────────────────────────────────────────────────────────────
+2025-06-10T19:06:09.2069890Z 
+2025-06-10T19:06:09.2071173Z     Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
+2025-06-10T19:06:09.2071656Z 
+2025-06-10T19:06:09.2072121Z     Error: browserType.launch: Target page, context or browser has been closed
+2025-06-10T19:06:09.2072799Z     Browser logs:
+2025-06-10T19:06:09.2073000Z 
+2025-06-10T19:06:09.2073773Z     ╔═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
+2025-06-10T19:06:09.2075525Z     ║ Firefox is unable to launch if the $HOME folder isn't owned by the current user.                                  ║
+2025-06-10T19:06:09.2077039Z     ║ Workaround: Set the HOME=/root environment variable in your GitHub Actions workflow file when running Playwright. ║
+2025-06-10T19:06:09.2078511Z     ╚═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝
+2025-06-10T19:06:09.2079100Z     Call log:
+2025-06-10T19:06:09.2080608Z     [2m  - <launching> /ms-playwright/firefox-1482/firefox/firefox -no-remote -headless -profile /tmp/playwright_firefoxdev_profile-gDM8Q3 -juggler-pipe -silent[22m
+2025-06-10T19:06:09.2082026Z     [2m  - <launched> pid=1445[22m
+2025-06-10T19:06:09.2083386Z     [2m  - [pid=1445][err] Running Nightly as root in a regular user's session is not supported.  ($HOME is /github/home which is owned by uid 1001.)[22m
+2025-06-10T19:06:09.2084935Z     [2m  - [pid=1445] <process did exit: exitCode=1, signal=null>[22m
+2025-06-10T19:06:09.2085870Z     [2m  - [pid=1445] starting temporary directories cleanup[22m
+2025-06-10T19:06:09.2086280Z 
+2025-06-10T19:06:09.2086293Z 
+2025-06-10T19:06:09.2086986Z     Error Context: test-results/example-navigation-elements-are-present-CI-Firefox-retry2/error-context.md
+2025-06-10T19:06:09.2087752Z 
+2025-06-10T19:06:09.2088501Z   3) [CI Firefox] › e2e/example.spec.ts:56:5 › basic responsive layout works ───────────────────────
+2025-06-10T19:06:09.2089112Z 
+2025-06-10T19:06:09.2089568Z     Error: browserType.launch: Target page, context or browser has been closed
+2025-06-10T19:06:09.2090265Z     Browser logs:
+2025-06-10T19:06:09.2090473Z 
+2025-06-10T19:06:09.2091213Z     ╔═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
+2025-06-10T19:06:09.2092454Z     ║ Firefox is unable to launch if the $HOME folder isn't owned by the current user.                                  ║
+2025-06-10T19:06:09.2094031Z     ║ Workaround: Set the HOME=/root environment variable in your GitHub Actions workflow file when running Playwright. ║
+2025-06-10T19:06:09.2095787Z     ╚═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝
+2025-06-10T19:06:09.2096371Z     Call log:
+2025-06-10T19:06:09.2097806Z     [2m  - <launching> /ms-playwright/firefox-1482/firefox/firefox -no-remote -headless -profile /tmp/playwright_firefoxdev_profile-CBZjom -juggler-pipe -silent[22m
+2025-06-10T19:06:09.2099128Z     [2m  - <launched> pid=1460[22m
+2025-06-10T19:06:09.2100689Z     [2m  - [pid=1460][err] Running Nightly as root in a regular user's session is not supported.  ($HOME is /github/home which is owned by uid 1001.)[22m
+2025-06-10T19:06:09.2101932Z     [2m  - [pid=1460] <process did exit: exitCode=1, signal=null>[22m
+2025-06-10T19:06:09.2129132Z     [2m  - [pid=1460] starting temporary directories cleanup[22m
+2025-06-10T19:06:09.2129633Z 
+2025-06-10T19:06:09.2129892Z 
+2025-06-10T19:06:09.2130549Z     Error Context: test-results/example-basic-responsive-layout-works-CI-Firefox/error-context.md
+2025-06-10T19:06:09.2131210Z 
+2025-06-10T19:06:09.2131870Z     Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+2025-06-10T19:06:09.2132294Z 
+2025-06-10T19:06:09.2132727Z     Error: browserType.launch: Target page, context or browser has been closed
+2025-06-10T19:06:09.2133363Z     Browser logs:
+2025-06-10T19:06:09.2133579Z 
+2025-06-10T19:06:09.2134480Z     ╔═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
+2025-06-10T19:06:09.2135722Z     ║ Firefox is unable to launch if the $HOME folder isn't owned by the current user.                                  ║
+2025-06-10T19:06:09.2137220Z     ║ Workaround: Set the HOME=/root environment variable in your GitHub Actions workflow file when running Playwright. ║
+2025-06-10T19:06:09.2138674Z     ╚═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝
+2025-06-10T19:06:09.2139263Z     Call log:
+2025-06-10T19:06:09.2140727Z     [2m  - <launching> /ms-playwright/firefox-1482/firefox/firefox -no-remote -headless -profile /tmp/playwright_firefoxdev_profile-M70Kz3 -juggler-pipe -silent[22m
+2025-06-10T19:06:09.2142104Z     [2m  - <launched> pid=1475[22m
+2025-06-10T19:06:09.2143423Z     [2m  - [pid=1475][err] Running Nightly as root in a regular user's session is not supported.  ($HOME is /github/home which is owned by uid 1001.)[22m
+2025-06-10T19:06:09.2144787Z     [2m  - [pid=1475] <process did exit: exitCode=1, signal=null>[22m
+2025-06-10T19:06:09.2145571Z     [2m  - [pid=1475] starting temporary directories cleanup[22m
+2025-06-10T19:06:09.2145949Z 
+2025-06-10T19:06:09.2145960Z 
+2025-06-10T19:06:09.2146579Z     Error Context: test-results/example-basic-responsive-layout-works-CI-Firefox-retry1/error-context.md
+2025-06-10T19:06:09.2147250Z 
+2025-06-10T19:06:09.2147851Z     attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+2025-06-10T19:06:09.2148439Z     test-results/example-basic-responsive-layout-works-CI-Firefox-retry1/trace.zip
+2025-06-10T19:06:09.2148838Z     Usage:
+2025-06-10T19:06:09.2148941Z 
+2025-06-10T19:06:09.2149319Z         npx playwright show-trace test-results/example-basic-responsive-layout-works-CI-Firefox-retry1/trace.zip
+2025-06-10T19:06:09.2149924Z 
+2025-06-10T19:06:09.2150464Z     ────────────────────────────────────────────────────────────────────────────────────────────────
+2025-06-10T19:06:09.2151167Z 
+2025-06-10T19:06:09.2151765Z     Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
+2025-06-10T19:06:09.2152223Z 
+2025-06-10T19:06:09.2152665Z     Error: browserType.launch: Target page, context or browser has been closed
+2025-06-10T19:06:09.2153300Z     Browser logs:
+2025-06-10T19:06:09.2153501Z 
+2025-06-10T19:06:09.2154413Z     ╔═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
+2025-06-10T19:06:09.2155839Z     ║ Firefox is unable to launch if the $HOME folder isn't owned by the current user.                                  ║
+2025-06-10T19:06:09.2157293Z     ║ Workaround: Set the HOME=/root environment variable in your GitHub Actions workflow file when running Playwright. ║
+2025-06-10T19:06:09.2158635Z     ╚═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝
+2025-06-10T19:06:09.2159192Z     Call log:
+2025-06-10T19:06:09.2160590Z     [2m  - <launching> /ms-playwright/firefox-1482/firefox/firefox -no-remote -headless -profile /tmp/playwright_firefoxdev_profile-rTZlDC -juggler-pipe -silent[22m
+2025-06-10T19:06:09.2161864Z     [2m  - <launched> pid=1490[22m
+2025-06-10T19:06:09.2163119Z     [2m  - [pid=1490][err] Running Nightly as root in a regular user's session is not supported.  ($HOME is /github/home which is owned by uid 1001.)[22m
+2025-06-10T19:06:09.2164509Z     [2m  - [pid=1490] <process did exit: exitCode=1, signal=null>[22m
+2025-06-10T19:06:09.2165285Z     [2m  - [pid=1490] starting temporary directories cleanup[22m
+2025-06-10T19:06:09.2165657Z 
+2025-06-10T19:06:09.2165665Z 
+2025-06-10T19:06:09.2166301Z     Error Context: test-results/example-basic-responsive-layout-works-CI-Firefox-retry2/error-context.md
+2025-06-10T19:06:09.2167000Z 
+2025-06-10T19:06:09.2167113Z   3 failed
+2025-06-10T19:06:09.2167905Z     [CI Firefox] › e2e/example.spec.ts:3:5 › homepage loads basic structure ────────────────────────
+2025-06-10T19:06:09.2169070Z     [CI Firefox] › e2e/example.spec.ts:31:5 › navigation elements are present ──────────────────────
+2025-06-10T19:06:09.2170195Z     [CI Firefox] › e2e/example.spec.ts:56:5 › basic responsive layout works ────────────────────────
+2025-06-10T19:06:09.2170857Z   9 passed (28.3s)
+2025-06-10T19:06:09.2205539Z ##[error]  1) [CI Firefox] › e2e/example.spec.ts:3:5 › homepage loads basic structure ───────────────────────
+    Error: browserType.launch: Target page, context or browser has been closed
+    Browser logs:
+
+    ╔═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
+    ║ Firefox is unable to launch if the $HOME folder isn't owned by the current user.                                  ║
+    ║ Workaround: Set the HOME=/root environment variable in your GitHub Actions workflow file when running Playwright. ║
+    ╚═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝
+    Call log:
+      - <launching> /ms-playwright/firefox-1482/firefox/firefox -no-remote -headless -profile /tmp/playwright_firefoxdev_profile-qWWjF7 -juggler-pipe -silent
+      - <launched> pid=1370
+      - [pid=1370][err] Running Nightly as root in a regular user's session is not supported.  ($HOME is /github/home which is owned by uid 1001.)
+      - [pid=1370] <process did exit: exitCode=1, signal=null>
+      - [pid=1370] starting temporary directories cleanup
+
+2025-06-10T19:06:09.2231605Z ##[error]  1) [CI Firefox] › e2e/example.spec.ts:3:5 › homepage loads basic structure ───────────────────────
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+    Error: browserType.launch: Target page, context or browser has been closed
+    Browser logs:
+
+    ╔═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
+    ║ Firefox is unable to launch if the $HOME folder isn't owned by the current user.                                  ║
+    ║ Workaround: Set the HOME=/root environment variable in your GitHub Actions workflow file when running Playwright. ║
+    ╚═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝
+    Call log:
+      - <launching> /ms-playwright/firefox-1482/firefox/firefox -no-remote -headless -profile /tmp/playwright_firefoxdev_profile-66A0mb -juggler-pipe -silent
+      - <launched> pid=1385
+      - [pid=1385][err] Running Nightly as root in a regular user's session is not supported.  ($HOME is /github/home which is owned by uid 1001.)
+      - [pid=1385] <process did exit: exitCode=1, signal=null>
+      - [pid=1385] starting temporary directories cleanup
+
+2025-06-10T19:06:09.2249029Z ##[error]  1) [CI Firefox] › e2e/example.spec.ts:3:5 › homepage loads basic structure ───────────────────────
+
+    Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
+    Error: browserType.launch: Target page, context or browser has been closed
+    Browser logs:
+
+    ╔═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
+    ║ Firefox is unable to launch if the $HOME folder isn't owned by the current user.                                  ║
+    ║ Workaround: Set the HOME=/root environment variable in your GitHub Actions workflow file when running Playwright. ║
+    ╚═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝
+    Call log:
+      - <launching> /ms-playwright/firefox-1482/firefox/firefox -no-remote -headless -profile /tmp/playwright_firefoxdev_profile-bSzWld -juggler-pipe -silent
+      - <launched> pid=1400
+      - [pid=1400][err] Running Nightly as root in a regular user's session is not supported.  ($HOME is /github/home which is owned by uid 1001.)
+      - [pid=1400] <process did exit: exitCode=1, signal=null>
+      - [pid=1400] starting temporary directories cleanup
+
+2025-06-10T19:06:09.2264622Z ##[error]  2) [CI Firefox] › e2e/example.spec.ts:31:5 › navigation elements are present ─────────────────────
+    Error: browserType.launch: Target page, context or browser has been closed
+    Browser logs:
+
+    ╔═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
+    ║ Firefox is unable to launch if the $HOME folder isn't owned by the current user.                                  ║
+    ║ Workaround: Set the HOME=/root environment variable in your GitHub Actions workflow file when running Playwright. ║
+    ╚═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝
+    Call log:
+      - <launching> /ms-playwright/firefox-1482/firefox/firefox -no-remote -headless -profile /tmp/playwright_firefoxdev_profile-yOxGkZ -juggler-pipe -silent
+      - <launched> pid=1415
+      - [pid=1415][err] Running Nightly as root in a regular user's session is not supported.  ($HOME is /github/home which is owned by uid 1001.)
+      - [pid=1415] <process did exit: exitCode=1, signal=null>
+      - [pid=1415] starting temporary directories cleanup
+
+2025-06-10T19:06:09.2277193Z ##[error]  2) [CI Firefox] › e2e/example.spec.ts:31:5 › navigation elements are present ─────────────────────
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+    Error: browserType.launch: Target page, context or browser has been closed
+    Browser logs:
+
+    ╔═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
+    ║ Firefox is unable to launch if the $HOME folder isn't owned by the current user.                                  ║
+    ║ Workaround: Set the HOME=/root environment variable in your GitHub Actions workflow file when running Playwright. ║
+    ╚═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝
+    Call log:
+      - <launching> /ms-playwright/firefox-1482/firefox/firefox -no-remote -headless -profile /tmp/playwright_firefoxdev_profile-xI1ozW -juggler-pipe -silent
+      - <launched> pid=1430
+      - [pid=1430][err] Running Nightly as root in a regular user's session is not supported.  ($HOME is /github/home which is owned by uid 1001.)
+      - [pid=1430] <process did exit: exitCode=1, signal=null>
+      - [pid=1430] starting temporary directories cleanup
+
+2025-06-10T19:06:09.2290655Z ##[error]  2) [CI Firefox] › e2e/example.spec.ts:31:5 › navigation elements are present ─────────────────────
+
+    Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
+    Error: browserType.launch: Target page, context or browser has been closed
+    Browser logs:
+
+    ╔═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
+    ║ Firefox is unable to launch if the $HOME folder isn't owned by the current user.                                  ║
+    ║ Workaround: Set the HOME=/root environment variable in your GitHub Actions workflow file when running Playwright. ║
+    ╚═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝
+    Call log:
+      - <launching> /ms-playwright/firefox-1482/firefox/firefox -no-remote -headless -profile /tmp/playwright_firefoxdev_profile-gDM8Q3 -juggler-pipe -silent
+      - <launched> pid=1445
+      - [pid=1445][err] Running Nightly as root in a regular user's session is not supported.  ($HOME is /github/home which is owned by uid 1001.)
+      - [pid=1445] <process did exit: exitCode=1, signal=null>
+      - [pid=1445] starting temporary directories cleanup
+
+2025-06-10T19:06:09.2300849Z ##[error]  3) [CI Firefox] › e2e/example.spec.ts:56:5 › basic responsive layout works ───────────────────────
+    Error: browserType.launch: Target page, context or browser has been closed
+    Browser logs:
+
+    ╔═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
+    ║ Firefox is unable to launch if the $HOME folder isn't owned by the current user.                                  ║
+    ║ Workaround: Set the HOME=/root environment variable in your GitHub Actions workflow file when running Playwright. ║
+    ╚═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝
+    Call log:
+      - <launching> /ms-playwright/firefox-1482/firefox/firefox -no-remote -headless -profile /tmp/playwright_firefoxdev_profile-CBZjom -juggler-pipe -silent
+      - <launched> pid=1460
+      - [pid=1460][err] Running Nightly as root in a regular user's session is not supported.  ($HOME is /github/home which is owned by uid 1001.)
+      - [pid=1460] <process did exit: exitCode=1, signal=null>
+      - [pid=1460] starting temporary directories cleanup
+
+2025-06-10T19:06:09.2318043Z ##[error]  3) [CI Firefox] › e2e/example.spec.ts:56:5 › basic responsive layout works ───────────────────────
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+    Error: browserType.launch: Target page, context or browser has been closed
+    Browser logs:
+
+    ╔═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
+    ║ Firefox is unable to launch if the $HOME folder isn't owned by the current user.                                  ║
+    ║ Workaround: Set the HOME=/root environment variable in your GitHub Actions workflow file when running Playwright. ║
+    ╚═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝
+    Call log:
+      - <launching> /ms-playwright/firefox-1482/firefox/firefox -no-remote -headless -profile /tmp/playwright_firefoxdev_profile-M70Kz3 -juggler-pipe -silent
+      - <launched> pid=1475
+      - [pid=1475][err] Running Nightly as root in a regular user's session is not supported.  ($HOME is /github/home which is owned by uid 1001.)
+      - [pid=1475] <process did exit: exitCode=1, signal=null>
+      - [pid=1475] starting temporary directories cleanup
+
+2025-06-10T19:06:09.2336138Z ##[error]  3) [CI Firefox] › e2e/example.spec.ts:56:5 › basic responsive layout works ───────────────────────
+
+    Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
+    Error: browserType.launch: Target page, context or browser has been closed
+    Browser logs:
+
+    ╔═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
+    ║ Firefox is unable to launch if the $HOME folder isn't owned by the current user.                                  ║
+    ║ Workaround: Set the HOME=/root environment variable in your GitHub Actions workflow file when running Playwright. ║
+    ╚═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝
+    Call log:
+      - <launching> /ms-playwright/firefox-1482/firefox/firefox -no-remote -headless -profile /tmp/playwright_firefoxdev_profile-rTZlDC -juggler-pipe -silent
+      - <launched> pid=1490
+      - [pid=1490][err] Running Nightly as root in a regular user's session is not supported.  ($HOME is /github/home which is owned by uid 1001.)
+      - [pid=1490] <process did exit: exitCode=1, signal=null>
+      - [pid=1490] starting temporary directories cleanup
+
+2025-06-10T19:06:09.2347973Z ##[notice]  3 failed
+    [CI Firefox] › e2e/example.spec.ts:3:5 › homepage loads basic structure ────────────────────────
+    [CI Firefox] › e2e/example.spec.ts:31:5 › navigation elements are present ──────────────────────
+    [CI Firefox] › e2e/example.spec.ts:56:5 › basic responsive layout works ────────────────────────
+  9 passed (28.3s)
+2025-06-10T19:06:09.2590323Z ##[error]Process completed with exit code 1.

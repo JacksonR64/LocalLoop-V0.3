@@ -1,0 +1,37 @@
+﻿2025-06-09T20:57:22.4826060Z ##[group]Run npx playwright test --config=playwright.ci.config.ts
+2025-06-09T20:57:22.4826551Z [36;1mnpx playwright test --config=playwright.ci.config.ts[0m
+2025-06-09T20:57:22.4877761Z shell: /usr/bin/bash -e {0}
+2025-06-09T20:57:22.4877995Z env:
+2025-06-09T20:57:22.4878163Z   NODE_VERSION: 18
+2025-06-09T20:57:22.4878339Z   CI: true
+2025-06-09T20:57:22.4878716Z   NEXT_PUBLIC_SUPABASE_URL: ***
+2025-06-09T20:57:22.4880275Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+2025-06-09T20:57:22.4880545Z ##[endgroup]
+2025-06-09T20:57:24.1428766Z [WebServer] 
+2025-06-09T20:57:24.1429370Z [WebServer] > localloop@0.1.0 start
+2025-06-09T20:57:24.1430119Z [WebServer] > next start
+2025-06-09T20:57:24.1430512Z [WebServer] 
+2025-06-09T20:57:24.4465208Z [WebServer]    [1m[38;2;173;127;168m▲ Next.js 15.3.2[39m[22m
+2025-06-09T20:57:24.4467907Z [WebServer]    - Local:        http://localhost:3000
+2025-06-09T20:57:24.4468638Z [WebServer]    - Network:      http://10.1.0.239:3000
+2025-06-09T20:57:24.4469124Z [WebServer] 
+2025-06-09T20:57:24.4469931Z [WebServer]  [32m[1m✓[22m[39m Starting...
+2025-06-09T20:57:24.6977795Z [WebServer]  [32m[1m✓[22m[39m Ready in 450ms
+2025-06-09T20:57:25.4432681Z [WebServer]  [33m[1m⚠[22m[39m metadataBase property in metadata export is not set for resolving social open graph or twitter images, using "http://localhost:3000". See https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase
+2025-06-09T20:57:26.4376929Z 
+2025-06-09T20:57:26.4377699Z Running 12 tests using 1 worker
+2025-06-09T20:57:29.0986818Z Homepage basic structure loaded successfully
+2025-06-09T20:57:29.9544278Z ·Navigation elements are present and responsive
+2025-06-09T20:57:31.8639940Z ·Basic responsive layout works correctly
+2025-06-09T20:57:37.1680542Z ·Homepage basic structure loaded successfully
+2025-06-09T20:57:38.3354235Z ·Navigation elements are present and responsive
+2025-06-09T20:57:40.6946481Z ·Basic responsive layout works correctly
+2025-06-09T20:57:43.7017697Z ·Homepage basic structure loaded successfully
+2025-06-09T20:57:44.5389813Z ·Navigation elements are present and responsive
+2025-06-09T20:57:46.4457893Z ·Basic responsive layout works correctly
+2025-06-09T20:57:48.8664641Z ·Homepage basic structure loaded successfully
+2025-06-09T20:57:50.0364136Z ·Navigation elements are present and responsive
+2025-06-09T20:57:52.2491465Z ·Basic responsive layout works correctly
+2025-06-09T20:57:53.5301485Z ·
+2025-06-09T20:57:53.5305895Z   12 passed (29.8s)
+2025-06-09T20:57:53.5338377Z ##[notice]  12 passed (29.8s)

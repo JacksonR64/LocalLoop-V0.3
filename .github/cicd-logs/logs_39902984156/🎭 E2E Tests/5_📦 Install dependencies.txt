@@ -1,0 +1,33 @@
+﻿2025-06-10T18:23:09.0413837Z ##[debug]Evaluating condition for step: '📦 Install dependencies'
+2025-06-10T18:23:09.0415717Z ##[debug]Evaluating: success()
+2025-06-10T18:23:09.0416072Z ##[debug]Evaluating success:
+2025-06-10T18:23:09.0416432Z ##[debug]=> true
+2025-06-10T18:23:09.0416729Z ##[debug]Result: true
+2025-06-10T18:23:09.0417250Z ##[debug]Starting: 📦 Install dependencies
+2025-06-10T18:23:09.0426193Z ##[debug]Loading inputs
+2025-06-10T18:23:09.0426986Z ##[debug]Loading env
+2025-06-10T18:23:09.0442560Z ##[group]Run npm ci --legacy-peer-deps
+2025-06-10T18:23:09.0442899Z [36;1mnpm ci --legacy-peer-deps[0m
+2025-06-10T18:23:09.0446119Z shell: sh -e {0}
+2025-06-10T18:23:09.0446325Z env:
+2025-06-10T18:23:09.0446480Z   NODE_VERSION: 18
+2025-06-10T18:23:09.0446660Z ##[endgroup]
+2025-06-10T18:23:09.0552826Z ##[debug]sh -e /__w/_temp/120d2db9-fbb1-42ab-a7f0-33a53948ddc6.sh
+2025-06-10T18:23:21.0866825Z npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+2025-06-10T18:23:21.3252787Z npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+2025-06-10T18:23:21.6954116Z npm warn deprecated domexception@4.0.0: Use your platform's native DOMException instead
+2025-06-10T18:23:22.0998255Z npm warn deprecated abab@2.0.6: Use your platform's native atob() and btoa() methods instead
+2025-06-10T18:23:34.0991580Z 
+2025-06-10T18:23:34.0992233Z > localloop@0.1.0 prepare
+2025-06-10T18:23:34.0992747Z > husky install
+2025-06-10T18:23:34.0993071Z 
+2025-06-10T18:23:34.1444696Z husky - install command is DEPRECATED
+2025-06-10T18:23:34.1480990Z fatal: not in a git directory
+2025-06-10T18:23:34.1654767Z 
+2025-06-10T18:23:34.1655409Z added 822 packages, and audited 823 packages in 25s
+2025-06-10T18:23:34.1655835Z 
+2025-06-10T18:23:34.1656127Z 184 packages are looking for funding
+2025-06-10T18:23:34.1656802Z   run `npm fund` for details
+2025-06-10T18:23:34.1676455Z 
+2025-06-10T18:23:34.1677548Z found 0 vulnerabilities
+2025-06-10T18:23:34.2136729Z ##[debug]Finishing: 📦 Install dependencies

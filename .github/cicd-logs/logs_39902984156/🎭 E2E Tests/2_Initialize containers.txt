@@ -1,0 +1,63 @@
+﻿2025-06-10T18:22:33.8991885Z ##[debug]Evaluating condition for step: 'Initialize containers'
+2025-06-10T18:22:33.9026346Z ##[debug]Evaluating: success()
+2025-06-10T18:22:33.9031242Z ##[debug]Evaluating success:
+2025-06-10T18:22:33.9046677Z ##[debug]=> true
+2025-06-10T18:22:33.9052796Z ##[debug]Result: true
+2025-06-10T18:22:33.9074604Z ##[debug]Starting: Initialize containers
+2025-06-10T18:22:33.9099879Z ##[debug]Register post job cleanup for stopping/deleting containers.
+2025-06-10T18:22:33.9119034Z ##[group]Checking docker version
+2025-06-10T18:22:33.9131850Z ##[command]/usr/bin/docker version --format '{{.Server.APIVersion}}'
+2025-06-10T18:22:33.9620345Z '1.48'
+2025-06-10T18:22:33.9632112Z Docker daemon API version: '1.48'
+2025-06-10T18:22:33.9632861Z ##[command]/usr/bin/docker version --format '{{.Client.APIVersion}}'
+2025-06-10T18:22:33.9781654Z '1.48'
+2025-06-10T18:22:33.9795436Z Docker client API version: '1.48'
+2025-06-10T18:22:33.9800966Z ##[endgroup]
+2025-06-10T18:22:33.9803760Z ##[group]Clean up resources from previous jobs
+2025-06-10T18:22:33.9809809Z ##[command]/usr/bin/docker ps --all --quiet --no-trunc --filter "label=bd67c5"
+2025-06-10T18:22:33.9953262Z ##[command]/usr/bin/docker network prune --force --filter "label=bd67c5"
+2025-06-10T18:22:34.0086396Z ##[endgroup]
+2025-06-10T18:22:34.0086909Z ##[group]Create local container network
+2025-06-10T18:22:34.0097239Z ##[command]/usr/bin/docker network create --label bd67c5 github_network_f7f35897a5294b2dbf354f9908371115
+2025-06-10T18:22:34.0690993Z bf5c28d2d3312eba75019819bcf09ae007db2becf338d0212b5d87787aeeb405
+2025-06-10T18:22:34.0713539Z ##[endgroup]
+2025-06-10T18:22:34.0736525Z ##[group]Starting job container
+2025-06-10T18:22:34.0757604Z ##[command]/usr/bin/docker pull mcr.microsoft.com/playwright:v1.51.0-jammy
+2025-06-10T18:22:34.2504171Z v1.51.0-jammy: Pulling from playwright
+2025-06-10T18:22:34.3222528Z 8f84a9f2102e: Pulling fs layer
+2025-06-10T18:22:34.3223426Z 263ae9930b7a: Pulling fs layer
+2025-06-10T18:22:34.3224236Z 930650f6670d: Pulling fs layer
+2025-06-10T18:22:34.3225132Z d71b15d6dd0b: Pulling fs layer
+2025-06-10T18:22:34.4378543Z 930650f6670d: Verifying Checksum
+2025-06-10T18:22:34.4380720Z 930650f6670d: Download complete
+2025-06-10T18:22:34.5069721Z 8f84a9f2102e: Verifying Checksum
+2025-06-10T18:22:34.5070653Z 8f84a9f2102e: Download complete
+2025-06-10T18:22:34.7995741Z 263ae9930b7a: Verifying Checksum
+2025-06-10T18:22:34.7997379Z 263ae9930b7a: Download complete
+2025-06-10T18:22:35.7100712Z 8f84a9f2102e: Pull complete
+2025-06-10T18:22:37.4184498Z d71b15d6dd0b: Verifying Checksum
+2025-06-10T18:22:37.4185547Z d71b15d6dd0b: Download complete
+2025-06-10T18:22:42.1293315Z 263ae9930b7a: Pull complete
+2025-06-10T18:22:42.1526803Z 930650f6670d: Pull complete
+2025-06-10T18:22:58.0200556Z d71b15d6dd0b: Pull complete
+2025-06-10T18:22:58.0252011Z Digest: sha256:51558049e0b094d5f7617f71b9cf0257a2846cb5eea5b63070e714cf2a50eff9
+2025-06-10T18:22:58.0267703Z Status: Downloaded newer image for mcr.microsoft.com/playwright:v1.51.0-jammy
+2025-06-10T18:22:58.0279551Z mcr.microsoft.com/playwright:v1.51.0-jammy
+2025-06-10T18:22:58.0358199Z ##[command]/usr/bin/docker create --name 807ea631ad9d471ba0923b1db51e38a5_mcrmicrosoftcomplaywrightv1510jammy_643138 --label bd67c5 --workdir /__w/LocalLoop/LocalLoop --network github_network_f7f35897a5294b2dbf354f9908371115  -e "HOME=/github/home" -e GITHUB_ACTIONS=true -e CI=true -v "/var/run/docker.sock":"/var/run/docker.sock" -v "/home/runner/work":"/__w" -v "/home/runner/actions-runner/cached/externals":"/__e":ro -v "/home/runner/work/_temp":"/__w/_temp" -v "/home/runner/work/_actions":"/__w/_actions" -v "/opt/hostedtoolcache":"/__t" -v "/home/runner/work/_temp/_github_home":"/github/home" -v "/home/runner/work/_temp/_github_workflow":"/github/workflow" --entrypoint "tail" mcr.microsoft.com/playwright:v1.51.0-jammy "-f" "/dev/null"
+2025-06-10T18:22:58.0664743Z 9f25709fdf6df997a3d9a63a461760b6eedc33f735570c531349ff5cbfb448d4
+2025-06-10T18:22:58.0688444Z ##[command]/usr/bin/docker start 9f25709fdf6df997a3d9a63a461760b6eedc33f735570c531349ff5cbfb448d4
+2025-06-10T18:22:58.2217129Z 9f25709fdf6df997a3d9a63a461760b6eedc33f735570c531349ff5cbfb448d4
+2025-06-10T18:22:58.2237241Z ##[command]/usr/bin/docker ps --all --filter id=9f25709fdf6df997a3d9a63a461760b6eedc33f735570c531349ff5cbfb448d4 --filter status=running --no-trunc --format "{{.ID}} {{.Status}}"
+2025-06-10T18:22:58.2352763Z 9f25709fdf6df997a3d9a63a461760b6eedc33f735570c531349ff5cbfb448d4 Up Less than a second
+2025-06-10T18:22:58.2371657Z ##[command]/usr/bin/docker inspect --format "{{range .Config.Env}}{{println .}}{{end}}" 9f25709fdf6df997a3d9a63a461760b6eedc33f735570c531349ff5cbfb448d4
+2025-06-10T18:22:58.2488231Z HOME=/github/home
+2025-06-10T18:22:58.2488785Z GITHUB_ACTIONS=true
+2025-06-10T18:22:58.2489421Z CI=true
+2025-06-10T18:22:58.2489962Z PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+2025-06-10T18:22:58.2490618Z LANG=C.UTF-8
+2025-06-10T18:22:58.2490962Z LC_ALL=C.UTF-8
+2025-06-10T18:22:58.2491361Z PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
+2025-06-10T18:22:58.2510224Z ##[endgroup]
+2025-06-10T18:22:58.2519877Z ##[group]Waiting for all services to be ready
+2025-06-10T18:22:58.2521655Z ##[endgroup]
+2025-06-10T18:22:58.2528594Z ##[debug]Finishing: Initialize containers

@@ -96,14 +96,12 @@ jobs:
       - name: 🧪 Run tests
         run: npm run test:ci
 
-  # Stage 4: E2E Tests (Using Docker for stability)
+  # Stage 4: E2E Tests (Simplified approach)
   e2e:
     name: 🎭 E2E Tests
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.52.0-jammy
-    timeout-minutes: 15  # Restored timeout for 4 browsers
-    needs: build
+    timeout-minutes: 10  # Back to reasonable timeout since we're using dev server
+    needs: test  # Only need tests to pass, not build
     if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/fix/ci-pipeline'
 
     steps:
@@ -119,11 +117,8 @@ jobs:
       - name: 📦 Install dependencies
         run: npm ci --legacy-peer-deps
 
-      - name: 🏗️ Build
-        run: npm run build
-        env:
-          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+      - name: 🎭 Install Playwright browsers
+        run: npx playwright install --with-deps
 
       - name: 🎭 Run E2E tests
         run: npx playwright test --config=playwright.ci.config.ts

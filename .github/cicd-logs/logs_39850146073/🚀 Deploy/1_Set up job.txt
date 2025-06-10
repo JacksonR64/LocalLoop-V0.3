@@ -1,0 +1,34 @@
+﻿2025-06-09T20:58:04.7837609Z Current runner version: '2.325.0'
+2025-06-09T20:58:04.7864823Z ##[group]Runner Image Provisioner
+2025-06-09T20:58:04.7865758Z Hosted Compute Agent
+2025-06-09T20:58:04.7866417Z Version: 20250508.323
+2025-06-09T20:58:04.7867200Z Commit: 81b259f29879f73b4213d199e42d8c3465dae986
+2025-06-09T20:58:04.7867961Z Build Date: 2025-05-08T19:40:08Z
+2025-06-09T20:58:04.7868717Z ##[endgroup]
+2025-06-09T20:58:04.7869271Z ##[group]Operating System
+2025-06-09T20:58:04.7869833Z Ubuntu
+2025-06-09T20:58:04.7870336Z 24.04.2
+2025-06-09T20:58:04.7870800Z LTS
+2025-06-09T20:58:04.7871255Z ##[endgroup]
+2025-06-09T20:58:04.7871797Z ##[group]Runner Image
+2025-06-09T20:58:04.7872339Z Image: ubuntu-24.04
+2025-06-09T20:58:04.7872907Z Version: 20250511.1.0
+2025-06-09T20:58:04.7873873Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20250511.1/images/ubuntu/Ubuntu2404-Readme.md
+2025-06-09T20:58:04.7875238Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20250511.1
+2025-06-09T20:58:04.7876482Z ##[endgroup]
+2025-06-09T20:58:04.7877789Z ##[group]GITHUB_TOKEN Permissions
+2025-06-09T20:58:04.7879958Z Contents: read
+2025-06-09T20:58:04.7880483Z Metadata: read
+2025-06-09T20:58:04.7881102Z Packages: read
+2025-06-09T20:58:04.7881630Z ##[endgroup]
+2025-06-09T20:58:04.7883744Z Secret source: Actions
+2025-06-09T20:58:04.7884451Z Prepare workflow directory
+2025-06-09T20:58:04.8285516Z Prepare all required actions
+2025-06-09T20:58:04.8324400Z Getting action download info
+2025-06-09T20:58:05.1506146Z ##[group]Download immutable action package 'actions/checkout@v4'
+2025-06-09T20:58:05.1507347Z Version: 4.2.2
+2025-06-09T20:58:05.1508504Z Digest: sha256:ccb2698953eaebd21c7bf6268a94f9c26518a7e38e27e0b83c1fe1ad049819b1
+2025-06-09T20:58:05.1509736Z Source commit SHA: 11bd71901bbe5b1630ceea73d27597364c9af683
+2025-06-09T20:58:05.1510481Z ##[endgroup]
+2025-06-09T20:58:05.2186198Z Download action repository 'amondnet/vercel-action@v25' (SHA:16e87c0a08142b0d0d33b76aeaf20823c381b9b9)
+2025-06-09T20:58:05.6390773Z Complete job name: 🚀 Deploy

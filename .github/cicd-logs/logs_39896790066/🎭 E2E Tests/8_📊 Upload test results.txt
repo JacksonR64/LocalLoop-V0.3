@@ -1,0 +1,18 @@
+﻿2025-06-10T15:37:58.3723397Z ##[group]Run actions/upload-artifact@v4
+2025-06-10T15:37:58.3723685Z with:
+2025-06-10T15:37:58.3723866Z   name: e2e-results
+2025-06-10T15:37:58.3724094Z   path: test-results/
+playwright-report/
+
+2025-06-10T15:37:58.3724371Z   retention-days: 7
+2025-06-10T15:37:58.3724567Z   if-no-files-found: warn
+2025-06-10T15:37:58.3724791Z   compression-level: 6
+2025-06-10T15:37:58.3724997Z   overwrite: false
+2025-06-10T15:37:58.3725206Z   include-hidden-files: false
+2025-06-10T15:37:58.3725430Z env:
+2025-06-10T15:37:58.3725596Z   NODE_VERSION: 18
+2025-06-10T15:37:58.3725775Z ##[endgroup]
+2025-06-10T15:37:58.5829537Z Multiple search paths detected. Calculating the least common ancestor of all paths
+2025-06-10T15:37:58.5832171Z The least common ancestor is /home/runner/work/LocalLoop/LocalLoop. This will be the root directory of the artifact
+2025-06-10T15:37:58.5846594Z ##[warning]No files were found with the provided path: test-results/
+playwright-report/. No artifacts will be uploaded.

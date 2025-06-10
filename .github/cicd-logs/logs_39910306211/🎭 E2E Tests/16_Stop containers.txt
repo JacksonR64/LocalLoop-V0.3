@@ -1,0 +1,6 @@
+﻿2025-06-10T19:06:10.8003660Z Stop and remove container: 0978dffeef9545c9bdb608530f50c1bc_mcrmicrosoftcomplaywrightv1520jammy_a3f250
+2025-06-10T19:06:10.8008788Z ##[command]/usr/bin/docker rm --force a0fd9521f075c8479a18b3ce15eb7e07a8e3a65fa274022739acf723d20aac8f
+2025-06-10T19:06:10.9063461Z a0fd9521f075c8479a18b3ce15eb7e07a8e3a65fa274022739acf723d20aac8f
+2025-06-10T19:06:10.9092647Z Remove container network: github_network_689d02585ab94fce919b7cb18fd532c8
+2025-06-10T19:06:10.9097290Z ##[command]/usr/bin/docker network rm github_network_689d02585ab94fce919b7cb18fd532c8
+2025-06-10T19:06:11.0332658Z github_network_689d02585ab94fce919b7cb18fd532c8

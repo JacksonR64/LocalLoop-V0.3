@@ -1,0 +1,20 @@
+﻿2025-06-10T19:04:15.7437117Z ##[group]Run actions/setup-node@v4
+2025-06-10T19:04:15.7437383Z with:
+2025-06-10T19:04:15.7437557Z   node-version: 18
+2025-06-10T19:04:15.7437748Z   cache: npm
+2025-06-10T19:04:15.7437922Z   always-auth: false
+2025-06-10T19:04:15.7438118Z   check-latest: false
+2025-06-10T19:04:15.7438452Z   token: ***
+2025-06-10T19:04:15.7438622Z env:
+2025-06-10T19:04:15.7438782Z   NODE_VERSION: 18
+2025-06-10T19:04:15.7438962Z ##[endgroup]
+2025-06-10T19:04:15.7442432Z ##[command]/usr/bin/docker exec  a0fd9521f075c8479a18b3ce15eb7e07a8e3a65fa274022739acf723d20aac8f sh -c "cat /etc/*release | grep ^ID"
+2025-06-10T19:04:16.0729633Z Found in cache @ /__t/node/18.20.8/x64
+2025-06-10T19:04:16.0738547Z ##[group]Environment details
+2025-06-10T19:04:17.6228123Z node: v18.20.8
+2025-06-10T19:04:17.6228559Z npm: 10.8.2
+2025-06-10T19:04:17.6228803Z yarn: 1.22.22
+2025-06-10T19:04:17.6230076Z ##[endgroup]
+2025-06-10T19:04:17.6245988Z [command]/__t/node/18.20.8/x64/bin/npm config get cache
+2025-06-10T19:04:17.8929895Z /github/home/.npm
+2025-06-10T19:04:18.0171974Z npm cache is not found

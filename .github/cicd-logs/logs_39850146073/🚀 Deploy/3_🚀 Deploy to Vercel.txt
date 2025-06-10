@@ -1,0 +1,146 @@
+﻿2025-06-09T20:58:06.9899614Z ##[group]Run amondnet/vercel-action@v25
+2025-06-09T20:58:06.9900343Z with:
+2025-06-09T20:58:06.9900890Z   vercel-token: ***
+2025-06-09T20:58:06.9901545Z   github-token: ***
+2025-06-09T20:58:06.9902020Z   vercel-args: --prod
+2025-06-09T20:58:06.9902586Z   vercel-org-id: ***
+2025-06-09T20:58:06.9903180Z   vercel-project-id: ***
+2025-06-09T20:58:06.9903678Z   github-comment: true
+2025-06-09T20:58:06.9904153Z   github-deployment: false
+2025-06-09T20:58:06.9904648Z env:
+2025-06-09T20:58:06.9905031Z   NODE_VERSION: 18
+2025-06-09T20:58:06.9905450Z ##[endgroup]
+2025-06-09T20:58:07.0921542Z set environment for vercel cli
+2025-06-09T20:58:07.0923118Z set env variable : VERCEL_ORG_ID
+2025-06-09T20:58:07.0930060Z set env variable : VERCEL_PROJECT_ID
+2025-06-09T20:58:07.1036258Z [command]/usr/local/bin/npx vercel@25.1.0 --prod -t *** -m githubCommitSha=9aa2259415a7a25b712c685eb6152f4552423f48 -m githubCommitAuthorName=JacksonR64 -m githubCommitAuthorLogin=JacksonR64 -m githubDeployment=1 -m githubOrg=JacksonR64 -m githubRepo=LocalLoop -m githubCommitOrg=JacksonR64 -m githubCommitRepo=LocalLoop -m githubCommitMessage="fix(ci): remove missing test results processor reference
+2025-06-09T20:58:07.1043378Z 
+2025-06-09T20:58:07.1044637Z - Remove testResultsProcessor from Jest config that referenced deleted scripts/test-results-processor.js
+2025-06-09T20:58:07.1046479Z - File was removed during production cleanup but config still referenced it
+2025-06-09T20:58:07.1047841Z - Fixes CI/CD pipeline test stage failure" -m githubCommitRef=main
+2025-06-09T20:58:08.5180691Z npm warn exec The following package was not found and will be installed: vercel@25.1.0
+2025-06-09T20:58:08.5181560Z 
+2025-06-09T20:58:08.5182061Z npm warn exec The following package was not found and will be installed: vercel@25.1.0
+2025-06-09T20:58:15.1561720Z npm warn deprecated osenv@0.1.5: This package is no longer supported.
+2025-06-09T20:58:15.1562527Z 
+2025-06-09T20:58:15.1563065Z npm warn deprecated osenv@0.1.5: This package is no longer supported.
+2025-06-09T20:58:15.7899241Z npm warn deprecated are-we-there-yet@2.0.0: This package is no longer supported.
+2025-06-09T20:58:15.7899997Z 
+2025-06-09T20:58:15.7900728Z npm warn deprecated are-we-there-yet@2.0.0: This package is no longer supported.
+2025-06-09T20:58:15.7941855Z npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+2025-06-09T20:58:15.7943565Z 
+2025-06-09T20:58:15.7944732Z npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+2025-06-09T20:58:15.8340395Z npm warn deprecated npmlog@5.0.1: This package is no longer supported.
+2025-06-09T20:58:15.8344071Z 
+2025-06-09T20:58:15.8704841Z npm warn deprecated npmlog@5.0.1: This package is no longer supported.
+2025-06-09T20:58:15.8706717Z npm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+2025-06-09T20:58:15.8709372Z 
+2025-06-09T20:58:15.8710282Z npm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+2025-06-09T20:58:15.8878131Z npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+2025-06-09T20:58:15.8879944Z 
+2025-06-09T20:58:15.8880374Z npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+2025-06-09T20:58:15.9106949Z npm warn deprecated gauge@3.0.2: This package is no longer supported.
+2025-06-09T20:58:15.9107731Z 
+2025-06-09T20:58:15.9108043Z npm warn deprecated gauge@3.0.2: This package is no longer supported.
+2025-06-09T20:58:15.9988306Z npm warn deprecated are-we-there-yet@1.1.7: This package is no longer supported.
+2025-06-09T20:58:15.9989141Z 
+2025-06-09T20:58:15.9989529Z npm warn deprecated are-we-there-yet@1.1.7: This package is no longer supported.
+2025-06-09T20:58:16.0072691Z npm warn deprecated rimraf@2.7.1: Rimraf versions prior to v4 are no longer supported
+2025-06-09T20:58:16.0073900Z 
+2025-06-09T20:58:16.0075245Z npm warn deprecated rimraf@2.7.1: Rimraf versions prior to v4 are no longer supported
+2025-06-09T20:58:16.0188682Z npm warn deprecated npmlog@4.1.2: This package is no longer supported.
+2025-06-09T20:58:16.0189428Z 
+2025-06-09T20:58:16.0189890Z npm warn deprecated npmlog@4.1.2: This package is no longer supported.
+2025-06-09T20:58:16.0864277Z npm warn deprecated gauge@2.7.4: This package is no longer supported.
+2025-06-09T20:58:16.0864994Z 
+2025-06-09T20:58:16.0865372Z npm warn deprecated gauge@2.7.4: This package is no longer supported.
+2025-06-09T20:58:16.1256493Z npm warn deprecated node-pre-gyp@0.13.0: Please upgrade to @mapbox/node-pre-gyp: the non-scoped node-pre-gyp package is deprecated and only the @mapbox scoped package will recieve updates in the future
+2025-06-09T20:58:16.1258067Z 
+2025-06-09T20:58:16.1258704Z npm warn deprecated node-pre-gyp@0.13.0: Please upgrade to @mapbox/node-pre-gyp: the non-scoped node-pre-gyp package is deprecated and only the @mapbox scoped package will recieve updates in the future
+2025-06-09T20:58:18.7276702Z Vercel CLI 25.1.0
+2025-06-09T20:58:18.7277226Z 
+2025-06-09T20:58:18.7277375Z Vercel CLI 25.1.0
+2025-06-09T20:58:18.7588801Z Retrieving project…
+2025-06-09T20:58:18.7589093Z 
+2025-06-09T20:58:18.7589230Z Retrieving project…
+2025-06-09T20:58:19.0698156Z Deploying jackson-rhodens-projects/local-loop
+2025-06-09T20:58:19.0698728Z 
+2025-06-09T20:58:19.0699265Z Deploying jackson-rhodens-projects/local-loop
+2025-06-09T20:58:20.8458477Z Inspect: https://vercel.com/jackson-rhodens-projects/local-loop/FSec27oKVp4v8TyUMA5fUqHahVkK [2s]
+2025-06-09T20:58:20.8459176Z 
+2025-06-09T20:58:20.8459681Z Inspect: https://vercel.com/jackson-rhodens-projects/local-loop/FSec27oKVp4v8TyUMA5fUqHahVkK [2s]
+2025-06-09T20:58:20.8461431Z Queued
+2025-06-09T20:58:20.8461611Z 
+2025-06-09T20:58:20.8461716Z Queued
+2025-06-09T20:58:20.8462616Z https://local-loop-d4nwzspk2-jackson-rhodens-projects.vercel.app
+2025-06-09T20:58:22.5881648Z https://local-loop-d4nwzspk2-jackson-rhodens-projects.vercel.appBuilding
+2025-06-09T20:58:22.5882110Z 
+2025-06-09T20:58:22.5882209Z Building
+2025-06-09T21:00:00.4404952Z Completing
+2025-06-09T21:00:00.4406962Z 
+2025-06-09T21:00:00.4407288Z Completing
+2025-06-09T21:00:00.7384258Z Production: https://local-loop-qa.vercel.app [2m]
+2025-06-09T21:00:00.7384892Z 
+2025-06-09T21:00:00.7385144Z Production: https://local-loop-qa.vercel.app [2m]
+2025-06-09T21:00:00.8134021Z set preview-url output
+2025-06-09T21:00:00.8157935Z [command]/usr/local/bin/npx vercel@25.1.0 inspect https://local-loop-d4nwzspk2-jackson-rhodens-projects.vercel.app -t ***
+2025-06-09T21:00:02.3180650Z Vercel CLI 25.1.0
+2025-06-09T21:00:02.3180997Z 
+2025-06-09T21:00:02.3181124Z Vercel CLI 25.1.0
+2025-06-09T21:00:02.6027401Z Fetching deployment "https://local-loop-d4nwzspk2-jackson-rhodens-projects.vercel.app" in jacksonr64
+2025-06-09T21:00:02.6028459Z 
+2025-06-09T21:00:02.6029054Z Fetching deployment "https://local-loop-d4nwzspk2-jackson-rhodens-projects.vercel.app" in jacksonr64
+2025-06-09T21:00:03.1215696Z > Fetched deployment "local-loop-d4nwzspk2-jackson-rhodens-projects.vercel.app" in jacksonr64 [519ms]
+2025-06-09T21:00:03.1216393Z 
+2025-06-09T21:00:03.1216514Z   General
+2025-06-09T21:00:03.1216664Z 
+2025-06-09T21:00:03.1216670Z 
+2025-06-09T21:00:03.1217414Z > Fetched deployment "local-loop-d4nwzspk2-jackson-rhodens-projects.vercel.app" in jacksonr64 [519ms]
+2025-06-09T21:00:03.1218063Z 
+2025-06-09T21:00:03.1218176Z   General
+2025-06-09T21:00:03.1218333Z 
+2025-06-09T21:00:03.1218542Z     id		dpl_FSec27oKVp4v8TyUMA5fUqHahVkK
+2025-06-09T21:00:03.1218944Z     name	local-loop
+2025-06-09T21:00:03.1219253Z     readyState	READY
+2025-06-09T21:00:03.1219802Z     url		local-loop-d4nwzspk2-jackson-rhodens-projects.vercel.app
+2025-06-09T21:00:03.1220219Z 
+2025-06-09T21:00:03.1220379Z     id		dpl_FSec27oKVp4v8TyUMA5fUqHahVkK
+2025-06-09T21:00:03.1220762Z     name	local-loop
+2025-06-09T21:00:03.1221876Z     readyState	READY
+2025-06-09T21:00:03.1222363Z     url		local-loop-d4nwzspk2-jackson-rhodens-projects.vercel.app
+2025-06-09T21:00:03.1225759Z     createdAt	Mon Jun 09 2025 20:58:20 GMT+0000 (Coordinated Universal Time) [2m ago]
+2025-06-09T21:00:03.1226531Z 
+2025-06-09T21:00:03.1226741Z 
+2025-06-09T21:00:03.1226883Z   Builds
+2025-06-09T21:00:03.1227302Z 
+2025-06-09T21:00:03.1227311Z 
+2025-06-09T21:00:03.1227662Z     createdAt	Mon Jun 09 2025 20:58:20 GMT+0000 (Coordinated Universal Time) [2m ago]
+2025-06-09T21:00:03.1228157Z 
+2025-06-09T21:00:03.1228165Z 
+2025-06-09T21:00:03.1228459Z   Builds
+2025-06-09T21:00:03.1228794Z 
+2025-06-09T21:00:03.1235779Z     ┌ .        Ready               [0ms]
+2025-06-09T21:00:03.1236827Z     ├── λ favicon.ico (1.63MB) [iad1]
+2025-06-09T21:00:03.1239082Z     ├── λ robots.txt (1.63MB) [iad1]
+2025-06-09T21:00:03.1239654Z     ├── λ sitemap.xml (1.63MB) [iad1]
+2025-06-09T21:00:03.1240256Z     ├── λ api/analytics/performance (2.62MB) [iad1]
+2025-06-09T21:00:03.1240922Z     ├── λ api/analytics/performance.rsc (2.62MB) [iad1]
+2025-06-09T21:00:03.1241504Z     └── 101 output items hidden
+2025-06-09T21:00:03.1241876Z     
+2025-06-09T21:00:03.1242286Z     ┌ .        Ready               [0ms]
+2025-06-09T21:00:03.1242818Z     ├── λ favicon.ico (1.63MB) [iad1]
+2025-06-09T21:00:03.1243346Z     ├── λ robots.txt (1.63MB) [iad1]
+2025-06-09T21:00:03.1243898Z     ├── λ sitemap.xml (1.63MB) [iad1]
+2025-06-09T21:00:03.1244447Z     ├── λ api/analytics/performance (2.62MB) [iad1]
+2025-06-09T21:00:03.1245103Z     ├── λ api/analytics/performance.rsc (2.62MB) [iad1]
+2025-06-09T21:00:03.1245696Z     └── 101 output items hidden
+2025-06-09T21:00:03.1246077Z     
+2025-06-09T21:00:03.1246213Z 
+2025-06-09T21:00:03.1246222Z 
+2025-06-09T21:00:03.1246260Z 
+2025-06-09T21:00:03.1246265Z 
+2025-06-09T21:00:03.1943359Z set preview-name output
+2025-06-09T21:00:03.1945516Z this is push event
+2025-06-09T21:00:03.1947636Z find comment
+2025-06-09T21:00:03.3494001Z previous comment not found
+2025-06-09T21:00:03.4820489Z ##[error]Resource not accessible by integration

@@ -95,12 +95,12 @@ export default defineConfig({
         },
     ],
 
-    /* Run production server for better performance and stability */
+    /* Run development server for CI tests - more reliable startup */
     webServer: {
-        command: 'npm start',  // Use production server instead of dev
+        command: 'npm run dev',  // Use dev server for faster startup and reliability
         url: 'http://localhost:3000',
         reuseExistingServer: !process.env.CI,
-        timeout: 180000, // 3 minutes for server startup and initial compilation
+        timeout: 120000, // 2 minutes should be sufficient for dev server
         stdout: 'pipe',
         stderr: 'pipe',
     },

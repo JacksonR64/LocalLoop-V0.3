@@ -1,0 +1,220 @@
+﻿2025-06-10T18:25:08.7503344Z ##[debug]Evaluating condition for step: '📊 Upload test results'
+2025-06-10T18:25:08.7505455Z ##[debug]Evaluating: always()
+2025-06-10T18:25:08.7505834Z ##[debug]Evaluating always:
+2025-06-10T18:25:08.7506554Z ##[debug]=> true
+2025-06-10T18:25:08.7506882Z ##[debug]Result: true
+2025-06-10T18:25:08.7507418Z ##[debug]Starting: 📊 Upload test results
+2025-06-10T18:25:08.7526446Z ##[debug]Loading inputs
+2025-06-10T18:25:08.7529377Z ##[debug]Loading env
+2025-06-10T18:25:08.7532740Z ##[group]Run actions/upload-artifact@v4
+2025-06-10T18:25:08.7532973Z with:
+2025-06-10T18:25:08.7533130Z   name: e2e-results
+2025-06-10T18:25:08.7533338Z   path: test-results/
+playwright-report/
+
+2025-06-10T18:25:08.7533582Z   retention-days: 7
+2025-06-10T18:25:08.7533768Z   if-no-files-found: warn
+2025-06-10T18:25:08.7533972Z   compression-level: 6
+2025-06-10T18:25:08.7534151Z   overwrite: false
+2025-06-10T18:25:08.7534335Z   include-hidden-files: false
+2025-06-10T18:25:08.7534537Z env:
+2025-06-10T18:25:08.7534688Z   NODE_VERSION: 18
+2025-06-10T18:25:08.7534881Z ##[endgroup]
+2025-06-10T18:25:08.7537377Z ##[command]/usr/bin/docker exec  9f25709fdf6df997a3d9a63a461760b6eedc33f735570c531349ff5cbfb448d4 sh -c "cat /etc/*release | grep ^ID"
+2025-06-10T18:25:08.8076491Z ##[debug]ID=ubuntu
+2025-06-10T18:25:08.8076788Z ##[debug]ID_LIKE=debian
+2025-06-10T18:25:08.8077105Z ##[debug]Running JavaScript Action with default external tool: node20
+2025-06-10T18:25:09.0654103Z ##[debug]followSymbolicLinks 'true'
+2025-06-10T18:25:09.0655710Z ##[debug]implicitDescendants 'true'
+2025-06-10T18:25:09.0656636Z ##[debug]omitBrokenSymbolicLinks 'true'
+2025-06-10T18:25:09.0657270Z ##[debug]excludeHiddenFiles 'true'
+2025-06-10T18:25:09.0680769Z ##[debug]followSymbolicLinks 'true'
+2025-06-10T18:25:09.0681784Z ##[debug]implicitDescendants 'true'
+2025-06-10T18:25:09.0682509Z ##[debug]matchDirectories 'true'
+2025-06-10T18:25:09.0683440Z ##[debug]omitBrokenSymbolicLinks 'true'
+2025-06-10T18:25:09.0684442Z ##[debug]excludeHiddenFiles 'true'
+2025-06-10T18:25:09.0688646Z ##[debug]Search path '/__w/LocalLoop/LocalLoop/test-results'
+2025-06-10T18:25:09.0695338Z ##[debug]Search path '/__w/LocalLoop/LocalLoop/playwright-report'
+2025-06-10T18:25:09.0876187Z ##[debug]Removing /__w/LocalLoop/LocalLoop/test-results from rawSearchResults because it is a directory
+2025-06-10T18:25:09.0878484Z ##[debug]Removing /__w/LocalLoop/LocalLoop/test-results/example-basic-responsive-layout-works-CI-Chromium from rawSearchResults because it is a directory
+2025-06-10T18:25:09.0880993Z ##[debug]File:/__w/LocalLoop/LocalLoop/test-results/example-basic-responsive-layout-works-CI-Chromium/error-context.md was found using the provided searchPath
+2025-06-10T18:25:09.0883496Z ##[debug]Removing /__w/LocalLoop/LocalLoop/test-results/example-basic-responsive-layout-works-CI-Chromium-retry1 from rawSearchResults because it is a directory
+2025-06-10T18:25:09.0885895Z ##[debug]File:/__w/LocalLoop/LocalLoop/test-results/example-basic-responsive-layout-works-CI-Chromium-retry1/error-context.md was found using the provided searchPath
+2025-06-10T18:25:09.0888325Z ##[debug]File:/__w/LocalLoop/LocalLoop/test-results/example-basic-responsive-layout-works-CI-Chromium-retry1/trace.zip was found using the provided searchPath
+2025-06-10T18:25:09.0890873Z ##[debug]Removing /__w/LocalLoop/LocalLoop/test-results/example-basic-responsive-layout-works-CI-Chromium-retry2 from rawSearchResults because it is a directory
+2025-06-10T18:25:09.0893231Z ##[debug]File:/__w/LocalLoop/LocalLoop/test-results/example-basic-responsive-layout-works-CI-Chromium-retry2/error-context.md was found using the provided searchPath
+2025-06-10T18:25:09.0895476Z ##[debug]Removing /__w/LocalLoop/LocalLoop/test-results/example-basic-responsive-layout-works-CI-Firefox from rawSearchResults because it is a directory
+2025-06-10T18:25:09.0897619Z ##[debug]File:/__w/LocalLoop/LocalLoop/test-results/example-basic-responsive-layout-works-CI-Firefox/error-context.md was found using the provided searchPath
+2025-06-10T18:25:09.0899847Z ##[debug]Removing /__w/LocalLoop/LocalLoop/test-results/example-basic-responsive-layout-works-CI-Firefox-retry1 from rawSearchResults because it is a directory
+2025-06-10T18:25:09.0902860Z ##[debug]File:/__w/LocalLoop/LocalLoop/test-results/example-basic-responsive-layout-works-CI-Firefox-retry1/error-context.md was found using the provided searchPath
+2025-06-10T18:25:09.0905186Z ##[debug]File:/__w/LocalLoop/LocalLoop/test-results/example-basic-responsive-layout-works-CI-Firefox-retry1/trace.zip was found using the provided searchPath
+2025-06-10T18:25:09.0907539Z ##[debug]Removing /__w/LocalLoop/LocalLoop/test-results/example-basic-responsive-layout-works-CI-Firefox-retry2 from rawSearchResults because it is a directory
+2025-06-10T18:25:09.0909901Z ##[debug]File:/__w/LocalLoop/LocalLoop/test-results/example-basic-responsive-layout-works-CI-Firefox-retry2/error-context.md was found using the provided searchPath
+2025-06-10T18:25:09.0912121Z ##[debug]Removing /__w/LocalLoop/LocalLoop/test-results/example-basic-responsive-layout-works-CI-Mobile-Safari from rawSearchResults because it is a directory
+2025-06-10T18:25:09.0914345Z ##[debug]File:/__w/LocalLoop/LocalLoop/test-results/example-basic-responsive-layout-works-CI-Mobile-Safari/error-context.md was found using the provided searchPath
+2025-06-10T18:25:09.0916575Z ##[debug]Removing /__w/LocalLoop/LocalLoop/test-results/example-basic-responsive-layout-works-CI-Mobile-Safari-retry1 from rawSearchResults because it is a directory
+2025-06-10T18:25:09.0918908Z ##[debug]File:/__w/LocalLoop/LocalLoop/test-results/example-basic-responsive-layout-works-CI-Mobile-Safari-retry1/error-context.md was found using the provided searchPath
+2025-06-10T18:25:09.0921335Z ##[debug]File:/__w/LocalLoop/LocalLoop/test-results/example-basic-responsive-layout-works-CI-Mobile-Safari-retry1/trace.zip was found using the provided searchPath
+2025-06-10T18:25:09.0923579Z ##[debug]Removing /__w/LocalLoop/LocalLoop/test-results/example-basic-responsive-layout-works-CI-Mobile-Safari-retry2 from rawSearchResults because it is a directory
+2025-06-10T18:25:09.0925852Z ##[debug]File:/__w/LocalLoop/LocalLoop/test-results/example-basic-responsive-layout-works-CI-Mobile-Safari-retry2/error-context.md was found using the provided searchPath
+2025-06-10T18:25:09.0928023Z ##[debug]Removing /__w/LocalLoop/LocalLoop/test-results/example-basic-responsive-layout-works-CI-WebKit from rawSearchResults because it is a directory
+2025-06-10T18:25:09.0930182Z ##[debug]File:/__w/LocalLoop/LocalLoop/test-results/example-basic-responsive-layout-works-CI-WebKit/error-context.md was found using the provided searchPath
+2025-06-10T18:25:09.0932327Z ##[debug]Removing /__w/LocalLoop/LocalLoop/test-results/example-basic-responsive-layout-works-CI-WebKit-retry1 from rawSearchResults because it is a directory
+2025-06-10T18:25:09.0934499Z ##[debug]File:/__w/LocalLoop/LocalLoop/test-results/example-basic-responsive-layout-works-CI-WebKit-retry1/error-context.md was found using the provided searchPath
+2025-06-10T18:25:09.0936638Z ##[debug]File:/__w/LocalLoop/LocalLoop/test-results/example-basic-responsive-layout-works-CI-WebKit-retry1/trace.zip was found using the provided searchPath
+2025-06-10T18:25:09.0938735Z ##[debug]Removing /__w/LocalLoop/LocalLoop/test-results/example-basic-responsive-layout-works-CI-WebKit-retry2 from rawSearchResults because it is a directory
+2025-06-10T18:25:09.0941026Z ##[debug]File:/__w/LocalLoop/LocalLoop/test-results/example-basic-responsive-layout-works-CI-WebKit-retry2/error-context.md was found using the provided searchPath
+2025-06-10T18:25:09.0943151Z ##[debug]Removing /__w/LocalLoop/LocalLoop/test-results/example-homepage-loads-basic-structure-CI-Chromium from rawSearchResults because it is a directory
+2025-06-10T18:25:09.0945270Z ##[debug]File:/__w/LocalLoop/LocalLoop/test-results/example-homepage-loads-basic-structure-CI-Chromium/error-context.md was found using the provided searchPath
+2025-06-10T18:25:09.0947422Z ##[debug]Removing /__w/LocalLoop/LocalLoop/test-results/example-homepage-loads-basic-structure-CI-Chromium-retry1 from rawSearchResults because it is a directory
+2025-06-10T18:25:09.0950068Z ##[debug]File:/__w/LocalLoop/LocalLoop/test-results/example-homepage-loads-basic-structure-CI-Chromium-retry1/error-context.md was found using the provided searchPath
+2025-06-10T18:25:09.0952291Z ##[debug]File:/__w/LocalLoop/LocalLoop/test-results/example-homepage-loads-basic-structure-CI-Chromium-retry1/trace.zip was found using the provided searchPath
+2025-06-10T18:25:09.0954681Z ##[debug]Removing /__w/LocalLoop/LocalLoop/test-results/example-homepage-loads-basic-structure-CI-Chromium-retry2 from rawSearchResults because it is a directory
+2025-06-10T18:25:09.0956888Z ##[debug]File:/__w/LocalLoop/LocalLoop/test-results/example-homepage-loads-basic-structure-CI-Chromium-retry2/error-context.md was found using the provided searchPath
+2025-06-10T18:25:09.0959026Z ##[debug]Removing /__w/LocalLoop/LocalLoop/test-results/example-homepage-loads-basic-structure-CI-Firefox from rawSearchResults because it is a directory
+2025-06-10T18:25:09.0961235Z ##[debug]File:/__w/LocalLoop/LocalLoop/test-results/example-homepage-loads-basic-structure-CI-Firefox/error-context.md was found using the provided searchPath
+2025-06-10T18:25:09.0963354Z ##[debug]Removing /__w/LocalLoop/LocalLoop/test-results/example-homepage-loads-basic-structure-CI-Firefox-retry1 from rawSearchResults because it is a directory
+2025-06-10T18:25:09.0965544Z ##[debug]File:/__w/LocalLoop/LocalLoop/test-results/example-homepage-loads-basic-structure-CI-Firefox-retry1/error-context.md was found using the provided searchPath
+2025-06-10T18:25:09.0967714Z ##[debug]File:/__w/LocalLoop/LocalLoop/test-results/example-homepage-loads-basic-structure-CI-Firefox-retry1/trace.zip was found using the provided searchPath
+2025-06-10T18:25:09.0969975Z ##[debug]Removing /__w/LocalLoop/LocalLoop/test-results/example-homepage-loads-basic-structure-CI-Firefox-retry2 from rawSearchResults because it is a directory
+2025-06-10T18:25:09.0972170Z ##[debug]File:/__w/LocalLoop/LocalLoop/test-results/example-homepage-loads-basic-structure-CI-Firefox-retry2/error-context.md was found using the provided searchPath
+2025-06-10T18:25:09.0974346Z ##[debug]Removing /__w/LocalLoop/LocalLoop/test-results/example-homepage-loads-basic-structure-CI-Mobile-Safari from rawSearchResults because it is a directory
+2025-06-10T18:25:09.0976502Z ##[debug]File:/__w/LocalLoop/LocalLoop/test-results/example-homepage-loads-basic-structure-CI-Mobile-Safari/error-context.md was found using the provided searchPath
+2025-06-10T18:25:09.0978722Z ##[debug]Removing /__w/LocalLoop/LocalLoop/test-results/example-homepage-loads-basic-structure-CI-Mobile-Safari-retry1 from rawSearchResults because it is a directory
+2025-06-10T18:25:09.0981106Z ##[debug]File:/__w/LocalLoop/LocalLoop/test-results/example-homepage-loads-basic-structure-CI-Mobile-Safari-retry1/error-context.md was found using the provided searchPath
+2025-06-10T18:25:09.0983369Z ##[debug]File:/__w/LocalLoop/LocalLoop/test-results/example-homepage-loads-basic-structure-CI-Mobile-Safari-retry1/trace.zip was found using the provided searchPath
+2025-06-10T18:25:09.0985578Z ##[debug]Removing /__w/LocalLoop/LocalLoop/test-results/example-homepage-loads-basic-structure-CI-Mobile-Safari-retry2 from rawSearchResults because it is a directory
+2025-06-10T18:25:09.0987838Z ##[debug]File:/__w/LocalLoop/LocalLoop/test-results/example-homepage-loads-basic-structure-CI-Mobile-Safari-retry2/error-context.md was found using the provided searchPath
+2025-06-10T18:25:09.0990068Z ##[debug]Removing /__w/LocalLoop/LocalLoop/test-results/example-homepage-loads-basic-structure-CI-WebKit from rawSearchResults because it is a directory
+2025-06-10T18:25:09.0992064Z ##[debug]File:/__w/LocalLoop/LocalLoop/test-results/example-homepage-loads-basic-structure-CI-WebKit/error-context.md was found using the provided searchPath
+2025-06-10T18:25:09.0994118Z ##[debug]Removing /__w/LocalLoop/LocalLoop/test-results/example-homepage-loads-basic-structure-CI-WebKit-retry1 from rawSearchResults because it is a directory
+2025-06-10T18:25:09.0996224Z ##[debug]File:/__w/LocalLoop/LocalLoop/test-results/example-homepage-loads-basic-structure-CI-WebKit-retry1/error-context.md was found using the provided searchPath
+2025-06-10T18:25:09.0998506Z ##[debug]File:/__w/LocalLoop/LocalLoop/test-results/example-homepage-loads-basic-structure-CI-WebKit-retry1/trace.zip was found using the provided searchPath
+2025-06-10T18:25:09.1000505Z ##[debug]Removing /__w/LocalLoop/LocalLoop/test-results/example-homepage-loads-basic-structure-CI-WebKit-retry2 from rawSearchResults because it is a directory
+2025-06-10T18:25:09.1002592Z ##[debug]File:/__w/LocalLoop/LocalLoop/test-results/example-homepage-loads-basic-structure-CI-WebKit-retry2/error-context.md was found using the provided searchPath
+2025-06-10T18:25:09.1003812Z ##[debug]Removing /__w/LocalLoop/LocalLoop/test-results/example-navigation-elements-are-present-CI-Chromium from rawSearchResults because it is a directory
+2025-06-10T18:25:09.1005984Z ##[debug]File:/__w/LocalLoop/LocalLoop/test-results/example-navigation-elements-are-present-CI-Chromium/error-context.md was found using the provided searchPath
+2025-06-10T18:25:09.1007904Z ##[debug]Removing /__w/LocalLoop/LocalLoop/test-results/example-navigation-elements-are-present-CI-Chromium-retry1 from rawSearchResults because it is a directory
+2025-06-10T18:25:09.1009629Z ##[debug]File:/__w/LocalLoop/LocalLoop/test-results/example-navigation-elements-are-present-CI-Chromium-retry1/error-context.md was found using the provided searchPath
+2025-06-10T18:25:09.1010995Z ##[debug]File:/__w/LocalLoop/LocalLoop/test-results/example-navigation-elements-are-present-CI-Chromium-retry1/trace.zip was found using the provided searchPath
+2025-06-10T18:25:09.1012184Z ##[debug]Removing /__w/LocalLoop/LocalLoop/test-results/example-navigation-elements-are-present-CI-Chromium-retry2 from rawSearchResults because it is a directory
+2025-06-10T18:25:09.1013381Z ##[debug]File:/__w/LocalLoop/LocalLoop/test-results/example-navigation-elements-are-present-CI-Chromium-retry2/error-context.md was found using the provided searchPath
+2025-06-10T18:25:09.1014558Z ##[debug]Removing /__w/LocalLoop/LocalLoop/test-results/example-navigation-elements-are-present-CI-Firefox from rawSearchResults because it is a directory
+2025-06-10T18:25:09.1015687Z ##[debug]File:/__w/LocalLoop/LocalLoop/test-results/example-navigation-elements-are-present-CI-Firefox/error-context.md was found using the provided searchPath
+2025-06-10T18:25:09.1016844Z ##[debug]Removing /__w/LocalLoop/LocalLoop/test-results/example-navigation-elements-are-present-CI-Firefox-retry1 from rawSearchResults because it is a directory
+2025-06-10T18:25:09.1018058Z ##[debug]File:/__w/LocalLoop/LocalLoop/test-results/example-navigation-elements-are-present-CI-Firefox-retry1/error-context.md was found using the provided searchPath
+2025-06-10T18:25:09.1019348Z ##[debug]File:/__w/LocalLoop/LocalLoop/test-results/example-navigation-elements-are-present-CI-Firefox-retry1/trace.zip was found using the provided searchPath
+2025-06-10T18:25:09.1020509Z ##[debug]Removing /__w/LocalLoop/LocalLoop/test-results/example-navigation-elements-are-present-CI-Firefox-retry2 from rawSearchResults because it is a directory
+2025-06-10T18:25:09.1021694Z ##[debug]File:/__w/LocalLoop/LocalLoop/test-results/example-navigation-elements-are-present-CI-Firefox-retry2/error-context.md was found using the provided searchPath
+2025-06-10T18:25:09.1022878Z ##[debug]Removing /__w/LocalLoop/LocalLoop/test-results/example-navigation-elements-are-present-CI-Mobile-Safari from rawSearchResults because it is a directory
+2025-06-10T18:25:09.1024086Z ##[debug]File:/__w/LocalLoop/LocalLoop/test-results/example-navigation-elements-are-present-CI-Mobile-Safari/error-context.md was found using the provided searchPath
+2025-06-10T18:25:09.1025301Z ##[debug]Removing /__w/LocalLoop/LocalLoop/test-results/example-navigation-elements-are-present-CI-Mobile-Safari-retry1 from rawSearchResults because it is a directory
+2025-06-10T18:25:09.1026571Z ##[debug]File:/__w/LocalLoop/LocalLoop/test-results/example-navigation-elements-are-present-CI-Mobile-Safari-retry1/error-context.md was found using the provided searchPath
+2025-06-10T18:25:09.1027995Z ##[debug]File:/__w/LocalLoop/LocalLoop/test-results/example-navigation-elements-are-present-CI-Mobile-Safari-retry1/trace.zip was found using the provided searchPath
+2025-06-10T18:25:09.1029332Z ##[debug]Removing /__w/LocalLoop/LocalLoop/test-results/example-navigation-elements-are-present-CI-Mobile-Safari-retry2 from rawSearchResults because it is a directory
+2025-06-10T18:25:09.1030703Z ##[debug]File:/__w/LocalLoop/LocalLoop/test-results/example-navigation-elements-are-present-CI-Mobile-Safari-retry2/error-context.md was found using the provided searchPath
+2025-06-10T18:25:09.1031912Z ##[debug]Removing /__w/LocalLoop/LocalLoop/test-results/example-navigation-elements-are-present-CI-WebKit from rawSearchResults because it is a directory
+2025-06-10T18:25:09.1033344Z ##[debug]File:/__w/LocalLoop/LocalLoop/test-results/example-navigation-elements-are-present-CI-WebKit/error-context.md was found using the provided searchPath
+2025-06-10T18:25:09.1035565Z ##[debug]Removing /__w/LocalLoop/LocalLoop/test-results/example-navigation-elements-are-present-CI-WebKit-retry1 from rawSearchResults because it is a directory
+2025-06-10T18:25:09.1036848Z ##[debug]File:/__w/LocalLoop/LocalLoop/test-results/example-navigation-elements-are-present-CI-WebKit-retry1/error-context.md was found using the provided searchPath
+2025-06-10T18:25:09.1038033Z ##[debug]File:/__w/LocalLoop/LocalLoop/test-results/example-navigation-elements-are-present-CI-WebKit-retry1/trace.zip was found using the provided searchPath
+2025-06-10T18:25:09.1039423Z ##[debug]Removing /__w/LocalLoop/LocalLoop/test-results/example-navigation-elements-are-present-CI-WebKit-retry2 from rawSearchResults because it is a directory
+2025-06-10T18:25:09.1040662Z ##[debug]File:/__w/LocalLoop/LocalLoop/test-results/example-navigation-elements-are-present-CI-WebKit-retry2/error-context.md was found using the provided searchPath
+2025-06-10T18:25:09.1041675Z ##[debug]Removing /__w/LocalLoop/LocalLoop/playwright-report from rawSearchResults because it is a directory
+2025-06-10T18:25:09.1042464Z ##[debug]Removing /__w/LocalLoop/LocalLoop/playwright-report/data from rawSearchResults because it is a directory
+2025-06-10T18:25:09.1043393Z ##[debug]File:/__w/LocalLoop/LocalLoop/playwright-report/data/04a8485bacb8c144521cfa6c30a61786a9687b99.md was found using the provided searchPath
+2025-06-10T18:25:09.1044469Z ##[debug]File:/__w/LocalLoop/LocalLoop/playwright-report/data/095bd4ea2404cbba5c66ad4ad96e7a663f5b838e.zip was found using the provided searchPath
+2025-06-10T18:25:09.1045519Z ##[debug]File:/__w/LocalLoop/LocalLoop/playwright-report/data/16df8eabcb2306489fb26cccdc3f402ab83034e5.zip was found using the provided searchPath
+2025-06-10T18:25:09.1046560Z ##[debug]File:/__w/LocalLoop/LocalLoop/playwright-report/data/26798e449dc12286947b3db50bc49e04ffaeb63f.zip was found using the provided searchPath
+2025-06-10T18:25:09.1047593Z ##[debug]File:/__w/LocalLoop/LocalLoop/playwright-report/data/37e3ba12a238e18ad99bf45da168a363b7b9659a.md was found using the provided searchPath
+2025-06-10T18:25:09.1048631Z ##[debug]File:/__w/LocalLoop/LocalLoop/playwright-report/data/3bb3ada632372b573fa86694bd33dd11affe19c7.md was found using the provided searchPath
+2025-06-10T18:25:09.1049804Z ##[debug]File:/__w/LocalLoop/LocalLoop/playwright-report/data/6f6a62f95acf7f60047aeb566df265e1f92ab96e.zip was found using the provided searchPath
+2025-06-10T18:25:09.1051267Z ##[debug]File:/__w/LocalLoop/LocalLoop/playwright-report/data/70eb9cc7687d5232142b0f7c612c2d9e760cec84.zip was found using the provided searchPath
+2025-06-10T18:25:09.1052992Z ##[debug]File:/__w/LocalLoop/LocalLoop/playwright-report/data/71f193629062c741b8925749777ee944c136503a.md was found using the provided searchPath
+2025-06-10T18:25:09.1054106Z ##[debug]File:/__w/LocalLoop/LocalLoop/playwright-report/data/7ead000bccaa08e5a53e5ac02a3cb2dfcb8c65d8.zip was found using the provided searchPath
+2025-06-10T18:25:09.1055172Z ##[debug]File:/__w/LocalLoop/LocalLoop/playwright-report/data/98425ed47c82804170df2abbb9cf7a6ba66ebb3d.zip was found using the provided searchPath
+2025-06-10T18:25:09.1056439Z ##[debug]File:/__w/LocalLoop/LocalLoop/playwright-report/data/9a645dc3d69eba95f6817862cd1256000c19213b.zip was found using the provided searchPath
+2025-06-10T18:25:09.1057488Z ##[debug]File:/__w/LocalLoop/LocalLoop/playwright-report/data/9bff88f763284307820e574056032690814d14c8.md was found using the provided searchPath
+2025-06-10T18:25:09.1058632Z ##[debug]File:/__w/LocalLoop/LocalLoop/playwright-report/data/b80bdb7969f28d5e99fe5bc9582084541fbd1d13.md was found using the provided searchPath
+2025-06-10T18:25:09.1059832Z ##[debug]File:/__w/LocalLoop/LocalLoop/playwright-report/data/b85f27db5555db73e6064a026637c4b6109d8d0a.md was found using the provided searchPath
+2025-06-10T18:25:09.1060876Z ##[debug]File:/__w/LocalLoop/LocalLoop/playwright-report/data/bca69e07f3c7584ba784e96babe38b40bd7ec871.zip was found using the provided searchPath
+2025-06-10T18:25:09.1061916Z ##[debug]File:/__w/LocalLoop/LocalLoop/playwright-report/data/bf2f82d2748275510c9b7c7a809361b1daec1ada.md was found using the provided searchPath
+2025-06-10T18:25:09.1062942Z ##[debug]File:/__w/LocalLoop/LocalLoop/playwright-report/data/c8a803426f2cac966079703b1b2fef70c8fcb360.zip was found using the provided searchPath
+2025-06-10T18:25:09.1064379Z ##[debug]File:/__w/LocalLoop/LocalLoop/playwright-report/data/da994cf94d8494408ecfe321e192c6b9ad2224ed.zip was found using the provided searchPath
+2025-06-10T18:25:09.1066088Z ##[debug]File:/__w/LocalLoop/LocalLoop/playwright-report/data/ebbf36d59460147bce4ffa233afe4f2083660da9.md was found using the provided searchPath
+2025-06-10T18:25:09.1067139Z ##[debug]File:/__w/LocalLoop/LocalLoop/playwright-report/data/ff5a92302fa4f9e4192b28f5fa1a3d5c1bd213d9.zip was found using the provided searchPath
+2025-06-10T18:25:09.1068082Z ##[debug]File:/__w/LocalLoop/LocalLoop/playwright-report/index.html was found using the provided searchPath
+2025-06-10T18:25:09.1068875Z ##[debug]Removing /__w/LocalLoop/LocalLoop/playwright-report/trace from rawSearchResults because it is a directory
+2025-06-10T18:25:09.1070086Z ##[debug]Removing /__w/LocalLoop/LocalLoop/playwright-report/trace/assets from rawSearchResults because it is a directory
+2025-06-10T18:25:09.1071071Z ##[debug]File:/__w/LocalLoop/LocalLoop/playwright-report/trace/assets/codeMirrorModule-DwAiTpyC.js was found using the provided searchPath
+2025-06-10T18:25:09.1072112Z ##[debug]File:/__w/LocalLoop/LocalLoop/playwright-report/trace/assets/defaultSettingsView-DkkRvn5X.js was found using the provided searchPath
+2025-06-10T18:25:09.1073123Z ##[debug]File:/__w/LocalLoop/LocalLoop/playwright-report/trace/codeMirrorModule.C3UTv-Ge.css was found using the provided searchPath
+2025-06-10T18:25:09.1074196Z ##[debug]File:/__w/LocalLoop/LocalLoop/playwright-report/trace/codicon.DCmgc-ay.ttf was found using the provided searchPath
+2025-06-10T18:25:09.1075135Z ##[debug]File:/__w/LocalLoop/LocalLoop/playwright-report/trace/defaultSettingsView.QdHITyLI.css was found using the provided searchPath
+2025-06-10T18:25:09.1076068Z ##[debug]File:/__w/LocalLoop/LocalLoop/playwright-report/trace/index.CFOW-Ezb.css was found using the provided searchPath
+2025-06-10T18:25:09.1076921Z ##[debug]File:/__w/LocalLoop/LocalLoop/playwright-report/trace/index.DvtSwn6E.js was found using the provided searchPath
+2025-06-10T18:25:09.1077767Z ##[debug]File:/__w/LocalLoop/LocalLoop/playwright-report/trace/index.html was found using the provided searchPath
+2025-06-10T18:25:09.1078616Z ##[debug]File:/__w/LocalLoop/LocalLoop/playwright-report/trace/playwright-logo.svg was found using the provided searchPath
+2025-06-10T18:25:09.1079597Z ##[debug]File:/__w/LocalLoop/LocalLoop/playwright-report/trace/snapshot.html was found using the provided searchPath
+2025-06-10T18:25:09.1080671Z ##[debug]File:/__w/LocalLoop/LocalLoop/playwright-report/trace/sw.bundle.js was found using the provided searchPath
+2025-06-10T18:25:09.1081527Z ##[debug]File:/__w/LocalLoop/LocalLoop/playwright-report/trace/uiMode.BatfzHMG.css was found using the provided searchPath
+2025-06-10T18:25:09.1082610Z ##[debug]File:/__w/LocalLoop/LocalLoop/playwright-report/trace/uiMode.Sdytl9wc.js was found using the provided searchPath
+2025-06-10T18:25:09.1083454Z ##[debug]File:/__w/LocalLoop/LocalLoop/playwright-report/trace/uiMode.html was found using the provided searchPath
+2025-06-10T18:25:09.1084313Z ##[debug]File:/__w/LocalLoop/LocalLoop/playwright-report/trace/xtermModule.Beg8tuEN.css was found using the provided searchPath
+2025-06-10T18:25:09.1085501Z Multiple search paths detected. Calculating the least common ancestor of all paths
+2025-06-10T18:25:09.1086526Z ##[debug]Using search path /__w/LocalLoop/LocalLoop/test-results
+2025-06-10T18:25:09.1087097Z ##[debug]Using search path /__w/LocalLoop/LocalLoop/playwright-report
+2025-06-10T18:25:09.1087755Z The least common ancestor is /__w/LocalLoop/LocalLoop. This will be the root directory of the artifact
+2025-06-10T18:25:09.1088298Z With the provided path, there will be 85 files uploaded
+2025-06-10T18:25:09.1088763Z ##[debug]Root artifact directory is /__w/LocalLoop/LocalLoop
+2025-06-10T18:25:09.1089074Z Artifact name is valid!
+2025-06-10T18:25:09.1089565Z Root directory input is valid!
+2025-06-10T18:25:09.1090001Z ##[debug]Workflow Run Backend ID: bbd89b60-9ca4-412c-b2ed-21940b499e79
+2025-06-10T18:25:09.1090520Z ##[debug]Workflow Job Run Backend ID: b0d6784e-0142-5961-bbee-e7fb70674e2b
+2025-06-10T18:25:09.1091376Z ##[debug][Request] CreateArtifact https://results-receiver.actions.githubusercontent.com/twirp/github.actions.results.api.v1.ArtifactService/CreateArtifact
+2025-06-10T18:25:09.2413619Z ##[debug][Response] - 200
+2025-06-10T18:25:09.2414341Z ##[debug]Headers: {
+2025-06-10T18:25:09.2414686Z ##[debug]  "content-length": "584",
+2025-06-10T18:25:09.2415141Z ##[debug]  "content-type": "application/json",
+2025-06-10T18:25:09.2415628Z ##[debug]  "date": "Tue, 10 Jun 2025 18:25:09 GMT",
+2025-06-10T18:25:09.2416114Z ##[debug]  "x-github-backend": "Kubernetes",
+2025-06-10T18:25:09.2416714Z ##[debug]  "x-github-request-id": "0400:2B2D8F:26F618:2CF23D:68487885"
+2025-06-10T18:25:09.2417258Z ##[debug]}
+2025-06-10T18:25:09.2420372Z ::add-mask::***
+2025-06-10T18:25:09.2423617Z ::add-mask::***
+2025-06-10T18:25:09.2424784Z ##[debug]Body: {
+2025-06-10T18:25:09.2425117Z ##[debug]  "ok": true,
+2025-06-10T18:25:09.2430219Z ##[debug]  "signed_upload_url": "https://productionresultssa5.blob.core.windows.net/actions-results/bbd89b60-9ca4-412c-b2ed-21940b499e79/workflow-job-run-b0d6784e-0142-5961-bbee-e7fb70674e2b/artifacts/8c18a6681c0ea1f251d223221098b2445fc897a3efc4cf7dd7c40c8e9f2d1621.zip?se=2025-06-10T19%3A25%3A09Z&sig=***&ske=2025-06-11T06%3A04%3A31Z&skoid=ca7593d4-ee42-46cd-af88-8b886a2f84eb&sks=b&skt=2025-06-10T18%3A04%3A31Z&sktid=398a6654-997b-47e9-b12b-9515b896b4de&skv=2025-05-05&sp=cw&spr=https&sr=b&st=2025-06-10T18%3A25%3A04Z&sv=2025-05-05"
+2025-06-10T18:25:09.2433550Z ##[debug]}
+2025-06-10T18:25:09.2434268Z ##[debug]Creating Artifact archive with compressionLevel: 6
+2025-06-10T18:25:09.2455647Z ##[debug]Zip write high watermark value 8388608
+2025-06-10T18:25:09.2456444Z ##[debug]Zip read high watermark value 8388608
+2025-06-10T18:25:09.2511261Z ##[debug]Uploading artifact zip to blob storage with maxConcurrency: 5, bufferSize: 8388608
+2025-06-10T18:25:09.2519430Z Beginning upload of artifact content to blob storage
+2025-06-10T18:25:09.4072218Z ##[debug]Zip stream for upload has ended.
+2025-06-10T18:25:09.4073903Z ##[debug]Zip stream for upload has finished.
+2025-06-10T18:25:09.6541164Z Uploaded bytes 730751
+2025-06-10T18:25:09.6890346Z Finished uploading artifact content to blob storage!
+2025-06-10T18:25:09.6893989Z SHA256 digest of uploaded artifact zip is 89d312a100013e99b6660bbbd9c3704eecc9676ae20f1a7eef2aae8096fb1259
+2025-06-10T18:25:09.6895504Z Finalizing artifact upload
+2025-06-10T18:25:09.6898861Z ##[debug][Request] FinalizeArtifact https://results-receiver.actions.githubusercontent.com/twirp/github.actions.results.api.v1.ArtifactService/FinalizeArtifact
+2025-06-10T18:25:09.7781652Z ##[debug][Response] - 200
+2025-06-10T18:25:09.7782509Z ##[debug]Headers: {
+2025-06-10T18:25:09.7782935Z ##[debug]  "content-length": "39",
+2025-06-10T18:25:09.7783508Z ##[debug]  "content-type": "application/json",
+2025-06-10T18:25:09.7784131Z ##[debug]  "date": "Tue, 10 Jun 2025 18:25:09 GMT",
+2025-06-10T18:25:09.7784759Z ##[debug]  "x-github-backend": "Kubernetes",
+2025-06-10T18:25:09.7785416Z ##[debug]  "x-github-request-id": "0400:2B2D8F:26F7CD:2CF431:68487885"
+2025-06-10T18:25:09.7786237Z ##[debug]}
+2025-06-10T18:25:09.7786619Z ##[debug]Body: {
+2025-06-10T18:25:09.7786826Z ##[debug]  "ok": true,
+2025-06-10T18:25:09.7787057Z ##[debug]  "artifact_id": "3299141784"
+2025-06-10T18:25:09.7787316Z ##[debug]}
+2025-06-10T18:25:09.7787790Z Artifact e2e-results.zip successfully finalized. Artifact ID 3299141784
+2025-06-10T18:25:09.7788616Z Artifact e2e-results has been successfully uploaded! Final size is 730751 bytes. Artifact ID is 3299141784
+2025-06-10T18:25:09.7793004Z Artifact download URL: https://github.com/JacksonR64/LocalLoop/actions/runs/15565333921/artifacts/3299141784
+2025-06-10T18:25:09.7918846Z ##[debug]Node Action run completed with exit code 0
+2025-06-10T18:25:09.7921406Z ##[debug]Set output artifact-id = 3299141784
+2025-06-10T18:25:09.7921900Z ##[debug]Set output artifact-digest = 89d312a100013e99b6660bbbd9c3704eecc9676ae20f1a7eef2aae8096fb1259
+2025-06-10T18:25:09.7922594Z ##[debug]Set output artifact-url = https://github.com/JacksonR64/LocalLoop/actions/runs/15565333921/artifacts/3299141784
+2025-06-10T18:25:09.7923375Z ##[debug]Finishing: 📊 Upload test results

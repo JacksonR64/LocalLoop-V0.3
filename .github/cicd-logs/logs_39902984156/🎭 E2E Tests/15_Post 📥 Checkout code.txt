@@ -1,0 +1,62 @@
+﻿2025-06-10T18:25:09.7941627Z ##[debug]Evaluating condition for step: 'Post 📥 Checkout code'
+2025-06-10T18:25:09.7942569Z ##[debug]Evaluating: always()
+2025-06-10T18:25:09.7942897Z ##[debug]Evaluating always:
+2025-06-10T18:25:09.7943189Z ##[debug]=> true
+2025-06-10T18:25:09.7943492Z ##[debug]Result: true
+2025-06-10T18:25:09.7943913Z ##[debug]Starting: Post 📥 Checkout code
+2025-06-10T18:25:09.7970395Z ##[debug]Loading inputs
+2025-06-10T18:25:09.7971304Z ##[debug]Evaluating: github.repository
+2025-06-10T18:25:09.7971622Z ##[debug]Evaluating Index:
+2025-06-10T18:25:09.7971862Z ##[debug]..Evaluating github:
+2025-06-10T18:25:09.7972100Z ##[debug]..=> Object
+2025-06-10T18:25:09.7972318Z ##[debug]..Evaluating String:
+2025-06-10T18:25:09.7972551Z ##[debug]..=> 'repository'
+2025-06-10T18:25:09.7972832Z ##[debug]=> 'JacksonR64/LocalLoop'
+2025-06-10T18:25:09.7973090Z ##[debug]Result: 'JacksonR64/LocalLoop'
+2025-06-10T18:25:09.7974379Z ##[debug]Evaluating: github.token
+2025-06-10T18:25:09.7974630Z ##[debug]Evaluating Index:
+2025-06-10T18:25:09.7974870Z ##[debug]..Evaluating github:
+2025-06-10T18:25:09.7975101Z ##[debug]..=> Object
+2025-06-10T18:25:09.7975302Z ##[debug]..Evaluating String:
+2025-06-10T18:25:09.7975517Z ##[debug]..=> 'token'
+2025-06-10T18:25:09.7975935Z ##[debug]=> '***'
+2025-06-10T18:25:09.7976252Z ##[debug]Result: '***'
+2025-06-10T18:25:09.7983187Z ##[debug]Loading env
+2025-06-10T18:25:09.7986460Z Post job cleanup.
+2025-06-10T18:25:09.7990740Z ##[command]/usr/bin/docker exec  9f25709fdf6df997a3d9a63a461760b6eedc33f735570c531349ff5cbfb448d4 sh -c "cat /etc/*release | grep ^ID"
+2025-06-10T18:25:09.8506257Z ##[debug]ID=ubuntu
+2025-06-10T18:25:09.8506675Z ##[debug]ID_LIKE=debian
+2025-06-10T18:25:09.8507080Z ##[debug]Running JavaScript Action with default external tool: node20
+2025-06-10T18:25:09.9947636Z ##[debug]Getting git version
+2025-06-10T18:25:09.9963265Z [command]/usr/bin/git version
+2025-06-10T18:25:09.9998768Z git version 2.34.1
+2025-06-10T18:25:10.0022755Z ##[debug]0
+2025-06-10T18:25:10.0023399Z ##[debug]git version 2.34.1
+2025-06-10T18:25:10.0023853Z ##[debug]
+2025-06-10T18:25:10.0024983Z ##[debug]Set git useragent to: git/2.34.1 (github-actions-checkout)
+2025-06-10T18:25:10.0028534Z ::add-mask::***
+2025-06-10T18:25:10.0045558Z Temporarily overriding HOME='/__w/_temp/669d2611-6d41-4e63-827b-b238847d8d53' before making global git config changes
+2025-06-10T18:25:10.0046950Z Adding repository directory to the temporary git global config as a safe directory
+2025-06-10T18:25:10.0052742Z [command]/usr/bin/git config --global --add safe.directory /__w/LocalLoop/LocalLoop
+2025-06-10T18:25:10.0080298Z ##[debug]0
+2025-06-10T18:25:10.0080854Z ##[debug]
+2025-06-10T18:25:10.0088286Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2025-06-10T18:25:10.0116859Z ##[debug]1
+2025-06-10T18:25:10.0117403Z ##[debug]
+2025-06-10T18:25:10.0123091Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2025-06-10T18:25:10.0362501Z ##[debug]0
+2025-06-10T18:25:10.0363156Z ##[debug]
+2025-06-10T18:25:10.0368679Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2025-06-10T18:25:10.0388837Z http.https://github.com/.extraheader
+2025-06-10T18:25:10.0395437Z ##[debug]0
+2025-06-10T18:25:10.0395869Z ##[debug]http.https://github.com/.extraheader
+2025-06-10T18:25:10.0396144Z ##[debug]
+2025-06-10T18:25:10.0400953Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2025-06-10T18:25:10.0425023Z ##[debug]0
+2025-06-10T18:25:10.0425363Z ##[debug]
+2025-06-10T18:25:10.0430908Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2025-06-10T18:25:10.0669496Z ##[debug]0
+2025-06-10T18:25:10.0670168Z ##[debug]
+2025-06-10T18:25:10.0671876Z ##[debug]Unsetting HOME override
+2025-06-10T18:25:10.0772796Z ##[debug]Node Action run completed with exit code 0
+2025-06-10T18:25:10.0775064Z ##[debug]Finishing: Post 📥 Checkout code

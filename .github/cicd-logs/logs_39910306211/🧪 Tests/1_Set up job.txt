@@ -1,0 +1,40 @@
+﻿2025-06-10T19:02:09.4473188Z Current runner version: '2.325.0'
+2025-06-10T19:02:09.4498133Z ##[group]Runner Image Provisioner
+2025-06-10T19:02:09.4499065Z Hosted Compute Agent
+2025-06-10T19:02:09.4499580Z Version: 20250529.345
+2025-06-10T19:02:09.4500171Z Commit: 22237e57af968c281070ffa8ed912c1b754f9a23
+2025-06-10T19:02:09.4500858Z Build Date: 2025-05-29T20:18:30Z
+2025-06-10T19:02:09.4501457Z ##[endgroup]
+2025-06-10T19:02:09.4502036Z ##[group]Operating System
+2025-06-10T19:02:09.4502604Z Ubuntu
+2025-06-10T19:02:09.4503310Z 24.04.2
+2025-06-10T19:02:09.4503742Z LTS
+2025-06-10T19:02:09.4504234Z ##[endgroup]
+2025-06-10T19:02:09.4504700Z ##[group]Runner Image
+2025-06-10T19:02:09.4505272Z Image: ubuntu-24.04
+2025-06-10T19:02:09.4505712Z Version: 20250602.3.0
+2025-06-10T19:02:09.4506775Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20250602.3/images/ubuntu/Ubuntu2404-Readme.md
+2025-06-10T19:02:09.4508142Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20250602.3
+2025-06-10T19:02:09.4509291Z ##[endgroup]
+2025-06-10T19:02:09.4510580Z ##[group]GITHUB_TOKEN Permissions
+2025-06-10T19:02:09.4512693Z Contents: read
+2025-06-10T19:02:09.4513507Z Deployments: write
+2025-06-10T19:02:09.4514011Z Issues: write
+2025-06-10T19:02:09.4514558Z Metadata: read
+2025-06-10T19:02:09.4515059Z PullRequests: write
+2025-06-10T19:02:09.4515529Z ##[endgroup]
+2025-06-10T19:02:09.4518027Z Secret source: Actions
+2025-06-10T19:02:09.4518707Z Prepare workflow directory
+2025-06-10T19:02:09.4977545Z Prepare all required actions
+2025-06-10T19:02:09.5032423Z Getting action download info
+2025-06-10T19:02:09.8201199Z ##[group]Download immutable action package 'actions/checkout@v4'
+2025-06-10T19:02:09.8202227Z Version: 4.2.2
+2025-06-10T19:02:09.8203545Z Digest: sha256:ccb2698953eaebd21c7bf6268a94f9c26518a7e38e27e0b83c1fe1ad049819b1
+2025-06-10T19:02:09.8204742Z Source commit SHA: 11bd71901bbe5b1630ceea73d27597364c9af683
+2025-06-10T19:02:09.8205474Z ##[endgroup]
+2025-06-10T19:02:09.9436614Z ##[group]Download immutable action package 'actions/setup-node@v4'
+2025-06-10T19:02:09.9437547Z Version: 4.4.0
+2025-06-10T19:02:09.9438281Z Digest: sha256:9427cefe82346e992fb5b949e3569b39d537ae41aa3086483b14eceebfc16bc1
+2025-06-10T19:02:09.9439218Z Source commit SHA: 49933ea5288caeca8642d1e84afbd3f7d6820020
+2025-06-10T19:02:09.9440041Z ##[endgroup]
+2025-06-10T19:02:10.1575037Z Complete job name: 🧪 Tests
