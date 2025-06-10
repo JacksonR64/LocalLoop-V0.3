@@ -1,0 +1,136 @@
+﻿2025-06-10T19:17:58.8997088Z ##[group]Run vercel build --prod --token=***
+2025-06-10T19:17:58.8997785Z [36;1mvercel build --prod --token=***[0m
+2025-06-10T19:17:58.9071596Z shell: /usr/bin/bash -e {0}
+2025-06-10T19:17:58.9071992Z env:
+2025-06-10T19:17:58.9072292Z   NODE_VERSION: 18
+2025-06-10T19:17:58.9072781Z   VERCEL_ORG_ID: ***
+2025-06-10T19:17:58.9073314Z   VERCEL_PROJECT_ID: ***
+2025-06-10T19:17:58.9073678Z ##[endgroup]
+2025-06-10T19:17:59.3350217Z Vercel CLI 42.3.0
+2025-06-10T19:17:59.4282233Z WARN! Build not running on Vercel. System environment variables will not be available.
+2025-06-10T19:17:59.6417976Z Running "install" command: `npm ci`...
+2025-06-10T19:18:06.0134577Z npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+2025-06-10T19:18:06.2264915Z npm warn deprecated abab@2.0.6: Use your platform's native atob() and btoa() methods instead
+2025-06-10T19:18:06.3294760Z npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+2025-06-10T19:18:06.4171319Z npm warn deprecated domexception@4.0.0: Use your platform's native DOMException instead
+2025-06-10T19:18:14.9963427Z 
+2025-06-10T19:18:14.9964010Z > localloop@0.1.0 prepare
+2025-06-10T19:18:14.9966114Z > husky install
+2025-06-10T19:18:14.9966330Z 
+2025-06-10T19:18:15.0600182Z husky - install command is DEPRECATED
+2025-06-10T19:18:15.0848781Z 
+2025-06-10T19:18:15.0849555Z added 822 packages, and audited 823 packages in 15s
+2025-06-10T19:18:15.0849995Z 
+2025-06-10T19:18:15.0881388Z 184 packages are looking for funding
+2025-06-10T19:18:15.0881870Z   run `npm fund` for details
+2025-06-10T19:18:15.0882107Z 
+2025-06-10T19:18:15.0882218Z found 0 vulnerabilities
+2025-06-10T19:18:15.1794451Z Detected Next.js version: 15.3.2
+2025-06-10T19:18:15.1798639Z Running "npm run build"
+2025-06-10T19:18:15.3021936Z 
+2025-06-10T19:18:15.3022617Z > localloop@0.1.0 build
+2025-06-10T19:18:15.3023149Z > next build
+2025-06-10T19:18:15.3023359Z 
+2025-06-10T19:18:15.9277165Z Attention: Next.js now collects completely anonymous telemetry regarding usage.
+2025-06-10T19:18:15.9280292Z This information is used to shape Next.js' roadmap and prioritize features.
+2025-06-10T19:18:15.9281703Z You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+2025-06-10T19:18:15.9282852Z https://nextjs.org/telemetry
+2025-06-10T19:18:15.9283033Z 
+2025-06-10T19:18:16.0278987Z    ▲ Next.js 15.3.2
+2025-06-10T19:18:16.0279322Z 
+2025-06-10T19:18:16.0735448Z    Creating an optimized production build ...
+2025-06-10T19:18:40.7444285Z <w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (100kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+2025-06-10T19:18:45.1925893Z  ⚠ Compiled with warnings in 28.0s
+2025-06-10T19:18:45.1926299Z 
+2025-06-10T19:18:45.1926721Z ./node_modules/@supabase/realtime-js/dist/main/RealtimeClient.js
+2025-06-10T19:18:45.1927547Z Critical dependency: the request of a dependency is an expression
+2025-06-10T19:18:45.1927988Z 
+2025-06-10T19:18:45.1928222Z Import trace for requested module:
+2025-06-10T19:18:45.1930171Z ./node_modules/@supabase/realtime-js/dist/main/RealtimeClient.js
+2025-06-10T19:18:45.1931140Z ./node_modules/@supabase/realtime-js/dist/main/index.js
+2025-06-10T19:18:45.1931860Z ./node_modules/@supabase/supabase-js/dist/module/index.js
+2025-06-10T19:18:45.1932685Z ./node_modules/@supabase/ssr/dist/module/createBrowserClient.js
+2025-06-10T19:18:45.1933435Z ./node_modules/@supabase/ssr/dist/module/index.js
+2025-06-10T19:18:45.1934088Z ./lib/supabase-server.ts
+2025-06-10T19:18:45.1934499Z ./app/page.tsx
+2025-06-10T19:18:45.1934730Z 
+2025-06-10T19:18:45.1963151Z    Skipping linting
+2025-06-10T19:18:45.1965477Z    Checking validity of types ...
+2025-06-10T19:19:03.8644277Z    Collecting page data ...
+2025-06-10T19:19:07.2010920Z    Generating static pages (0/49) ...
+2025-06-10T19:19:13.5185346Z    Generating static pages (12/49) 
+2025-06-10T19:19:13.5185799Z    Generating static pages (24/49) 
+2025-06-10T19:19:13.5187967Z    Generating static pages (36/49) 
+2025-06-10T19:19:13.5190059Z  ✓ Generating static pages (49/49)
+2025-06-10T19:19:13.9143015Z    Finalizing page optimization ...
+2025-06-10T19:19:13.9143615Z    Collecting build traces ...
+2025-06-10T19:19:20.9723192Z 
+2025-06-10T19:19:20.9846786Z Route (app)                                 Size  First Load JS
+2025-06-10T19:19:20.9848032Z ┌ ƒ /                                    7.95 kB         232 kB
+2025-06-10T19:19:20.9849095Z ├ ○ /_not-found                            981 B         102 kB
+2025-06-10T19:19:20.9850042Z ├ ○ /about                                 188 B         105 kB
+2025-06-10T19:19:20.9851437Z ├ ƒ /api/analytics/performance             228 B         101 kB
+2025-06-10T19:19:20.9852462Z ├ ƒ /api/auth/google/callback              228 B         101 kB
+2025-06-10T19:19:20.9853335Z ├ ƒ /api/auth/google/connect               228 B         101 kB
+2025-06-10T19:19:20.9853993Z ├ ƒ /api/auth/google/disconnect            228 B         101 kB
+2025-06-10T19:19:20.9854610Z ├ ƒ /api/auth/google/status                228 B         101 kB
+2025-06-10T19:19:20.9855125Z ├ ƒ /api/auth/welcome                      228 B         101 kB
+2025-06-10T19:19:20.9855624Z ├ ƒ /api/calendar/add-to-calendar          228 B         101 kB
+2025-06-10T19:19:20.9856284Z ├ ƒ /api/calendar/create-event             228 B         101 kB
+2025-06-10T19:19:20.9856864Z ├ ƒ /api/checkout                          228 B         101 kB
+2025-06-10T19:19:20.9857449Z ├ ƒ /api/debug-oauth                       228 B         101 kB
+2025-06-10T19:19:20.9857932Z ├ ƒ /api/events                            228 B         101 kB
+2025-06-10T19:19:20.9858395Z ├ ƒ /api/events/[id]                       228 B         101 kB
+2025-06-10T19:19:20.9858868Z ├ ƒ /api/events/cancellation               228 B         101 kB
+2025-06-10T19:19:20.9859353Z ├ ƒ /api/events/reminders                  228 B         101 kB
+2025-06-10T19:19:20.9860006Z ├ ƒ /api/health                            228 B         101 kB
+2025-06-10T19:19:20.9860921Z ├ ƒ /api/orders                            228 B         101 kB
+2025-06-10T19:19:20.9861632Z ├ ƒ /api/refunds                           228 B         101 kB
+2025-06-10T19:19:20.9862287Z ├ ƒ /api/rsvps                             228 B         101 kB
+2025-06-10T19:19:20.9863377Z ├ ƒ /api/rsvps/[id]                        228 B         101 kB
+2025-06-10T19:19:20.9864197Z ├ ƒ /api/staff/analytics                   228 B         101 kB
+2025-06-10T19:19:20.9864979Z ├ ƒ /api/staff/attendees                   228 B         101 kB
+2025-06-10T19:19:20.9865800Z ├ ƒ /api/staff/dashboard                   228 B         101 kB
+2025-06-10T19:19:20.9866598Z ├ ƒ /api/staff/export                      228 B         101 kB
+2025-06-10T19:19:20.9867365Z ├ ƒ /api/test-env                          228 B         101 kB
+2025-06-10T19:19:20.9868135Z ├ ƒ /api/test-upgrade-role                 228 B         101 kB
+2025-06-10T19:19:20.9868947Z ├ ƒ /api/ticket-types                      228 B         101 kB
+2025-06-10T19:19:20.9869721Z ├ ƒ /api/ticket-types/[id]                 228 B         101 kB
+2025-06-10T19:19:20.9870691Z ├ ƒ /api/update-customer-info              228 B         101 kB
+2025-06-10T19:19:20.9871592Z ├ ƒ /api/webhooks/stripe                   228 B         101 kB
+2025-06-10T19:19:20.9872410Z ├ ○ /auth/callback                         957 B         142 kB
+2025-06-10T19:19:20.9873211Z ├ ○ /auth/google/callback                2.29 kB         103 kB
+2025-06-10T19:19:20.9873990Z ├ ○ /auth/login                          3.29 kB         148 kB
+2025-06-10T19:19:20.9874609Z ├ ○ /auth/reset-password                 2.09 kB         146 kB
+2025-06-10T19:19:20.9875454Z ├ ○ /auth/signup                         3.26 kB         148 kB
+2025-06-10T19:19:20.9876286Z ├ ○ /auth/update-password                2.48 kB         147 kB
+2025-06-10T19:19:20.9877071Z ├ ○ /contact                               188 B         105 kB
+2025-06-10T19:19:20.9878135Z ├ ○ /create-event                          188 B         105 kB
+2025-06-10T19:19:20.9878899Z ├ ○ /demo                                2.93 kB         227 kB
+2025-06-10T19:19:20.9879512Z ├ ○ /demo/lists                          3.78 kB         228 kB
+2025-06-10T19:19:20.9880580Z ├ ƒ /events/[id]                          2.1 kB         212 kB
+2025-06-10T19:19:20.9881195Z ├ ƒ /my-events                            7.4 kB         126 kB
+2025-06-10T19:19:20.9881797Z ├ ○ /privacy                               188 B         105 kB
+2025-06-10T19:19:20.9882411Z ├ ○ /robots.txt                            228 B         101 kB
+2025-06-10T19:19:20.9883039Z ├ ○ /sitemap.xml                           228 B         101 kB
+2025-06-10T19:19:20.9883652Z ├ ƒ /staff                               14.6 kB         160 kB
+2025-06-10T19:19:20.9884278Z ├ ○ /staff/dashboard                       228 B         101 kB
+2025-06-10T19:19:20.9884986Z ├ ƒ /staff/events/[id]/edit              1.94 kB         157 kB
+2025-06-10T19:19:20.9885695Z ├ ƒ /staff/events/create                 1.92 kB         157 kB
+2025-06-10T19:19:20.9886413Z ├ ○ /terms                                 188 B         105 kB
+2025-06-10T19:19:20.9887134Z └ ƒ /test-auth                             228 B         101 kB
+2025-06-10T19:19:20.9887763Z + First Load JS shared by all             101 kB
+2025-06-10T19:19:20.9888430Z   ├ chunks/1684-0df89d9f25c583b2.js      45.9 kB
+2025-06-10T19:19:20.9889072Z   ├ chunks/4bd1b696-b638aa3d70fba23c.js  53.2 kB
+2025-06-10T19:19:20.9889693Z   └ other shared chunks (total)          1.96 kB
+2025-06-10T19:19:20.9889981Z 
+2025-06-10T19:19:20.9889991Z 
+2025-06-10T19:19:20.9890259Z ƒ Middleware                             66.2 kB
+2025-06-10T19:19:20.9890770Z 
+2025-06-10T19:19:20.9891060Z ○  (Static)   prerendered as static content
+2025-06-10T19:19:20.9891550Z ƒ  (Dynamic)  server-rendered on demand
+2025-06-10T19:19:20.9891785Z 
+2025-06-10T19:19:21.4863482Z Traced Next.js server files in: 294.841ms
+2025-06-10T19:19:21.7564633Z Created all serverless functions in: 270.304ms
+2025-06-10T19:19:21.8216677Z Collected static files (public/, static/, .next/static): 12.716ms
+2025-06-10T19:19:21.9122254Z Build Completed in .vercel/output [1m]

@@ -1,0 +1,45 @@
+﻿2025-06-10T19:13:34.5909697Z ##[group]Run npm run lint
+2025-06-10T19:13:34.5909981Z [36;1mnpm run lint[0m
+2025-06-10T19:13:34.5963548Z shell: /usr/bin/bash -e {0}
+2025-06-10T19:13:34.5963787Z env:
+2025-06-10T19:13:34.5963967Z   NODE_VERSION: 18
+2025-06-10T19:13:34.5964167Z ##[endgroup]
+2025-06-10T19:13:34.7412836Z 
+2025-06-10T19:13:34.7413494Z > localloop@0.1.0 lint
+2025-06-10T19:13:34.7413984Z > next lint
+2025-06-10T19:13:34.7414189Z 
+2025-06-10T19:13:39.4019262Z Attention: Next.js now collects completely anonymous telemetry regarding usage.
+2025-06-10T19:13:39.4021920Z This information is used to shape Next.js' roadmap and prioritize features.
+2025-06-10T19:13:39.4023745Z You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+2025-06-10T19:13:39.4024716Z https://nextjs.org/telemetry
+2025-06-10T19:13:39.4024979Z 
+2025-06-10T19:13:39.5239503Z 
+2025-06-10T19:13:39.5240466Z ./app/api/events/__tests__/route.test.ts
+2025-06-10T19:13:39.5241681Z 64:61  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+2025-06-10T19:13:39.5242906Z 65:50  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+2025-06-10T19:13:39.5244651Z 66:55  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+2025-06-10T19:13:39.5245166Z 
+2025-06-10T19:13:39.5245410Z ./app/api/staff/attendees/route.ts
+2025-06-10T19:13:39.5246313Z 200:61  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+2025-06-10T19:13:39.5246888Z 
+2025-06-10T19:13:39.5247114Z ./app/api/staff/export/route.ts
+2025-06-10T19:13:39.5247947Z 263:27  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+2025-06-10T19:13:39.5249156Z 293:31  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+2025-06-10T19:13:39.5250392Z 377:47  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+2025-06-10T19:13:39.5251314Z 378:60  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+2025-06-10T19:13:39.5251977Z 379:43  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+2025-06-10T19:13:39.5252639Z 381:60  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+2025-06-10T19:13:39.5253320Z 382:56  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+2025-06-10T19:13:39.5253946Z 383:55  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+2025-06-10T19:13:39.5254571Z 386:30  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+2025-06-10T19:13:39.5255222Z 387:43  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+2025-06-10T19:13:39.5255927Z 398:55  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+2025-06-10T19:13:39.5256642Z 399:59  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+2025-06-10T19:13:39.5257369Z 439:43  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+2025-06-10T19:13:39.5323777Z 440:60  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+2025-06-10T19:13:39.5324510Z 441:43  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+2025-06-10T19:13:39.5325173Z 444:30  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+2025-06-10T19:13:39.5325817Z 445:43  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+2025-06-10T19:13:39.5326538Z 447:58  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+2025-06-10T19:13:39.5326890Z 
+2025-06-10T19:13:39.5327466Z info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules

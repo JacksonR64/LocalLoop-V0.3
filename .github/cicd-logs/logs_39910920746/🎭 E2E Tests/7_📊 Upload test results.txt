@@ -1,0 +1,27 @@
+﻿2025-06-10T19:17:25.8079233Z ##[group]Run actions/upload-artifact@v4
+2025-06-10T19:17:25.8079516Z with:
+2025-06-10T19:17:25.8079685Z   name: e2e-results
+2025-06-10T19:17:25.8079903Z   path: test-results/
+playwright-report/
+
+2025-06-10T19:17:25.8080164Z   retention-days: 7
+2025-06-10T19:17:25.8080353Z   if-no-files-found: warn
+2025-06-10T19:17:25.8080572Z   compression-level: 6
+2025-06-10T19:17:25.8080770Z   overwrite: false
+2025-06-10T19:17:25.8080965Z   include-hidden-files: false
+2025-06-10T19:17:25.8081177Z env:
+2025-06-10T19:17:25.8081341Z   NODE_VERSION: 18
+2025-06-10T19:17:25.8081519Z ##[endgroup]
+2025-06-10T19:17:26.0197426Z Multiple search paths detected. Calculating the least common ancestor of all paths
+2025-06-10T19:17:26.0200425Z The least common ancestor is /home/runner/work/LocalLoop/LocalLoop. This will be the root directory of the artifact
+2025-06-10T19:17:26.0201615Z With the provided path, there will be 1 file uploaded
+2025-06-10T19:17:26.0206728Z Artifact name is valid!
+2025-06-10T19:17:26.0208372Z Root directory input is valid!
+2025-06-10T19:17:26.1251420Z Beginning upload of artifact content to blob storage
+2025-06-10T19:17:26.1947073Z Uploaded bytes 181363
+2025-06-10T19:17:26.2107662Z Finished uploading artifact content to blob storage!
+2025-06-10T19:17:26.2111485Z SHA256 digest of uploaded artifact zip is f66dd01ed048c93ff200d285d7bbd6807828293a8314e9dc350de85486a52249
+2025-06-10T19:17:26.2113232Z Finalizing artifact upload
+2025-06-10T19:17:26.2941496Z Artifact e2e-results.zip successfully finalized. Artifact ID 3299531492
+2025-06-10T19:17:26.2942876Z Artifact e2e-results has been successfully uploaded! Final size is 181363 bytes. Artifact ID is 3299531492
+2025-06-10T19:17:26.2949717Z Artifact download URL: https://github.com/JacksonR64/LocalLoop/actions/runs/15568215741/artifacts/3299531492

@@ -1,0 +1,71 @@
+﻿2025-06-10T19:17:32.0987313Z ##[group]Run actions/checkout@v4
+2025-06-10T19:17:32.0988153Z with:
+2025-06-10T19:17:32.0988576Z   repository: JacksonR64/LocalLoop
+2025-06-10T19:17:32.0989256Z   token: ***
+2025-06-10T19:17:32.0989647Z   ssh-strict: true
+2025-06-10T19:17:32.0990065Z   ssh-user: git
+2025-06-10T19:17:32.0990779Z   persist-credentials: true
+2025-06-10T19:17:32.0991319Z   clean: true
+2025-06-10T19:17:32.0991730Z   sparse-checkout-cone-mode: true
+2025-06-10T19:17:32.0992205Z   fetch-depth: 1
+2025-06-10T19:17:32.0992598Z   fetch-tags: false
+2025-06-10T19:17:32.0993007Z   show-progress: true
+2025-06-10T19:17:32.0993417Z   lfs: false
+2025-06-10T19:17:32.0993783Z   submodules: false
+2025-06-10T19:17:32.0994189Z   set-safe-directory: true
+2025-06-10T19:17:32.0994913Z env:
+2025-06-10T19:17:32.0995283Z   NODE_VERSION: 18
+2025-06-10T19:17:32.0995793Z   VERCEL_ORG_ID: ***
+2025-06-10T19:17:32.0996308Z   VERCEL_PROJECT_ID: ***
+2025-06-10T19:17:32.0996733Z ##[endgroup]
+2025-06-10T19:17:32.2099052Z Syncing repository: JacksonR64/LocalLoop
+2025-06-10T19:17:32.2101951Z ##[group]Getting Git version info
+2025-06-10T19:17:32.2103137Z Working directory is '/home/runner/work/LocalLoop/LocalLoop'
+2025-06-10T19:17:32.2104927Z [command]/usr/bin/git version
+2025-06-10T19:17:32.2199070Z git version 2.49.0
+2025-06-10T19:17:32.2228228Z ##[endgroup]
+2025-06-10T19:17:32.2243826Z Temporarily overriding HOME='/home/runner/work/_temp/adebbb9f-c6a4-424f-a954-220faae1e226' before making global git config changes
+2025-06-10T19:17:32.2246431Z Adding repository directory to the temporary git global config as a safe directory
+2025-06-10T19:17:32.2259270Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/LocalLoop/LocalLoop
+2025-06-10T19:17:32.2301809Z Deleting the contents of '/home/runner/work/LocalLoop/LocalLoop'
+2025-06-10T19:17:32.2306453Z ##[group]Initializing the repository
+2025-06-10T19:17:32.2310939Z [command]/usr/bin/git init /home/runner/work/LocalLoop/LocalLoop
+2025-06-10T19:17:32.2397523Z hint: Using 'master' as the name for the initial branch. This default branch name
+2025-06-10T19:17:32.2399457Z hint: is subject to change. To configure the initial branch name to use in all
+2025-06-10T19:17:32.2401329Z hint: of your new repositories, which will suppress this warning, call:
+2025-06-10T19:17:32.2402617Z hint:
+2025-06-10T19:17:32.2403500Z hint: 	git config --global init.defaultBranch <name>
+2025-06-10T19:17:32.2404573Z hint:
+2025-06-10T19:17:32.2405576Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2025-06-10T19:17:32.2407306Z hint: 'development'. The just-created branch can be renamed via this command:
+2025-06-10T19:17:32.2408598Z hint:
+2025-06-10T19:17:32.2409317Z hint: 	git branch -m <name>
+2025-06-10T19:17:32.2410865Z Initialized empty Git repository in /home/runner/work/LocalLoop/LocalLoop/.git/
+2025-06-10T19:17:32.2420043Z [command]/usr/bin/git remote add origin https://github.com/JacksonR64/LocalLoop
+2025-06-10T19:17:32.2462178Z ##[endgroup]
+2025-06-10T19:17:32.2467550Z ##[group]Disabling automatic garbage collection
+2025-06-10T19:17:32.2468306Z [command]/usr/bin/git config --local gc.auto 0
+2025-06-10T19:17:32.2503931Z ##[endgroup]
+2025-06-10T19:17:32.2504651Z ##[group]Setting up auth
+2025-06-10T19:17:32.2515854Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2025-06-10T19:17:32.2555846Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2025-06-10T19:17:32.2915408Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2025-06-10T19:17:32.2949994Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2025-06-10T19:17:32.3186958Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2025-06-10T19:17:32.3236578Z ##[endgroup]
+2025-06-10T19:17:32.3238026Z ##[group]Fetching the repository
+2025-06-10T19:17:32.3247543Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +586e8a9d5f5082d4a3f71feec9432fa77a629f59:refs/remotes/origin/main
+2025-06-10T19:17:32.9917987Z From https://github.com/JacksonR64/LocalLoop
+2025-06-10T19:17:32.9919732Z  * [new ref]         586e8a9d5f5082d4a3f71feec9432fa77a629f59 -> origin/main
+2025-06-10T19:17:32.9948255Z ##[endgroup]
+2025-06-10T19:17:32.9949907Z ##[group]Determining the checkout info
+2025-06-10T19:17:32.9952021Z ##[endgroup]
+2025-06-10T19:17:32.9955690Z [command]/usr/bin/git sparse-checkout disable
+2025-06-10T19:17:32.9997517Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2025-06-10T19:17:33.0026380Z ##[group]Checking out the ref
+2025-06-10T19:17:33.0031408Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2025-06-10T19:17:33.0814326Z Switched to a new branch 'main'
+2025-06-10T19:17:33.0815746Z branch 'main' set up to track 'origin/main'.
+2025-06-10T19:17:33.0859340Z ##[endgroup]
+2025-06-10T19:17:33.0862780Z [command]/usr/bin/git log -1 --format=%H
+2025-06-10T19:17:33.0884294Z 586e8a9d5f5082d4a3f71feec9432fa77a629f59

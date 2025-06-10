@@ -1,0 +1,467 @@
+﻿2025-06-10T19:17:31.2253029Z Current runner version: '2.325.0'
+2025-06-10T19:17:31.2287752Z ##[group]Runner Image Provisioner
+2025-06-10T19:17:31.2289101Z Hosted Compute Agent
+2025-06-10T19:17:31.2290158Z Version: 20250529.345
+2025-06-10T19:17:31.2291423Z Commit: 22237e57af968c281070ffa8ed912c1b754f9a23
+2025-06-10T19:17:31.2292545Z Build Date: 2025-05-29T20:18:30Z
+2025-06-10T19:17:31.2293591Z ##[endgroup]
+2025-06-10T19:17:31.2294601Z ##[group]Operating System
+2025-06-10T19:17:31.2295607Z Ubuntu
+2025-06-10T19:17:31.2296419Z 24.04.2
+2025-06-10T19:17:31.2297118Z LTS
+2025-06-10T19:17:31.2297912Z ##[endgroup]
+2025-06-10T19:17:31.2298887Z ##[group]Runner Image
+2025-06-10T19:17:31.2299819Z Image: ubuntu-24.04
+2025-06-10T19:17:31.2300840Z Version: 20250602.3.0
+2025-06-10T19:17:31.2302732Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20250602.3/images/ubuntu/Ubuntu2404-Readme.md
+2025-06-10T19:17:31.2305351Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20250602.3
+2025-06-10T19:17:31.2307130Z ##[endgroup]
+2025-06-10T19:17:31.2309400Z ##[group]GITHUB_TOKEN Permissions
+2025-06-10T19:17:31.2312519Z Contents: read
+2025-06-10T19:17:31.2313446Z Deployments: write
+2025-06-10T19:17:31.2314462Z Issues: write
+2025-06-10T19:17:31.2315293Z Metadata: read
+2025-06-10T19:17:31.2316057Z PullRequests: write
+2025-06-10T19:17:31.2317033Z ##[endgroup]
+2025-06-10T19:17:31.2320668Z Secret source: Actions
+2025-06-10T19:17:31.2321863Z Prepare workflow directory
+2025-06-10T19:17:31.3052118Z Prepare all required actions
+2025-06-10T19:17:31.3108685Z Getting action download info
+2025-06-10T19:17:31.6075212Z ##[group]Download immutable action package 'actions/checkout@v4'
+2025-06-10T19:17:31.6076396Z Version: 4.2.2
+2025-06-10T19:17:31.6077400Z Digest: sha256:ccb2698953eaebd21c7bf6268a94f9c26518a7e38e27e0b83c1fe1ad049819b1
+2025-06-10T19:17:31.6078666Z Source commit SHA: 11bd71901bbe5b1630ceea73d27597364c9af683
+2025-06-10T19:17:31.6079405Z ##[endgroup]
+2025-06-10T19:17:31.7060381Z ##[group]Download immutable action package 'actions/setup-node@v4'
+2025-06-10T19:17:31.7061551Z Version: 4.4.0
+2025-06-10T19:17:31.7062281Z Digest: sha256:9427cefe82346e992fb5b949e3569b39d537ae41aa3086483b14eceebfc16bc1
+2025-06-10T19:17:31.7063282Z Source commit SHA: 49933ea5288caeca8642d1e84afbd3f7d6820020
+2025-06-10T19:17:31.7064050Z ##[endgroup]
+2025-06-10T19:17:31.7981842Z ##[group]Download immutable action package 'actions/github-script@v7'
+2025-06-10T19:17:31.7982675Z Version: 7.0.1
+2025-06-10T19:17:31.7983515Z Digest: sha256:bce02966afe3a75123f766b765abe432fac5464b74976015dc06b811ac9054c7
+2025-06-10T19:17:31.7984447Z Source commit SHA: 60a0d83039c74a4aee543508d2ffcb1c3799cdea
+2025-06-10T19:17:31.7985137Z ##[endgroup]
+2025-06-10T19:17:32.0365376Z Complete job name: 🚀 Deploy
+2025-06-10T19:17:32.0987340Z ##[group]Run actions/checkout@v4
+2025-06-10T19:17:32.0988162Z with:
+2025-06-10T19:17:32.0988580Z   repository: JacksonR64/LocalLoop
+2025-06-10T19:17:32.0989260Z   token: ***
+2025-06-10T19:17:32.0989650Z   ssh-strict: true
+2025-06-10T19:17:32.0990068Z   ssh-user: git
+2025-06-10T19:17:32.0990789Z   persist-credentials: true
+2025-06-10T19:17:32.0991323Z   clean: true
+2025-06-10T19:17:32.0991733Z   sparse-checkout-cone-mode: true
+2025-06-10T19:17:32.0992208Z   fetch-depth: 1
+2025-06-10T19:17:32.0992601Z   fetch-tags: false
+2025-06-10T19:17:32.0993011Z   show-progress: true
+2025-06-10T19:17:32.0993421Z   lfs: false
+2025-06-10T19:17:32.0993785Z   submodules: false
+2025-06-10T19:17:32.0994192Z   set-safe-directory: true
+2025-06-10T19:17:32.0994921Z env:
+2025-06-10T19:17:32.0995286Z   NODE_VERSION: 18
+2025-06-10T19:17:32.0995796Z   VERCEL_ORG_ID: ***
+2025-06-10T19:17:32.0996311Z   VERCEL_PROJECT_ID: ***
+2025-06-10T19:17:32.0996736Z ##[endgroup]
+2025-06-10T19:17:32.2099195Z Syncing repository: JacksonR64/LocalLoop
+2025-06-10T19:17:32.2101978Z ##[group]Getting Git version info
+2025-06-10T19:17:32.2103153Z Working directory is '/home/runner/work/LocalLoop/LocalLoop'
+2025-06-10T19:17:32.2104951Z [command]/usr/bin/git version
+2025-06-10T19:17:32.2199136Z git version 2.49.0
+2025-06-10T19:17:32.2228271Z ##[endgroup]
+2025-06-10T19:17:32.2243858Z Temporarily overriding HOME='/home/runner/work/_temp/adebbb9f-c6a4-424f-a954-220faae1e226' before making global git config changes
+2025-06-10T19:17:32.2246460Z Adding repository directory to the temporary git global config as a safe directory
+2025-06-10T19:17:32.2259304Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/LocalLoop/LocalLoop
+2025-06-10T19:17:32.2301860Z Deleting the contents of '/home/runner/work/LocalLoop/LocalLoop'
+2025-06-10T19:17:32.2306481Z ##[group]Initializing the repository
+2025-06-10T19:17:32.2310968Z [command]/usr/bin/git init /home/runner/work/LocalLoop/LocalLoop
+2025-06-10T19:17:32.2397653Z hint: Using 'master' as the name for the initial branch. This default branch name
+2025-06-10T19:17:32.2399476Z hint: is subject to change. To configure the initial branch name to use in all
+2025-06-10T19:17:32.2401353Z hint: of your new repositories, which will suppress this warning, call:
+2025-06-10T19:17:32.2402637Z hint:
+2025-06-10T19:17:32.2403517Z hint: 	git config --global init.defaultBranch <name>
+2025-06-10T19:17:32.2404590Z hint:
+2025-06-10T19:17:32.2405591Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2025-06-10T19:17:32.2407329Z hint: 'development'. The just-created branch can be renamed via this command:
+2025-06-10T19:17:32.2408613Z hint:
+2025-06-10T19:17:32.2409329Z hint: 	git branch -m <name>
+2025-06-10T19:17:32.2410887Z Initialized empty Git repository in /home/runner/work/LocalLoop/LocalLoop/.git/
+2025-06-10T19:17:32.2420071Z [command]/usr/bin/git remote add origin https://github.com/JacksonR64/LocalLoop
+2025-06-10T19:17:32.2462230Z ##[endgroup]
+2025-06-10T19:17:32.2467615Z ##[group]Disabling automatic garbage collection
+2025-06-10T19:17:32.2468310Z [command]/usr/bin/git config --local gc.auto 0
+2025-06-10T19:17:32.2503968Z ##[endgroup]
+2025-06-10T19:17:32.2504656Z ##[group]Setting up auth
+2025-06-10T19:17:32.2515883Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2025-06-10T19:17:32.2555888Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2025-06-10T19:17:32.2915481Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2025-06-10T19:17:32.2950041Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2025-06-10T19:17:32.3187559Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2025-06-10T19:17:32.3236643Z ##[endgroup]
+2025-06-10T19:17:32.3238043Z ##[group]Fetching the repository
+2025-06-10T19:17:32.3247568Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +586e8a9d5f5082d4a3f71feec9432fa77a629f59:refs/remotes/origin/main
+2025-06-10T19:17:32.9918089Z From https://github.com/JacksonR64/LocalLoop
+2025-06-10T19:17:32.9919746Z  * [new ref]         586e8a9d5f5082d4a3f71feec9432fa77a629f59 -> origin/main
+2025-06-10T19:17:32.9948288Z ##[endgroup]
+2025-06-10T19:17:32.9949935Z ##[group]Determining the checkout info
+2025-06-10T19:17:32.9952054Z ##[endgroup]
+2025-06-10T19:17:32.9955721Z [command]/usr/bin/git sparse-checkout disable
+2025-06-10T19:17:32.9997550Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2025-06-10T19:17:33.0026420Z ##[group]Checking out the ref
+2025-06-10T19:17:33.0031442Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2025-06-10T19:17:33.0814490Z Switched to a new branch 'main'
+2025-06-10T19:17:33.0815753Z branch 'main' set up to track 'origin/main'.
+2025-06-10T19:17:33.0859372Z ##[endgroup]
+2025-06-10T19:17:33.0862815Z [command]/usr/bin/git log -1 --format=%H
+2025-06-10T19:17:33.0884343Z 586e8a9d5f5082d4a3f71feec9432fa77a629f59
+2025-06-10T19:17:33.1174245Z ##[group]Run actions/setup-node@v4
+2025-06-10T19:17:33.1175382Z with:
+2025-06-10T19:17:33.1176208Z   node-version: 18
+2025-06-10T19:17:33.1177101Z   cache: npm
+2025-06-10T19:17:33.1177958Z   always-auth: false
+2025-06-10T19:17:33.1178916Z   check-latest: false
+2025-06-10T19:17:33.1180139Z   token: ***
+2025-06-10T19:17:33.1181265Z env:
+2025-06-10T19:17:33.1182072Z   NODE_VERSION: 18
+2025-06-10T19:17:33.1183130Z   VERCEL_ORG_ID: ***
+2025-06-10T19:17:33.1184323Z   VERCEL_PROJECT_ID: ***
+2025-06-10T19:17:33.1185282Z ##[endgroup]
+2025-06-10T19:17:33.3017852Z Found in cache @ /opt/hostedtoolcache/node/18.20.8/x64
+2025-06-10T19:17:33.3025391Z ##[group]Environment details
+2025-06-10T19:17:33.6566316Z node: v18.20.8
+2025-06-10T19:17:33.6567254Z npm: 10.8.2
+2025-06-10T19:17:33.6567737Z yarn: 1.22.22
+2025-06-10T19:17:33.6568966Z ##[endgroup]
+2025-06-10T19:17:33.6589984Z [command]/opt/hostedtoolcache/node/18.20.8/x64/bin/npm config get cache
+2025-06-10T19:17:33.7944993Z /home/runner/.npm
+2025-06-10T19:17:33.8917758Z Cache hit for: node-cache-Linux-x64-npm-c12c6ac637b018150c9ab8486a2ab8d5c875f0013e7356ae5e08bc546e10a4bd
+2025-06-10T19:17:34.7989843Z Received 202515877 of 202515877 (100.0%), 221.0 MBs/sec
+2025-06-10T19:17:34.7990941Z Cache Size: ~193 MB (202515877 B)
+2025-06-10T19:17:34.8021482Z [command]/usr/bin/tar -xf /home/runner/work/_temp/0e87bc54-8643-47af-a31b-903b846d2c33/cache.tzst -P -C /home/runner/work/LocalLoop/LocalLoop --use-compress-program unzstd
+2025-06-10T19:17:35.1880674Z Cache restored successfully
+2025-06-10T19:17:35.2315328Z Cache restored from key: node-cache-Linux-x64-npm-c12c6ac637b018150c9ab8486a2ab8d5c875f0013e7356ae5e08bc546e10a4bd
+2025-06-10T19:17:35.2501702Z ##[group]Run npm ci --legacy-peer-deps
+2025-06-10T19:17:35.2502110Z [36;1mnpm ci --legacy-peer-deps[0m
+2025-06-10T19:17:35.2578190Z shell: /usr/bin/bash -e {0}
+2025-06-10T19:17:35.2578475Z env:
+2025-06-10T19:17:35.2578657Z   NODE_VERSION: 18
+2025-06-10T19:17:35.2579025Z   VERCEL_ORG_ID: ***
+2025-06-10T19:17:35.2579327Z   VERCEL_PROJECT_ID: ***
+2025-06-10T19:17:35.2579547Z ##[endgroup]
+2025-06-10T19:17:40.6586549Z npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+2025-06-10T19:17:40.8655193Z npm warn deprecated abab@2.0.6: Use your platform's native atob() and btoa() methods instead
+2025-06-10T19:17:40.9641792Z npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+2025-06-10T19:17:41.0442681Z npm warn deprecated domexception@4.0.0: Use your platform's native DOMException instead
+2025-06-10T19:17:49.5205638Z 
+2025-06-10T19:17:49.5206879Z > localloop@0.1.0 prepare
+2025-06-10T19:17:49.5207789Z > husky install
+2025-06-10T19:17:49.5208425Z 
+2025-06-10T19:17:49.5819788Z husky - install command is DEPRECATED
+2025-06-10T19:17:49.6060968Z 
+2025-06-10T19:17:49.6062073Z added 822 packages, and audited 823 packages in 14s
+2025-06-10T19:17:49.6062641Z 
+2025-06-10T19:17:49.6062969Z 184 packages are looking for funding
+2025-06-10T19:17:49.6063518Z   run `npm fund` for details
+2025-06-10T19:17:49.6077229Z 
+2025-06-10T19:17:49.6077743Z found 0 vulnerabilities
+2025-06-10T19:17:49.6957946Z ##[group]Run npm install --global vercel@latest
+2025-06-10T19:17:49.6958337Z [36;1mnpm install --global vercel@latest[0m
+2025-06-10T19:17:49.7013247Z shell: /usr/bin/bash -e {0}
+2025-06-10T19:17:49.7013518Z env:
+2025-06-10T19:17:49.7013719Z   NODE_VERSION: 18
+2025-06-10T19:17:49.7014142Z   VERCEL_ORG_ID: ***
+2025-06-10T19:17:49.7014476Z   VERCEL_PROJECT_ID: ***
+2025-06-10T19:17:49.7014699Z ##[endgroup]
+2025-06-10T19:17:56.8247988Z npm warn deprecated path-match@1.2.4: This package is archived and no longer maintained. For support, visit https://github.com/expressjs/express/discussions
+2025-06-10T19:17:57.9307136Z 
+2025-06-10T19:17:57.9307725Z added 228 packages in 8s
+2025-06-10T19:17:57.9308055Z 
+2025-06-10T19:17:57.9308753Z 24 packages are looking for funding
+2025-06-10T19:17:57.9309223Z   run `npm fund` for details
+2025-06-10T19:17:57.9573973Z ##[group]Run vercel pull --yes --environment=production --token=***
+2025-06-10T19:17:57.9574549Z [36;1mvercel pull --yes --environment=production --token=***[0m
+2025-06-10T19:17:57.9626937Z shell: /usr/bin/bash -e {0}
+2025-06-10T19:17:57.9627173Z env:
+2025-06-10T19:17:57.9627347Z   NODE_VERSION: 18
+2025-06-10T19:17:57.9627646Z   VERCEL_ORG_ID: ***
+2025-06-10T19:17:57.9627927Z   VERCEL_PROJECT_ID: ***
+2025-06-10T19:17:57.9628139Z ##[endgroup]
+2025-06-10T19:17:58.3633108Z Vercel CLI 42.3.0
+2025-06-10T19:17:58.3861728Z > NOTE: The Vercel CLI now collects telemetry regarding usage of the CLI.
+2025-06-10T19:17:58.3862728Z > This information is used to shape the CLI roadmap and prioritize features.
+2025-06-10T19:17:58.3864073Z > You can learn more, including how to opt-out if you'd not like to participate in this program, by visiting the following URL:
+2025-06-10T19:17:58.3865145Z > https://vercel.com/docs/cli/about-telemetry
+2025-06-10T19:17:58.4117859Z Retrieving project…
+2025-06-10T19:17:58.7634404Z > Downloading `production` Environment Variables for jackson-rhodens-projects/local-loop
+2025-06-10T19:17:58.7635254Z Downloading
+2025-06-10T19:17:58.8820055Z Created .vercel/.env.production.local file  [118ms]
+2025-06-10T19:17:58.8820739Z 
+2025-06-10T19:17:58.8821024Z > Downloading project settings
+2025-06-10T19:17:58.8827663Z Downloaded project settings to ~/work/LocalLoop/LocalLoop/.vercel/project.json [0ms]
+2025-06-10T19:17:58.8997103Z ##[group]Run vercel build --prod --token=***
+2025-06-10T19:17:58.8997789Z [36;1mvercel build --prod --token=***[0m
+2025-06-10T19:17:58.9071604Z shell: /usr/bin/bash -e {0}
+2025-06-10T19:17:58.9071998Z env:
+2025-06-10T19:17:58.9072296Z   NODE_VERSION: 18
+2025-06-10T19:17:58.9072786Z   VERCEL_ORG_ID: ***
+2025-06-10T19:17:58.9073320Z   VERCEL_PROJECT_ID: ***
+2025-06-10T19:17:58.9073682Z ##[endgroup]
+2025-06-10T19:17:59.3350260Z Vercel CLI 42.3.0
+2025-06-10T19:17:59.4282276Z WARN! Build not running on Vercel. System environment variables will not be available.
+2025-06-10T19:17:59.6418018Z Running "install" command: `npm ci`...
+2025-06-10T19:18:06.0134620Z npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+2025-06-10T19:18:06.2265056Z npm warn deprecated abab@2.0.6: Use your platform's native atob() and btoa() methods instead
+2025-06-10T19:18:06.3294826Z npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+2025-06-10T19:18:06.4171361Z npm warn deprecated domexception@4.0.0: Use your platform's native DOMException instead
+2025-06-10T19:18:14.9963483Z 
+2025-06-10T19:18:14.9964015Z > localloop@0.1.0 prepare
+2025-06-10T19:18:14.9966126Z > husky install
+2025-06-10T19:18:14.9966338Z 
+2025-06-10T19:18:15.0600225Z husky - install command is DEPRECATED
+2025-06-10T19:18:15.0848834Z 
+2025-06-10T19:18:15.0849560Z added 822 packages, and audited 823 packages in 15s
+2025-06-10T19:18:15.0850003Z 
+2025-06-10T19:18:15.0881398Z 184 packages are looking for funding
+2025-06-10T19:18:15.0881875Z   run `npm fund` for details
+2025-06-10T19:18:15.0882110Z 
+2025-06-10T19:18:15.0882222Z found 0 vulnerabilities
+2025-06-10T19:18:15.1794488Z Detected Next.js version: 15.3.2
+2025-06-10T19:18:15.1798648Z Running "npm run build"
+2025-06-10T19:18:15.3021995Z 
+2025-06-10T19:18:15.3022661Z > localloop@0.1.0 build
+2025-06-10T19:18:15.3023156Z > next build
+2025-06-10T19:18:15.3023365Z 
+2025-06-10T19:18:15.9277202Z Attention: Next.js now collects completely anonymous telemetry regarding usage.
+2025-06-10T19:18:15.9280300Z This information is used to shape Next.js' roadmap and prioritize features.
+2025-06-10T19:18:15.9281712Z You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+2025-06-10T19:18:15.9282859Z https://nextjs.org/telemetry
+2025-06-10T19:18:15.9283036Z 
+2025-06-10T19:18:16.0279033Z    ▲ Next.js 15.3.2
+2025-06-10T19:18:16.0279328Z 
+2025-06-10T19:18:16.0735492Z    Creating an optimized production build ...
+2025-06-10T19:18:40.7444335Z <w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (100kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+2025-06-10T19:18:45.1925960Z  ⚠ Compiled with warnings in 28.0s
+2025-06-10T19:18:45.1926304Z 
+2025-06-10T19:18:45.1926769Z ./node_modules/@supabase/realtime-js/dist/main/RealtimeClient.js
+2025-06-10T19:18:45.1927554Z Critical dependency: the request of a dependency is an expression
+2025-06-10T19:18:45.1927992Z 
+2025-06-10T19:18:45.1928225Z Import trace for requested module:
+2025-06-10T19:18:45.1930182Z ./node_modules/@supabase/realtime-js/dist/main/RealtimeClient.js
+2025-06-10T19:18:45.1931149Z ./node_modules/@supabase/realtime-js/dist/main/index.js
+2025-06-10T19:18:45.1931865Z ./node_modules/@supabase/supabase-js/dist/module/index.js
+2025-06-10T19:18:45.1932689Z ./node_modules/@supabase/ssr/dist/module/createBrowserClient.js
+2025-06-10T19:18:45.1933439Z ./node_modules/@supabase/ssr/dist/module/index.js
+2025-06-10T19:18:45.1934093Z ./lib/supabase-server.ts
+2025-06-10T19:18:45.1934503Z ./app/page.tsx
+2025-06-10T19:18:45.1934734Z 
+2025-06-10T19:18:45.1963165Z    Skipping linting
+2025-06-10T19:18:45.1965487Z    Checking validity of types ...
+2025-06-10T19:19:03.8644320Z    Collecting page data ...
+2025-06-10T19:19:07.2011395Z    Generating static pages (0/49) ...
+2025-06-10T19:19:13.5185386Z    Generating static pages (12/49) 
+2025-06-10T19:19:13.5185801Z    Generating static pages (24/49) 
+2025-06-10T19:19:13.5187972Z    Generating static pages (36/49) 
+2025-06-10T19:19:13.5190065Z  ✓ Generating static pages (49/49)
+2025-06-10T19:19:13.9143062Z    Finalizing page optimization ...
+2025-06-10T19:19:13.9143620Z    Collecting build traces ...
+2025-06-10T19:19:20.9723253Z 
+2025-06-10T19:19:20.9846802Z Route (app)                                 Size  First Load JS
+2025-06-10T19:19:20.9848060Z ┌ ƒ /                                    7.95 kB         232 kB
+2025-06-10T19:19:20.9849105Z ├ ○ /_not-found                            981 B         102 kB
+2025-06-10T19:19:20.9850052Z ├ ○ /about                                 188 B         105 kB
+2025-06-10T19:19:20.9851443Z ├ ƒ /api/analytics/performance             228 B         101 kB
+2025-06-10T19:19:20.9852467Z ├ ƒ /api/auth/google/callback              228 B         101 kB
+2025-06-10T19:19:20.9853368Z ├ ƒ /api/auth/google/connect               228 B         101 kB
+2025-06-10T19:19:20.9853997Z ├ ƒ /api/auth/google/disconnect            228 B         101 kB
+2025-06-10T19:19:20.9854612Z ├ ƒ /api/auth/google/status                228 B         101 kB
+2025-06-10T19:19:20.9855128Z ├ ƒ /api/auth/welcome                      228 B         101 kB
+2025-06-10T19:19:20.9855626Z ├ ƒ /api/calendar/add-to-calendar          228 B         101 kB
+2025-06-10T19:19:20.9856289Z ├ ƒ /api/calendar/create-event             228 B         101 kB
+2025-06-10T19:19:20.9856874Z ├ ƒ /api/checkout                          228 B         101 kB
+2025-06-10T19:19:20.9857452Z ├ ƒ /api/debug-oauth                       228 B         101 kB
+2025-06-10T19:19:20.9857935Z ├ ƒ /api/events                            228 B         101 kB
+2025-06-10T19:19:20.9858397Z ├ ƒ /api/events/[id]                       228 B         101 kB
+2025-06-10T19:19:20.9858871Z ├ ƒ /api/events/cancellation               228 B         101 kB
+2025-06-10T19:19:20.9859367Z ├ ƒ /api/events/reminders                  228 B         101 kB
+2025-06-10T19:19:20.9860012Z ├ ƒ /api/health                            228 B         101 kB
+2025-06-10T19:19:20.9860929Z ├ ƒ /api/orders                            228 B         101 kB
+2025-06-10T19:19:20.9861637Z ├ ƒ /api/refunds                           228 B         101 kB
+2025-06-10T19:19:20.9862290Z ├ ƒ /api/rsvps                             228 B         101 kB
+2025-06-10T19:19:20.9863385Z ├ ƒ /api/rsvps/[id]                        228 B         101 kB
+2025-06-10T19:19:20.9864204Z ├ ƒ /api/staff/analytics                   228 B         101 kB
+2025-06-10T19:19:20.9864983Z ├ ƒ /api/staff/attendees                   228 B         101 kB
+2025-06-10T19:19:20.9865805Z ├ ƒ /api/staff/dashboard                   228 B         101 kB
+2025-06-10T19:19:20.9866603Z ├ ƒ /api/staff/export                      228 B         101 kB
+2025-06-10T19:19:20.9867369Z ├ ƒ /api/test-env                          228 B         101 kB
+2025-06-10T19:19:20.9868159Z ├ ƒ /api/test-upgrade-role                 228 B         101 kB
+2025-06-10T19:19:20.9868951Z ├ ƒ /api/ticket-types                      228 B         101 kB
+2025-06-10T19:19:20.9869725Z ├ ƒ /api/ticket-types/[id]                 228 B         101 kB
+2025-06-10T19:19:20.9870699Z ├ ƒ /api/update-customer-info              228 B         101 kB
+2025-06-10T19:19:20.9871598Z ├ ƒ /api/webhooks/stripe                   228 B         101 kB
+2025-06-10T19:19:20.9872416Z ├ ○ /auth/callback                         957 B         142 kB
+2025-06-10T19:19:20.9873217Z ├ ○ /auth/google/callback                2.29 kB         103 kB
+2025-06-10T19:19:20.9873997Z ├ ○ /auth/login                          3.29 kB         148 kB
+2025-06-10T19:19:20.9874613Z ├ ○ /auth/reset-password                 2.09 kB         146 kB
+2025-06-10T19:19:20.9875464Z ├ ○ /auth/signup                         3.26 kB         148 kB
+2025-06-10T19:19:20.9876292Z ├ ○ /auth/update-password                2.48 kB         147 kB
+2025-06-10T19:19:20.9877334Z ├ ○ /contact                               188 B         105 kB
+2025-06-10T19:19:20.9878140Z ├ ○ /create-event                          188 B         105 kB
+2025-06-10T19:19:20.9878903Z ├ ○ /demo                                2.93 kB         227 kB
+2025-06-10T19:19:20.9879515Z ├ ○ /demo/lists                          3.78 kB         228 kB
+2025-06-10T19:19:20.9880586Z ├ ƒ /events/[id]                          2.1 kB         212 kB
+2025-06-10T19:19:20.9881199Z ├ ƒ /my-events                            7.4 kB         126 kB
+2025-06-10T19:19:20.9881807Z ├ ○ /privacy                               188 B         105 kB
+2025-06-10T19:19:20.9882414Z ├ ○ /robots.txt                            228 B         101 kB
+2025-06-10T19:19:20.9883043Z ├ ○ /sitemap.xml                           228 B         101 kB
+2025-06-10T19:19:20.9883656Z ├ ƒ /staff                               14.6 kB         160 kB
+2025-06-10T19:19:20.9884281Z ├ ○ /staff/dashboard                       228 B         101 kB
+2025-06-10T19:19:20.9885002Z ├ ƒ /staff/events/[id]/edit              1.94 kB         157 kB
+2025-06-10T19:19:20.9885699Z ├ ƒ /staff/events/create                 1.92 kB         157 kB
+2025-06-10T19:19:20.9886418Z ├ ○ /terms                                 188 B         105 kB
+2025-06-10T19:19:20.9887139Z └ ƒ /test-auth                             228 B         101 kB
+2025-06-10T19:19:20.9887769Z + First Load JS shared by all             101 kB
+2025-06-10T19:19:20.9888436Z   ├ chunks/1684-0df89d9f25c583b2.js      45.9 kB
+2025-06-10T19:19:20.9889078Z   ├ chunks/4bd1b696-b638aa3d70fba23c.js  53.2 kB
+2025-06-10T19:19:20.9889699Z   └ other shared chunks (total)          1.96 kB
+2025-06-10T19:19:20.9889985Z 
+2025-06-10T19:19:20.9889993Z 
+2025-06-10T19:19:20.9890263Z ƒ Middleware                             66.2 kB
+2025-06-10T19:19:20.9890774Z 
+2025-06-10T19:19:20.9891065Z ○  (Static)   prerendered as static content
+2025-06-10T19:19:20.9891553Z ƒ  (Dynamic)  server-rendered on demand
+2025-06-10T19:19:20.9891788Z 
+2025-06-10T19:19:21.4863576Z Traced Next.js server files in: 294.841ms
+2025-06-10T19:19:21.7564682Z Created all serverless functions in: 270.304ms
+2025-06-10T19:19:21.8216716Z Collected static files (public/, static/, .next/static): 12.716ms
+2025-06-10T19:19:21.9122298Z Build Completed in .vercel/output [1m]
+2025-06-10T19:19:21.9349760Z ##[group]Run DEPLOYMENT_URL=$(vercel deploy --prebuilt --prod --token=***)
+2025-06-10T19:19:21.9350589Z [36;1mDEPLOYMENT_URL=$(vercel deploy --prebuilt --prod --token=***)[0m
+2025-06-10T19:19:21.9351529Z [36;1mecho "deployment-url=$DEPLOYMENT_URL" >> $GITHUB_OUTPUT[0m
+2025-06-10T19:19:21.9352066Z [36;1mecho "✅ Deployed to: $DEPLOYMENT_URL"[0m
+2025-06-10T19:19:21.9406250Z shell: /usr/bin/bash -e {0}
+2025-06-10T19:19:21.9406498Z env:
+2025-06-10T19:19:21.9406678Z   NODE_VERSION: 18
+2025-06-10T19:19:21.9407021Z   VERCEL_ORG_ID: ***
+2025-06-10T19:19:21.9407296Z   VERCEL_PROJECT_ID: ***
+2025-06-10T19:19:21.9407505Z ##[endgroup]
+2025-06-10T19:19:22.3728859Z Vercel CLI 42.3.0
+2025-06-10T19:19:22.4167593Z Retrieving project…
+2025-06-10T19:19:22.7838137Z Deploying jackson-rhodens-projects/local-loop
+2025-06-10T19:19:23.3308104Z Uploading [--------------------] (0.0B/16.6MB)
+2025-06-10T19:19:24.3293193Z Uploading [=====---------------] (4.2MB/16.6MB)
+2025-06-10T19:19:24.4005828Z Uploading [==========----------] (8.3MB/16.6MB)
+2025-06-10T19:19:24.4916519Z Uploading [===============-----] (12.5MB/16.6MB)
+2025-06-10T19:19:24.9556525Z Uploading [====================] (16.6MB/16.6MB)
+2025-06-10T19:19:26.7534556Z Inspect: https://vercel.com/jackson-rhodens-projects/local-loop/DBE6eftCwYrfJqF49WJHZ1PSvC8T [4s]
+2025-06-10T19:19:26.7535933Z Production: https://local-loop-1kpiqvai6-jackson-rhodens-projects.vercel.app [4s]
+2025-06-10T19:19:26.7536687Z Queued
+2025-06-10T19:19:28.2104197Z Building
+2025-06-10T19:19:47.0266100Z Completing
+2025-06-10T19:19:47.1709701Z ✅ Deployed to: https://local-loop-1kpiqvai6-jackson-rhodens-projects.vercel.app
+2025-06-10T19:19:47.1829104Z ##[group]Run actions/github-script@v7
+2025-06-10T19:19:47.1829558Z with:
+2025-06-10T19:19:47.1833707Z   script: const deploymentUrl = 'https://local-loop-1kpiqvai6-jackson-rhodens-projects.vercel.app';
+const sha = context.sha;
+const commitUrl = `${context.payload.repository.html_url}/commit/${sha}`;
+
+// Create comment body
+const commentBody = `## 🚀 Production Deployment Complete
+
+**Deployment URL:** ${deploymentUrl}
+**Commit:** [${sha.slice(0, 7)}](${commitUrl})
+**Branch:** ${context.ref.replace('refs/heads/', '')}
+**Workflow:** [${context.workflow}](${context.payload.repository.html_url}/actions/runs/${context.runId})
+
+✅ Your application has been successfully deployed to production!`;
+
+// Post comment on commit
+await github.rest.repos.createCommitComment({
+  owner: context.repo.owner,
+  repo: context.repo.repo,
+  commit_sha: sha,
+  body: commentBody
+});
+
+2025-06-10T19:19:47.1838013Z   github-token: ***
+2025-06-10T19:19:47.1838330Z   debug: false
+2025-06-10T19:19:47.1838703Z   user-agent: actions/github-script
+2025-06-10T19:19:47.1839124Z   result-encoding: json
+2025-06-10T19:19:47.1839446Z   retries: 0
+2025-06-10T19:19:47.1839789Z   retry-exempt-status-codes: 400,401,403,404,422
+2025-06-10T19:19:47.1840226Z env:
+2025-06-10T19:19:47.1840629Z   NODE_VERSION: 18
+2025-06-10T19:19:47.1841017Z   VERCEL_ORG_ID: ***
+2025-06-10T19:19:47.1841445Z   VERCEL_PROJECT_ID: ***
+2025-06-10T19:19:47.1841781Z ##[endgroup]
+2025-06-10T19:19:47.4259229Z RequestError [HttpError]: Resource not accessible by integration
+2025-06-10T19:19:47.4260244Z     at /home/runner/work/_actions/actions/github-script/v7/dist/index.js:9537:21
+2025-06-10T19:19:47.4261484Z     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2025-06-10T19:19:47.4262894Z     at async eval (eval at callAsyncFunction (/home/runner/work/_actions/actions/github-script/v7/dist/index.js:35424:16), <anonymous>:18:1)
+2025-06-10T19:19:47.4264282Z     at async main (/home/runner/work/_actions/actions/github-script/v7/dist/index.js:35522:20) {
+2025-06-10T19:19:47.4265001Z   status: 403,
+2025-06-10T19:19:47.4265317Z   response: {
+2025-06-10T19:19:47.4266205Z     url: 'https://api.github.com/repos/JacksonR64/LocalLoop/commits/586e8a9d5f5082d4a3f71feec9432fa77a629f59/comments',
+2025-06-10T19:19:47.4267115Z     status: 403,
+2025-06-10T19:19:47.4267434Z     headers: {
+2025-06-10T19:19:47.4267832Z       'access-control-allow-origin': '*',
+2025-06-10T19:19:47.4270167Z       'access-control-expose-headers': 'ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset',
+2025-06-10T19:19:47.4273037Z       'content-encoding': 'gzip',
+2025-06-10T19:19:47.4273608Z       'content-security-policy': "default-src 'none'",
+2025-06-10T19:19:47.4274252Z       'content-type': 'application/json; charset=utf-8',
+2025-06-10T19:19:47.4274847Z       date: 'Tue, 10 Jun 2025 19:19:47 GMT',
+2025-06-10T19:19:47.4275631Z       'referrer-policy': 'origin-when-cross-origin, strict-origin-when-cross-origin',
+2025-06-10T19:19:47.4276320Z       server: 'github.com',
+2025-06-10T19:19:47.4277006Z       'strict-transport-security': 'max-age=31536000; includeSubdomains; preload',
+2025-06-10T19:19:47.4277739Z       'transfer-encoding': 'chunked',
+2025-06-10T19:19:47.4278318Z       vary: 'Accept-Encoding, Accept, X-Requested-With',
+2025-06-10T19:19:47.4279029Z       'x-accepted-github-permissions': 'contents=read',
+2025-06-10T19:19:47.4279677Z       'x-content-type-options': 'nosniff',
+2025-06-10T19:19:47.4280194Z       'x-frame-options': 'deny',
+2025-06-10T19:19:47.4280899Z       'x-github-api-version-selected': '2022-11-28',
+2025-06-10T19:19:47.4281518Z       'x-github-media-type': 'github.v3; format=json',
+2025-06-10T19:19:47.4282195Z       'x-github-request-id': '0400:3E3F3E:5B620A:B637C1:68488553',
+2025-06-10T19:19:47.4283169Z       'x-ratelimit-limit': '5000',
+2025-06-10T19:19:47.4283729Z       'x-ratelimit-remaining': '4999',
+2025-06-10T19:19:47.4284236Z       'x-ratelimit-reset': '1749586787',
+2025-06-10T19:19:47.4284730Z       'x-ratelimit-resource': 'core',
+2025-06-10T19:19:47.4285231Z       'x-ratelimit-used': '1',
+2025-06-10T19:19:47.4318528Z ##[error]Unhandled error: HttpError: Resource not accessible by integration
+2025-06-10T19:19:47.4325654Z       'x-xss-protection': '0'
+2025-06-10T19:19:47.4325915Z     },
+2025-06-10T19:19:47.4326098Z     data: {
+2025-06-10T19:19:47.4326388Z       message: 'Resource not accessible by integration',
+2025-06-10T19:19:47.4326978Z       documentation_url: 'https://docs.github.com/rest/commits/comments#create-a-commit-comment',
+2025-06-10T19:19:47.4327411Z       status: '403'
+2025-06-10T19:19:47.4327600Z     }
+2025-06-10T19:19:47.4327760Z   },
+2025-06-10T19:19:47.4328000Z   request: {
+2025-06-10T19:19:47.4346891Z     method: 'POST',
+2025-06-10T19:19:47.4347774Z     url: 'https://api.github.com/repos/JacksonR64/LocalLoop/commits/586e8a9d5f5082d4a3f71feec9432fa77a629f59/comments',
+2025-06-10T19:19:47.4348395Z     headers: {
+2025-06-10T19:19:47.4348667Z       accept: 'application/vnd.github.v3+json',
+2025-06-10T19:19:47.4349165Z       'user-agent': 'actions/github-script octokit-core.js/5.0.1 Node.js/20.19.1 (linux; x64)',
+2025-06-10T19:19:47.4349609Z       authorization: 'token [REDACTED]',
+2025-06-10T19:19:47.4349939Z       'content-type': 'application/json; charset=utf-8'
+2025-06-10T19:19:47.4350215Z     },
+2025-06-10T19:19:47.4352656Z     body: '{"body":"## 🚀 Production Deployment Complete\\n\\n**Deployment URL:** https://local-loop-1kpiqvai6-jackson-rhodens-projects.vercel.app\\n**Commit:** [586e8a9](https://github.com/JacksonR64/LocalLoop/commit/586e8a9d5f5082d4a3f71feec9432fa77a629f59)\\n**Branch:** main\\n**Workflow:** [CI Pipeline](https://github.com/JacksonR64/LocalLoop/actions/runs/15568215741)\\n\\n✅ Your application has been successfully deployed to production!"}',
+2025-06-10T19:19:47.4354216Z     request: {
+2025-06-10T19:19:47.4354411Z       agent: [Agent],
+2025-06-10T19:19:47.4354658Z       fetch: [Function: proxyFetch],
+2025-06-10T19:19:47.4354964Z       hook: [Function: bound bound register]
+2025-06-10T19:19:47.4355211Z     }
+2025-06-10T19:19:47.4355372Z   }
+2025-06-10T19:19:47.4355530Z }
+2025-06-10T19:19:47.5197964Z Post job cleanup.
+2025-06-10T19:19:47.6359452Z [command]/usr/bin/git version
+2025-06-10T19:19:47.6397300Z git version 2.49.0
+2025-06-10T19:19:47.6440335Z Temporarily overriding HOME='/home/runner/work/_temp/ecc2ee07-c745-44bb-8b95-b1f71a5bcd65' before making global git config changes
+2025-06-10T19:19:47.6441588Z Adding repository directory to the temporary git global config as a safe directory
+2025-06-10T19:19:47.6445972Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/LocalLoop/LocalLoop
+2025-06-10T19:19:47.6487647Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2025-06-10T19:19:47.6521408Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2025-06-10T19:19:47.6751747Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2025-06-10T19:19:47.6774999Z http.https://github.com/.extraheader
+2025-06-10T19:19:47.6787593Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2025-06-10T19:19:47.6818013Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2025-06-10T19:19:47.7137272Z Cleaning up orphan processes
+2025-06-10T19:19:47.7392427Z Terminate orphan process: pid (2470) (node)

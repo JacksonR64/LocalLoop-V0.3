@@ -1,0 +1,20 @@
+﻿2025-06-10T19:17:57.9573960Z ##[group]Run vercel pull --yes --environment=production --token=***
+2025-06-10T19:17:57.9574546Z [36;1mvercel pull --yes --environment=production --token=***[0m
+2025-06-10T19:17:57.9626930Z shell: /usr/bin/bash -e {0}
+2025-06-10T19:17:57.9627171Z env:
+2025-06-10T19:17:57.9627345Z   NODE_VERSION: 18
+2025-06-10T19:17:57.9627644Z   VERCEL_ORG_ID: ***
+2025-06-10T19:17:57.9627925Z   VERCEL_PROJECT_ID: ***
+2025-06-10T19:17:57.9628137Z ##[endgroup]
+2025-06-10T19:17:58.3633060Z Vercel CLI 42.3.0
+2025-06-10T19:17:58.3861700Z > NOTE: The Vercel CLI now collects telemetry regarding usage of the CLI.
+2025-06-10T19:17:58.3862721Z > This information is used to shape the CLI roadmap and prioritize features.
+2025-06-10T19:17:58.3864067Z > You can learn more, including how to opt-out if you'd not like to participate in this program, by visiting the following URL:
+2025-06-10T19:17:58.3865140Z > https://vercel.com/docs/cli/about-telemetry
+2025-06-10T19:17:58.4117828Z Retrieving project…
+2025-06-10T19:17:58.7634266Z > Downloading `production` Environment Variables for jackson-rhodens-projects/local-loop
+2025-06-10T19:17:58.7635246Z Downloading
+2025-06-10T19:17:58.8820006Z Created .vercel/.env.production.local file  [118ms]
+2025-06-10T19:17:58.8820730Z 
+2025-06-10T19:17:58.8821018Z > Downloading project settings
+2025-06-10T19:17:58.8827648Z Downloaded project settings to ~/work/LocalLoop/LocalLoop/.vercel/project.json [0ms]

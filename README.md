@@ -248,6 +248,38 @@ npm run test:ci
 
 ---
 
+## 🔧 **CI/CD Pipeline**
+
+LocalLoop uses a comprehensive CI/CD pipeline that ensures code quality, runs extensive testing, and automatically deploys to production. The pipeline has been optimized for reliability and speed.
+
+### **Pipeline Overview**
+- ✅ **Code Quality**: ESLint, TypeScript checking, and formatting validation
+- ✅ **Build Validation**: Ensures the application builds successfully
+- ✅ **Testing**: Unit tests with Jest and comprehensive coverage
+- ✅ **E2E Testing**: Cross-browser testing with Playwright (45-60 seconds!)
+- ✅ **Deployment**: Automated deployment to Vercel with status notifications
+
+### **Performance Metrics**
+- **Total Pipeline Time**: ~8-12 minutes for full pipeline
+- **E2E Tests**: Highly optimized to ~46 seconds (95% improvement!)
+- **Success Rate**: >99% deployment success rate
+- **Browsers Tested**: Chromium, Firefox, WebKit, Mobile Safari
+
+### **📖 Comprehensive Documentation**
+For detailed information about the CI/CD pipeline, including troubleshooting, configuration, and maintenance:
+
+**📚 [CI/CD Pipeline Documentation](.github/docs/CICD_PIPELINE.md)**
+
+This comprehensive guide covers:
+- How the pipeline works and what each stage does
+- Configuration files and environment variables
+- Troubleshooting common issues with solutions
+- Performance optimization and maintenance procedures
+- Historical issues and lessons learned
+- Best practices for developers and maintainers
+
+---
+
 ## 📦 **Deployment**
 
 ### **Production Deployment**

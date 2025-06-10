@@ -1,0 +1,178 @@
+﻿2025-06-10T19:16:37.9611908Z ##[group]Run npx playwright test --config=playwright.ci.config.ts
+2025-06-10T19:16:37.9612405Z [36;1mnpx playwright test --config=playwright.ci.config.ts[0m
+2025-06-10T19:16:37.9663629Z shell: /usr/bin/bash -e {0}
+2025-06-10T19:16:37.9663869Z env:
+2025-06-10T19:16:37.9664045Z   NODE_VERSION: 18
+2025-06-10T19:16:37.9664233Z   CI: true
+2025-06-10T19:16:37.9664661Z   NEXT_PUBLIC_SUPABASE_URL: ***
+2025-06-10T19:16:37.9666104Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+2025-06-10T19:16:37.9666356Z ##[endgroup]
+2025-06-10T19:16:39.5657005Z [WebServer] 
+2025-06-10T19:16:39.5657813Z [WebServer] > localloop@0.1.0 dev
+2025-06-10T19:16:39.5658925Z [WebServer] > lsof -ti:3000 | xargs kill -9 2>/dev/null || true && next dev -p 3000
+2025-06-10T19:16:39.5659324Z [WebServer] 
+2025-06-10T19:16:40.6358126Z [WebServer]    [1m[38;2;173;127;168m▲ Next.js 15.3.2[39m[22m
+2025-06-10T19:16:40.6360424Z [WebServer]    - Local:        http://localhost:3000
+2025-06-10T19:16:40.6361257Z [WebServer]    - Network:      http://10.1.1.117:3000
+2025-06-10T19:16:40.6361724Z [WebServer] 
+2025-06-10T19:16:40.6362094Z [WebServer]  [32m[1m✓[22m[39m Starting...
+2025-06-10T19:16:40.7049298Z [WebServer] [35m[1mAttention[22m[39m: Next.js now collects completely anonymous telemetry regarding usage.
+2025-06-10T19:16:40.7050283Z [WebServer] This information is used to shape Next.js' roadmap and prioritize features.
+2025-06-10T19:16:40.7051412Z [WebServer] You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+2025-06-10T19:16:40.7052319Z [WebServer] [36mhttps://nextjs.org/telemetry[39m
+2025-06-10T19:16:40.7052728Z [WebServer] 
+2025-06-10T19:16:41.8418694Z [WebServer]  [32m[1m✓[22m[39m Ready in 1426ms
+2025-06-10T19:16:42.3613025Z [WebServer]  [37m[1m○[22m[39m Compiling /middleware ...
+2025-06-10T19:16:42.7603741Z [WebServer]  [32m[1m✓[22m[39m Compiled /middleware in 906ms (179 modules)
+2025-06-10T19:16:43.4317139Z [WebServer]  [37m[1m○[22m[39m Compiling / ...
+2025-06-10T19:16:44.0685076Z [WebServer] <w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (100kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+2025-06-10T19:16:49.9267130Z [WebServer]  [33m[1m⚠[22m[39m ./node_modules/@supabase/realtime-js/dist/main/RealtimeClient.js
+2025-06-10T19:16:49.9268570Z [WebServer] Critical dependency: the request of a dependency is an expression
+2025-06-10T19:16:49.9269234Z [WebServer] 
+2025-06-10T19:16:49.9269718Z [WebServer] Import trace for requested module:
+2025-06-10T19:16:49.9270560Z [WebServer] ./node_modules/@supabase/realtime-js/dist/main/RealtimeClient.js
+2025-06-10T19:16:49.9271530Z [WebServer] ./node_modules/@supabase/realtime-js/dist/main/index.js
+2025-06-10T19:16:49.9272390Z [WebServer] ./node_modules/@supabase/supabase-js/dist/module/index.js
+2025-06-10T19:16:49.9273316Z [WebServer] ./node_modules/@supabase/ssr/dist/module/createBrowserClient.js
+2025-06-10T19:16:49.9274194Z [WebServer] ./node_modules/@supabase/ssr/dist/module/index.js
+2025-06-10T19:16:49.9274852Z [WebServer] ./lib/supabase-server.ts
+2025-06-10T19:16:49.9275307Z [WebServer] ./app/page.tsx
+2025-06-10T19:16:50.3889082Z [WebServer]  [33m[1m⚠[22m[39m metadataBase property in metadata export is not set for resolving social open graph or twitter images, using "http://localhost:3000". See https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase
+2025-06-10T19:16:51.6238344Z [WebServer]  GET / [32m200[39m in 8729ms
+2025-06-10T19:16:51.6983247Z 
+2025-06-10T19:16:51.6984318Z Running 12 tests using 1 worker
+2025-06-10T19:16:53.3509461Z [WebServer]  GET / [32m200[39m in 463ms
+2025-06-10T19:16:54.8083899Z Homepage basic structure loaded successfully
+2025-06-10T19:16:55.3073652Z ·[WebServer]  GET / [32m200[39m in 443ms
+2025-06-10T19:16:55.8705075Z Navigation elements are present and responsive
+2025-06-10T19:16:56.3471542Z ·[WebServer]  GET / [32m200[39m in 423ms
+2025-06-10T19:16:57.1294560Z [WebServer]  [33m[1m⚠[22m[39m ./node_modules/@supabase/realtime-js/dist/main/RealtimeClient.js
+2025-06-10T19:16:57.1296833Z [WebServer] Critical dependency: the request of a dependency is an expression
+2025-06-10T19:16:57.1298709Z [WebServer] 
+2025-06-10T19:16:57.1299181Z [WebServer] Import trace for requested module:
+2025-06-10T19:16:57.1299984Z [WebServer] ./node_modules/@supabase/realtime-js/dist/main/RealtimeClient.js
+2025-06-10T19:16:57.1300954Z [WebServer] ./node_modules/@supabase/realtime-js/dist/main/index.js
+2025-06-10T19:16:57.1301847Z [WebServer] ./node_modules/@supabase/supabase-js/dist/module/index.js
+2025-06-10T19:16:57.1302890Z [WebServer] ./node_modules/@supabase/ssr/dist/module/createBrowserClient.js
+2025-06-10T19:16:57.1303815Z [WebServer] ./node_modules/@supabase/ssr/dist/module/index.js
+2025-06-10T19:16:57.1304464Z [WebServer] ./lib/supabase-server.ts
+2025-06-10T19:16:57.1304927Z [WebServer] ./app/page.tsx
+2025-06-10T19:16:57.9831491Z Basic responsive layout works correctly
+2025-06-10T19:16:58.0315050Z [WebServer]  [33m[1m⚠[22m[39m ./node_modules/@supabase/realtime-js/dist/main/RealtimeClient.js
+2025-06-10T19:16:58.0316117Z [WebServer] Critical dependency: the request of a dependency is an expression
+2025-06-10T19:16:58.0316524Z [WebServer] 
+2025-06-10T19:16:58.0316809Z [WebServer] Import trace for requested module:
+2025-06-10T19:16:58.0317568Z [WebServer] ./node_modules/@supabase/realtime-js/dist/main/RealtimeClient.js
+2025-06-10T19:16:58.0318126Z [WebServer] ./node_modules/@supabase/realtime-js/dist/main/index.js
+2025-06-10T19:16:58.0318630Z [WebServer] ./node_modules/@supabase/supabase-js/dist/module/index.js
+2025-06-10T19:16:58.0319362Z [WebServer] ./node_modules/@supabase/ssr/dist/module/createBrowserClient.js
+2025-06-10T19:16:58.0320202Z [WebServer] ./node_modules/@supabase/ssr/dist/module/index.js
+2025-06-10T19:16:58.0320895Z [WebServer] ./lib/supabase-server.ts
+2025-06-10T19:16:58.0321392Z [WebServer] ./app/page.tsx
+2025-06-10T19:16:58.3779951Z [WebServer] Error processing performance metric: SyntaxError: Unexpected end of JSON input
+2025-06-10T19:16:58.3783434Z [WebServer]     at JSON.parse (<anonymous>)
+2025-06-10T19:16:58.3784318Z [WebServer]     at POST (app/api/analytics/performance/route.ts:37:47)
+2025-06-10T19:16:58.3786159Z [WebServer] [0m [90m 35 |[39m [36mexport[39m [36masync[39m [36mfunction[39m [33mPOST[39m(request[33m:[39m [33mNextRequest[39m) {[0m
+2025-06-10T19:16:58.3787690Z [WebServer] [0m [90m 36 |[39m     [36mtry[39m {[0m
+2025-06-10T19:16:58.3789291Z [WebServer] [0m[31m[1m>[22m[39m[90m 37 |[39m         [36mconst[39m data[33m:[39m [33mMetricData[39m [33m=[39m [36mawait[39m request[33m.[39mjson()[0m
+2025-06-10T19:16:58.3790752Z [WebServer] [0m [90m    |[39m                                               [31m[1m^[22m[39m[0m
+2025-06-10T19:16:58.3792129Z [WebServer] [0m [90m 38 |[39m         [36mconst[39m supabase [33m=[39m [36mawait[39m createServerSupabaseClient()[0m
+2025-06-10T19:16:58.3793129Z [WebServer] [0m [90m 39 |[39m[0m
+2025-06-10T19:16:58.3794371Z [WebServer] [0m [90m 40 |[39m         [90m// Get user info if available[39m[0m
+2025-06-10T19:16:58.5481927Z [WebServer] Error processing performance metric: SyntaxError: Unexpected end of JSON input
+2025-06-10T19:16:58.5483388Z [WebServer]     at JSON.parse (<anonymous>)
+2025-06-10T19:16:58.5484477Z [WebServer]     at POST (app/api/analytics/performance/route.ts:37:47)
+2025-06-10T19:16:58.5486299Z [WebServer] [0m [90m 35 |[39m [36mexport[39m [36masync[39m [36mfunction[39m [33mPOST[39m(request[33m:[39m [33mNextRequest[39m) {[0m
+2025-06-10T19:16:58.5488269Z [WebServer] [0m [90m 36 |[39m     [36mtry[39m {[0m
+2025-06-10T19:16:58.5489754Z [WebServer] [0m[31m[1m>[22m[39m[90m 37 |[39m         [36mconst[39m data[33m:[39m [33mMetricData[39m [33m=[39m [36mawait[39m request[33m.[39mjson()[0m
+2025-06-10T19:16:58.5491238Z [WebServer] [0m [90m    |[39m                                               [31m[1m^[22m[39m[0m
+2025-06-10T19:16:58.5492997Z [WebServer] [0m [90m 38 |[39m         [36mconst[39m supabase [33m=[39m [36mawait[39m createServerSupabaseClient()[0m
+2025-06-10T19:16:58.5494029Z [WebServer] [0m [90m 39 |[39m[0m
+2025-06-10T19:16:58.5494940Z [WebServer] [0m [90m 40 |[39m         [90m// Get user info if available[39m[0m
+2025-06-10T19:17:00.9948279Z [WebServer]  [33m[1m⚠[22m[39m metadataBase property in metadata export is not set for resolving social open graph or twitter images, using "http://localhost:3000". See https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase
+2025-06-10T19:17:01.5169259Z ·[WebServer]  GET / [32m200[39m in 670ms
+2025-06-10T19:17:03.5745309Z [WebServer]  POST /api/analytics/performance [32m201[39m in 366ms
+2025-06-10T19:17:04.2884768Z Homepage basic structure loaded successfully
+2025-06-10T19:17:04.3027123Z ·[WebServer]  POST /api/analytics/performance [32m200[39m in 108ms
+2025-06-10T19:17:04.3030018Z [WebServer]  POST /api/analytics/performance [32m200[39m in 109ms
+2025-06-10T19:17:04.9635839Z [WebServer]  GET / [32m200[39m in 453ms
+2025-06-10T19:17:05.8559981Z Navigation elements are present and responsive
+2025-06-10T19:17:06.3541410Z ·[WebServer]  GET / [32m200[39m in 261ms
+2025-06-10T19:17:08.6908642Z Basic responsive layout works correctly
+2025-06-10T19:17:08.7139348Z ·[WebServer]  POST /api/analytics/performance [32m200[39m in 145ms
+2025-06-10T19:17:08.7140453Z [WebServer]  POST /api/analytics/performance [32m200[39m in 147ms
+2025-06-10T19:17:10.9071400Z [WebServer]  GET / [32m200[39m in 275ms
+2025-06-10T19:17:11.2696929Z [WebServer]  [33m[1m⚠[22m[39m ./node_modules/@supabase/realtime-js/dist/main/RealtimeClient.js
+2025-06-10T19:17:11.2702198Z [WebServer] Critical dependency: the request of a dependency is an expression
+2025-06-10T19:17:11.2706503Z [WebServer] 
+2025-06-10T19:17:11.2711105Z [WebServer] Import trace for requested module:
+2025-06-10T19:17:11.2715870Z [WebServer] ./node_modules/@supabase/realtime-js/dist/main/RealtimeClient.js
+2025-06-10T19:17:11.2719647Z [WebServer] ./node_modules/@supabase/realtime-js/dist/main/index.js
+2025-06-10T19:17:11.2720472Z [WebServer] ./node_modules/@supabase/supabase-js/dist/module/index.js
+2025-06-10T19:17:11.2721303Z [WebServer] ./node_modules/@supabase/ssr/dist/module/createBrowserClient.js
+2025-06-10T19:17:11.2722075Z [WebServer] ./node_modules/@supabase/ssr/dist/module/index.js
+2025-06-10T19:17:11.2722633Z [WebServer] ./lib/supabase-server.ts
+2025-06-10T19:17:11.2723049Z [WebServer] ./app/page.tsx
+2025-06-10T19:17:11.6755553Z [WebServer]  [33m[1m⚠[22m[39m ./node_modules/@supabase/realtime-js/dist/main/RealtimeClient.js
+2025-06-10T19:17:11.6756950Z [WebServer] Critical dependency: the request of a dependency is an expression
+2025-06-10T19:17:11.6757924Z [WebServer] 
+2025-06-10T19:17:11.6758489Z [WebServer] Import trace for requested module:
+2025-06-10T19:17:11.6759390Z [WebServer] ./node_modules/@supabase/realtime-js/dist/main/RealtimeClient.js
+2025-06-10T19:17:11.6760393Z [WebServer] ./node_modules/@supabase/realtime-js/dist/main/index.js
+2025-06-10T19:17:11.6761688Z [WebServer] ./node_modules/@supabase/supabase-js/dist/module/index.js
+2025-06-10T19:17:11.6762782Z [WebServer] ./node_modules/@supabase/ssr/dist/module/createBrowserClient.js
+2025-06-10T19:17:11.6763802Z [WebServer] ./node_modules/@supabase/ssr/dist/module/index.js
+2025-06-10T19:17:11.6764531Z [WebServer] ./lib/supabase-server.ts
+2025-06-10T19:17:11.6765230Z [WebServer] ./app/api/analytics/performance/route.ts
+2025-06-10T19:17:11.7660316Z [WebServer]  [33m[1m⚠[22m[39m metadataBase property in metadata export is not set for resolving social open graph or twitter images, using "http://localhost:3000". See https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase
+2025-06-10T19:17:11.8497203Z [WebServer]  GET /icon.svg [33m404[39m in 582ms
+2025-06-10T19:17:12.1617445Z Homepage basic structure loaded successfully
+2025-06-10T19:17:12.2505036Z ·[WebServer]  POST /api/analytics/performance [32m200[39m in 158ms
+2025-06-10T19:17:12.2508238Z [WebServer]  POST /api/analytics/performance [32m200[39m in 159ms
+2025-06-10T19:17:12.9629564Z [WebServer] Error processing performance metric: SyntaxError: Unexpected end of JSON input
+2025-06-10T19:17:12.9630313Z [WebServer]     at JSON.parse (<anonymous>)
+2025-06-10T19:17:12.9630887Z [WebServer]     at POST (app/api/analytics/performance/route.ts:37:47)
+2025-06-10T19:17:12.9632154Z [WebServer] [0m [90m 35 |[39m [36mexport[39m [36masync[39m [36mfunction[39m [33mPOST[39m(request[33m:[39m [33mNextRequest[39m) {[0m
+2025-06-10T19:17:12.9633593Z [WebServer] [0m [90m 36 |[39m     [36mtry[39m {[0m
+2025-06-10T19:17:12.9635366Z [WebServer] [0m[31m[1m>[22m[39m[90m 37 |[39m         [36mconst[39m data[33m:[39m [33mMetricData[39m [33m=[39m [36mawait[39m request[33m.[39mjson()[0m
+2025-06-10T19:17:12.9636342Z [WebServer] [0m [90m    |[39m                                               [31m[1m^[22m[39m[0m
+2025-06-10T19:17:12.9637511Z [WebServer] [0m [90m 38 |[39m         [36mconst[39m supabase [33m=[39m [36mawait[39m createServerSupabaseClient()[0m
+2025-06-10T19:17:12.9638218Z [WebServer] [0m [90m 39 |[39m[0m
+2025-06-10T19:17:12.9638816Z [WebServer] [0m [90m 40 |[39m         [90m// Get user info if available[39m[0m
+2025-06-10T19:17:13.6028356Z [WebServer]  GET / [32m200[39m in 519ms
+2025-06-10T19:17:13.9277037Z [WebServer]  GET /icon.svg [33m404[39m in 41ms
+2025-06-10T19:17:14.3603471Z Navigation elements are present and responsive
+2025-06-10T19:17:14.8167156Z ·[WebServer]  GET / [32m200[39m in 238ms
+2025-06-10T19:17:15.1461769Z [WebServer]  GET /icon.svg [33m404[39m in 40ms
+2025-06-10T19:17:16.8246444Z Basic responsive layout works correctly
+2025-06-10T19:17:17.0737188Z [WebServer] Error processing performance metric: SyntaxError: Unexpected end of JSON input
+2025-06-10T19:17:17.0739473Z [WebServer]     at JSON.parse (<anonymous>)
+2025-06-10T19:17:17.0740242Z [WebServer]     at POST (app/api/analytics/performance/route.ts:37:47)
+2025-06-10T19:17:17.0741879Z [WebServer] [0m [90m 35 |[39m [36mexport[39m [36masync[39m [36mfunction[39m [33mPOST[39m(request[33m:[39m [33mNextRequest[39m) {[0m
+2025-06-10T19:17:17.0743018Z [WebServer] [0m [90m 36 |[39m     [36mtry[39m {[0m
+2025-06-10T19:17:17.0744461Z [WebServer] [0m[31m[1m>[22m[39m[90m 37 |[39m         [36mconst[39m data[33m:[39m [33mMetricData[39m [33m=[39m [36mawait[39m request[33m.[39mjson()[0m
+2025-06-10T19:17:17.0745840Z [WebServer] [0m [90m    |[39m                                               [31m[1m^[22m[39m[0m
+2025-06-10T19:17:17.0747195Z [WebServer] [0m [90m 38 |[39m         [36mconst[39m supabase [33m=[39m [36mawait[39m createServerSupabaseClient()[0m
+2025-06-10T19:17:17.0748369Z [WebServer] [0m [90m 39 |[39m[0m
+2025-06-10T19:17:17.0749253Z [WebServer] [0m [90m 40 |[39m         [90m// Get user info if available[39m[0m
+2025-06-10T19:17:17.1558099Z [WebServer] Error processing performance metric: SyntaxError: Unexpected end of JSON input
+2025-06-10T19:17:17.1559537Z [WebServer]     at JSON.parse (<anonymous>)
+2025-06-10T19:17:17.1560658Z [WebServer]     at POST (app/api/analytics/performance/route.ts:37:47)
+2025-06-10T19:17:17.1562700Z [WebServer] [0m [90m 35 |[39m [36mexport[39m [36masync[39m [36mfunction[39m [33mPOST[39m(request[33m:[39m [33mNextRequest[39m) {[0m
+2025-06-10T19:17:17.1563995Z [WebServer] [0m [90m 36 |[39m     [36mtry[39m {[0m
+2025-06-10T19:17:17.1565437Z [WebServer] [0m[31m[1m>[22m[39m[90m 37 |[39m         [36mconst[39m data[33m:[39m [33mMetricData[39m [33m=[39m [36mawait[39m request[33m.[39mjson()[0m
+2025-06-10T19:17:17.1567080Z [WebServer] [0m [90m    |[39m                                               [31m[1m^[22m[39m[0m
+2025-06-10T19:17:17.1568326Z [WebServer] [0m [90m 38 |[39m         [36mconst[39m supabase [33m=[39m [36mawait[39m createServerSupabaseClient()[0m
+2025-06-10T19:17:17.1569172Z [WebServer] [0m [90m 39 |[39m[0m
+2025-06-10T19:17:17.1570265Z [WebServer] [0m [90m 40 |[39m         [90m// Get user info if available[39m[0m
+2025-06-10T19:17:18.8039017Z ·[WebServer]  GET / [32m200[39m in 437ms
+2025-06-10T19:17:19.9285888Z Homepage basic structure loaded successfully
+2025-06-10T19:17:20.4200491Z ·[WebServer]  GET / [32m200[39m in 254ms
+2025-06-10T19:17:21.1703103Z Navigation elements are present and responsive
+2025-06-10T19:17:21.7852051Z ·[WebServer]  GET / [32m200[39m in 394ms
+2025-06-10T19:17:23.0901717Z [WebServer]  POST /api/analytics/performance [32m201[39m in 349ms
+2025-06-10T19:17:23.1750928Z [WebServer]  POST /api/analytics/performance [32m201[39m in 361ms
+2025-06-10T19:17:23.5498379Z Basic responsive layout works correctly
+2025-06-10T19:17:25.7615373Z ·
+2025-06-10T19:17:25.7626124Z   12 passed (46.6s)
+2025-06-10T19:17:25.7645774Z ##[notice]  12 passed (46.6s)
