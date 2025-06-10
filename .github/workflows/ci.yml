@@ -100,7 +100,7 @@ jobs:
   e2e:
     name: 🎭 E2E Tests
     runs-on: ubuntu-latest
-    timeout-minutes: 20  # Playwright install with deps needs time
+    timeout-minutes: 10  # Optimized for Chromium-only installation
     needs: build
     if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/fix/ci-pipeline'
 
@@ -118,7 +118,7 @@ jobs:
         run: npm ci --legacy-peer-deps
 
       - name: 🎭 Install Playwright
-        run: npx playwright install --with-deps chromium webkit firefox
+        run: npx playwright install chromium --with-deps
 
       - name: 🏗️ Build
         run: npm run build

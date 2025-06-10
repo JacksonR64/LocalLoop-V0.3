@@ -51,42 +51,12 @@ export default defineConfig({
         navigationTimeout: 120000, // 2 minutes for navigation
     },
 
-    /* Optimized browser coverage for CI - Big 3 browsers + Mobile Safari */
+    /* Optimized browser coverage for CI - Chromium only for speed */
     projects: [
         {
             name: 'CI Chromium',
             use: {
                 ...devices['Desktop Chrome'],
-                actionTimeout: 45000,  // Increased for stability
-                navigationTimeout: 120000, // Increased for stability
-            },
-            testMatch: ['**/example.spec.ts'],
-            testIgnore: ['**/*rsvp*', '**/*ticket*', '**/*auth*', '**/*payment*'],
-        },
-        {
-            name: 'CI WebKit',
-            use: {
-                ...devices['Desktop Safari'],
-                actionTimeout: 45000,  // Increased for stability
-                navigationTimeout: 120000, // Increased for stability
-            },
-            testMatch: ['**/example.spec.ts'],
-            testIgnore: ['**/*rsvp*', '**/*ticket*', '**/*auth*', '**/*payment*'],
-        },
-        {
-            name: 'CI Firefox',
-            use: {
-                ...devices['Desktop Firefox'],
-                actionTimeout: 45000,  // Increased for stability
-                navigationTimeout: 120000, // Increased for stability
-            },
-            testMatch: ['**/example.spec.ts'],
-            testIgnore: ['**/*rsvp*', '**/*ticket*', '**/*auth*', '**/*payment*'],
-        },
-        {
-            name: 'CI Mobile Safari',
-            use: {
-                ...devices['iPhone 12'],
                 actionTimeout: 45000,  // Increased for stability
                 navigationTimeout: 120000, // Increased for stability
             },
