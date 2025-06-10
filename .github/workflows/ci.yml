@@ -101,7 +101,7 @@ jobs:
     name: 🎭 E2E Tests
     runs-on: ubuntu-latest
     container:
-      image: mcr.microsoft.com/playwright:v1.51.0-jammy
+      image: mcr.microsoft.com/playwright:v1.52.0-jammy
     timeout-minutes: 15  # Restored timeout for 4 browsers
     needs: build
     if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/fix/ci-pipeline'
