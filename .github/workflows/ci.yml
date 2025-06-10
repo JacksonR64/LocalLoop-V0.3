@@ -100,7 +100,7 @@ jobs:
   e2e:
     name: 🎭 E2E Tests
     runs-on: ubuntu-latest
-    timeout-minutes: 10  # Reduced from 20 minutes
+    timeout-minutes: 20  # Playwright install with deps needs time
     needs: build
     if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/fix/ci-pipeline'
 
