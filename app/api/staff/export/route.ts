@@ -44,7 +44,14 @@ interface DatabaseTicket {
     confirmation_code: string
     orders: DatabaseOrder | DatabaseOrder[]
     ticket_types: DatabaseTicketType | DatabaseTicketType[]
-    events: DatabaseEvent | DatabaseEvent[]
+    events: DatabaseEventBasic | DatabaseEventBasic[]
+}
+
+interface DatabaseEventBasic {
+    id: string
+    title: string
+    start_time: string
+    location?: string
 }
 
 interface DatabaseRSVP {
