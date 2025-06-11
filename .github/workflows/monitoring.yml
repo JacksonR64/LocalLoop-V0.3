@@ -9,7 +9,8 @@ on:
   
   # Scheduled health monitoring
   schedule:
-    - cron: '*/15 * * * *'  # Every 15 minutes
+    - cron: '0 9 * * *'   # Daily at 9 AM UTC
+    - cron: '0 21 * * *'  # Daily at 9 PM UTC
   
   # Manual monitoring trigger
   workflow_dispatch:
