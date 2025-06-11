@@ -2,8 +2,31 @@
 -- Based on official Supabase documentation for RLS-compatible backups
 -- https://supabase.com/blog/partial-postgresql-data-dumps-with-rls
 
--- Step 1: Create a dedicated backup user
-CREATE USER supabase_backup_user WITH PASSWORD 'backup_secure_password_2024';
+-- Step 1: Create or update the backup user
+-- Handle case where user already exists
+DO $$
+BEGIN
+    -- Check if user exists and drop/recreate to ensure clean state
+    IF EXISTS (SELECT FROM pg_roles WHERE rolname = 'supabase_backup_user') THEN
+        -- Drop existing policies first to avoid conflicts
+        DROP POLICY IF EXISTS "Backup user can read all events" ON public.events;
+        DROP POLICY IF EXISTS "Backup user can read all profiles" ON public.profiles;
+        DROP POLICY IF EXISTS "Backup user can read all rsvps" ON public.rsvps;
+        DROP POLICY IF EXISTS "Backup user can read all event_updates" ON public.event_updates;
+        DROP POLICY IF EXISTS "Backup user can read all ticket_types" ON public.ticket_types;
+        DROP POLICY IF EXISTS "Backup user can read all orders" ON public.orders;
+        DROP POLICY IF EXISTS "Backup user can read all order_items" ON public.order_items;
+        
+        -- Drop and recreate user to ensure clean state
+        RAISE NOTICE 'Dropping existing backup user to recreate with fresh permissions';
+        DROP USER supabase_backup_user;
+    END IF;
+    
+    -- Create the backup user with known password
+    RAISE NOTICE 'Creating backup user with password';
+    CREATE USER supabase_backup_user WITH PASSWORD 'backup_secure_password_2024';
+END
+$$;
 
 -- Step 2: Grant necessary schema access
 GRANT USAGE ON SCHEMA public TO supabase_backup_user;
@@ -23,20 +46,32 @@ GRANT SELECT ON ALL SEQUENCES IN SCHEMA storage TO supabase_backup_user;
 -- Step 5: Create RLS policies for backup user to access all data
 -- Note: This user will have read-only access to all data for backup purposes
 
--- For each table with RLS enabled, create a policy allowing backup user full read access
--- These policies will be added dynamically based on existing tables
-
 -- Events table backup policy
-CREATE POLICY "Backup user can read all events" ON public.events
-    FOR SELECT
-    TO supabase_backup_user
-    USING (true);
+DO $$
+BEGIN
+    IF EXISTS (SELECT FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'events') THEN
+        CREATE POLICY "Backup user can read all events" ON public.events
+            FOR SELECT
+            TO supabase_backup_user
+            USING (true);
+        RAISE NOTICE 'Created RLS policy for events table';
+    ELSE
+        RAISE NOTICE 'Events table not found, skipping policy';
+    END IF;
+END
+$$;
 
 -- Users/profiles backup policy (if exists)
 DO $$
 BEGIN
     IF EXISTS (SELECT FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'profiles') THEN
-        EXECUTE 'CREATE POLICY "Backup user can read all profiles" ON public.profiles FOR SELECT TO supabase_backup_user USING (true)';
+        CREATE POLICY "Backup user can read all profiles" ON public.profiles 
+            FOR SELECT 
+            TO supabase_backup_user 
+            USING (true);
+        RAISE NOTICE 'Created RLS policy for profiles table';
+    ELSE
+        RAISE NOTICE 'Profiles table not found, skipping policy';
     END IF;
 END
 $$;
@@ -45,7 +80,13 @@ $$;
 DO $$
 BEGIN
     IF EXISTS (SELECT FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'rsvps') THEN
-        EXECUTE 'CREATE POLICY "Backup user can read all rsvps" ON public.rsvps FOR SELECT TO supabase_backup_user USING (true)';
+        CREATE POLICY "Backup user can read all rsvps" ON public.rsvps 
+            FOR SELECT 
+            TO supabase_backup_user 
+            USING (true);
+        RAISE NOTICE 'Created RLS policy for rsvps table';
+    ELSE
+        RAISE NOTICE 'RSVPs table not found, skipping policy';
     END IF;
 END
 $$;
@@ -54,7 +95,13 @@ $$;
 DO $$
 BEGIN
     IF EXISTS (SELECT FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'event_updates') THEN
-        EXECUTE 'CREATE POLICY "Backup user can read all event_updates" ON public.event_updates FOR SELECT TO supabase_backup_user USING (true)';
+        CREATE POLICY "Backup user can read all event_updates" ON public.event_updates 
+            FOR SELECT 
+            TO supabase_backup_user 
+            USING (true);
+        RAISE NOTICE 'Created RLS policy for event_updates table';
+    ELSE
+        RAISE NOTICE 'Event_updates table not found, skipping policy';
     END IF;
 END
 $$;
@@ -63,7 +110,13 @@ $$;
 DO $$
 BEGIN
     IF EXISTS (SELECT FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'ticket_types') THEN
-        EXECUTE 'CREATE POLICY "Backup user can read all ticket_types" ON public.ticket_types FOR SELECT TO supabase_backup_user USING (true)';
+        CREATE POLICY "Backup user can read all ticket_types" ON public.ticket_types 
+            FOR SELECT 
+            TO supabase_backup_user 
+            USING (true);
+        RAISE NOTICE 'Created RLS policy for ticket_types table';
+    ELSE
+        RAISE NOTICE 'Ticket_types table not found, skipping policy';
     END IF;
 END
 $$;
@@ -72,7 +125,13 @@ $$;
 DO $$
 BEGIN
     IF EXISTS (SELECT FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'orders') THEN
-        EXECUTE 'CREATE POLICY "Backup user can read all orders" ON public.orders FOR SELECT TO supabase_backup_user USING (true)';
+        CREATE POLICY "Backup user can read all orders" ON public.orders 
+            FOR SELECT 
+            TO supabase_backup_user 
+            USING (true);
+        RAISE NOTICE 'Created RLS policy for orders table';
+    ELSE
+        RAISE NOTICE 'Orders table not found, skipping policy';
     END IF;
 END
 $$;
@@ -81,12 +140,28 @@ $$;
 DO $$
 BEGIN
     IF EXISTS (SELECT FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'order_items') THEN
-        EXECUTE 'CREATE POLICY "Backup user can read all order_items" ON public.order_items FOR SELECT TO supabase_backup_user USING (true)';
+        CREATE POLICY "Backup user can read all order_items" ON public.order_items 
+            FOR SELECT 
+            TO supabase_backup_user 
+            USING (true);
+        RAISE NOTICE 'Created RLS policy for order_items table';
+    ELSE
+        RAISE NOTICE 'Order_items table not found, skipping policy';
     END IF;
+END
+$$;
+
+-- Final verification
+DO $$
+BEGIN
+    RAISE NOTICE 'Backup user setup completed successfully';
+    RAISE NOTICE 'User: supabase_backup_user';
+    RAISE NOTICE 'Password: backup_secure_password_2024';
+    RAISE NOTICE 'Permissions: SELECT on public, auth, storage schemas';
 END
 $$;
 
 -- Note: Auth schema tables typically don't allow custom RLS policies
 -- The backup user permissions should be sufficient for auth schema access
 
-COMMENT ON ROLE supabase_backup_user IS 'Dedicated user for database backups with RLS policies allowing full read access'; 
+COMMENT ON ROLE supabase_backup_user IS 'Dedicated user for database backups with RLS policies allowing full read access - Updated with proper error handling'; 
