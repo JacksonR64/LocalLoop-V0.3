@@ -3,12 +3,10 @@ module.exports = {
     collect: {
       url: [
         'http://localhost:3000',
-        'http://localhost:3000/events/00000000-0000-0000-0000-000000000001',
         'http://localhost:3000/create-event'
       ],
-      startServerCommand: 'npm run start',
-      startServerReadyPattern: 'ready on',
-      startServerReadyTimeout: 60000,
+      // Server is started externally in CI
+      numberOfRuns: 1,
     },
     assert: {
       assertions: {

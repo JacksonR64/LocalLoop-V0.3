@@ -71,9 +71,7 @@ jobs:
         run: npx wait-on http://localhost:3000 --timeout 60000
 
       - name: 🔍 Run Lighthouse CI
-        run: lhci autorun
-        env:
-          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+        run: lhci autorun --config=./lighthouserc.js
 
       - name: 📊 Upload Lighthouse reports
         uses: actions/upload-artifact@v4
