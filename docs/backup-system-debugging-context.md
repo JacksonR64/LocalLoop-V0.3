@@ -51,6 +51,25 @@
 - **Failing**: Full data dumps with `pg_dump --file` ❌
 - **Hypothesis**: Supabase RLS policies preventing full data access
 
+### **Phase 5: RLS Solution Discovery** (Current Session)
+- **Root Cause CONFIRMED**: Supabase Row Level Security (RLS) policies prevent standard `pg_dump` operations
+- **Evidence**: Official Supabase documentation confirms RLS blocks full database dumps
+- **Solution Approach**: Official Supabase-recommended pattern for RLS-compatible backups
+
+### **Official Supabase Solution Pattern**
+Based on: https://supabase.com/blog/partial-postgresql-data-dumps-with-rls
+
+1. **Create dedicated backup user** with specific permissions
+2. **Configure RLS policies** to allow backup user full read access  
+3. **Use `--enable-row-security` flag** with pg_dump
+4. **Schema + Data separation** for better reliability
+
+### **Implementation Status** ✅
+- **`scripts/ops/create-backup-user.sql`** - Creates backup user with RLS policies
+- **`scripts/ops/database-backup-rls.sh`** - RLS-compatible backup script
+- **`.github/workflows/setup-backup-user.yml`** - Deploys backup user setup
+- **`.github/workflows/test-rls-backup.yml`** - Tests new backup approach
+
 ---
 
 ## 🛠️ **Current Technical State**

@@ -1,0 +1,113 @@
+name: 🔧 Setup Backup User & RLS Policies
+
+on:
+  workflow_dispatch:
+    inputs:
+      force_recreate:
+        description: 'Force recreate backup user (drops existing)'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
+
+jobs:
+  setup-backup-user:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Install PostgreSQL client
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y postgresql-client
+
+    - name: Setup backup user and RLS policies
+      env:
+        SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+        SUPABASE_POOLER_HOST: ${{ secrets.SUPABASE_POOLER_HOST }}
+        SUPABASE_POOLER_PORT: ${{ secrets.SUPABASE_POOLER_PORT }}
+        SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
+      run: |
+        echo "🚀 Setting up Supabase backup user and RLS policies"
+        
+        # Connection details
+        HOST="${SUPABASE_POOLER_HOST}"
+        PORT="${SUPABASE_POOLER_PORT}"
+        DATABASE="postgres"
+        ADMIN_USER="postgres.${SUPABASE_PROJECT_REF}"
+        
+        # Set password for connection
+        export PGPASSWORD="${SUPABASE_DB_PASSWORD}"
+        
+        echo "🔍 Testing admin connection..."
+        if ! psql -h "$HOST" -p "$PORT" -U "$ADMIN_USER" -d "$DATABASE" -c "SELECT version();" > /dev/null 2>&1; then
+            echo "❌ ERROR: Cannot connect as admin user"
+            echo "Connection details:"
+            echo "  Host: $HOST"
+            echo "  Port: $PORT" 
+            echo "  User: $ADMIN_USER"
+            echo "  Database: $DATABASE"
+            exit 1
+        fi
+        
+        echo "✅ Admin connection successful"
+        
+        # Check if we should drop existing backup user
+        if [ "${{ github.event.inputs.force_recreate }}" = "true" ]; then
+            echo "🗑️ Dropping existing backup user (force recreate enabled)..."
+            psql -h "$HOST" -p "$PORT" -U "$ADMIN_USER" -d "$DATABASE" -c "
+                DROP USER IF EXISTS supabase_backup_user CASCADE;
+            " || echo "⚠️ User may not exist yet"
+        fi
+        
+        echo "👤 Creating backup user and setting up RLS policies..."
+        
+        # Execute the backup user setup script
+        psql -h "$HOST" -p "$PORT" -U "$ADMIN_USER" -d "$DATABASE" -f scripts/ops/create-backup-user.sql
+        
+        if [ $? -eq 0 ]; then
+            echo "✅ Backup user and RLS policies created successfully"
+        else
+            echo "❌ ERROR: Failed to create backup user or RLS policies"
+            exit 1
+        fi
+        
+        echo "🔍 Verifying backup user setup..."
+        
+        # Test backup user connection
+        export PGPASSWORD="backup_secure_password_2024"
+        if psql -h "$HOST" -p "$PORT" -U "supabase_backup_user" -d "$DATABASE" -c "SELECT 'Backup user connected successfully' as status;" > /dev/null 2>&1; then
+            echo "✅ Backup user connection test passed"
+        else
+            echo "❌ ERROR: Backup user cannot connect"
+            exit 1
+        fi
+        
+        # Check RLS policies
+        echo "📋 Checking RLS policies for backup user..."
+        psql -h "$HOST" -p "$PORT" -U "supabase_backup_user" -d "$DATABASE" -c "
+            SELECT 
+                schemaname, 
+                tablename, 
+                policyname,
+                CASE 
+                    WHEN roles @> ARRAY['supabase_backup_user'] THEN '✅ GRANTED'
+                    ELSE '❌ NOT GRANTED'
+                END as access_status
+            FROM pg_policies 
+            WHERE roles @> ARRAY['supabase_backup_user'] 
+            ORDER BY schemaname, tablename;
+        " || echo "⚠️ Could not verify RLS policies"
+        
+        echo "🎉 Backup user setup completed!"
+        echo ""
+        echo "📝 Next steps:"
+        echo "1. Run '🧪 Test RLS Backup System' workflow to test the new backup approach"
+        echo "2. If successful, update the main backup automation to use the new script"
+        
+        # Unset passwords
+        unset PGPASSWORD 
