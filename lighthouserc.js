@@ -28,9 +28,8 @@ module.exports = {
         'image-alt': 'error',
         'label': 'error',
         
-        // Best practices
+        // Best practices - removed obsolete audits
         'uses-https': 'off', // Disabled for localhost
-        'no-vulnerable-libraries': 'error',
         'csp-xss': 'warn',
       },
     },
