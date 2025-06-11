@@ -8,17 +8,38 @@ DO $$
 BEGIN
     -- Check if user exists and drop/recreate to ensure clean state
     IF EXISTS (SELECT FROM pg_roles WHERE rolname = 'supabase_backup_user') THEN
-        -- Drop existing policies first to avoid conflicts
-        DROP POLICY IF EXISTS "Backup user can read all events" ON public.events;
-        DROP POLICY IF EXISTS "Backup user can read all profiles" ON public.profiles;
-        DROP POLICY IF EXISTS "Backup user can read all rsvps" ON public.rsvps;
-        DROP POLICY IF EXISTS "Backup user can read all event_updates" ON public.event_updates;
-        DROP POLICY IF EXISTS "Backup user can read all ticket_types" ON public.ticket_types;
-        DROP POLICY IF EXISTS "Backup user can read all orders" ON public.orders;
-        DROP POLICY IF EXISTS "Backup user can read all order_items" ON public.order_items;
+        RAISE NOTICE 'Dropping existing backup user to recreate with fresh permissions';
+        
+        -- Drop existing policies first, but only if tables exist
+        IF EXISTS (SELECT FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'events') THEN
+            DROP POLICY IF EXISTS "Backup user can read all events" ON public.events;
+        END IF;
+        
+        IF EXISTS (SELECT FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'profiles') THEN
+            DROP POLICY IF EXISTS "Backup user can read all profiles" ON public.profiles;
+        END IF;
+        
+        IF EXISTS (SELECT FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'rsvps') THEN
+            DROP POLICY IF EXISTS "Backup user can read all rsvps" ON public.rsvps;
+        END IF;
+        
+        IF EXISTS (SELECT FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'event_updates') THEN
+            DROP POLICY IF EXISTS "Backup user can read all event_updates" ON public.event_updates;
+        END IF;
+        
+        IF EXISTS (SELECT FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'ticket_types') THEN
+            DROP POLICY IF EXISTS "Backup user can read all ticket_types" ON public.ticket_types;
+        END IF;
+        
+        IF EXISTS (SELECT FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'orders') THEN
+            DROP POLICY IF EXISTS "Backup user can read all orders" ON public.orders;
+        END IF;
+        
+        IF EXISTS (SELECT FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'order_items') THEN
+            DROP POLICY IF EXISTS "Backup user can read all order_items" ON public.order_items;
+        END IF;
         
         -- Drop and recreate user to ensure clean state
-        RAISE NOTICE 'Dropping existing backup user to recreate with fresh permissions';
         DROP USER supabase_backup_user;
     END IF;
     
@@ -164,4 +185,4 @@ $$;
 -- Note: Auth schema tables typically don't allow custom RLS policies
 -- The backup user permissions should be sufficient for auth schema access
 
-COMMENT ON ROLE supabase_backup_user IS 'Dedicated user for database backups with RLS policies allowing full read access - Updated with proper error handling'; 
+COMMENT ON ROLE supabase_backup_user IS 'Dedicated user for database backups with RLS policies allowing full read access - Fixed table existence checks'; 
