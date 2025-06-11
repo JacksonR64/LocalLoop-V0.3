@@ -81,6 +81,25 @@ get_db_connection() {
     fi
 }
 
+# Test database connection
+test_db_connection() {
+    log "INFO" "Testing database connection..."
+    
+    # Test connection with a simple query (timeout after 30 seconds)
+    if timeout 30 psql "${DB_URL}" -c "SELECT 1;" > /dev/null 2>&1; then
+        log "INFO" "Database connection test successful"
+    else
+        local exit_code=$?
+        log "ERROR" "Database connection test failed (exit code: ${exit_code})"
+        log "ERROR" "Possible issues:"
+        log "ERROR" "  - Wrong database password"
+        log "ERROR" "  - Network connectivity issues"
+        log "ERROR" "  - Incorrect project reference"
+        log "ERROR" "  - Supabase service unavailable"
+        error_exit "Database connection test failed. Please check your credentials and network connectivity."
+    fi
+}
+
 # Perform database backup
 perform_backup() {
     log "INFO" "Starting database backup: ${BACKUP_NAME}"
@@ -88,8 +107,9 @@ perform_backup() {
     local backup_file="${BACKUP_DIR}/${BACKUP_NAME}.sql"
     local backup_file_compressed="${backup_file}.gz"
     
-    # Perform the backup
-    if pg_dump "${DB_URL}" \
+    # Perform the backup with improved error handling
+    log "INFO" "Running pg_dump (this may take several minutes for large databases)..."
+    if timeout 1800 pg_dump "${DB_URL}" \
         --verbose \
         --no-owner \
         --no-privileges \
@@ -98,7 +118,12 @@ perform_backup() {
         
         log "INFO" "Database backup completed successfully"
         
+        # Check backup file size
+        local file_size=$(du -h "${backup_file}" | cut -f1)
+        log "INFO" "Backup file size: ${file_size}"
+        
         # Compress the backup
+        log "INFO" "Compressing backup file..."
         if gzip "${backup_file}"; then
             log "INFO" "Backup compressed: ${backup_file_compressed}"
             echo "${backup_file_compressed}"
@@ -107,6 +132,22 @@ perform_backup() {
             echo "${backup_file}"
         fi
     else
+        local exit_code=$?
+        log "ERROR" "Database backup failed with exit code: ${exit_code}"
+        
+        # Provide specific error guidance
+        if [[ ${exit_code} -eq 124 ]]; then
+            log "ERROR" "Backup timed out after 30 minutes. Database may be too large or connection is slow."
+        elif [[ ${exit_code} -eq 1 ]]; then
+            log "ERROR" "pg_dump failed. Check database connection and permissions."
+        fi
+        
+        # Clean up partial backup file
+        if [[ -f "${backup_file}" ]]; then
+            rm -f "${backup_file}"
+            log "INFO" "Cleaned up partial backup file"
+        fi
+        
         error_exit "Database backup failed"
     fi
 }
@@ -172,6 +213,8 @@ main() {
     check_prerequisites
     setup_directories
     get_db_connection
+    
+    test_db_connection
     
     local backup_file
     backup_file=$(perform_backup)
