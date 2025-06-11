@@ -1,0 +1,77 @@
+name: ✅ Test Simple Backup
+
+on:
+  workflow_dispatch:
+    inputs:
+      backup_type:
+        description: 'Type of backup to test'
+        required: false
+        default: 'standard'
+        type: choice
+        options:
+          - standard
+          - schema-only
+          - data-only
+
+jobs:
+  test-simple-backup:
+    name: Test standard Supabase backup
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Install PostgreSQL client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client
+          
+      - name: Make backup script executable
+        run: chmod +x scripts/ops/simple-backup.sh
+        
+      - name: Test simple backup
+        env:
+          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+          SUPABASE_DB_HOST: ${{ secrets.SUPABASE_DB_HOST }}
+          SUPABASE_DB_PORT: ${{ secrets.SUPABASE_DB_PORT }}
+          SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
+        run: |
+          echo "🧪 Testing standard Supabase backup approach"
+          echo "Using admin postgres user (no custom users needed)"
+          
+          # Run the simple backup script
+          ./scripts/ops/simple-backup.sh
+          
+      - name: Verify backup file
+        run: |
+          echo "📋 Backup verification:"
+          if [ -d "backups" ]; then
+            echo "✅ Backup directory created"
+            ls -la backups/
+            
+            BACKUP_FILE=$(ls backups/localloop_backup_*.sql | head -1)
+            if [ -f "$BACKUP_FILE" ]; then
+              echo "✅ Backup file created: $BACKUP_FILE"
+              echo "📊 File size: $(du -h "$BACKUP_FILE" | cut -f1)"
+              echo "📄 First 10 lines:"
+              head -10 "$BACKUP_FILE"
+              echo ""
+              echo "📄 Last 10 lines:"
+              tail -10 "$BACKUP_FILE"
+            else
+              echo "❌ No backup file found"
+              exit 1
+            fi
+          else
+            echo "❌ No backup directory found"
+            exit 1
+          fi
+          
+      - name: Upload backup artifact
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: simple-backup-test
+          path: backups/
+          retention-days: 7 
