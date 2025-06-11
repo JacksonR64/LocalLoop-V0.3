@@ -99,8 +99,26 @@ get_db_connection() {
             WORKING_POOLER="aws-0-us-east-1.pooler.supabase.com"
         fi
         
-        # Construct connection URL with working pooler
-        DB_URL="postgresql://postgres.${SUPABASE_PROJECT_REF}:${SUPABASE_DB_PASSWORD}@${WORKING_POOLER}:5432/postgres"
+        # Try both username formats to find the correct one for this project
+        # Some projects use postgres.project-ref, others use just postgres
+        DB_URL_WITH_REF="postgresql://postgres.${SUPABASE_PROJECT_REF}:${SUPABASE_DB_PASSWORD}@${WORKING_POOLER}:5432/postgres"
+        DB_URL_WITHOUT_REF="postgresql://postgres:${SUPABASE_DB_PASSWORD}@${WORKING_POOLER}:5432/postgres"
+        
+        # Test which format works
+        log "INFO" "Testing connection with project ref in username..."
+        if timeout 10s psql "${DB_URL_WITH_REF}" -c "SELECT 1;" >/dev/null 2>&1; then
+            DB_URL="${DB_URL_WITH_REF}"
+            log "INFO" "Success with format: postgres.[PROJECT-REF]"
+        else
+            log "INFO" "Testing connection without project ref in username..."
+            if timeout 10s psql "${DB_URL_WITHOUT_REF}" -c "SELECT 1;" >/dev/null 2>&1; then
+                DB_URL="${DB_URL_WITHOUT_REF}"
+                log "INFO" "Success with format: postgres (no project ref)"
+            else
+                log "ERROR" "Both username formats failed, using default with project ref"
+                DB_URL="${DB_URL_WITH_REF}"
+            fi
+        fi
         
         log "INFO" "Database connection configured successfully (using session pooler for IPv4 compatibility)"
         log "INFO" "Project reference: ${SUPABASE_PROJECT_REF}"
