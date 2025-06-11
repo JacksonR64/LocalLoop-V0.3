@@ -65,12 +65,22 @@ else
 fi
 echo ""
 
-# Test pg_dump permissions
-echo "🔄 Testing pg_dump permissions..."
+# Test pg_dump permissions (schema only)
+echo "🔄 Testing pg_dump permissions (schema only)..."
 if timeout 60 pg_dump "${DB_URL}" --schema-only --no-owner --no-privileges 2>&1; then
-    echo "✅ pg_dump permissions successful"
+    echo "✅ pg_dump schema permissions successful"
 else
-    echo "❌ pg_dump permissions failed"
+    echo "❌ pg_dump schema permissions failed"
+    exit 1
+fi
+echo ""
+
+# Test pg_dump with data (like backup script)
+echo "🔄 Testing pg_dump with data (like backup script)..."
+if timeout 120 pg_dump "${DB_URL}" --verbose --no-owner --no-privileges --format=plain 2>&1 | head -50; then
+    echo "✅ pg_dump with data successful"
+else
+    echo "❌ pg_dump with data failed"
     exit 1
 fi
 echo ""
