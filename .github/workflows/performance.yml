@@ -150,11 +150,19 @@ jobs:
           PORT: 3000
           NODE_ENV: production
 
-      - name: ⏳ Wait for server
-        run: npx wait-on http://localhost:3000 --timeout 60000
+      - name: ⏳ Wait for server to be ready
+        run: |
+          npx wait-on http://localhost:3000 --timeout 60000
+          echo "Server is responding, waiting additional 10s for full startup..."
+          sleep 10
+          # Test server is actually serving content
+          curl -f http://localhost:3000 || exit 1
+          echo "✅ Server is fully ready for load testing"
 
       - name: ⚡ Run k6 load tests
-        run: npm run test:load:basic
+        run: |
+          echo "Starting k6 load test against http://localhost:3000"
+          npm run test:load:basic
         continue-on-error: true
 
       - name: 📊 Upload load test reports

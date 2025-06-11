@@ -31,12 +31,18 @@ export default function () {
     },
   };
 
+  // Quick connectivity check first
+  const healthCheck = http.get(`${BASE_URL}/api/health`, params);
+  if (healthCheck.status !== 200) {
+    console.warn(`Health check failed: ${healthCheck.status} - ${healthCheck.body}`);
+  }
+
   // Test 1: Homepage load
   let response = http.get(`${BASE_URL}/`, params);
   let result = check(response, {
     'Homepage loads successfully': (r) => r.status === 200,
     'Homepage loads in reasonable time': (r) => r.timings.duration < 3000,
-    'Homepage contains events': (r) => r.body.includes('event') || r.body.includes('Event'),
+    'Homepage contains events': (r) => r.body && (r.body.includes('event') || r.body.includes('Event')),
   });
   errorRate.add(!result);
 
