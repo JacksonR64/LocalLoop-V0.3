@@ -76,6 +76,15 @@ get_db_connection() {
     if [[ -n "${SUPABASE_DB_PASSWORD:-}" && -n "${SUPABASE_PROJECT_REF:-}" ]]; then
         DB_URL="postgresql://postgres.${SUPABASE_PROJECT_REF}:${SUPABASE_DB_PASSWORD}@aws-0-us-east-1.pooler.supabase.com:5432/postgres"
         log "INFO" "Database connection configured successfully (using pooler)"
+        
+        # Additional debugging for credentials
+        log "INFO" "Project reference length: ${#SUPABASE_PROJECT_REF}"
+        log "INFO" "Password length: ${#SUPABASE_DB_PASSWORD}"
+        
+        # Validate project reference format (should be alphanumeric)
+        if [[ ! "${SUPABASE_PROJECT_REF}" =~ ^[a-zA-Z0-9]+$ ]]; then
+            log "WARN" "Project reference contains non-alphanumeric characters: ${SUPABASE_PROJECT_REF}"
+        fi
     else
         error_exit "Required environment variables not set: SUPABASE_DB_PASSWORD and SUPABASE_PROJECT_REF"
     fi
