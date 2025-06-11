@@ -85,17 +85,40 @@ get_db_connection() {
 test_db_connection() {
     log "INFO" "Testing database connection..."
     
+    # First, verify psql is available
+    if ! command -v psql &> /dev/null; then
+        error_exit "psql command not found. PostgreSQL client tools not installed."
+    fi
+    
+    log "INFO" "psql found: $(which psql)"
+    log "INFO" "PostgreSQL version: $(psql --version)"
+    
+    # Show connection attempt (without password)
+    local db_url_safe="${DB_URL//:${SUPABASE_DB_PASSWORD}@/:***@}"
+    log "INFO" "Attempting connection to: ${db_url_safe}"
+    
     # Test connection with a simple query (timeout after 30 seconds)
-    if timeout 30 psql "${DB_URL}" -c "SELECT 1;" > /dev/null 2>&1; then
+    log "INFO" "Running connection test with 30-second timeout..."
+    if timeout 30 psql "${DB_URL}" -c "SELECT 1 as test;" 2>&1 | tee -a "${LOG_FILE}"; then
         log "INFO" "Database connection test successful"
     else
         local exit_code=$?
         log "ERROR" "Database connection test failed (exit code: ${exit_code})"
         log "ERROR" "Possible issues:"
         log "ERROR" "  - Wrong database password"
-        log "ERROR" "  - Network connectivity issues"
+        log "ERROR" "  - Network connectivity issues from CI to Supabase"
         log "ERROR" "  - Incorrect project reference"
         log "ERROR" "  - Supabase service unavailable"
+        log "ERROR" "  - Firewall blocking connections"
+        
+        # Try a basic network test
+        log "INFO" "Testing network connectivity to Supabase..."
+        if timeout 10 nc -zv aws-0-us-east-1.pooler.supabase.com 5432 2>&1 | tee -a "${LOG_FILE}"; then
+            log "INFO" "Network connectivity to Supabase pooler successful"
+        else
+            log "ERROR" "Network connectivity to Supabase pooler failed"
+        fi
+        
         error_exit "Database connection test failed. Please check your credentials and network connectivity."
     fi
 }

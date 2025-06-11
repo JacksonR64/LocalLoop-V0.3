@@ -100,6 +100,9 @@ jobs:
         # Install jq for JSON processing
         sudo apt-get install -y jq
         
+        # Install netcat for network connectivity testing
+        sudo apt-get install -y netcat-traditional
+        
         # Make backup scripts executable
         chmod +x scripts/ops/*.sh
     
