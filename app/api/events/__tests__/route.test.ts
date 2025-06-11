@@ -59,11 +59,12 @@ jest.mock('@/lib/utils/cache', () => ({
 
 import { NextRequest } from 'next/server'
 import { GET } from '../route'
+import { createServerSupabaseClient } from '@/lib/supabase-server'
 
 describe('/api/events', () => {
-    let mockCreateServerSupabaseClient: jest.MockedFunction<any>
-    let mockAuth: { getUser: jest.MockedFunction<any> }
-    let mockQuery: Record<string, jest.MockedFunction<any>>
+    let mockCreateServerSupabaseClient: jest.MockedFunction<typeof createServerSupabaseClient>
+    let mockAuth: { getUser: jest.MockedFunction<() => Promise<{ data: { user: unknown }, error: unknown }>> }
+    let mockQuery: Record<string, jest.MockedFunction<unknown>>
 
     beforeEach(() => {
         // eslint-disable-next-line @typescript-eslint/no-require-imports

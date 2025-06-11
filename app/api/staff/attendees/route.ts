@@ -197,7 +197,7 @@ export async function GET(request: NextRequest) {
                 attendee.name.toLowerCase().includes(searchLower) ||
                 attendee.email.toLowerCase().includes(searchLower) ||
                 attendee.eventTitle?.toLowerCase().includes(searchLower) ||
-                (attendee.type === 'ticket' && (attendee as any).confirmationCode?.toLowerCase().includes(searchLower))
+                (attendee.type === 'ticket' && 'confirmationCode' in attendee && attendee.confirmationCode?.toLowerCase().includes(searchLower))
             )
         }
 

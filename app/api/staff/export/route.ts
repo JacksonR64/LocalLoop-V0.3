@@ -3,7 +3,8 @@ import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { authenticateStaff } from '@/lib/auth'
 import type { SupabaseClient } from '@supabase/supabase-js'
 
-// Database entity interfaces
+
+// Database interfaces
 interface DatabaseEvent {
     id: string
     title: string
@@ -27,6 +28,12 @@ interface DatabaseOrder {
     tickets?: DatabaseTicket[]
 }
 
+interface DatabaseUser {
+    id: string
+    display_name?: string
+    email: string
+}
+
 interface DatabaseTicket {
     id: string
     status: string
@@ -38,6 +45,60 @@ interface DatabaseTicket {
     orders: DatabaseOrder | DatabaseOrder[]
     ticket_types: DatabaseTicketType | DatabaseTicketType[]
     events: DatabaseEvent | DatabaseEvent[]
+}
+
+interface DatabaseRSVP {
+    id: string
+    status: string
+    check_in_time?: string
+    created_at: string
+    guest_name?: string
+    guest_email?: string
+    events: DatabaseEvent | DatabaseEvent[]
+    users?: DatabaseUser | DatabaseUser[]
+}
+
+// Analytics-specific interfaces
+interface DatabaseAnalyticsEvent {
+    id: string
+    title: string
+    start_time: string
+    location?: string
+    capacity?: number
+    rsvps?: DatabaseAnalyticsRSVP[]
+    orders?: DatabaseAnalyticsOrder[]
+}
+
+interface DatabaseAnalyticsRSVP {
+    id: string
+    status: string
+    check_in_time?: string
+}
+
+interface DatabaseAnalyticsOrder {
+    id: string
+    total: number
+    status: string
+    tickets?: DatabaseAnalyticsTicket[]
+}
+
+interface DatabaseAnalyticsTicket {
+    id: string
+    status: string
+    check_in_time?: string
+}
+
+// Event export specific interfaces
+interface DatabaseEventExport {
+    id: string
+    title: string
+    start_time: string
+    location?: string
+    status?: string
+    capacity?: number
+    rsvps?: DatabaseAnalyticsRSVP[]
+    orders?: DatabaseAnalyticsOrder[]
+    ticket_types?: DatabaseTicketType[]
 }
 
 // CSV export data interfaces
@@ -260,7 +321,7 @@ async function exportAttendees(
     const attendeeData: AttendeeExportRow[] = []
 
     // Add RSVP attendees
-    rsvps?.forEach((rsvp: any) => {
+    rsvps?.forEach((rsvp: DatabaseRSVP) => {
         // Handle events field (could be single object or array)
         const eventData = Array.isArray(rsvp.events) ? rsvp.events[0] : rsvp.events
         // Handle users field (could be single object or array)  
@@ -290,7 +351,7 @@ async function exportAttendees(
     })
 
     // Add ticket attendees
-    tickets?.forEach((ticket: any) => {
+    tickets?.forEach((ticket: DatabaseTicket) => {
         // Handle related fields (could be single objects or arrays)
         const orderData = Array.isArray(ticket.orders) ? ticket.orders[0] : ticket.orders
         const ticketTypeData = Array.isArray(ticket.ticket_types) ? ticket.ticket_types[0] : ticket.ticket_types
@@ -374,17 +435,17 @@ async function exportAnalytics(
         throw new Error('Failed to fetch analytics data')
     }
 
-    const analyticsData = events?.map((event: any) => {
-        const totalAttendees = (event.rsvps?.filter((rsvp: any) => rsvp.status === 'confirmed').length || 0) +
-            (event.orders?.filter((order: any) => order.status === 'completed').length || 0)
+    const analyticsData = events?.map((event: DatabaseAnalyticsEvent) => {
+        const totalAttendees = (event.rsvps?.filter((rsvp: DatabaseAnalyticsRSVP) => rsvp.status === 'confirmed').length || 0) +
+            (event.orders?.filter((order: DatabaseAnalyticsOrder) => order.status === 'completed').length || 0)
 
-        const checkedInCount = (event.rsvps?.filter((rsvp: any) => rsvp.check_in_time).length || 0) +
-            (event.orders?.reduce((sum: number, order: any) =>
-                sum + (order.tickets?.filter((ticket: any) => ticket.check_in_time).length || 0), 0) || 0)
+        const checkedInCount = (event.rsvps?.filter((rsvp: DatabaseAnalyticsRSVP) => rsvp.check_in_time).length || 0) +
+            (event.orders?.reduce((sum: number, order: DatabaseAnalyticsOrder) =>
+                sum + (order.tickets?.filter((ticket: DatabaseAnalyticsTicket) => ticket.check_in_time).length || 0), 0) || 0)
 
         const revenue = event.orders
-            ?.filter((order: any) => order.status === 'completed')
-            ?.reduce((sum: number, order: any) => sum + (order.total || 0), 0) || 0
+            ?.filter((order: DatabaseAnalyticsOrder) => order.status === 'completed')
+            ?.reduce((sum: number, order: DatabaseAnalyticsOrder) => sum + (order.total || 0), 0) || 0
 
         return {
             'Event ID': event.id,
@@ -395,8 +456,8 @@ async function exportAnalytics(
             'Checked In': checkedInCount,
             'Check-in Rate': totalAttendees > 0 ? `${((checkedInCount / totalAttendees) * 100).toFixed(1)}%` : '0%',
             'Total Revenue': `$${(revenue / 100).toFixed(2)}`,
-            'RSVP Count': (event.rsvps?.filter((rsvp: any) => rsvp.status === 'confirmed').length || 0),
-            'Ticket Count': (event.orders?.filter((order: any) => order.status === 'completed').length || 0),
+            'RSVP Count': (event.rsvps?.filter((rsvp: DatabaseAnalyticsRSVP) => rsvp.status === 'confirmed').length || 0),
+            'Ticket Count': (event.orders?.filter((order: DatabaseAnalyticsOrder) => order.status === 'completed').length || 0),
         }
     }) || []
 
@@ -436,15 +497,15 @@ async function exportEvents(
         throw new Error('Failed to fetch events data')
     }
 
-    const eventData = events?.map((event: any) => {
-        const totalAttendees = (event.rsvps?.filter((rsvp: any) => rsvp.status === 'confirmed').length || 0) +
-            (event.orders?.filter((order: any) => order.status === 'completed').length || 0)
+    const eventData = events?.map((event: DatabaseEventExport) => {
+        const totalAttendees = (event.rsvps?.filter((rsvp: DatabaseAnalyticsRSVP) => rsvp.status === 'confirmed').length || 0) +
+            (event.orders?.filter((order: DatabaseAnalyticsOrder) => order.status === 'completed').length || 0)
 
         const revenue = event.orders
-            ?.filter((order: any) => order.status === 'completed')
-            ?.reduce((sum: number, order: any) => sum + (order.total || 0), 0) || 0
+            ?.filter((order: DatabaseAnalyticsOrder) => order.status === 'completed')
+            ?.reduce((sum: number, order: DatabaseAnalyticsOrder) => sum + (order.total || 0), 0) || 0
 
-        const ticketTypes = event.ticket_types?.map((tt: any) => `${tt.name} ($${(tt.price / 100).toFixed(2)})`).join(', ') || 'Free Event'
+        const ticketTypes = event.ticket_types?.map((tt: DatabaseTicketType) => `${tt.name} ($${(tt.price / 100).toFixed(2)})`).join(', ') || 'Free Event'
 
         return {
             'Event ID': event.id,
