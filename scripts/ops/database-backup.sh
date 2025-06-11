@@ -71,58 +71,20 @@ setup_directories() {
 get_db_connection() {
     log "INFO" "Configuring database connection..."
     
-    # Construct database URL using Supabase session pooler (IPv4 compatible for CI)
-    # Try multiple common regions since we don't know the exact region
+    # Use the exact connection details from Supabase dashboard
     if [[ -n "${SUPABASE_DB_PASSWORD:-}" && -n "${SUPABASE_PROJECT_REF:-}" ]]; then
-        # List of common Supabase pooler regions to try
-        POOLER_REGIONS=(
-            "aws-0-us-east-1.pooler.supabase.com"
-            "aws-0-us-west-1.pooler.supabase.com" 
-            "aws-0-eu-west-1.pooler.supabase.com"
-            "aws-0-ap-southeast-1.pooler.supabase.com"
-            "aws-0-ap-northeast-1.pooler.supabase.com"
-        )
+        # Use environment variables for pooler configuration (set in GitHub Secrets)
+        local pooler_host="${SUPABASE_POOLER_HOST:-aws-0-eu-west-2.pooler.supabase.com}"
+        local pooler_port="${SUPABASE_POOLER_PORT:-6543}"
         
-        # Test connectivity to find working region
-        WORKING_POOLER=""
-        for pooler in "${POOLER_REGIONS[@]}"; do
-            log "INFO" "Testing connectivity to pooler: ${pooler}"
-            if timeout 10s nc -z "${pooler}" 5432 >/dev/null 2>&1; then
-                log "INFO" "Found working pooler: ${pooler}"
-                WORKING_POOLER="${pooler}"
-                break
-            fi
-        done
+        # Construct database URL using transaction pooler (port 6543) for CI/CD
+        # Transaction mode is better for short-lived connections like backup scripts
+        DB_URL="postgresql://postgres.${SUPABASE_PROJECT_REF}:${SUPABASE_DB_PASSWORD}@${pooler_host}:${pooler_port}/postgres"
         
-        if [[ -z "${WORKING_POOLER}" ]]; then
-            log "WARN" "No pooler regions accessible, falling back to us-east-1"
-            WORKING_POOLER="aws-0-us-east-1.pooler.supabase.com"
-        fi
-        
-        # Try both username formats to find the correct one for this project
-        # Some projects use postgres.project-ref, others use just postgres
-        DB_URL_WITH_REF="postgresql://postgres.${SUPABASE_PROJECT_REF}:${SUPABASE_DB_PASSWORD}@${WORKING_POOLER}:5432/postgres"
-        DB_URL_WITHOUT_REF="postgresql://postgres:${SUPABASE_DB_PASSWORD}@${WORKING_POOLER}:5432/postgres"
-        
-        # Test which format works
-        log "INFO" "Testing connection with project ref in username..."
-        if timeout 10s psql "${DB_URL_WITH_REF}" -c "SELECT 1;" >/dev/null 2>&1; then
-            DB_URL="${DB_URL_WITH_REF}"
-            log "INFO" "Success with format: postgres.[PROJECT-REF]"
-        else
-            log "INFO" "Testing connection without project ref in username..."
-            if timeout 10s psql "${DB_URL_WITHOUT_REF}" -c "SELECT 1;" >/dev/null 2>&1; then
-                DB_URL="${DB_URL_WITHOUT_REF}"
-                log "INFO" "Success with format: postgres (no project ref)"
-            else
-                log "ERROR" "Both username formats failed, using default with project ref"
-                DB_URL="${DB_URL_WITH_REF}"
-            fi
-        fi
-        
-        log "INFO" "Database connection configured successfully (using session pooler for IPv4 compatibility)"
+        log "INFO" "Database connection configured successfully (using transaction pooler for IPv4 compatibility)"
         log "INFO" "Project reference: ${SUPABASE_PROJECT_REF}"
-        log "INFO" "Using session pooler: ${WORKING_POOLER} (IPv4)"
+        log "INFO" "Pooler host: ${pooler_host}"
+        log "INFO" "Pooler port: ${pooler_port} (transaction mode)"
         
         # Validate project reference format (should be alphanumeric)
         if [[ ! "${SUPABASE_PROJECT_REF}" =~ ^[a-zA-Z0-9]+$ ]]; then
@@ -165,7 +127,9 @@ test_db_connection() {
         
         # Try a basic network test
         log "INFO" "Testing network connectivity to Supabase..."
-        if timeout 10 nc -zv aws-0-us-east-1.pooler.supabase.com 5432 2>&1 | tee -a "${LOG_FILE}"; then
+        local pooler_host="${SUPABASE_POOLER_HOST:-aws-0-eu-west-2.pooler.supabase.com}"
+        local pooler_port="${SUPABASE_POOLER_PORT:-6543}"
+        if timeout 10 nc -zv "${pooler_host}" "${pooler_port}" 2>&1 | tee -a "${LOG_FILE}"; then
             log "INFO" "Network connectivity to Supabase pooler successful"
         else
             log "ERROR" "Network connectivity to Supabase pooler failed"
