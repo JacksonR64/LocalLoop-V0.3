@@ -1,0 +1,80 @@
+name: 🗄️ Database Backup
+
+on:
+  schedule:
+    # Run daily at 2 AM UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    inputs:
+      backup_type:
+        description: 'Type of backup to create'
+        required: false
+        default: 'full'
+        type: choice
+        options:
+          - full
+          - schema-only
+          - data-only
+
+jobs:
+  backup-database:
+    name: Create database backup
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Install PostgreSQL client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client
+          
+      - name: Create database backup
+        env:
+          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+          SUPABASE_POOLER_HOST: ${{ secrets.SUPABASE_POOLER_HOST }}
+          SUPABASE_POOLER_PORT: ${{ secrets.SUPABASE_POOLER_PORT }}
+          SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
+        run: |
+          echo "🗄️ Starting LocalLoop database backup"
+          echo "Backup type: ${{ github.event.inputs.backup_type || 'full' }}"
+          
+          # Make script executable and run backup
+          chmod +x scripts/ops/simple-backup.sh
+          ./scripts/ops/simple-backup.sh
+          
+      - name: Upload backup to GitHub
+        uses: actions/upload-artifact@v4
+        with:
+          name: localloop-database-backup-${{ github.run_number }}
+          path: backups/
+          retention-days: 30
+          
+      - name: Backup summary
+        run: |
+          echo "📊 Backup Summary:"
+          echo "=================="
+          
+          if [ -d "backups" ]; then
+            BACKUP_FILE=$(ls backups/localloop_backup_*.sql | head -1)
+            if [ -f "$BACKUP_FILE" ]; then
+              BACKUP_SIZE=$(du -h "$BACKUP_FILE" | cut -f1)
+              echo "✅ Backup completed successfully"
+              echo "📁 File: $(basename "$BACKUP_FILE")"
+              echo "📊 Size: $BACKUP_SIZE"
+              echo "🕐 Created: $(date)"
+              echo "🔗 Download: Available in GitHub Actions artifacts"
+              echo ""
+              echo "🎯 Next steps:"
+              echo "- Backup is stored as GitHub artifact for 30 days"
+              echo "- Consider setting up cloud storage for longer retention"
+              echo "- Test restore process periodically"
+            else
+              echo "❌ Backup file not found"
+              exit 1
+            fi
+          else
+            echo "❌ Backup directory not found"
+            exit 1
+          fi 
