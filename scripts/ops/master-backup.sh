@@ -123,6 +123,10 @@ perform_database_backup() {
     
     local script_dir="$(dirname "$0")"
     if BACKUP_DIR="${BACKUP_BASE_DIR}/database" LOG_FILE="${LOG_FILE}" \
+       SUPABASE_PROJECT_REF="${SUPABASE_PROJECT_REF}" \
+       SUPABASE_DB_PASSWORD="${SUPABASE_DB_PASSWORD}" \
+       SUPABASE_POOLER_HOST="${SUPABASE_POOLER_HOST}" \
+       SUPABASE_POOLER_PORT="${SUPABASE_POOLER_PORT}" \
        bash "${script_dir}/database-backup.sh"; then
         
         local end_time=$(date +%s)
