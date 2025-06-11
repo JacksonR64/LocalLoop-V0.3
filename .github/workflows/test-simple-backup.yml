@@ -33,6 +33,8 @@ jobs:
       - name: Test simple backup
         env:
           SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+          SUPABASE_POOLER_HOST: ${{ secrets.SUPABASE_POOLER_HOST }}
+          SUPABASE_POOLER_PORT: ${{ secrets.SUPABASE_POOLER_PORT }}
           SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
         run: |
           echo "🧪 Testing standard Supabase backup approach"
