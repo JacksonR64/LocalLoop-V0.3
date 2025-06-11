@@ -1,5 +1,12 @@
 name: 🔄 Automated Backup System
 
+# Permissions for GitHub token - required for backup operations
+permissions:
+  contents: write  # For uploading backup artifacts and accessing repository
+  issues: write    # For creating failure notification issues
+  actions: write   # For managing workflow artifacts
+  pull-requests: write  # For comprehensive backup reporting
+
 on:
   schedule:
     # Daily backups at 2 AM UTC
