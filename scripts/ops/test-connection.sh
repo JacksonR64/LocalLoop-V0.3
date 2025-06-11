@@ -77,10 +77,40 @@ echo ""
 
 # Test pg_dump with data (like backup script)
 echo "🔄 Testing pg_dump with data (like backup script)..."
-if timeout 120 pg_dump "${DB_URL}" --verbose --no-owner --no-privileges --format=plain 2>&1 | head -50; then
+echo "Running: pg_dump with verbose output to diagnose issues..."
+
+# Create a temporary file for the dump
+TEMP_DUMP="/tmp/test_dump.sql"
+
+# Run pg_dump with detailed error reporting
+if pg_dump "${DB_URL}" \
+    --verbose \
+    --no-owner \
+    --no-privileges \
+    --format=plain \
+    --file="${TEMP_DUMP}" 2>&1; then
+    
     echo "✅ pg_dump with data successful"
+    echo "📊 Dump file size: $(du -h "${TEMP_DUMP}" 2>/dev/null || echo 'unknown')"
+    echo "📝 First 10 lines of dump:"
+    head -10 "${TEMP_DUMP}" 2>/dev/null || echo "Could not read dump file"
+    
+    # Clean up
+    rm -f "${TEMP_DUMP}"
 else
     echo "❌ pg_dump with data failed"
+    echo "🔍 Attempting to get more specific error information..."
+    
+    # Try a simpler dump to see what specific error we get
+    echo "Testing with minimal options..."
+    pg_dump "${DB_URL}" --version
+    
+    echo "Testing connection with psql again..."
+    psql "${DB_URL}" -c "SELECT count(*) FROM information_schema.tables;" 2>&1 || echo "Table count query failed"
+    
+    echo "Testing basic pg_dump..."
+    pg_dump "${DB_URL}" --schema-only --table=auth.users 2>&1 || echo "Single table schema dump failed"
+    
     exit 1
 fi
 echo ""
