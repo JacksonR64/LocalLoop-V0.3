@@ -10,8 +10,9 @@ echo "🗄️  LocalLoop Database Backup"
 echo "============================="
 
 # Configuration from environment
-HOST="${SUPABASE_DB_HOST}"
-PORT="${SUPABASE_DB_PORT:-5432}"
+# Use direct connection (not pooler) for backups as recommended by Supabase
+HOST="db.${SUPABASE_PROJECT_REF}.supabase.com"
+PORT="5432"
 DATABASE="postgres"
 USER="postgres.${SUPABASE_PROJECT_REF}"
 PASSWORD="${SUPABASE_DB_PASSWORD}"
