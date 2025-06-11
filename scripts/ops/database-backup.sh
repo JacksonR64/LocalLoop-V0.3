@@ -71,19 +71,40 @@ setup_directories() {
 get_db_connection() {
     log "INFO" "Configuring database connection..."
     
-    # Construct database URL using Supabase direct connection (more reliable for backups)
-    # Format: postgresql://postgres:[PASSWORD]@db.[PROJECT-REF].supabase.co:5432/postgres
+    # Construct database URL using Supabase session pooler (IPv4 compatible for CI)
+    # Try multiple common regions since we don't know the exact region
     if [[ -n "${SUPABASE_DB_PASSWORD:-}" && -n "${SUPABASE_PROJECT_REF:-}" ]]; then
-        # Use direct connection format - this matches the user's connection string format
-        DB_URL="postgresql://postgres:${SUPABASE_DB_PASSWORD}@db.${SUPABASE_PROJECT_REF}.supabase.co:5432/postgres"
+        # List of common Supabase pooler regions to try
+        POOLER_REGIONS=(
+            "aws-0-us-east-1.pooler.supabase.com"
+            "aws-0-us-west-1.pooler.supabase.com" 
+            "aws-0-eu-west-1.pooler.supabase.com"
+            "aws-0-ap-southeast-1.pooler.supabase.com"
+            "aws-0-ap-northeast-1.pooler.supabase.com"
+        )
         
-        log "INFO" "Database connection configured successfully (using direct connection)"
+        # Test connectivity to find working region
+        WORKING_POOLER=""
+        for pooler in "${POOLER_REGIONS[@]}"; do
+            log "INFO" "Testing connectivity to pooler: ${pooler}"
+            if timeout 10s nc -z "${pooler}" 5432 >/dev/null 2>&1; then
+                log "INFO" "Found working pooler: ${pooler}"
+                WORKING_POOLER="${pooler}"
+                break
+            fi
+        done
         
-        # Additional debugging for credentials
-        log "INFO" "Project reference length: ${#SUPABASE_PROJECT_REF}"
-        log "INFO" "Password length: ${#SUPABASE_DB_PASSWORD}"
+        if [[ -z "${WORKING_POOLER}" ]]; then
+            log "WARN" "No pooler regions accessible, falling back to us-east-1"
+            WORKING_POOLER="aws-0-us-east-1.pooler.supabase.com"
+        fi
+        
+        # Construct connection URL with working pooler
+        DB_URL="postgresql://postgres.${SUPABASE_PROJECT_REF}:${SUPABASE_DB_PASSWORD}@${WORKING_POOLER}:5432/postgres"
+        
+        log "INFO" "Database connection configured successfully (using session pooler for IPv4 compatibility)"
         log "INFO" "Project reference: ${SUPABASE_PROJECT_REF}"
-        log "INFO" "Using direct connection to: db.${SUPABASE_PROJECT_REF}.supabase.co"
+        log "INFO" "Using session pooler: ${WORKING_POOLER} (IPv4)"
         
         # Validate project reference format (should be alphanumeric)
         if [[ ! "${SUPABASE_PROJECT_REF}" =~ ^[a-zA-Z0-9]+$ ]]; then
