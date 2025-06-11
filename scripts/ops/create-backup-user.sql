@@ -40,7 +40,7 @@ BEGIN
         END IF;
         
         -- Drop and recreate user to ensure clean state
-        DROP USER supabase_backup_user;
+        DROP USER supabase_backup_user CASCADE;
     END IF;
     
     -- Create the backup user with known password
