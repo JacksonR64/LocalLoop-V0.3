@@ -79,11 +79,12 @@ echo ""
 echo "🔄 Testing pg_dump with data (like backup script)..."
 echo "Running: pg_dump with verbose output to diagnose issues..."
 
-# Create a temporary file for the dump
+# Create a temporary file for the dump (exactly like backup script)
 TEMP_DUMP="/tmp/test_dump.sql"
 
-# Run pg_dump with detailed error reporting
-if pg_dump "${DB_URL}" \
+# Run pg_dump EXACTLY like the backup script does
+echo "Testing exact backup script command..."
+if timeout 300 pg_dump "${DB_URL}" \
     --verbose \
     --no-owner \
     --no-privileges \
@@ -101,15 +102,33 @@ else
     echo "❌ pg_dump with data failed"
     echo "🔍 Attempting to get more specific error information..."
     
-    # Try a simpler dump to see what specific error we get
-    echo "Testing with minimal options..."
-    pg_dump "${DB_URL}" --version
+    # Test without --file parameter to see if that's the issue
+    echo "Testing without --file parameter..."
+    if timeout 60 pg_dump "${DB_URL}" --verbose --no-owner --no-privileges --format=plain 2>&1 | head -20; then
+        echo "✅ pg_dump works WITHOUT --file parameter"
+        echo "🚨 ISSUE IDENTIFIED: --file parameter is causing the problem"
+    else
+        echo "❌ pg_dump fails even without --file parameter"
+    fi
     
-    echo "Testing connection with psql again..."
-    psql "${DB_URL}" -c "SELECT count(*) FROM information_schema.tables;" 2>&1 || echo "Table count query failed"
+    # Test specific Supabase limitations
+    echo "Testing Supabase-specific issues..."
     
-    echo "Testing basic pg_dump..."
-    pg_dump "${DB_URL}" --schema-only --table=auth.users 2>&1 || echo "Single table schema dump failed"
+    # Check if it's an RLS issue
+    echo "Testing with specific schema..."
+    pg_dump "${DB_URL}" --schema=public --schema-only 2>&1 || echo "Public schema access failed"
+    
+    # Check if it's a specific table issue
+    echo "Testing auth schema access..."
+    psql "${DB_URL}" -c "SELECT schemaname FROM pg_tables WHERE schemaname = 'auth' LIMIT 1;" 2>&1 || echo "Auth schema query failed"
+    
+    # Check current user permissions
+    echo "Checking current user and permissions..."
+    psql "${DB_URL}" -c "SELECT current_user, current_database(), session_user;" 2>&1 || echo "User info query failed"
+    
+    # Check if we can access specific system tables
+    echo "Testing system table access..."
+    psql "${DB_URL}" -c "SELECT count(*) FROM information_schema.tables;" 2>&1 || echo "System tables access failed"
     
     exit 1
 fi
