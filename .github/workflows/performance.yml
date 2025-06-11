@@ -38,7 +38,7 @@ jobs:
     name: 🔍 Lighthouse Performance Audit
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    if: github.event.inputs.test_type == 'lighthouse' || github.event.inputs.test_type == 'comprehensive' || github.event.inputs.test_type == ''
+    if: github.event.inputs.test_type == 'lighthouse' || github.event.inputs.test_type == 'comprehensive' || github.event.inputs.test_type == '' || github.event_name == 'push' || github.event_name == 'pull_request'
 
     steps:
       - name: 📥 Checkout code
@@ -67,11 +67,22 @@ jobs:
           PORT: 3000
           NODE_ENV: production
 
-      - name: ⏳ Wait for server
-        run: npx wait-on http://localhost:3000 --timeout 60000
+      - name: ⏳ Wait for server to be ready
+        run: |
+          npx wait-on http://localhost:3000 --timeout 60000
+          echo "Server is responding, waiting additional 10s for full startup..."
+          sleep 10
+          # Test server is actually serving content
+          curl -f http://localhost:3000 || exit 1
+          echo "✅ Server is fully ready for Lighthouse audit"
 
       - name: 🔍 Run Lighthouse CI
-        run: lhci autorun --config=./lighthouserc.js
+        run: |
+          echo "Starting Lighthouse CI audit..."
+          echo "Testing basic connectivity first:"
+          curl -I http://localhost:3000
+          echo "Running Lighthouse CI..."
+          lhci autorun --config=./lighthouserc.js
 
       - name: 📊 Upload Lighthouse reports
         uses: actions/upload-artifact@v4
@@ -115,7 +126,7 @@ jobs:
     name: ⚡ Load Testing
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    if: github.event.inputs.test_type == 'load' || github.event.inputs.test_type == 'comprehensive' || (github.event_name == 'schedule')
+    if: github.event.inputs.test_type == 'load' || github.event.inputs.test_type == 'comprehensive' || github.event_name == 'schedule' || github.event_name == 'push' || github.event_name == 'pull_request'
 
     steps:
       - name: 📥 Checkout code
