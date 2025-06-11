@@ -65,4 +65,14 @@ else
 fi
 echo ""
 
-echo "�� All tests passed!" 
+# Test pg_dump permissions
+echo "🔄 Testing pg_dump permissions..."
+if timeout 60 pg_dump "${DB_URL}" --schema-only --no-owner --no-privileges 2>&1; then
+    echo "✅ pg_dump permissions successful"
+else
+    echo "❌ pg_dump permissions failed"
+    exit 1
+fi
+echo ""
+
+echo "🎉 All tests passed!" 
