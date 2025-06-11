@@ -40,7 +40,9 @@ BEGIN
         END IF;
         
         -- Drop and recreate user to ensure clean state
-        DROP USER supabase_backup_user CASCADE;
+        -- First drop all objects owned by the user, then drop the user
+        DROP OWNED BY supabase_backup_user CASCADE;
+        DROP USER supabase_backup_user;
     END IF;
     
     -- Create the backup user with known password
