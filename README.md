@@ -343,3 +343,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 **🎪 Ready to transform your local community events? [Get started now!](https://local-loop-qa.vercel.app)**
 
 <!-- Workflow test trigger - can be removed after testing -->
+
+<!-- TEST DEPLOYMENT MARKER - This will be rolled back during rollback testing -->
