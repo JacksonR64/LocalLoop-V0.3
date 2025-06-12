@@ -342,5 +342,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **🎪 Ready to transform your local community events? [Get started now!](https://local-loop-qa.vercel.app)**
 
-<!-- TEST DEPLOYMENT FOR ROLLBACK - This creates a new deployment we can rollback from -->
+
 
