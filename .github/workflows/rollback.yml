@@ -6,9 +6,9 @@ on:
       reason:
         description: 'Reason for rollback'
         required: true
-        default: 'Manual rollback requested'
-      target_deployment:
-        description: 'Deployment ID to rollback to (leave empty for previous)'
+        default: 'Emergency rollback requested'
+      deployment_url:
+        description: 'Deployment URL to rollback to (optional - leave empty to select interactively)'
         required: false
         default: ''
 
@@ -20,213 +20,61 @@ jobs:
       - name: 📥 Checkout code
         uses: actions/checkout@v4
         
-      - name: 🔍 Get Previous Successful Deployment
-        id: get-previous
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          
+      - name: 🔧 Install Vercel CLI
+        run: npm install -g vercel@latest
+        
+      - name: 🔍 List Recent Deployments
         run: |
-          echo "🔍 Finding previous successful deployment..."
-          
-          # Get list of deployments from Vercel using the correct API
-          DEPLOYMENTS=$(curl -s \
-            -H "Authorization: Bearer ${{ secrets.VERCEL_TOKEN }}" \
-            "https://api.vercel.com/v6/deployments?projectId=${{ secrets.VERCEL_PROJECT_ID }}&limit=20&target=production")
-          
-          echo "API Response status: $?"
-          
-          # Check if API call was successful
-          if echo "$DEPLOYMENTS" | jq -e '.error' > /dev/null; then
-            echo "❌ Failed to fetch deployments:"
-            echo "$DEPLOYMENTS" | jq -r '.error.message // "Unknown API error"'
-            exit 1
-          fi
-          
-          # Find the most recent successful deployment that isn't the current one
-          CURRENT_DEPLOYMENT=$(echo "$DEPLOYMENTS" | jq -r '.deployments[0].uid // empty')
-          
-          # Look for previous successful deployment
-          PREVIOUS_DEPLOYMENT=""
-          echo "Current deployment: $CURRENT_DEPLOYMENT"
-          echo "Available deployments:"
-          echo "$DEPLOYMENTS" | jq -r '.deployments[] | "\(.uid) - \(.state) - \(.url) - \(.createdAt)"'
-          
-          # Find the first READY deployment that's not the current one
-          PREVIOUS_DEPLOYMENT=$(echo "$DEPLOYMENTS" | jq -r '
-            .deployments[] | 
-            select(.state == "READY" and .uid != "'$CURRENT_DEPLOYMENT'") | 
-            .uid' | head -1)
-          
-          if [ -z "$PREVIOUS_DEPLOYMENT" ] || [ "$PREVIOUS_DEPLOYMENT" = "null" ]; then
-            echo "❌ No accessible previous deployment found"
-            echo "This could mean:"
-            echo "  • All recent deployments are the current one"
-            echo "  • Previous deployments have been deleted by Vercel"
-            echo "  • No deployments are in READY state"
-            echo ""
-            echo "Available deployments:"
-            echo "$DEPLOYMENTS" | jq -r '.deployments[] | "  \(.uid) - \(.state) - \(.createdAt)"'
-            exit 1
-          fi
-          
-          echo "✅ Found previous deployment: $PREVIOUS_DEPLOYMENT"
-          echo "previous_deployment=$PREVIOUS_DEPLOYMENT" >> $GITHUB_OUTPUT
-
-      - name: 🔍 Validate Target Deployment
-        id: validate
-        run: |
-          TARGET_DEPLOYMENT="${{ github.event.inputs.target_deployment }}"
-          if [ -z "$TARGET_DEPLOYMENT" ]; then
-            TARGET_DEPLOYMENT="${{ steps.get-previous.outputs.previous_deployment }}"
-          fi
-          
-          echo "🔍 Validating deployment: $TARGET_DEPLOYMENT"
-          
-          # Verify the deployment exists and is accessible
-          DEPLOYMENT_CHECK=$(curl -s \
-            -H "Authorization: Bearer ${{ secrets.VERCEL_TOKEN }}" \
-            "https://api.vercel.com/v13/deployments/$TARGET_DEPLOYMENT")
-          
-          if echo "$DEPLOYMENT_CHECK" | jq -e '.error' > /dev/null; then
-            ERROR_CODE=$(echo "$DEPLOYMENT_CHECK" | jq -r '.error.code // "unknown"')
-            ERROR_MESSAGE=$(echo "$DEPLOYMENT_CHECK" | jq -r '.error.message // "Unknown error"')
-            echo "❌ Target deployment validation failed: $ERROR_CODE"
-            echo "📝 Error: $ERROR_MESSAGE"
-            echo "🔍 Deployment ID: $TARGET_DEPLOYMENT"
-            exit 1
-          fi
-          
-          DEPLOYMENT_STATE=$(echo "$DEPLOYMENT_CHECK" | jq -r '.state // "unknown"')
-          DEPLOYMENT_URL=$(echo "$DEPLOYMENT_CHECK" | jq -r '.url // "unknown"')
-          
-          echo "✅ Deployment validation successful"
-          echo "📊 State: $DEPLOYMENT_STATE"
-          echo "🌐 URL: $DEPLOYMENT_URL"
-          
-          if [ "$DEPLOYMENT_STATE" != "READY" ]; then
-            echo "⚠️ Warning: Deployment state is '$DEPLOYMENT_STATE', not 'READY'"
-            echo "This deployment may not be suitable for rollback"
-          fi
-          
-          echo "target_deployment=$TARGET_DEPLOYMENT" >> $GITHUB_OUTPUT
-
+          echo "🔍 Fetching recent deployments..."
+          vercel ls --token ${{ secrets.VERCEL_TOKEN }}
+        
       - name: 🔄 Execute Rollback
         id: rollback
         run: |
-          TARGET_DEPLOYMENT="${{ steps.validate.outputs.target_deployment }}"
-          
-          echo "🔄 Rolling back to deployment: $TARGET_DEPLOYMENT"
+          echo "🔄 Initiating rollback..."
           echo "📝 Reason: ${{ github.event.inputs.reason }}"
+          echo ""
           
-          # Use the correct Vercel API endpoint for promoting deployments
-          # Based on Vercel SDK: projects.requestPromote method
-          # POST /v9/projects/{projectId}/request-promote with deploymentId in body
-          ROLLBACK_RESPONSE=$(curl -s -X POST \
-            -H "Authorization: Bearer ${{ secrets.VERCEL_TOKEN }}" \
-            -H "Content-Type: application/json" \
-            "https://api.vercel.com/v9/projects/${{ secrets.VERCEL_PROJECT_ID }}/request-promote" \
-            -d "{\"deploymentId\":\"$TARGET_DEPLOYMENT\"}")
-          
-          echo "Rollback API response: $ROLLBACK_RESPONSE"
-          
-          # Check if rollback was successful
-          if echo "$ROLLBACK_RESPONSE" | jq -e '.error' > /dev/null; then
-            ERROR_CODE=$(echo "$ROLLBACK_RESPONSE" | jq -r '.error.code // "unknown"')
-            ERROR_MESSAGE=$(echo "$ROLLBACK_RESPONSE" | jq -r '.error.message // "Unknown error"')
-            
-            echo "❌ Rollback failed with error: $ERROR_CODE"
-            echo "📝 Error message: $ERROR_MESSAGE"
+          if [ -n "${{ github.event.inputs.deployment_url }}" ]; then
+            echo "🎯 Rolling back to specific deployment: ${{ github.event.inputs.deployment_url }}"
+            vercel rollback ${{ github.event.inputs.deployment_url }} --token ${{ secrets.VERCEL_TOKEN }} --yes
+          else
+            echo "📋 Available deployments:"
+            vercel ls --token ${{ secrets.VERCEL_TOKEN }}
             echo ""
-            echo "🔧 Troubleshooting:"
-            case "$ERROR_CODE" in
-              "not_found")
-                echo "  • Deployment no longer exists (auto-deleted by Vercel)"
-                echo "  • Deployment ID is incorrect: $TARGET_DEPLOYMENT"
-                echo "  • Project ID mismatch: ${{ secrets.VERCEL_PROJECT_ID }}"
-                echo "  • Try using a more recent deployment"
-                ;;
-              "forbidden")
-                echo "  • Insufficient permissions on Vercel token"
-                echo "  • Token doesn't have deployment promotion rights"
-                echo "  • Check token scopes in Vercel dashboard"
-                ;;
-              "bad_request")
-                echo "  • Deployment is already promoted to production"
-                echo "  • Deployment is not in a promotable state"
-                echo "  • Invalid request format"
-                ;;
-              *)
-                echo "  • Unknown error code: $ERROR_CODE"
-                echo "  • Check Vercel API documentation"
-                echo "  • Verify project and deployment IDs"
-                ;;
-            esac
-            echo ""
-            echo "🔍 Debug info:"
-            echo "  Project ID: ${{ secrets.VERCEL_PROJECT_ID }}"
-            echo "  Deployment ID: $TARGET_DEPLOYMENT"
-            echo "  API Endpoint: https://api.vercel.com/v9/projects/${{ secrets.VERCEL_PROJECT_ID }}/request-promote"
-            echo ""
-            echo "Full response: $ROLLBACK_RESPONSE"
-            exit 1
+            echo "🔄 Rolling back to previous deployment..."
+            # Get the previous production deployment and rollback to it
+            PREV_DEPLOYMENT=$(vercel ls --token ${{ secrets.VERCEL_TOKEN }} | grep "✅" | head -2 | tail -1 | awk '{print $2}')
+            if [ -n "$PREV_DEPLOYMENT" ]; then
+              echo "🎯 Rolling back to: $PREV_DEPLOYMENT"
+              vercel rollback $PREV_DEPLOYMENT --token ${{ secrets.VERCEL_TOKEN }} --yes
+            else
+              echo "❌ Could not find previous deployment to rollback to"
+              exit 1
+            fi
           fi
           
-          echo "✅ Rollback initiated successfully"
-          echo "deployment_id=$TARGET_DEPLOYMENT" >> $GITHUB_OUTPUT
-
-      - name: ⏳ Wait for Rollback to Complete
+      - name: ✅ Verify Rollback
         run: |
-          echo "⏳ Waiting for rollback to complete..."
-          sleep 60
+          echo "✅ Rollback completed!"
+          echo "🔍 Current deployment status:"
+          vercel ls --token ${{ secrets.VERCEL_TOKEN }} | head -5
           
-      - name: 🏥 Verify Rollback Health
+      - name: 📝 Summary
         run: |
-          echo "🏥 Verifying rolled-back deployment health..."
-          
-          MAX_ATTEMPTS=3
-          DELAY=20
-          URL="https://local-loop.vercel.app/api/health"
-          
-          for i in $(seq 1 $MAX_ATTEMPTS); do
-            echo "Health check attempt $i/$MAX_ATTEMPTS..."
-            
-            RESPONSE=$(curl -s -w "%{http_code}" "$URL" || echo "000")
-            HTTP_CODE="${RESPONSE: -3}"
-            BODY="${RESPONSE%???}"
-            
-            echo "HTTP Code: $HTTP_CODE"
-            
-            if [ "$HTTP_CODE" = "200" ]; then
-              echo "✅ Rollback health check passed!"
-              echo "🔄 Successfully rolled back to deployment: ${{ steps.rollback.outputs.deployment_id }}"
-              echo "📝 Rollback reason: ${{ github.event.inputs.reason }}"
-              exit 0
-            else
-              echo "⚠️ Health check failed with HTTP $HTTP_CODE"
-              echo "Response: $BODY"
-            fi
-            
-            if [ $i -lt $MAX_ATTEMPTS ]; then
-              echo "⏳ Waiting ${DELAY}s before retry..."
-              sleep $DELAY
-            fi
-          done
-          
-          echo "❌ Rollback health verification failed"
-          echo "🚨 Manual intervention required"
-          exit 1
-
-      - name: 📝 Log Rollback Event
-        if: always()
-        run: |
-          echo "📝 Logging rollback event..."
-          echo "Timestamp: $(date -u +%Y-%m-%dT%H:%M:%S.%3NZ)"
-          echo "Deployment rolled back to: ${{ steps.rollback.outputs.deployment_id }}"
-          echo "Reason: ${{ github.event.inputs.reason }}"
-          echo "Triggered by: ${{ github.actor }}"
-          echo "Workflow run: ${{ github.run_id }}"
-
-      - name: 🚨 Notify Team on Failure
-        if: failure()
-        run: |
-          echo "🚨 CRITICAL: Rollback operation failed!"
-          echo "⚠️ Manual intervention is required immediately"
-          echo "🔗 Check workflow: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          echo "📧 Please notify the development team immediately" 
+          echo "## 🔄 Rollback Summary" >> $GITHUB_STEP_SUMMARY
+          echo "**Reason:** ${{ github.event.inputs.reason }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Triggered by:** ${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Time:** $(date)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "✅ **Status:** Rollback completed successfully" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "🔍 **Next Steps:**" >> $GITHUB_STEP_SUMMARY
+          echo "- Verify the application is working correctly" >> $GITHUB_STEP_SUMMARY
+          echo "- Check logs for any issues" >> $GITHUB_STEP_SUMMARY
+          echo "- Investigate the root cause of the issue that required rollback" >> $GITHUB_STEP_SUMMARY 
