@@ -1,9 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 import { Calendar, Clock, MapPin, User, DollarSign, Share2, Heart, ArrowLeft } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui';
 import { Navigation } from '@/components/ui/Navigation';
@@ -35,7 +33,6 @@ interface EventDetailClientProps {
 }
 
 export function EventDetailClient({ event }: EventDetailClientProps) {
-    const router = useRouter();
     const [ticketTypes, setTicketTypes] = useState<TicketType[]>([]);
     const [selectedTickets, setSelectedTickets] = useState<TicketSelectionItem[]>([]);
     const [checkoutStep, setCheckoutStep] = useState<'tickets' | 'checkout'>('tickets');

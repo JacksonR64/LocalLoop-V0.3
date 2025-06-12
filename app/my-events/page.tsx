@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { redirect } from 'next/navigation'
 import UserDashboard from '@/components/dashboard/UserDashboard'
+import { Navigation } from '@/components/ui/Navigation'
 
 export const metadata: Metadata = {
     title: 'My Events | LocalLoop',
@@ -19,8 +20,11 @@ export default async function MyEventsPage() {
     }
 
     return (
-        <UserDashboard
-            user={user}
-        />
+        <>
+            <Navigation />
+            <UserDashboard
+                user={user}
+            />
+        </>
     )
 } 
