@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Calendar, Clock, MapPin, User, DollarSign, Share2, Heart, ArrowLeft } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui';
+import { Navigation } from '@/components/ui/Navigation';
 import { EventData } from '@/components/events';
 import { EventMapWrapper as EventMap } from '@/components/events/EventMapWrapper';
 import { RSVPTicketSection } from '@/components/events/RSVPTicketSection';
@@ -99,29 +100,7 @@ export function EventDetailClient({ event }: EventDetailClientProps) {
 
     return (
         <div className="min-h-screen bg-gray-50" data-test-id="event-detail-page">
-            {/* Header */}
-            <header className="bg-white shadow-sm border-b" data-test-id="event-detail-header">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex items-center h-16">
-                        <button
-                            onClick={() => router.back()}
-                            className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
-                            data-test-id="back-button"
-                        >
-                            <ArrowLeft className="w-5 h-5" />
-                            <span>Back</span>
-                        </button>
-                        <div className="ml-auto">
-                            <Link href="/" className="flex items-center gap-3" data-test-id="header-logo">
-                                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                                    <Calendar className="w-5 h-5 text-white" />
-                                </div>
-                                <span className="text-xl font-bold text-gray-900">LocalLoop</span>
-                            </Link>
-                        </div>
-                    </div>
-                </div>
-            </header>
+            <Navigation />
 
             <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" data-test-id="event-detail-main">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

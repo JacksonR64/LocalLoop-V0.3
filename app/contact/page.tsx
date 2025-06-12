@@ -1,15 +1,11 @@
 import { Navigation } from '@/components/ui/Navigation';
+import { Footer } from '@/components/ui/Footer';
 import { Mail, MessageCircle, Phone } from 'lucide-react';
 
 export default function ContactPage() {
     return (
         <div className="min-h-screen bg-gray-50">
-            <Navigation
-                variant="simple"
-                showBackButton={true}
-                backButtonText="Back to Home"
-                backButtonHref="/"
-            />
+            <Navigation />
 
             {/* Main Content */}
             <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -129,6 +125,7 @@ export default function ContactPage() {
                     </div>
                 </div>
             </main>
+            <Footer />
         </div>
     );
 } 
