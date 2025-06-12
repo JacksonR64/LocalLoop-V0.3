@@ -35,22 +35,46 @@ jobs:
           
           # Look for previous successful deployment
           PREVIOUS_DEPLOYMENT=""
+          echo "Current deployment: $CURRENT_DEPLOYMENT"
+          echo "Available deployments:"
+          echo "$DEPLOYMENTS" | jq -r '.deployments[] | "\(.uid) - \(.state) - \(.url)"'
+          
           for i in $(seq 1 9); do
             DEPLOYMENT=$(echo "$DEPLOYMENTS" | jq -r ".deployments[$i] // empty")
             if [ "$DEPLOYMENT" != "null" ] && [ "$DEPLOYMENT" != "" ]; then
               STATE=$(echo "$DEPLOYMENT" | jq -r '.state // empty')
               DEPLOYMENT_UID=$(echo "$DEPLOYMENT" | jq -r '.uid // empty')
+              CREATED_AT=$(echo "$DEPLOYMENT" | jq -r '.createdAt // empty')
+              
+              echo "Checking deployment $i: $DEPLOYMENT_UID (state: $STATE, created: $CREATED_AT)"
               
               if [ "$STATE" = "READY" ] && [ "$DEPLOYMENT_UID" != "$CURRENT_DEPLOYMENT" ]; then
+                # Verify this deployment still exists by checking its details
+                DEPLOYMENT_CHECK=$(curl -s \
+                  -H "Authorization: Bearer ${{ secrets.VERCEL_TOKEN }}" \
+                  "https://api.vercel.com/v13/deployments/$DEPLOYMENT_UID")
+                
+                if echo "$DEPLOYMENT_CHECK" | jq -e '.error' > /dev/null; then
+                  echo "⚠️ Deployment $DEPLOYMENT_UID not accessible, skipping..."
+                  continue
+                fi
+                
                 PREVIOUS_DEPLOYMENT="$DEPLOYMENT_UID"
-                echo "Found previous successful deployment: $PREVIOUS_DEPLOYMENT"
+                echo "✅ Found accessible previous deployment: $PREVIOUS_DEPLOYMENT"
                 break
               fi
             fi
           done
           
           if [ -z "$PREVIOUS_DEPLOYMENT" ]; then
-            echo "❌ No previous successful deployment found"
+            echo "❌ No accessible previous deployment found"
+            echo "This could mean:"
+            echo "  • All recent deployments are the current one"
+            echo "  • Previous deployments have been deleted by Vercel"
+            echo "  • No deployments are in READY state"
+            echo ""
+            echo "Available deployments:"
+            echo "$DEPLOYMENTS" | jq -r '.deployments[] | "  \(.uid) - \(.state) - \(.createdAt)"'
             exit 1
           fi
           
@@ -78,8 +102,33 @@ jobs:
           
           # Check if rollback was successful
           if echo "$ROLLBACK_RESPONSE" | jq -e '.error' > /dev/null; then
-            echo "❌ Rollback failed:"
-            echo "$ROLLBACK_RESPONSE" | jq '.error'
+            ERROR_CODE=$(echo "$ROLLBACK_RESPONSE" | jq -r '.error.code // "unknown"')
+            ERROR_MESSAGE=$(echo "$ROLLBACK_RESPONSE" | jq -r '.error.message // "Unknown error"')
+            
+            echo "❌ Rollback failed with error: $ERROR_CODE"
+            echo "📝 Error message: $ERROR_MESSAGE"
+            echo ""
+            echo "Common causes:"
+            case "$ERROR_CODE" in
+              "not_found")
+                echo "  • Deployment no longer exists (auto-deleted by Vercel)"
+                echo "  • Deployment ID is incorrect"
+                echo "  • Project ID mismatch"
+                ;;
+              "forbidden")
+                echo "  • Insufficient permissions"
+                echo "  • Token doesn't have deployment promotion rights"
+                ;;
+              "bad_request")
+                echo "  • Deployment is already promoted"
+                echo "  • Deployment is not in a promotable state"
+                ;;
+              *)
+                echo "  • Check Vercel API documentation for error code: $ERROR_CODE"
+                ;;
+            esac
+            echo ""
+            echo "Full response: $ROLLBACK_RESPONSE"
             exit 1
           fi
           
