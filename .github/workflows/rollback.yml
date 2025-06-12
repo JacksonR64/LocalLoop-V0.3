@@ -31,7 +31,7 @@ jobs:
       - name: 🔍 List Recent Deployments
         run: |
           echo "🔍 Fetching recent deployments..."
-          vercel ls --token ${{ secrets.VERCEL_TOKEN }}
+          vercel ls --token ${{ secrets.VERCEL_TOKEN }} --yes
         
       - name: 🔄 Execute Rollback
         id: rollback
@@ -45,11 +45,11 @@ jobs:
             vercel rollback ${{ github.event.inputs.deployment_url }} --token ${{ secrets.VERCEL_TOKEN }} --yes
           else
             echo "📋 Available deployments:"
-            vercel ls --token ${{ secrets.VERCEL_TOKEN }}
+            vercel ls --token ${{ secrets.VERCEL_TOKEN }} --yes
             echo ""
             echo "🔄 Rolling back to previous deployment..."
             # Get the previous production deployment and rollback to it
-            PREV_DEPLOYMENT=$(vercel ls --token ${{ secrets.VERCEL_TOKEN }} | grep "✅" | head -2 | tail -1 | awk '{print $2}')
+            PREV_DEPLOYMENT=$(vercel ls --token ${{ secrets.VERCEL_TOKEN }} --yes | grep "✅" | head -2 | tail -1 | awk '{print $2}')
             if [ -n "$PREV_DEPLOYMENT" ]; then
               echo "🎯 Rolling back to: $PREV_DEPLOYMENT"
               vercel rollback $PREV_DEPLOYMENT --token ${{ secrets.VERCEL_TOKEN }} --yes
@@ -63,7 +63,7 @@ jobs:
         run: |
           echo "✅ Rollback completed!"
           echo "🔍 Current deployment status:"
-          vercel ls --token ${{ secrets.VERCEL_TOKEN }} | head -5
+          vercel ls --token ${{ secrets.VERCEL_TOKEN }} --yes | head -5
           
       - name: 📝 Summary
         run: |
