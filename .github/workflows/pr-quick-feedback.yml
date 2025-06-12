@@ -141,15 +141,14 @@ jobs:
       - name: 🚀 Start application
         run: npm start &
         env:
-          PORT: 3001
+          PORT: 3000
 
       - name: ⏳ Wait for server
-        run: npx wait-on http://localhost:3001 --timeout 30000
+        run: npx wait-on http://localhost:3000 --timeout 30000
 
       - name: 🧪 Run smoke tests
-        run: npx playwright test --project="Desktop Chrome" tests/smoke/ || npx playwright test --project="Desktop Chrome" --grep="smoke|basic|homepage"
+        run: npx playwright test --project="Desktop Chrome" e2e/example.spec.ts || npx playwright test --project="Desktop Chrome" --grep="homepage|basic"
         env:
-          PLAYWRIGHT_BASE_URL: http://localhost:3001
           CI: true
 
       - name: 📊 Upload smoke test results
