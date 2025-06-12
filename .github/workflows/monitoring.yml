@@ -1,9 +1,9 @@
-name: 4️⃣ Monitoring & Alerting
+name: 🔍 Monitoring & Alerting
 
 on:
   # Run after deployments
   workflow_run:
-    workflows: ["🚀 CI/CD Pipeline"]
+    workflows: ["🚀 CI Pipeline"]
     types:
       - completed
   

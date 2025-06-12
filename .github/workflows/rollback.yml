@@ -1,4 +1,4 @@
-name: 6️⃣ Rollback Deployment
+name: 🔄 Rollback Deployment
 
 on:
   workflow_dispatch:
