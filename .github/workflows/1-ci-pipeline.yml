@@ -1,4 +1,4 @@
-name: CI Pipeline
+name: 1️⃣ CI Pipeline
 
 on:
   push:

@@ -1,4 +1,4 @@
-name: PR Quick Check
+name: 2️⃣ PR Quick Check
 
 on:
   pull_request:
