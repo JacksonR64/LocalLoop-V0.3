@@ -208,10 +208,16 @@ jobs:
             
             summary += '_This is a quick check for immediate feedback. Full testing will run in the main CI pipeline._';
             
-            // Comment on PR
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: summary
-            }); 
+            // Only comment on actual PRs, not manual runs
+            if (context.issue.number) {
+              await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: summary
+              });
+              console.log('✅ Posted summary to PR #' + context.issue.number);
+            } else {
+              console.log('ℹ️ Manual workflow run - skipping PR comment');
+              console.log('📊 Summary:\n' + summary);
+            } 
