@@ -48,15 +48,16 @@ jobs:
             vercel ls --token ${{ secrets.VERCEL_TOKEN }} --yes
             echo ""
             echo "🔄 Rolling back to previous deployment..."
-            # Get the previous production deployment and rollback to it
-            PREV_DEPLOYMENT=$(vercel ls --token ${{ secrets.VERCEL_TOKEN }} --yes | grep "✅" | head -2 | tail -1 | awk '{print $2}')
-            if [ -n "$PREV_DEPLOYMENT" ]; then
-              echo "🎯 Rolling back to: $PREV_DEPLOYMENT"
-              vercel rollback $PREV_DEPLOYMENT --token ${{ secrets.VERCEL_TOKEN }} --yes
-            else
-              echo "❌ Could not find previous deployment to rollback to"
-              exit 1
-            fi
+                      # Get the previous production deployment and rollback to it
+          # Find the most recent Ready production deployment (skip any Building ones)
+          PREV_DEPLOYMENT=$(vercel ls --token ${{ secrets.VERCEL_TOKEN }} --yes | grep "● Ready.*Production" | head -1 | awk '{print $1}')
+          if [ -n "$PREV_DEPLOYMENT" ]; then
+            echo "🎯 Rolling back to: $PREV_DEPLOYMENT"
+            vercel rollback $PREV_DEPLOYMENT --token ${{ secrets.VERCEL_TOKEN }} --yes
+          else
+            echo "❌ Could not find previous deployment to rollback to"
+            exit 1
+          fi
           fi
           
       - name: ✅ Verify Rollback
