@@ -1,86 +1,52 @@
-name: 🔄 Rollback Deployment
+name: 🔄 Vercel Rollback
 
 on:
   workflow_dispatch:
     inputs:
-      reason:
-        description: 'Reason for rollback'
-        required: true
-        default: 'Emergency rollback requested'
       deployment_url:
-        description: 'Deployment URL to rollback to (optional - leave empty to select interactively)'
+        description: 'Specific deployment URL to rollback to (leave empty for automatic rollback to previous deployment)'
         required: false
-        default: ''
+        type: string
+      reason:
+        description: 'Reason for rollback (for logging)'
+        required: true
+        type: string
 
 jobs:
   rollback:
     runs-on: ubuntu-latest
+    name: 🔄 Rollback Deployment
     
     steps:
-      - name: 📥 Checkout code
-        uses: actions/checkout@v4
-        
-      - name: 📦 Setup Node.js
+      - name: 🚀 Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
           
-      - name: 🔧 Install Vercel CLI
+      - name: 📦 Install Vercel CLI
         run: npm install -g vercel@latest
         
-      - name: 🔍 List Recent Deployments
-        run: |
-          echo "🔍 Fetching recent deployments..."
-          vercel ls --token ${{ secrets.VERCEL_TOKEN }} --yes
-        
       - name: 🔄 Execute Rollback
-        id: rollback
         run: |
-          echo "🔄 Initiating rollback..."
+          echo "🚨 ROLLBACK INITIATED"
           echo "📝 Reason: ${{ github.event.inputs.reason }}"
+          echo "👤 Initiated by: ${{ github.actor }}"
+          echo "⏰ Time: $(date)"
           echo ""
           
           if [ -n "${{ github.event.inputs.deployment_url }}" ]; then
             echo "🎯 Rolling back to specific deployment: ${{ github.event.inputs.deployment_url }}"
-            vercel rollback ${{ github.event.inputs.deployment_url }} --token ${{ secrets.VERCEL_TOKEN }} --yes
+            vercel rollback "${{ github.event.inputs.deployment_url }}" --token ${{ secrets.VERCEL_TOKEN }} --yes
           else
-            echo "📋 Available deployments:"
-            vercel ls --token ${{ secrets.VERCEL_TOKEN }} --yes
-            echo ""
-            echo "🔄 Rolling back to previous deployment..."
-                      # Get the previous production deployment and rollback to it
-          # Find the most recent Ready production deployment (skip any Building ones)
-          echo "🔍 Looking for Ready Production deployments..."
-          vercel ls --token ${{ secrets.VERCEL_TOKEN }} --yes | grep "● Ready.*Production" | head -3
-          PREV_DEPLOYMENT=$(vercel ls --token ${{ secrets.VERCEL_TOKEN }} --yes | grep "● Ready.*Production" | head -1 | awk '{print $1}')
-          echo "🎯 Found deployment URL: $PREV_DEPLOYMENT"
-          if [ -n "$PREV_DEPLOYMENT" ]; then
-            echo "🎯 Rolling back to: $PREV_DEPLOYMENT"
-            vercel rollback "$PREV_DEPLOYMENT" --token ${{ secrets.VERCEL_TOKEN }} --yes
-          else
-            echo "❌ Could not find previous deployment to rollback to"
-            echo "🔍 Debug: All deployments:"
-            vercel ls --token ${{ secrets.VERCEL_TOKEN }} --yes
-            exit 1
-          fi
+            echo "⏮️ Rolling back to previous deployment automatically"
+            vercel rollback --token ${{ secrets.VERCEL_TOKEN }} --yes
           fi
           
       - name: ✅ Verify Rollback
         run: |
-          echo "✅ Rollback completed!"
-          echo "🔍 Current deployment status:"
-          vercel ls --token ${{ secrets.VERCEL_TOKEN }} --yes | head -5
-          
-      - name: 📝 Summary
-        run: |
-          echo "## 🔄 Rollback Summary" >> $GITHUB_STEP_SUMMARY
-          echo "**Reason:** ${{ github.event.inputs.reason }}" >> $GITHUB_STEP_SUMMARY
-          echo "**Triggered by:** ${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
-          echo "**Time:** $(date)" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "✅ **Status:** Rollback completed successfully" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "🔍 **Next Steps:**" >> $GITHUB_STEP_SUMMARY
-          echo "- Verify the application is working correctly" >> $GITHUB_STEP_SUMMARY
-          echo "- Check logs for any issues" >> $GITHUB_STEP_SUMMARY
-          echo "- Investigate the root cause of the issue that required rollback" >> $GITHUB_STEP_SUMMARY 
+          echo "✅ Rollback completed successfully!"
+          echo "🔍 Current production status:"
+          vercel ls --token ${{ secrets.VERCEL_TOKEN }} --yes | head -3
+          echo ""
+          echo "🎉 Production has been rolled back!"
+          echo "📊 Check your site to verify the rollback was successful." 
