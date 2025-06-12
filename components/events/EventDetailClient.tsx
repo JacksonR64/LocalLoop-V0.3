@@ -15,6 +15,7 @@ import CheckoutForm from '@/components/checkout/CheckoutForm';
 import { GoogleCalendarConnectWithStatus } from '@/components/GoogleCalendarConnect';
 import { formatPrice } from '@/lib/utils/ticket-utils';
 import type { TicketType } from '@/lib/types';
+import { Footer } from '@/components/ui/Footer';
 
 // Interface for selected tickets matching TicketSelection component
 interface TicketSelectionItem {
@@ -329,6 +330,9 @@ export function EventDetailClient({ event }: EventDetailClientProps) {
                     </div>
                 </div>
             </main>
+
+            {/* Footer */}
+            <Footer />
         </div>
     );
 } 
