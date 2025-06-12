@@ -39,10 +39,10 @@ jobs:
             DEPLOYMENT=$(echo "$DEPLOYMENTS" | jq -r ".deployments[$i] // empty")
             if [ "$DEPLOYMENT" != "null" ] && [ "$DEPLOYMENT" != "" ]; then
               STATE=$(echo "$DEPLOYMENT" | jq -r '.state // empty')
-              UID=$(echo "$DEPLOYMENT" | jq -r '.uid // empty')
+              DEPLOYMENT_UID=$(echo "$DEPLOYMENT" | jq -r '.uid // empty')
               
-              if [ "$STATE" = "READY" ] && [ "$UID" != "$CURRENT_DEPLOYMENT" ]; then
-                PREVIOUS_DEPLOYMENT="$UID"
+              if [ "$STATE" = "READY" ] && [ "$DEPLOYMENT_UID" != "$CURRENT_DEPLOYMENT" ]; then
+                PREVIOUS_DEPLOYMENT="$DEPLOYMENT_UID"
                 echo "Found previous successful deployment: $PREVIOUS_DEPLOYMENT"
                 break
               fi
