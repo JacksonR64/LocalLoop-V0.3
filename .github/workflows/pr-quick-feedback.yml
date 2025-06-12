@@ -10,6 +10,11 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+  pull-requests: write
+  checks: write
+
 env:
   NODE_VERSION: '18'
 
@@ -136,14 +141,15 @@ jobs:
       - name: 🚀 Start application
         run: npm start &
         env:
-          PORT: 3000
+          PORT: 3001
 
       - name: ⏳ Wait for server
-        run: npx wait-on http://localhost:3000 --timeout 30000
+        run: npx wait-on http://localhost:3001 --timeout 30000
 
       - name: 🧪 Run smoke tests
         run: npx playwright test --project="Desktop Chrome" tests/smoke/ || npx playwright test --project="Desktop Chrome" --grep="smoke|basic|homepage"
         env:
+          PLAYWRIGHT_BASE_URL: http://localhost:3001
           CI: true
 
       - name: 📊 Upload smoke test results
