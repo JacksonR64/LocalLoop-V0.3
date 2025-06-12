@@ -10,6 +10,7 @@ import { EventFilters } from '@/components/filters/EventFilters';
 import { usePagination } from '@/lib/hooks/usePagination';
 import { useInfiniteScroll } from '@/lib/hooks/useInfiniteScroll';
 import { useAuth } from '@/lib/auth-context';
+import { useAuth as useAuthHook } from '@/lib/hooks/useAuth';
 import { ProfileDropdown } from '@/components/auth/ProfileDropdown';
 
 interface HomePageClientProps {
@@ -24,6 +25,7 @@ export function HomePageClient({ featuredEvents, nonFeaturedEvents }: HomePageCl
 
   // Auth state
   const { user, loading: authLoading } = useAuth();
+  const { isStaff, isAdmin } = useAuthHook();
 
   // Memoize the filtered events setter to prevent infinite re-renders
   const handleFilteredEventsChange = React.useCallback((events: EventData[]) => {
@@ -101,9 +103,11 @@ export function HomePageClient({ featuredEvents, nonFeaturedEvents }: HomePageCl
               >
                 Browse Events
               </button>
-              <Link href="/create-event" className="text-gray-600 hover:text-gray-900 transition-colors" data-test-id="create-event-link">
-                Create Event
-              </Link>
+              {(isStaff || isAdmin) && (
+                <Link href="/create-event" className="text-gray-600 hover:text-gray-900 transition-colors" data-test-id="create-event-link">
+                  Create Event
+                </Link>
+              )}
               <Link href="/my-events" className="text-gray-600 hover:text-gray-900 transition-colors" data-test-id="my-events-link">
                 My Events
               </Link>
@@ -155,14 +159,16 @@ export function HomePageClient({ featuredEvents, nonFeaturedEvents }: HomePageCl
                 >
                   Browse Events
                 </button>
-                <Link
-                  href="/create-event"
-                  className="text-gray-600 hover:text-gray-900 transition-colors py-2"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  data-test-id="mobile-create-event-link"
-                >
-                  Create Event
-                </Link>
+                {(isStaff || isAdmin) && (
+                  <Link
+                    href="/create-event"
+                    className="text-gray-600 hover:text-gray-900 transition-colors py-2"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    data-test-id="mobile-create-event-link"
+                  >
+                    Create Event
+                  </Link>
+                )}
                 <Link
                   href="/my-events"
                   className="text-gray-600 hover:text-gray-900 transition-colors py-2"
