@@ -25,10 +25,19 @@ jobs:
         run: |
           echo "🔍 Finding previous successful deployment..."
           
-          # Get list of deployments from Vercel
+          # Get list of deployments from Vercel using the correct API
           DEPLOYMENTS=$(curl -s \
             -H "Authorization: Bearer ${{ secrets.VERCEL_TOKEN }}" \
-            "https://api.vercel.com/v6/deployments?projectId=${{ secrets.VERCEL_PROJECT_ID }}&limit=10")
+            "https://api.vercel.com/v6/deployments?projectId=${{ secrets.VERCEL_PROJECT_ID }}&limit=20&target=production")
+          
+          echo "API Response status: $?"
+          
+          # Check if API call was successful
+          if echo "$DEPLOYMENTS" | jq -e '.error' > /dev/null; then
+            echo "❌ Failed to fetch deployments:"
+            echo "$DEPLOYMENTS" | jq -r '.error.message // "Unknown API error"'
+            exit 1
+          fi
           
           # Find the most recent successful deployment that isn't the current one
           CURRENT_DEPLOYMENT=$(echo "$DEPLOYMENTS" | jq -r '.deployments[0].uid // empty')
@@ -37,36 +46,15 @@ jobs:
           PREVIOUS_DEPLOYMENT=""
           echo "Current deployment: $CURRENT_DEPLOYMENT"
           echo "Available deployments:"
-          echo "$DEPLOYMENTS" | jq -r '.deployments[] | "\(.uid) - \(.state) - \(.url)"'
+          echo "$DEPLOYMENTS" | jq -r '.deployments[] | "\(.uid) - \(.state) - \(.url) - \(.createdAt)"'
           
-          for i in $(seq 1 9); do
-            DEPLOYMENT=$(echo "$DEPLOYMENTS" | jq -r ".deployments[$i] // empty")
-            if [ "$DEPLOYMENT" != "null" ] && [ "$DEPLOYMENT" != "" ]; then
-              STATE=$(echo "$DEPLOYMENT" | jq -r '.state // empty')
-              DEPLOYMENT_UID=$(echo "$DEPLOYMENT" | jq -r '.uid // empty')
-              CREATED_AT=$(echo "$DEPLOYMENT" | jq -r '.createdAt // empty')
-              
-              echo "Checking deployment $i: $DEPLOYMENT_UID (state: $STATE, created: $CREATED_AT)"
-              
-              if [ "$STATE" = "READY" ] && [ "$DEPLOYMENT_UID" != "$CURRENT_DEPLOYMENT" ]; then
-                # Verify this deployment still exists by checking its details
-                DEPLOYMENT_CHECK=$(curl -s \
-                  -H "Authorization: Bearer ${{ secrets.VERCEL_TOKEN }}" \
-                  "https://api.vercel.com/v13/deployments/$DEPLOYMENT_UID")
-                
-                if echo "$DEPLOYMENT_CHECK" | jq -e '.error' > /dev/null; then
-                  echo "⚠️ Deployment $DEPLOYMENT_UID not accessible, skipping..."
-                  continue
-                fi
-                
-                PREVIOUS_DEPLOYMENT="$DEPLOYMENT_UID"
-                echo "✅ Found accessible previous deployment: $PREVIOUS_DEPLOYMENT"
-                break
-              fi
-            fi
-          done
+          # Find the first READY deployment that's not the current one
+          PREVIOUS_DEPLOYMENT=$(echo "$DEPLOYMENTS" | jq -r '
+            .deployments[] | 
+            select(.state == "READY" and .uid != "'$CURRENT_DEPLOYMENT'") | 
+            .uid' | head -1)
           
-          if [ -z "$PREVIOUS_DEPLOYMENT" ]; then
+          if [ -z "$PREVIOUS_DEPLOYMENT" ] || [ "$PREVIOUS_DEPLOYMENT" = "null" ]; then
             echo "❌ No accessible previous deployment found"
             echo "This could mean:"
             echo "  • All recent deployments are the current one"
@@ -78,27 +66,65 @@ jobs:
             exit 1
           fi
           
+          echo "✅ Found previous deployment: $PREVIOUS_DEPLOYMENT"
           echo "previous_deployment=$PREVIOUS_DEPLOYMENT" >> $GITHUB_OUTPUT
 
-      - name: 🔄 Execute Rollback
-        id: rollback
+      - name: 🔍 Validate Target Deployment
+        id: validate
         run: |
           TARGET_DEPLOYMENT="${{ github.event.inputs.target_deployment }}"
           if [ -z "$TARGET_DEPLOYMENT" ]; then
             TARGET_DEPLOYMENT="${{ steps.get-previous.outputs.previous_deployment }}"
           fi
           
+          echo "🔍 Validating deployment: $TARGET_DEPLOYMENT"
+          
+          # Verify the deployment exists and is accessible
+          DEPLOYMENT_CHECK=$(curl -s \
+            -H "Authorization: Bearer ${{ secrets.VERCEL_TOKEN }}" \
+            "https://api.vercel.com/v13/deployments/$TARGET_DEPLOYMENT")
+          
+          if echo "$DEPLOYMENT_CHECK" | jq -e '.error' > /dev/null; then
+            ERROR_CODE=$(echo "$DEPLOYMENT_CHECK" | jq -r '.error.code // "unknown"')
+            ERROR_MESSAGE=$(echo "$DEPLOYMENT_CHECK" | jq -r '.error.message // "Unknown error"')
+            echo "❌ Target deployment validation failed: $ERROR_CODE"
+            echo "📝 Error: $ERROR_MESSAGE"
+            echo "🔍 Deployment ID: $TARGET_DEPLOYMENT"
+            exit 1
+          fi
+          
+          DEPLOYMENT_STATE=$(echo "$DEPLOYMENT_CHECK" | jq -r '.state // "unknown"')
+          DEPLOYMENT_URL=$(echo "$DEPLOYMENT_CHECK" | jq -r '.url // "unknown"')
+          
+          echo "✅ Deployment validation successful"
+          echo "📊 State: $DEPLOYMENT_STATE"
+          echo "🌐 URL: $DEPLOYMENT_URL"
+          
+          if [ "$DEPLOYMENT_STATE" != "READY" ]; then
+            echo "⚠️ Warning: Deployment state is '$DEPLOYMENT_STATE', not 'READY'"
+            echo "This deployment may not be suitable for rollback"
+          fi
+          
+          echo "target_deployment=$TARGET_DEPLOYMENT" >> $GITHUB_OUTPUT
+
+      - name: 🔄 Execute Rollback
+        id: rollback
+        run: |
+          TARGET_DEPLOYMENT="${{ steps.validate.outputs.target_deployment }}"
+          
           echo "🔄 Rolling back to deployment: $TARGET_DEPLOYMENT"
           echo "📝 Reason: ${{ github.event.inputs.reason }}"
           
-          # Promote the previous deployment to production
-          ROLLBACK_RESPONSE=$(curl -s -X PATCH \
+          # Use the correct Vercel API endpoint for promoting deployments
+          # Based on Vercel SDK: projects.requestPromote method
+          # POST /v9/projects/{projectId}/request-promote with deploymentId in body
+          ROLLBACK_RESPONSE=$(curl -s -X POST \
             -H "Authorization: Bearer ${{ secrets.VERCEL_TOKEN }}" \
             -H "Content-Type: application/json" \
-            "https://api.vercel.com/v9/projects/${{ secrets.VERCEL_PROJECT_ID }}/deployments/$TARGET_DEPLOYMENT/promote" \
-            -d '{"target":"production"}')
+            "https://api.vercel.com/v9/projects/${{ secrets.VERCEL_PROJECT_ID }}/request-promote" \
+            -d "{\"deploymentId\":\"$TARGET_DEPLOYMENT\"}")
           
-          echo "Rollback response: $ROLLBACK_RESPONSE"
+          echo "Rollback API response: $ROLLBACK_RESPONSE"
           
           # Check if rollback was successful
           if echo "$ROLLBACK_RESPONSE" | jq -e '.error' > /dev/null; then
@@ -108,25 +134,35 @@ jobs:
             echo "❌ Rollback failed with error: $ERROR_CODE"
             echo "📝 Error message: $ERROR_MESSAGE"
             echo ""
-            echo "Common causes:"
+            echo "🔧 Troubleshooting:"
             case "$ERROR_CODE" in
               "not_found")
                 echo "  • Deployment no longer exists (auto-deleted by Vercel)"
-                echo "  • Deployment ID is incorrect"
-                echo "  • Project ID mismatch"
+                echo "  • Deployment ID is incorrect: $TARGET_DEPLOYMENT"
+                echo "  • Project ID mismatch: ${{ secrets.VERCEL_PROJECT_ID }}"
+                echo "  • Try using a more recent deployment"
                 ;;
               "forbidden")
-                echo "  • Insufficient permissions"
+                echo "  • Insufficient permissions on Vercel token"
                 echo "  • Token doesn't have deployment promotion rights"
+                echo "  • Check token scopes in Vercel dashboard"
                 ;;
               "bad_request")
-                echo "  • Deployment is already promoted"
+                echo "  • Deployment is already promoted to production"
                 echo "  • Deployment is not in a promotable state"
+                echo "  • Invalid request format"
                 ;;
               *)
-                echo "  • Check Vercel API documentation for error code: $ERROR_CODE"
+                echo "  • Unknown error code: $ERROR_CODE"
+                echo "  • Check Vercel API documentation"
+                echo "  • Verify project and deployment IDs"
                 ;;
             esac
+            echo ""
+            echo "🔍 Debug info:"
+            echo "  Project ID: ${{ secrets.VERCEL_PROJECT_ID }}"
+            echo "  Deployment ID: $TARGET_DEPLOYMENT"
+            echo "  API Endpoint: https://api.vercel.com/v9/projects/${{ secrets.VERCEL_PROJECT_ID }}/request-promote"
             echo ""
             echo "Full response: $ROLLBACK_RESPONSE"
             exit 1
