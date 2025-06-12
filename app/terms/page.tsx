@@ -1,4 +1,5 @@
 import { Navigation } from '@/components/ui/Navigation';
+import { Footer } from '@/components/ui/Footer';
 import Link from 'next/link';
 import { FileText } from 'lucide-react';
 
@@ -161,6 +162,7 @@ export default function TermsPage() {
                     </div>
                 </div>
             </main>
+            <Footer />
         </div>
     );
 } 
