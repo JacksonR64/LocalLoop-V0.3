@@ -274,7 +274,7 @@ function PreviewListCard({ event, className, onClick, isUpcoming, hasPrice, lowe
 
                 <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between mb-2">
-                        <h3 className="font-semibold text-base text-gray-900 truncate pr-2">
+                        <h3 className="font-semibold text-base text-foreground truncate pr-2">
                             {event.title}
                         </h3>
                         <div className="flex gap-1 flex-shrink-0">
@@ -291,11 +291,11 @@ function PreviewListCard({ event, className, onClick, isUpcoming, hasPrice, lowe
                         </div>
                     </div>
 
-                    <p className="text-sm text-gray-600 mb-3 line-clamp-2">
+                    <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
                         {event.short_description || truncateText(event.description || '', 120)}
                     </p>
 
-                    <div className="flex items-center gap-4 text-xs text-gray-500">
+                    <div className="flex items-center gap-4 text-xs text-muted-foreground">
                         <span className="flex items-center gap-1">
                             <Calendar className="w-3 h-3" />
                             {new Date(event.start_time).toLocaleDateString()}
@@ -370,32 +370,32 @@ function FullListCard({ event, className, onClick, spotsRemaining, isUpcoming, h
             <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                     <div className="space-y-3">
-                        <div className="flex items-center gap-3 text-gray-700">
+                        <div className="flex items-center gap-3 text-foreground">
                             <Calendar className="w-5 h-5 flex-shrink-0 text-blue-600" />
                             <div>
                                 <div className="font-medium">{formatDateTime(event.start_time)}</div>
-                                <div className="text-gray-500">
+                                <div className="text-muted-foreground">
                                     Duration: {Math.round((new Date(event.end_time).getTime() - new Date(event.start_time).getTime()) / (1000 * 60 * 60))} hours
                                 </div>
                             </div>
                         </div>
 
-                        <div className="flex items-center gap-3 text-gray-700">
+                        <div className="flex items-center gap-3 text-foreground">
                             <MapPin className="w-5 h-5 flex-shrink-0 text-blue-600" />
                             <div>
                                 <div className="font-medium">{event.location || 'Location TBD'}</div>
-                                <div className="text-gray-500">View on map</div>
+                                <div className="text-muted-foreground">View on map</div>
                             </div>
                         </div>
                     </div>
 
                     <div className="space-y-3">
-                        <div className="flex items-center gap-3 text-gray-700">
+                        <div className="flex items-center gap-3 text-foreground">
                             <Users className="w-5 h-5 flex-shrink-0 text-blue-600" />
                             <div>
                                 <div className="font-medium">{event.rsvp_count} attending</div>
                                 {spotsRemaining && spotsRemaining > 0 && (
-                                    <div className="text-gray-500">{spotsRemaining} spots remaining</div>
+                                    <div className="text-muted-foreground">{spotsRemaining} spots remaining</div>
                                 )}
                                 {event.capacity && spotsRemaining === 0 && (
                                     <div className="text-red-500">Event is full</div>
@@ -403,11 +403,11 @@ function FullListCard({ event, className, onClick, spotsRemaining, isUpcoming, h
                             </div>
                         </div>
 
-                        <div className="flex items-center gap-3 text-gray-700">
+                        <div className="flex items-center gap-3 text-foreground">
                             <Tag className="w-5 h-5 flex-shrink-0 text-blue-600" />
                             <div>
                                 <div className="font-medium capitalize">{event.category || 'General'}</div>
-                                <div className="text-gray-500">Category</div>
+                                <div className="text-muted-foreground">Category</div>
                             </div>
                         </div>
                     </div>
@@ -416,8 +416,8 @@ function FullListCard({ event, className, onClick, spotsRemaining, isUpcoming, h
 
             <CardFooter className="flex items-center justify-between pt-6 border-t">
                 <div>
-                    <div className="font-medium text-gray-900">Organized by</div>
-                    <div className="text-gray-600">{event.organizer.display_name}</div>
+                    <div className="font-medium text-foreground">Organized by</div>
+                    <div className="text-muted-foreground">{event.organizer.display_name}</div>
                 </div>
                 <div className="flex gap-3">
                     <button className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium">
@@ -443,10 +443,10 @@ function CompactCard({ event, className, onClick, hasPrice, lowestPrice }: CardC
         >
             <div className="flex items-center justify-between p-3">
                 <div className="flex-1 min-w-0">
-                    <h4 className="font-medium text-sm text-gray-900 truncate">
+                    <h4 className="font-medium text-sm text-foreground truncate">
                         {event.title}
                     </h4>
-                    <div className="flex items-center gap-3 text-xs text-gray-500 mt-1">
+                    <div className="flex items-center gap-3 text-xs text-muted-foreground mt-1">
                         <span>{new Date(event.start_time).toLocaleDateString()}</span>
                         <span>•</span>
                         <span>{truncateText(event.location || 'Location TBD', 20)}</span>
@@ -460,7 +460,7 @@ function CompactCard({ event, className, onClick, hasPrice, lowestPrice }: CardC
                             {hasPrice ? formatPrice(lowestPrice) : 'Paid'}
                         </span>
                     )}
-                    <ExternalLink className="w-3 h-3 text-gray-400 group-hover:text-gray-600" />
+                    <ExternalLink className="w-3 h-3 text-muted-foreground group-hover:text-foreground" />
                 </div>
             </div>
         </Card>
@@ -489,7 +489,7 @@ function TimelineCard({ event, className, onClick, hasPrice, lowestPrice }: Card
                 {/* Event Details */}
                 <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between mb-2">
-                        <h3 className="font-semibold text-base text-gray-900 group-hover:text-blue-600 transition-colors">
+                        <h3 className="font-semibold text-base text-foreground group-hover:text-blue-600 transition-colors">
                             {event.title}
                         </h3>
                         {event.is_paid && (

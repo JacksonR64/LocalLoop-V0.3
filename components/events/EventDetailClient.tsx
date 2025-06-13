@@ -295,26 +295,26 @@ export function EventDetailClient({ event }: EventDetailClientProps) {
                             {/* Event Stats */}
                             <Card data-test-id="event-stats-card">
                                 <CardContent className="p-6">
-                                    <h3 className="text-lg font-semibold mb-4" data-test-id="event-stats-title">Event Details</h3>
+                                    <h3 className="text-lg font-semibold mb-4 text-foreground" data-test-id="event-stats-title">Event Details</h3>
                                     <div className="space-y-3" data-test-id="event-stats-list">
                                         <div className="flex justify-between" data-test-id="event-category">
-                                            <span className="text-gray-600">Category:</span>
-                                            <span className="text-gray-900 capitalize">{event.category}</span>
+                                            <span className="text-muted-foreground">Category:</span>
+                                            <span className="text-foreground capitalize">{event.category}</span>
                                         </div>
                                         {event.capacity && (
                                             <div className="flex justify-between" data-test-id="event-capacity">
-                                                <span className="text-gray-600">Capacity:</span>
-                                                <span className="text-gray-900">{event.capacity}</span>
+                                                <span className="text-muted-foreground">Capacity:</span>
+                                                <span className="text-foreground">{event.capacity}</span>
                                             </div>
                                         )}
                                         <div className="flex justify-between" data-test-id="event-rsvp-count">
-                                            <span className="text-gray-600">RSVPs:</span>
-                                            <span className="text-gray-900">{event.rsvp_count}</span>
+                                            <span className="text-muted-foreground">RSVPs:</span>
+                                            <span className="text-foreground">{event.rsvp_count}</span>
                                         </div>
                                         {event.capacity && (
                                             <div className="flex justify-between" data-test-id="event-available-spots">
-                                                <span className="text-gray-600">Available:</span>
-                                                <span className="text-gray-900">{event.capacity - event.rsvp_count}</span>
+                                                <span className="text-muted-foreground">Available:</span>
+                                                <span className="text-foreground">{event.capacity - event.rsvp_count}</span>
                                             </div>
                                         )}
                                     </div>
