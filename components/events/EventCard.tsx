@@ -92,8 +92,8 @@ function SafeImage({
 
     if (hasError || !src) {
         return (
-            <div className={`bg-gray-200 flex items-center justify-center ${className}`}>
-                <ImageIcon className="w-8 h-8 text-gray-400" />
+            <div className={`bg-[var(--muted)] flex items-center justify-center ${className}`}>
+                <ImageIcon className="w-8 h-8 text-[var(--muted-foreground)]" />
             </div>
         );
     }
@@ -178,7 +178,7 @@ function DefaultCard({ event, size, featured, showImage, className, onClick, spo
                     />
                     {featured && (
                         <div className="absolute top-3 left-3">
-                            <span className="bg-blue-600 text-white px-2 py-1 rounded-full text-xs font-medium">
+                            <span className="bg-[var(--primary)] text-[var(--primary-foreground)] px-2 py-1 rounded-full text-xs font-medium">
                                 Featured
                             </span>
                         </div>
@@ -193,7 +193,7 @@ function DefaultCard({ event, size, featured, showImage, className, onClick, spo
                     </CardTitle>
                     <div className="flex gap-2">
                         {event.is_paid && (
-                            <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
+                            <span className="text-xs bg-[var(--secondary)] text-[var(--secondary-foreground)] px-2 py-1 rounded-full">
                                 {hasPrice ? formatPrice(lowestPrice) : 'Paid'}
                             </span>
                         )}
@@ -279,7 +279,7 @@ function PreviewListCard({ event, className, onClick, isUpcoming, hasPrice, lowe
                         </h3>
                         <div className="flex gap-1 flex-shrink-0">
                             {event.is_paid && (
-                                <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
+                                <span className="text-xs bg-[var(--secondary)] text-[var(--secondary-foreground)] px-2 py-1 rounded-full">
                                     {hasPrice ? formatPrice(lowestPrice) : 'Paid'}
                                 </span>
                             )}
@@ -351,7 +351,7 @@ function FullListCard({ event, className, onClick, spotsRemaining, isUpcoming, h
                     </CardTitle>
                     <div className="flex gap-2">
                         {event.is_paid && (
-                            <span className="text-sm bg-blue-100 text-blue-800 px-3 py-1 rounded-full font-medium">
+                            <span className="text-sm bg-[var(--secondary)] text-[var(--secondary-foreground)] px-3 py-1 rounded-full font-medium">
                                 {hasPrice ? formatPrice(lowestPrice) : 'Paid Event'}
                             </span>
                         )}
@@ -456,7 +456,7 @@ function CompactCard({ event, className, onClick, hasPrice, lowestPrice }: CardC
                 </div>
                 <div className="flex items-center gap-2 ml-3">
                     {event.is_paid && (
-                        <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">
+                        <span className="text-xs bg-[var(--secondary)] text-[var(--secondary-foreground)] px-2 py-1 rounded">
                             {hasPrice ? formatPrice(lowestPrice) : 'Paid'}
                         </span>
                     )}
@@ -493,7 +493,7 @@ function TimelineCard({ event, className, onClick, hasPrice, lowestPrice }: Card
                             {event.title}
                         </h3>
                         {event.is_paid && (
-                            <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full ml-2">
+                            <span className="text-xs bg-[var(--secondary)] text-[var(--secondary-foreground)] px-2 py-1 rounded-full ml-2">
                                 {hasPrice ? formatPrice(lowestPrice) : 'Paid'}
                             </span>
                         )}

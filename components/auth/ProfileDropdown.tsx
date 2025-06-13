@@ -77,7 +77,7 @@ export function ProfileDropdown() {
           <Link
             href="/my-events"
             onClick={() => setIsOpen(false)}
-            className="w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+            className="w-full flex items-center gap-2 px-4 py-2 text-sm text-[var(--foreground)] hover:bg-[var(--accent)] transition-colors"
           >
             <Calendar className="w-4 h-4" />
             My Events
@@ -88,7 +88,7 @@ export function ProfileDropdown() {
             <Link
               href="/staff"
               onClick={() => setIsOpen(false)}
-              className="w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+              className="w-full flex items-center gap-2 px-4 py-2 text-sm text-[var(--foreground)] hover:bg-[var(--accent)] transition-colors"
             >
               {isAdmin ? <Settings className="w-4 h-4" /> : <BarChart3 className="w-4 h-4" />}
               {isAdmin ? 'Admin Dashboard' : 'Staff Dashboard'}
@@ -99,7 +99,7 @@ export function ProfileDropdown() {
 
           <button
             onClick={handleSignOut}
-            className="w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+            className="w-full flex items-center gap-2 px-4 py-2 text-sm text-[var(--foreground)] hover:bg-[var(--accent)] transition-colors"
           >
             <LogOut className="w-4 h-4" />
             Sign Out

@@ -13,6 +13,7 @@ import { useAuth } from '@/lib/auth-context';
 import { useAuth as useAuthHook } from '@/lib/hooks/useAuth';
 import { ProfileDropdown } from '@/components/auth/ProfileDropdown';
 import { Footer } from '@/components/ui/Footer';
+import { ThemeToggle } from '@/components/ui/ThemeToggle';
 
 interface HomePageClientProps {
   featuredEvents: EventData[];
@@ -84,38 +85,41 @@ export function HomePageClient({ featuredEvents, nonFeaturedEvents }: HomePageCl
   return (
     <>
       {/* Navigation Header */}
-      <header className="bg-white shadow-sm border-b sticky top-0 z-50" data-test-id="homepage-header">
+      <header className="bg-[var(--card)] shadow-sm border-b border-[var(--border)] sticky top-0 z-50" data-test-id="homepage-header">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-3" data-test-id="homepage-logo">
-              <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                <Calendar className="w-5 h-5 text-white" />
+              <div className="w-8 h-8 bg-[var(--primary)] rounded-lg flex items-center justify-center">
+                <Calendar className="w-5 h-5 text-[var(--primary-foreground)]" />
               </div>
-              <h1 className="text-xl font-bold text-gray-900" data-test-id="homepage-title">LocalLoop</h1>
+              <h1 className="text-xl font-bold text-[var(--foreground)]" data-test-id="homepage-title">LocalLoop</h1>
             </Link>
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center gap-6" data-test-id="desktop-navigation">
               <button
                 onClick={() => handleViewAll()}
-                className="text-gray-600 hover:text-gray-900 transition-colors"
+                className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
                 data-test-id="browse-events-button"
               >
                 Browse Events
               </button>
               {(isStaff || isAdmin) && (
-                <Link href="/create-event" className="text-gray-600 hover:text-gray-900 transition-colors" data-test-id="create-event-link">
+                <Link href="/create-event" className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors" data-test-id="create-event-link">
                   Create Event
                 </Link>
               )}
-              <Link href="/my-events" className="text-gray-600 hover:text-gray-900 transition-colors" data-test-id="my-events-link">
+              <Link href="/my-events" className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors" data-test-id="my-events-link">
                 My Events
               </Link>
 
+              {/* Theme Toggle */}
+              <ThemeToggle />
+
               {/* Auth state conditional rendering */}
               {authLoading ? (
-                <div className="w-20 h-10 bg-gray-200 animate-pulse rounded-lg" data-test-id="auth-loading"></div>
+                <div className="w-20 h-10 bg-[var(--muted)] animate-pulse rounded-lg" data-test-id="auth-loading"></div>
               ) : user ? (
                 <div data-test-id="profile-dropdown-container">
                   <ProfileDropdown />
@@ -123,7 +127,7 @@ export function HomePageClient({ featuredEvents, nonFeaturedEvents }: HomePageCl
               ) : (
                 <Link
                   href="/auth/login"
-                  className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                  className="bg-[var(--primary)] text-[var(--primary-foreground)] px-4 py-2 rounded-lg hover:bg-[var(--primary-hover)] transition-colors"
                   data-test-id="sign-in-button"
                 >
                   Sign In
@@ -133,29 +137,29 @@ export function HomePageClient({ featuredEvents, nonFeaturedEvents }: HomePageCl
 
             {/* Mobile Menu Button */}
             <button
-              className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
+              className="md:hidden p-2 rounded-lg hover:bg-[var(--accent)] transition-colors"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label="Toggle mobile menu"
               data-test-id="mobile-menu-button"
             >
               {isMobileMenuOpen ? (
-                <X className="w-6 h-6 text-gray-600" />
+                <X className="w-6 h-6 text-[var(--muted-foreground)]" />
               ) : (
-                <Menu className="w-6 h-6 text-gray-600" />
+                <Menu className="w-6 h-6 text-[var(--muted-foreground)]" />
               )}
             </button>
           </div>
 
           {/* Mobile Navigation */}
           {isMobileMenuOpen && (
-            <div className="md:hidden border-t border-gray-200 py-4" data-test-id="mobile-navigation">
+            <div className="md:hidden border-t border-[var(--border)] py-4" data-test-id="mobile-navigation">
               <nav className="flex flex-col space-y-4">
                 <button
                   onClick={() => {
                     handleViewAll();
                     setIsMobileMenuOpen(false);
                   }}
-                  className="text-gray-600 hover:text-gray-900 transition-colors py-2 text-left"
+                  className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors py-2 text-left"
                   data-test-id="mobile-browse-events-button"
                 >
                   Browse Events
@@ -163,7 +167,7 @@ export function HomePageClient({ featuredEvents, nonFeaturedEvents }: HomePageCl
                 {(isStaff || isAdmin) && (
                   <Link
                     href="/create-event"
-                    className="text-gray-600 hover:text-gray-900 transition-colors py-2"
+                    className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors py-2"
                     onClick={() => setIsMobileMenuOpen(false)}
                     data-test-id="mobile-create-event-link"
                   >
@@ -172,16 +176,21 @@ export function HomePageClient({ featuredEvents, nonFeaturedEvents }: HomePageCl
                 )}
                 <Link
                   href="/my-events"
-                  className="text-gray-600 hover:text-gray-900 transition-colors py-2"
+                  className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors py-2"
                   onClick={() => setIsMobileMenuOpen(false)}
                   data-test-id="mobile-my-events-link"
                 >
                   My Events
                 </Link>
 
+                {/* Theme Toggle for Mobile */}
+                <div className="py-2">
+                  <ThemeToggle />
+                </div>
+
                 {/* Auth state conditional rendering for mobile */}
                 {authLoading ? (
-                  <div className="w-full h-12 bg-gray-200 animate-pulse rounded-lg" data-test-id="mobile-auth-loading"></div>
+                  <div className="w-full h-12 bg-[var(--muted)] animate-pulse rounded-lg" data-test-id="mobile-auth-loading"></div>
                 ) : user ? (
                   <div data-test-id="mobile-profile-dropdown-container">
                     <ProfileDropdown />
@@ -189,7 +198,7 @@ export function HomePageClient({ featuredEvents, nonFeaturedEvents }: HomePageCl
                 ) : (
                   <Link
                     href="/auth/login"
-                    className="bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700 transition-colors text-left"
+                    className="bg-[var(--primary)] text-[var(--primary-foreground)] px-4 py-3 rounded-lg hover:bg-[var(--primary-hover)] transition-colors text-left"
                     onClick={() => setIsMobileMenuOpen(false)}
                     data-test-id="mobile-sign-in-button"
                   >

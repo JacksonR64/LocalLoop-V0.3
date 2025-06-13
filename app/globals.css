@@ -33,6 +33,39 @@
   --destructive-foreground: #ffffff;
 }
 
+.dark {
+  --background: #0f1419;
+  --foreground: #e6edf3;
+  --border: #30363d;
+  --muted: #161b22;
+  --muted-foreground: #8b949e;
+  --ring: #58a6ff;
+  --ring-offset-background: #0d1117;
+  --foreground-rgb: 230, 237, 243;
+  --background-start-rgb: 15, 20, 25;
+  --background-end-rgb: 13, 17, 23;
+
+  /* Primary colors for dark mode */
+  --primary: #58a6ff;
+  --primary-hover: #79c0ff;
+  --primary-foreground: #0d1117;
+
+  /* Surface colors for dark mode */
+  --card: #161b22;
+  --card-foreground: #e6edf3;
+  --secondary: #21262d;
+  --secondary-foreground: #c9d1d9;
+
+  /* Accent colors for dark mode */
+  --accent: #21262d;
+  --accent-foreground: #c9d1d9;
+
+  /* Destructive colors for dark mode */
+  --destructive: #f85149;
+  --destructive-hover: #ff6b6b;
+  --destructive-foreground: #ffffff;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -57,42 +90,6 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    /* Much softer, more pleasant dark mode colors */
-    --background: #0f1419;
-    --foreground: #e6edf3;
-    --border: #30363d;
-    --muted: #161b22;
-    --muted-foreground: #8b949e;
-    --ring: #58a6ff;
-    --ring-offset-background: #0f1419;
-    --foreground-rgb: 230, 237, 243;
-    --background-start-rgb: 15, 20, 25;
-    --background-end-rgb: 21, 27, 34;
-
-    /* Primary colors for dark mode */
-    --primary: #58a6ff;
-    --primary-hover: #388bfd;
-    --primary-foreground: #0d1117;
-
-    /* Surface colors for dark mode */
-    --card: #161b22;
-    --card-foreground: #e6edf3;
-    --secondary: #21262d;
-    --secondary-foreground: #c9d1d9;
-
-    /* Accent colors for dark mode */
-    --accent: #21262d;
-    --accent-foreground: #c9d1d9;
-
-    /* Destructive colors for dark mode */
-    --destructive: #f85149;
-    --destructive-hover: #ff6166;
-    --destructive-foreground: #0d1117;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
@@ -105,20 +102,31 @@ body {
 
 /* Custom scrollbar for better UX */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: var(--muted);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border-radius: 3px;
+  background: var(--muted-foreground);
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--muted-foreground);
+  background: var(--foreground);
+}
+
+/* Focus ring styling */
+*:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+/* Smooth transitions for theme changes */
+* {
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
 @layer utilities {
