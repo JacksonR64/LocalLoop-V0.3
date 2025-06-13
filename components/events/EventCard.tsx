@@ -423,7 +423,7 @@ function FullListCard({ event, className, onClick, spotsRemaining, isUpcoming, h
                     <button className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium">
                         {event.is_paid ? 'Buy Tickets' : 'RSVP'}
                     </button>
-                    <button className="border border-gray-300 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-50 transition-colors">
+                    <button className="border border-border text-foreground px-6 py-2 rounded-lg hover:bg-muted transition-colors">
                         Share
                     </button>
                 </div>
@@ -438,7 +438,7 @@ function CompactCard({ event, className, onClick, hasPrice, lowestPrice }: CardC
         <Card
             size="sm"
             variant="ghost"
-            className={`hover:bg-gray-50 transition-colors cursor-pointer group border-l-4 border-l-blue-600 ${className}`}
+            className={`hover:bg-muted transition-colors cursor-pointer group border-l-4 border-l-blue-600 ${className}`}
             onClick={onClick}
         >
             <div className="flex items-center justify-between p-3">

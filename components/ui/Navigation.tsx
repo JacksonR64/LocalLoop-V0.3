@@ -57,8 +57,8 @@ export function Navigation({
                             </button>
 
                             {(isStaff || isAdmin) && (
-                                <Link href="/create-event" className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors">
-                                    Create Event
+                                <Link href="/staff" className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors">
+                                    Staff
                                 </Link>
                             )}
 
@@ -114,11 +114,11 @@ export function Navigation({
 
                             {(isStaff || isAdmin) && (
                                 <Link
-                                    href="/create-event"
+                                    href="/staff"
                                     className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors py-2"
                                     onClick={() => setIsMobileMenuOpen(false)}
                                 >
-                                    Create Event
+                                    Staff
                                 </Link>
                             )}
 
