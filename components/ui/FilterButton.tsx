@@ -35,11 +35,11 @@ export const FilterButton = React.forwardRef<HTMLButtonElement, FilterButtonProp
             onClick={onClick}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
-            className={`flex items-center justify-between w-full px-3 py-2 text-sm border border-border rounded-md bg-background hover:bg-accent focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring ${className}`}
+            className={`flex items-center justify-between w-full px-3 py-2 text-sm border border-border rounded-md bg-background hover:bg-accent focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring transition-colors ${className}`}
             {...ariaProps}
         >
             <div className="flex items-center gap-2 flex-1 text-left">
-                {children || <span className="text-muted-foreground">{placeholder}</span>}
+                {children || <span className="text-muted-foreground hover:text-foreground transition-colors">{placeholder}</span>}
             </div>
             <ChevronDown className={`w-4 h-4 text-muted-foreground transition-transform ${isOpen ? 'rotate-180' : ''}`} />
         </button>

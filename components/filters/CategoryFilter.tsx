@@ -69,7 +69,7 @@ export function CategoryFilter({
                 aria-haspopup="listbox"
             >
                 <div className="flex items-center justify-between w-full">
-                    <span className="truncate text-muted-foreground">
+                    <span className="truncate text-muted-foreground hover:text-foreground transition-colors">
                         {getDisplayText()}
                     </span>
                     {selectedCategories.length > 0 && (
