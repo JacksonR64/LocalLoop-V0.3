@@ -20,8 +20,8 @@ export function ThemeToggle() {
     // If not mounted yet, return a placeholder to prevent hydration mismatch
     if (!mounted) {
         return (
-            <button className="p-2 rounded-lg hover:bg-[var(--accent)] transition-colors">
-                <Moon className="w-5 h-5 text-[var(--muted-foreground)]" />
+            <button className="p-2 rounded-lg hover:bg-accent transition-colors">
+                <Moon className="w-5 h-5 text-muted-foreground" />
             </button>
         )
     }
@@ -29,13 +29,13 @@ export function ThemeToggle() {
     return (
         <button
             onClick={toggleTheme}
-            className="p-2 rounded-lg hover:bg-[var(--accent)] transition-colors"
+            className="p-2 rounded-lg hover:bg-accent transition-colors"
             aria-label="Toggle theme"
         >
             {resolvedTheme === 'dark' ? (
-                <Sun className="w-5 h-5 text-[var(--muted-foreground)]" />
+                <Sun className="w-5 h-5 text-muted-foreground" />
             ) : (
-                <Moon className="w-5 h-5 text-[var(--muted-foreground)]" />
+                <Moon className="w-5 h-5 text-muted-foreground" />
             )}
         </button>
     )

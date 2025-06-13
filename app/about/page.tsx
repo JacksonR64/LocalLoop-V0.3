@@ -26,7 +26,7 @@ export default function AboutPage() {
                         <p className="text-muted-foreground leading-relaxed">
                             LocalLoop exists to strengthen communities by making it easier for people to discover,
                             attend, and organize local events. We believe that meaningful connections happen when
-                            neighbors come together, and we're here to facilitate those moments.
+                            neighbors come together, and we&apos;re here to facilitate those moments.
                         </p>
                     </section>
 
@@ -84,7 +84,7 @@ export default function AboutPage() {
                             <div className="text-center">
                                 <h3 className="text-lg font-semibold text-card-foreground mb-2">Reliability</h3>
                                 <p className="text-muted-foreground text-sm">
-                                    When your event matters, our platform delivers. We're committed to providing dependable service.
+                                    When your event matters, our platform delivers. We&apos;re committed to providing dependable service.
                                 </p>
                             </div>
                         </div>

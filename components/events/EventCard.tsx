@@ -92,8 +92,8 @@ function SafeImage({
 
     if (hasError || !src) {
         return (
-            <div className={`bg-[var(--muted)] flex items-center justify-center ${className}`}>
-                <ImageIcon className="w-8 h-8 text-[var(--muted-foreground)]" />
+            <div className={`bg-muted flex items-center justify-center ${className}`}>
+                <ImageIcon className="w-8 h-8 text-muted-foreground" />
             </div>
         );
     }
@@ -178,7 +178,7 @@ function DefaultCard({ event, size, featured, showImage, className, onClick, spo
                     />
                     {featured && (
                         <div className="absolute top-3 left-3">
-                            <span className="bg-[var(--primary)] text-[var(--primary-foreground)] px-2 py-1 rounded-full text-xs font-medium">
+                            <span className="bg-primary text-primary-foreground px-2 py-1 rounded-full text-xs font-medium">
                                 Featured
                             </span>
                         </div>
@@ -193,12 +193,12 @@ function DefaultCard({ event, size, featured, showImage, className, onClick, spo
                     </CardTitle>
                     <div className="flex gap-2">
                         {event.is_paid && (
-                            <span className="text-xs bg-[var(--secondary)] text-[var(--secondary-foreground)] px-2 py-1 rounded-full">
+                            <span className="text-xs bg-secondary text-secondary-foreground px-2 py-1 rounded-full">
                                 {hasPrice ? formatPrice(lowestPrice) : 'Paid'}
                             </span>
                         )}
                         {!isUpcoming && (
-                            <span className="text-xs bg-[var(--muted)] text-[var(--muted-foreground)] px-2 py-1 rounded-full">
+                            <span className="text-xs bg-muted text-muted-foreground px-2 py-1 rounded-full">
                                 Past
                             </span>
                         )}
@@ -211,17 +211,17 @@ function DefaultCard({ event, size, featured, showImage, className, onClick, spo
 
             <CardContent>
                 <div className="space-y-2 text-sm">
-                    <div className="flex items-center gap-2 text-[var(--muted-foreground)]">
+                    <div className="flex items-center gap-2 text-muted-foreground">
                         <Calendar className="w-4 h-4 flex-shrink-0" />
                         <span>{formatDateTime(event.start_time)}</span>
                     </div>
 
-                    <div className="flex items-center gap-2 text-[var(--muted-foreground)]">
+                    <div className="flex items-center gap-2 text-muted-foreground">
                         <MapPin className="w-4 h-4 flex-shrink-0" />
                         <span>{event.location || 'Location TBD'}</span>
                     </div>
 
-                    <div className="flex items-center gap-2 text-[var(--muted-foreground)]">
+                    <div className="flex items-center gap-2 text-muted-foreground">
                         <Users className="w-4 h-4 flex-shrink-0" />
                         <span>
                             {event.rsvp_count} attending
@@ -229,7 +229,7 @@ function DefaultCard({ event, size, featured, showImage, className, onClick, spo
                         </span>
                     </div>
 
-                    <div className="flex items-center gap-2 text-[var(--muted-foreground)]">
+                    <div className="flex items-center gap-2 text-muted-foreground">
                         <Tag className="w-4 h-4 flex-shrink-0" />
                         <span className="capitalize">{event.category || 'General'}</span>
                     </div>
@@ -237,7 +237,7 @@ function DefaultCard({ event, size, featured, showImage, className, onClick, spo
             </CardContent>
 
             <CardFooter className="flex items-center justify-between">
-                <span className="text-sm text-[var(--muted-foreground)]">
+                <span className="text-sm text-muted-foreground">
                     by {event.organizer.display_name}
                 </span>
                 <button className="text-blue-600 hover:text-blue-800 font-medium text-sm group-hover:underline flex items-center gap-1">
@@ -279,12 +279,12 @@ function PreviewListCard({ event, className, onClick, isUpcoming, hasPrice, lowe
                         </h3>
                         <div className="flex gap-1 flex-shrink-0">
                             {event.is_paid && (
-                                <span className="text-xs bg-[var(--secondary)] text-[var(--secondary-foreground)] px-2 py-1 rounded-full">
+                                <span className="text-xs bg-secondary text-secondary-foreground px-2 py-1 rounded-full">
                                     {hasPrice ? formatPrice(lowestPrice) : 'Paid'}
                                 </span>
                             )}
                             {!isUpcoming && (
-                                <span className="text-xs bg-[var(--muted)] text-[var(--muted-foreground)] px-2 py-1 rounded-full">
+                                <span className="text-xs bg-muted text-muted-foreground px-2 py-1 rounded-full">
                                     Past
                                 </span>
                             )}
@@ -351,12 +351,12 @@ function FullListCard({ event, className, onClick, spotsRemaining, isUpcoming, h
                     </CardTitle>
                     <div className="flex gap-2">
                         {event.is_paid && (
-                            <span className="text-sm bg-[var(--secondary)] text-[var(--secondary-foreground)] px-3 py-1 rounded-full font-medium">
+                            <span className="text-sm bg-secondary text-secondary-foreground px-3 py-1 rounded-full font-medium">
                                 {hasPrice ? formatPrice(lowestPrice) : 'Paid Event'}
                             </span>
                         )}
                         {!isUpcoming && (
-                            <span className="text-sm bg-[var(--muted)] text-[var(--muted-foreground)] px-3 py-1 rounded-full">
+                            <span className="text-sm bg-muted text-muted-foreground px-3 py-1 rounded-full">
                                 Past Event
                             </span>
                         )}
@@ -456,7 +456,7 @@ function CompactCard({ event, className, onClick, hasPrice, lowestPrice }: CardC
                 </div>
                 <div className="flex items-center gap-2 ml-3">
                     {event.is_paid && (
-                        <span className="text-xs bg-[var(--secondary)] text-[var(--secondary-foreground)] px-2 py-1 rounded">
+                        <span className="text-xs bg-secondary text-secondary-foreground px-2 py-1 rounded">
                             {hasPrice ? formatPrice(lowestPrice) : 'Paid'}
                         </span>
                     )}
@@ -493,7 +493,7 @@ function TimelineCard({ event, className, onClick, hasPrice, lowestPrice }: Card
                             {event.title}
                         </h3>
                         {event.is_paid && (
-                            <span className="text-xs bg-[var(--secondary)] text-[var(--secondary-foreground)] px-2 py-1 rounded-full ml-2">
+                            <span className="text-xs bg-secondary text-secondary-foreground px-2 py-1 rounded-full ml-2">
                                 {hasPrice ? formatPrice(lowestPrice) : 'Paid'}
                             </span>
                         )}

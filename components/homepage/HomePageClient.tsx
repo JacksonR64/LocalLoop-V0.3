@@ -1,7 +1,6 @@
 "use client";
 
 import React from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { LoadingSpinner } from '@/components/ui';
 import { EventCard, type EventData } from '@/components/events';
@@ -157,10 +156,10 @@ export function HomePageClient({ featuredEvents, nonFeaturedEvents }: HomePageCl
         {/* Upcoming Events */}
         <section id="upcoming-events" data-test-id="upcoming-events-section">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 sm:mb-6 gap-2">
-            <h3 className="text-xl sm:text-2xl font-bold text-gray-900" data-test-id="upcoming-events-title">Upcoming Events</h3>
+            <h3 className="text-xl sm:text-2xl font-bold text-foreground" data-test-id="upcoming-events-title">Upcoming Events</h3>
             <button
               onClick={handleViewAll}
-              className="text-blue-600 hover:text-blue-800 font-medium text-left sm:text-right"
+              className="text-primary hover:text-primary/80 font-medium text-left sm:text-right"
               data-test-id="view-all-button"
             >
               View All →
@@ -168,10 +167,10 @@ export function HomePageClient({ featuredEvents, nonFeaturedEvents }: HomePageCl
           </div>
 
           {filteredEvents.length === 0 ? (
-            <div className="text-center py-12 sm:py-16 text-gray-500 px-4" data-test-id="no-events-message">
+            <div className="text-center py-12 sm:py-16 text-muted-foreground px-4" data-test-id="no-events-message">
               <p className="mb-4 text-base sm:text-lg">No events match your search or filters.</p>
               <button
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors mb-4"
+                className="bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors mb-4"
                 onClick={handleViewAll}
                 data-test-id="show-all-events-button"
               >

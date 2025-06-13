@@ -31,6 +31,10 @@
   --destructive: #ef4444;
   --destructive-hover: #dc2626;
   --destructive-foreground: #ffffff;
+
+  /* Popover colors */
+  --popover: #ffffff;
+  --popover-foreground: #171717;
 }
 
 .dark {
@@ -64,6 +68,10 @@
   --destructive: #f85149;
   --destructive-hover: #ff6b6b;
   --destructive-foreground: #ffffff;
+
+  /* Popover colors for dark mode */
+  --popover: #161b22;
+  --popover-foreground: #e6edf3;
 }
 
 @theme inline {
@@ -86,6 +94,8 @@
   --color-destructive: var(--destructive);
   --color-destructive-hover: var(--destructive-hover);
   --color-destructive-foreground: var(--destructive-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }

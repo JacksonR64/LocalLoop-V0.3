@@ -98,13 +98,12 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-[var(--background)]`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-background text-foreground`}
       >
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
-          suppressHydrationWarning
         >
           <AuthProvider>
             <Navigation />

@@ -1,6 +1,5 @@
 import { Footer } from '@/components/ui/Footer';
-import Link from 'next/link';
-import { Mail, Phone, MapPin, MessageCircle } from 'lucide-react';
+import { Mail, Phone, MessageCircle } from 'lucide-react';
 
 export default function ContactPage() {
     return (

@@ -1,5 +1,5 @@
-import { CreateEventClient } from '@/components/events/CreateEventClient'
+import { redirect } from 'next/navigation'
 
 export default function CreateEventPage() {
-    return <CreateEventClient />
+    redirect('/staff/events/create')
 } 

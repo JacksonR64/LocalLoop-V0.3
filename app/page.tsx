@@ -79,7 +79,7 @@ export default async function HomePage() {
   const nonFeaturedEvents = events.filter(event => !event.featured);
 
   return (
-    <div className="min-h-screen bg-[var(--background)]">
+    <div className="min-h-screen bg-background">
       <HomePageClient
         featuredEvents={featuredEvents}
         nonFeaturedEvents={nonFeaturedEvents}
