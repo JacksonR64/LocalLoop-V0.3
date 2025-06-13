@@ -1,12 +1,10 @@
-import { Navigation } from '@/components/ui/Navigation';
 import { Footer } from '@/components/ui/Footer';
-import { Mail, MessageCircle, Phone } from 'lucide-react';
+import Link from 'next/link';
+import { Mail, Phone, MapPin } from 'lucide-react';
 
 export default function ContactPage() {
     return (
-        <div className="min-h-screen bg-gray-50">
-            <Navigation />
-
+        <div className="min-h-screen bg-[var(--background)]">
             {/* Main Content */}
             <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 <div className="text-center mb-12">

@@ -1,21 +1,18 @@
-import { Navigation } from '@/components/ui/Navigation';
 import { Footer } from '@/components/ui/Footer';
 import Link from 'next/link';
 import { Shield } from 'lucide-react';
 
 export default function PrivacyPage() {
     return (
-        <div className="min-h-screen bg-gray-50">
-            <Navigation />
-
+        <div className="min-h-screen bg-[var(--background)]">
             {/* Main Content */}
             <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 <div className="text-center mb-12">
-                    <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <Shield className="w-8 h-8 text-blue-600" />
+                    <div className="w-16 h-16 bg-[var(--accent)] rounded-full flex items-center justify-center mx-auto mb-6">
+                        <Shield className="w-8 h-8 text-[var(--primary)]" />
                     </div>
-                    <h1 className="text-4xl font-bold text-gray-900 mb-4">Privacy Policy</h1>
-                    <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+                    <h1 className="text-4xl font-bold text-[var(--foreground)] mb-4">Privacy Policy</h1>
+                    <p className="text-xl text-[var(--muted-foreground)] max-w-2xl mx-auto">
                         Your privacy is important to us. Here&apos;s how we protect and use your information.
                     </p>
                 </div>

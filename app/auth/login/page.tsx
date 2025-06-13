@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation'
 import { useAuth } from '@/lib/auth-context'
 import Link from 'next/link'
 import { Lock } from 'lucide-react'
-import { Navigation } from '@/components/ui/Navigation'
 
 export default function LoginPage() {
     const [email, setEmail] = useState('')
@@ -73,122 +72,119 @@ export default function LoginPage() {
     }
 
     return (
-        <>
-            <Navigation />
-            <div className="min-h-screen flex items-center justify-center bg-gray-50">
-                <div className="max-w-md w-full space-y-8">
-                    <div>
-                        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-                            Sign in to LocalLoop
-                        </h2>
-                        <p className="mt-2 text-center text-sm text-gray-600">
-                            Or{' '}
-                            <Link href="/auth/signup" className="font-medium text-blue-600 hover:text-blue-500">
-                                create a new account
-                            </Link>
-                        </p>
+        <div className="min-h-screen flex items-center justify-center bg-[var(--background)]">
+            <div className="max-w-md w-full space-y-8">
+                <div>
+                    <h2 className="mt-6 text-center text-3xl font-extrabold text-[var(--foreground)]">
+                        Sign in to LocalLoop
+                    </h2>
+                    <p className="mt-2 text-center text-sm text-[var(--muted-foreground)]">
+                        Or{' '}
+                        <Link href="/auth/signup" className="font-medium text-[var(--primary)] hover:text-[var(--primary)]/80">
+                            create a new account
+                        </Link>
+                    </p>
+                </div>
+
+                <form className="mt-8 space-y-6" onSubmit={handleEmailLogin}>
+                    {error && (
+                        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+                            {error}
+                        </div>
+                    )}
+
+                    <div className="rounded-md shadow-sm -space-y-px">
+                        <div>
+                            <input
+                                type="email"
+                                required
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                className="relative block w-full px-3 py-2 border border-[var(--border)] placeholder-[var(--muted-foreground)] text-[var(--foreground)] bg-[var(--background)] rounded-t-md focus:outline-none focus:ring-[var(--primary)] focus:border-[var(--primary)]"
+                                placeholder="Email address"
+                            />
+                        </div>
+                        <div>
+                            <input
+                                type="password"
+                                required
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                className="relative block w-full px-3 py-2 border border-[var(--border)] placeholder-[var(--muted-foreground)] text-[var(--foreground)] bg-[var(--background)] rounded-b-md focus:outline-none focus:ring-[var(--primary)] focus:border-[var(--primary)]"
+                                placeholder="Password"
+                            />
+                        </div>
                     </div>
 
-                    <form className="mt-8 space-y-6" onSubmit={handleEmailLogin}>
-                        {error && (
-                            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-                                {error}
-                            </div>
-                        )}
+                    <div className="flex items-center justify-between">
+                        <Link href="/auth/reset-password" className="text-sm text-[var(--primary)] hover:text-[var(--primary)]/80">
+                            Forgot your password?
+                        </Link>
+                    </div>
 
-                        <div className="rounded-md shadow-sm -space-y-px">
-                            <div>
-                                <input
-                                    type="email"
-                                    required
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    className="relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                                    placeholder="Email address"
-                                />
+                    <div>
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-[var(--primary)] hover:bg-[var(--primary)]/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--primary)] disabled:opacity-50"
+                        >
+                            {loading ? 'Signing in...' : 'Sign in'}
+                        </button>
+                    </div>
+
+                    <div className="mt-6">
+                        <div className="relative">
+                            <div className="absolute inset-0 flex items-center">
+                                <div className="w-full border-t border-[var(--border)]" />
                             </div>
-                            <div>
-                                <input
-                                    type="password"
-                                    required
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    className="relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                                    placeholder="Password"
-                                />
+                            <div className="relative flex justify-center text-sm">
+                                <span className="px-2 bg-[var(--background)] text-[var(--muted-foreground)]">Or continue with</span>
                             </div>
                         </div>
 
-                        <div className="flex items-center justify-between">
-                            <Link href="/auth/reset-password" className="text-sm text-blue-600 hover:text-blue-500">
-                                Forgot your password?
-                            </Link>
-                        </div>
-
-                        <div>
+                        <div className="mt-6 grid grid-cols-2 gap-3">
+                            {/* Google Auth Button */}
                             <button
-                                type="submit"
-                                disabled={loading}
-                                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+                                onClick={handleGoogleLogin}
+                                type="button"
+                                disabled={!isGoogleAuthEnabled}
+                                className={`w-full inline-flex justify-center py-2 px-4 border rounded-md shadow-sm text-sm font-medium transition-colors ${isGoogleAuthEnabled
+                                    ? 'border-[var(--border)] bg-[var(--background)] text-[var(--muted-foreground)] hover:bg-[var(--accent)]'
+                                    : 'border-[var(--border)] bg-[var(--muted)] text-[var(--muted-foreground)] cursor-not-allowed'
+                                    }`}
                             >
-                                {loading ? 'Signing in...' : 'Sign in'}
+                                <span>Google</span>
+                            </button>
+
+                            {/* Apple Auth Button */}
+                            <button
+                                onClick={handleAppleLogin}
+                                type="button"
+                                disabled={!isAppleAuthEnabled}
+                                className={`w-full inline-flex justify-center items-center py-2 px-4 border rounded-md shadow-sm text-sm font-medium transition-colors ${isAppleAuthEnabled
+                                    ? 'border-[var(--border)] bg-[var(--background)] text-[var(--muted-foreground)] hover:bg-[var(--accent)]'
+                                    : 'border-[var(--border)] bg-[var(--muted)] text-[var(--muted-foreground)] cursor-not-allowed relative'
+                                    }`}
+                                title={!isAppleAuthEnabled ? 'Coming soon! Requires Apple Developer account' : ''}
+                            >
+                                {!isAppleAuthEnabled && (
+                                    <Lock className="w-3 h-3 mr-1 text-[var(--muted-foreground)]" />
+                                )}
+                                <span>Apple</span>
+                                {!isAppleAuthEnabled && (
+                                    <span className="ml-1 text-xs text-[var(--muted-foreground)]">(Soon)</span>
+                                )}
                             </button>
                         </div>
 
-                        <div className="mt-6">
-                            <div className="relative">
-                                <div className="absolute inset-0 flex items-center">
-                                    <div className="w-full border-t border-gray-300" />
-                                </div>
-                                <div className="relative flex justify-center text-sm">
-                                    <span className="px-2 bg-gray-50 text-gray-500">Or continue with</span>
-                                </div>
-                            </div>
-
-                            <div className="mt-6 grid grid-cols-2 gap-3">
-                                {/* Google Auth Button */}
-                                <button
-                                    onClick={handleGoogleLogin}
-                                    type="button"
-                                    disabled={!isGoogleAuthEnabled}
-                                    className={`w-full inline-flex justify-center py-2 px-4 border rounded-md shadow-sm text-sm font-medium transition-colors ${isGoogleAuthEnabled
-                                        ? 'border-gray-300 bg-white text-gray-500 hover:bg-gray-50'
-                                        : 'border-gray-200 bg-gray-100 text-gray-400 cursor-not-allowed'
-                                        }`}
-                                >
-                                    <span>Google</span>
-                                </button>
-
-                                {/* Apple Auth Button */}
-                                <button
-                                    onClick={handleAppleLogin}
-                                    type="button"
-                                    disabled={!isAppleAuthEnabled}
-                                    className={`w-full inline-flex justify-center items-center py-2 px-4 border rounded-md shadow-sm text-sm font-medium transition-colors ${isAppleAuthEnabled
-                                        ? 'border-gray-300 bg-white text-gray-500 hover:bg-gray-50'
-                                        : 'border-gray-200 bg-gray-100 text-gray-400 cursor-not-allowed relative'
-                                        }`}
-                                    title={!isAppleAuthEnabled ? 'Coming soon! Requires Apple Developer account' : ''}
-                                >
-                                    {!isAppleAuthEnabled && (
-                                        <Lock className="w-3 h-3 mr-1 text-gray-400" />
-                                    )}
-                                    <span>Apple</span>
-                                    {!isAppleAuthEnabled && (
-                                        <span className="ml-1 text-xs text-gray-400">(Soon)</span>
-                                    )}
-                                </button>
-                            </div>
-
-                            {!isAppleAuthEnabled && (
-                                <p className="mt-2 text-xs text-center text-gray-500">
-                                    Apple Sign-in coming soon! We&apos;re working on getting an Apple Developer account.
-                                </p>
-                            )}
-                        </div>
-                    </form>
-                </div>
+                        {!isAppleAuthEnabled && (
+                            <p className="mt-2 text-xs text-center text-[var(--muted-foreground)]">
+                                Apple Sign-in coming soon! We&apos;re working on getting an Apple Developer account.
+                            </p>
+                        )}
+                    </div>
+                </form>
             </div>
-        </>
+        </div>
     )
 } 

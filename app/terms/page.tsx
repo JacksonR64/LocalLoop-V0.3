@@ -1,13 +1,10 @@
-import { Navigation } from '@/components/ui/Navigation';
 import { Footer } from '@/components/ui/Footer';
 import Link from 'next/link';
 import { FileText } from 'lucide-react';
 
 export default function TermsPage() {
     return (
-        <div className="min-h-screen bg-gray-50">
-            <Navigation />
-
+        <div className="min-h-screen bg-[var(--background)]">
             {/* Main Content */}
             <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 <div className="text-center mb-12">
