@@ -113,7 +113,7 @@ export function DateFilter({ selectedRange, onRangeChange, className = '' }: Dat
                 <div className="flex items-center justify-between w-full">
                     <div className="flex items-center gap-2">
                         <Calendar className="w-4 h-4 text-muted-foreground" />
-                        <span className={selectedRange ? 'text-foreground' : 'text-muted-foreground'}>{getDisplayText()}</span>
+                        <span>{getDisplayText()}</span>
                     </div>
                     {selectedRange && (
                         <button
