@@ -33,15 +33,15 @@ export function Navigation({
     }
 
     return (
-        <header className={`bg-white shadow-sm border-b sticky top-0 z-50 ${className}`}>
+        <header className={`bg-[var(--card)] shadow-sm border-b border-[var(--border)] sticky top-0 z-50 ${className}`}>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-16">
                     {/* Left side - Logo (always shown, always clickable home button) */}
                     <Link href="/" className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                            <Calendar className="w-5 h-5 text-white" />
+                        <div className="w-8 h-8 bg-[var(--primary)] rounded-lg flex items-center justify-center">
+                            <Calendar className="w-5 h-5 text-[var(--primary-foreground)]" />
                         </div>
-                        <h1 className="text-xl font-bold text-gray-900">LocalLoop</h1>
+                        <h1 className="text-xl font-bold text-[var(--card-foreground)]">LocalLoop</h1>
                     </Link>
 
                     {/* Right side - Full Navigation (always shown) */}
@@ -50,30 +50,30 @@ export function Navigation({
                         <nav className="hidden md:flex items-center gap-6">
                             <button
                                 onClick={handleBrowseEvents}
-                                className="text-gray-600 hover:text-gray-900 transition-colors"
+                                className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
                             >
                                 Browse Events
                             </button>
 
                             {(isStaff || isAdmin) && (
-                                <Link href="/create-event" className="text-gray-600 hover:text-gray-900 transition-colors">
+                                <Link href="/create-event" className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors">
                                     Create Event
                                 </Link>
                             )}
 
-                            <Link href="/my-events" className="text-gray-600 hover:text-gray-900 transition-colors">
+                            <Link href="/my-events" className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors">
                                 My Events
                             </Link>
 
                             {/* Auth state conditional rendering */}
                             {authLoading ? (
-                                <div className="w-20 h-10 bg-gray-200 animate-pulse rounded-lg" />
+                                <div className="w-20 h-10 bg-[var(--muted)] animate-pulse rounded-lg" />
                             ) : user ? (
                                 <ProfileDropdown />
                             ) : (
                                 <Link
                                     href="/auth/login"
-                                    className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                                    className="bg-[var(--primary)] text-[var(--primary-foreground)] px-4 py-2 rounded-lg hover:bg-[var(--primary-hover)] transition-colors"
                                 >
                                     Sign In
                                 </Link>
@@ -82,14 +82,14 @@ export function Navigation({
 
                         {/* Mobile Menu Button */}
                         <button
-                            className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
+                            className="md:hidden p-2 rounded-lg hover:bg-[var(--accent)] transition-colors"
                             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                             aria-label="Toggle mobile menu"
                         >
                             {isMobileMenuOpen ? (
-                                <X className="w-6 h-6 text-gray-600" />
+                                <X className="w-6 h-6 text-[var(--muted-foreground)]" />
                             ) : (
-                                <Menu className="w-6 h-6 text-gray-600" />
+                                <Menu className="w-6 h-6 text-[var(--muted-foreground)]" />
                             )}
                         </button>
                     </>
@@ -97,14 +97,14 @@ export function Navigation({
 
                 {/* Mobile Navigation */}
                 {isMobileMenuOpen && (
-                    <div className="md:hidden border-t border-gray-200 py-4">
+                    <div className="md:hidden border-t border-[var(--border)] py-4">
                         <nav className="flex flex-col space-y-4">
                             <button
                                 onClick={() => {
                                     handleBrowseEvents()
                                     setIsMobileMenuOpen(false)
                                 }}
-                                className="text-gray-600 hover:text-gray-900 transition-colors py-2 text-left"
+                                className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors py-2 text-left"
                             >
                                 Browse Events
                             </button>
@@ -112,7 +112,7 @@ export function Navigation({
                             {(isStaff || isAdmin) && (
                                 <Link
                                     href="/create-event"
-                                    className="text-gray-600 hover:text-gray-900 transition-colors py-2"
+                                    className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors py-2"
                                     onClick={() => setIsMobileMenuOpen(false)}
                                 >
                                     Create Event
@@ -121,7 +121,7 @@ export function Navigation({
 
                             <Link
                                 href="/my-events"
-                                className="text-gray-600 hover:text-gray-900 transition-colors py-2"
+                                className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors py-2"
                                 onClick={() => setIsMobileMenuOpen(false)}
                             >
                                 My Events
@@ -129,13 +129,13 @@ export function Navigation({
 
                             {/* Auth state conditional rendering for mobile */}
                             {authLoading ? (
-                                <div className="w-full h-12 bg-gray-200 animate-pulse rounded-lg" />
+                                <div className="w-full h-12 bg-[var(--muted)] animate-pulse rounded-lg" />
                             ) : user ? (
                                 <ProfileDropdown />
                             ) : (
                                 <Link
                                     href="/auth/login"
-                                    className="bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700 transition-colors text-left"
+                                    className="bg-[var(--primary)] text-[var(--primary-foreground)] px-4 py-3 rounded-lg hover:bg-[var(--primary-hover)] transition-colors text-left"
                                     onClick={() => setIsMobileMenuOpen(false)}
                                 >
                                     Sign In
