@@ -198,7 +198,7 @@ function DefaultCard({ event, size, featured, showImage, className, onClick, spo
                             </span>
                         )}
                         {!isUpcoming && (
-                            <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">
+                            <span className="text-xs bg-[var(--muted)] text-[var(--muted-foreground)] px-2 py-1 rounded-full">
                                 Past
                             </span>
                         )}
@@ -211,17 +211,17 @@ function DefaultCard({ event, size, featured, showImage, className, onClick, spo
 
             <CardContent>
                 <div className="space-y-2 text-sm">
-                    <div className="flex items-center gap-2 text-gray-600">
+                    <div className="flex items-center gap-2 text-[var(--muted-foreground)]">
                         <Calendar className="w-4 h-4 flex-shrink-0" />
                         <span>{formatDateTime(event.start_time)}</span>
                     </div>
 
-                    <div className="flex items-center gap-2 text-gray-600">
+                    <div className="flex items-center gap-2 text-[var(--muted-foreground)]">
                         <MapPin className="w-4 h-4 flex-shrink-0" />
                         <span>{event.location || 'Location TBD'}</span>
                     </div>
 
-                    <div className="flex items-center gap-2 text-gray-600">
+                    <div className="flex items-center gap-2 text-[var(--muted-foreground)]">
                         <Users className="w-4 h-4 flex-shrink-0" />
                         <span>
                             {event.rsvp_count} attending
@@ -229,7 +229,7 @@ function DefaultCard({ event, size, featured, showImage, className, onClick, spo
                         </span>
                     </div>
 
-                    <div className="flex items-center gap-2 text-gray-600">
+                    <div className="flex items-center gap-2 text-[var(--muted-foreground)]">
                         <Tag className="w-4 h-4 flex-shrink-0" />
                         <span className="capitalize">{event.category || 'General'}</span>
                     </div>
@@ -237,7 +237,7 @@ function DefaultCard({ event, size, featured, showImage, className, onClick, spo
             </CardContent>
 
             <CardFooter className="flex items-center justify-between">
-                <span className="text-sm text-gray-500">
+                <span className="text-sm text-[var(--muted-foreground)]">
                     by {event.organizer.display_name}
                 </span>
                 <button className="text-blue-600 hover:text-blue-800 font-medium text-sm group-hover:underline flex items-center gap-1">
@@ -284,7 +284,7 @@ function PreviewListCard({ event, className, onClick, isUpcoming, hasPrice, lowe
                                 </span>
                             )}
                             {!isUpcoming && (
-                                <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">
+                                <span className="text-xs bg-[var(--muted)] text-[var(--muted-foreground)] px-2 py-1 rounded-full">
                                     Past
                                 </span>
                             )}
@@ -356,7 +356,7 @@ function FullListCard({ event, className, onClick, spotsRemaining, isUpcoming, h
                             </span>
                         )}
                         {!isUpcoming && (
-                            <span className="text-sm bg-gray-100 text-gray-600 px-3 py-1 rounded-full">
+                            <span className="text-sm bg-[var(--muted)] text-[var(--muted-foreground)] px-3 py-1 rounded-full">
                                 Past Event
                             </span>
                         )}
