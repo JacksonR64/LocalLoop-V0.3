@@ -165,8 +165,8 @@ export function EventDetailClient({ event }: EventDetailClientProps) {
                         <Card data-test-id="event-description-card">
                             <CardContent className="p-6">
                                 <h2 className="text-xl font-semibold mb-4 text-foreground" data-test-id="description-title">About This Event</h2>
-                                <div className="prose prose-gray max-w-none">
-                                    <p className="text-muted-foreground leading-relaxed" data-test-id="event-description">{event.description}</p>
+                                <div className="prose max-w-none prose-headings:text-foreground prose-p:text-foreground prose-strong:text-foreground prose-em:text-muted-foreground prose-a:text-primary prose-a:hover:text-primary/80">
+                                    <p className="text-foreground leading-relaxed" data-test-id="event-description">{event.description}</p>
                                 </div>
                             </CardContent>
                         </Card>
