@@ -62,10 +62,10 @@ export function ProfileDropdown() {
 
       {/* Dropdown Menu */}
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-48 bg-card rounded-lg shadow-lg border border-border py-2 z-50">
+        <div className="absolute right-0 mt-2 w-56 bg-card rounded-lg shadow-lg border border-border py-2 z-50">
           <div className="px-4 py-2 border-b border-border">
-            <p className="text-sm font-medium text-foreground">{getUserDisplayName()}</p>
-            <p className="text-xs text-muted-foreground">{user.email}</p>
+            <p className="text-sm font-medium text-foreground truncate">{getUserDisplayName()}</p>
+            <p className="text-xs text-muted-foreground truncate" title={user.email}>{user.email}</p>
             {userProfile?.role && (
               <p className="text-xs text-primary capitalize font-medium mt-1">
                 {userProfile.role}
