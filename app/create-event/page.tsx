@@ -1,73 +1,89 @@
+import { Navigation } from '@/components/ui/Navigation';
+// import CreateEventClient from '@/components/events/CreateEventClient';
+import { createServerSupabaseClient } from '@/lib/supabase-server'
+import { redirect } from 'next/navigation'
 import Link from 'next/link';
-import { Calendar, ArrowLeft } from 'lucide-react';
+import { Users, Plus } from 'lucide-react';
 
-export default function CreateEventPage() {
+export default async function CreateEventPage() {
+    const supabase = await createServerSupabaseClient()
+
+    // Get the current user
+    const {
+        data: { user },
+    } = await supabase.auth.getUser()
+
+    // If user is authenticated, check their role
+    if (user) {
+        const { data: userDetails } = await supabase
+            .from('users')
+            .select('role')
+            .eq('id', user.id)
+            .single()
+
+        // If user has organizer or admin role, redirect to staff event creation
+        if (userDetails && (userDetails.role === 'organizer' || userDetails.role === 'admin')) {
+            redirect('/staff/events/create')
+        }
+    }
+
     return (
         <div className="min-h-screen bg-gray-50">
-            {/* Header */}
-            <header className="bg-white shadow-sm border-b">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex items-center justify-between h-16">
-                        <Link href="/" className="flex items-center gap-3">
-                            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                                <Calendar className="w-5 h-5 text-white" />
-                            </div>
-                            <h1 className="text-xl font-bold text-gray-900">LocalLoop</h1>
-                        </Link>
-                        <Link
-                            href="/"
-                            className="flex items-center gap-2 text-blue-600 hover:text-blue-800 transition-colors"
-                        >
-                            <ArrowLeft className="w-4 h-4" />
-                            Back to Home
-                        </Link>
-                    </div>
-                </div>
-            </header>
+            <Navigation />
 
             {/* Main Content */}
             <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 <div className="text-center">
-                    <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <Calendar className="w-8 h-8 text-blue-600" />
+                    <div className="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <Users className="w-12 h-12 text-blue-600" />
                     </div>
-                    <h1 className="text-3xl font-bold text-gray-900 mb-4">Create Event</h1>
-                    <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
-                        This feature is coming soon! You&apos;ll be able to create and manage your own community events.
+
+                    <h1 className="text-4xl font-bold text-gray-900 mb-4">
+                        Event Creation
+                    </h1>
+
+                    <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+                        Event creation is available for organizers and administrators.
+                        If you need to create events for LocalLoop, please contact us to get organizer access.
                     </p>
 
-                    <div className="bg-white rounded-lg shadow-sm border p-8 max-w-lg mx-auto">
-                        <h2 className="text-xl font-semibold text-gray-900 mb-4">What&apos;s Coming:</h2>
-                        <ul className="text-left space-y-3 text-gray-600">
-                            <li className="flex items-center gap-3">
-                                <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
-                                Event creation form with rich details
-                            </li>
-                            <li className="flex items-center gap-3">
-                                <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
-                                Image upload and gallery management
-                            </li>
-                            <li className="flex items-center gap-3">
-                                <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
-                                Ticket pricing and RSVP management
-                            </li>
-                            <li className="flex items-center gap-3">
-                                <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
-                                Google Calendar integration
-                            </li>
-                            <li className="flex items-center gap-3">
-                                <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
-                                Event promotion tools
-                            </li>
-                        </ul>
+                    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 max-w-md mx-auto">
+                        <h2 className="text-lg font-semibold text-gray-900 mb-4">
+                            Become an Event Organizer
+                        </h2>
+                        <p className="text-gray-600 mb-6 text-sm">
+                            Contact our team to learn about becoming an approved event organizer on LocalLoop.
+                        </p>
+
+                        <div className="space-y-3">
+                            <Link
+                                href="/contact"
+                                className="w-full bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors inline-block text-center"
+                            >
+                                Contact Us
+                            </Link>
+
+                            {!user && (
+                                <Link
+                                    href="/auth/login"
+                                    className="w-full bg-white text-blue-600 px-6 py-3 rounded-lg border border-blue-600 hover:bg-blue-50 transition-colors inline-block text-center"
+                                >
+                                    Sign In First
+                                </Link>
+                            )}
+                        </div>
                     </div>
 
-                    <div className="mt-8">
+                    <div className="mt-12 text-center">
+                        <p className="text-sm text-gray-500 mb-4">
+                            Already an organizer?
+                        </p>
                         <Link
-                            href="/"
-                            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium"
+                            href="/staff"
+                            className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 transition-colors"
                         >
-                            Browse Existing Events
+                            <Plus className="w-4 h-4" />
+                            Access Staff Dashboard
                         </Link>
                     </div>
                 </div>

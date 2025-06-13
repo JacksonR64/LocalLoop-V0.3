@@ -1,6 +1,7 @@
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { redirect } from 'next/navigation'
 import StaffDashboard from '@/components/dashboard/StaffDashboard'
+import { Navigation } from '@/components/ui/Navigation'
 
 export default async function StaffPage() {
     const supabase = await createServerSupabaseClient()
@@ -27,9 +28,12 @@ export default async function StaffPage() {
     }
 
     return (
-        <div className="container mx-auto">
-            <StaffDashboard user={userDetails} />
-        </div>
+        <>
+            <Navigation />
+            <div className="container mx-auto">
+                <StaffDashboard user={userDetails} />
+            </div>
+        </>
     )
 }
 

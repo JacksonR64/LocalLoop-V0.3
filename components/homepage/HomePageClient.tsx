@@ -10,7 +10,9 @@ import { EventFilters } from '@/components/filters/EventFilters';
 import { usePagination } from '@/lib/hooks/usePagination';
 import { useInfiniteScroll } from '@/lib/hooks/useInfiniteScroll';
 import { useAuth } from '@/lib/auth-context';
+import { useAuth as useAuthHook } from '@/lib/hooks/useAuth';
 import { ProfileDropdown } from '@/components/auth/ProfileDropdown';
+import { Footer } from '@/components/ui/Footer';
 
 interface HomePageClientProps {
   featuredEvents: EventData[];
@@ -24,6 +26,7 @@ export function HomePageClient({ featuredEvents, nonFeaturedEvents }: HomePageCl
 
   // Auth state
   const { user, loading: authLoading } = useAuth();
+  const { isStaff, isAdmin } = useAuthHook();
 
   // Memoize the filtered events setter to prevent infinite re-renders
   const handleFilteredEventsChange = React.useCallback((events: EventData[]) => {
@@ -101,9 +104,11 @@ export function HomePageClient({ featuredEvents, nonFeaturedEvents }: HomePageCl
               >
                 Browse Events
               </button>
-              <Link href="/create-event" className="text-gray-600 hover:text-gray-900 transition-colors" data-test-id="create-event-link">
-                Create Event
-              </Link>
+              {(isStaff || isAdmin) && (
+                <Link href="/create-event" className="text-gray-600 hover:text-gray-900 transition-colors" data-test-id="create-event-link">
+                  Create Event
+                </Link>
+              )}
               <Link href="/my-events" className="text-gray-600 hover:text-gray-900 transition-colors" data-test-id="my-events-link">
                 My Events
               </Link>
@@ -155,14 +160,16 @@ export function HomePageClient({ featuredEvents, nonFeaturedEvents }: HomePageCl
                 >
                   Browse Events
                 </button>
-                <Link
-                  href="/create-event"
-                  className="text-gray-600 hover:text-gray-900 transition-colors py-2"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  data-test-id="mobile-create-event-link"
-                >
-                  Create Event
-                </Link>
+                {(isStaff || isAdmin) && (
+                  <Link
+                    href="/create-event"
+                    className="text-gray-600 hover:text-gray-900 transition-colors py-2"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    data-test-id="mobile-create-event-link"
+                  >
+                    Create Event
+                  </Link>
+                )}
                 <Link
                   href="/my-events"
                   className="text-gray-600 hover:text-gray-900 transition-colors py-2"
@@ -338,28 +345,7 @@ export function HomePageClient({ featuredEvents, nonFeaturedEvents }: HomePageCl
         </section>
       </main>
 
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white mt-20" data-test-id="homepage-footer">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="text-center">
-            <Link href="/" className="flex items-center justify-center gap-3 mb-4" data-test-id="footer-logo">
-              <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                <Calendar className="w-5 h-5 text-white" />
-              </div>
-              <h4 className="text-xl font-bold" data-test-id="footer-title">LocalLoop</h4>
-            </Link>
-            <p className="text-gray-400 mb-6" data-test-id="footer-description">
-              Connecting communities through local events
-            </p>
-            <div className="flex justify-center gap-6 text-sm" data-test-id="footer-links">
-              <Link href="/about" className="text-gray-400 hover:text-white" data-test-id="footer-about-link">About</Link>
-              <Link href="/privacy" className="text-gray-400 hover:text-white" data-test-id="footer-privacy-link">Privacy</Link>
-              <Link href="/terms" className="text-gray-400 hover:text-white" data-test-id="footer-terms-link">Terms</Link>
-              <Link href="/contact" className="text-gray-400 hover:text-white" data-test-id="footer-contact-link">Contact</Link>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </>
   );
 } 

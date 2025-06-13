@@ -1,29 +1,12 @@
+import { Navigation } from '@/components/ui/Navigation';
+import { Footer } from '@/components/ui/Footer';
 import Link from 'next/link';
-import { Calendar, ArrowLeft, FileText } from 'lucide-react';
+import { FileText } from 'lucide-react';
 
 export default function TermsPage() {
     return (
         <div className="min-h-screen bg-gray-50">
-            {/* Header */}
-            <header className="bg-white shadow-sm border-b">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex items-center justify-between h-16">
-                        <Link href="/" className="flex items-center gap-3">
-                            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                                <Calendar className="w-5 h-5 text-white" />
-                            </div>
-                            <h1 className="text-xl font-bold text-gray-900">LocalLoop</h1>
-                        </Link>
-                        <Link
-                            href="/"
-                            className="flex items-center gap-2 text-blue-600 hover:text-blue-800 transition-colors"
-                        >
-                            <ArrowLeft className="w-4 h-4" />
-                            Back to Home
-                        </Link>
-                    </div>
-                </div>
-            </header>
+            <Navigation />
 
             {/* Main Content */}
             <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -179,6 +162,7 @@ export default function TermsPage() {
                     </div>
                 </div>
             </main>
+            <Footer />
         </div>
     );
 } 

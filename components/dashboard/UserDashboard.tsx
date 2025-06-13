@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Footer } from '@/components/ui/Footer'
 import { formatPrice } from '@/lib/utils/ticket-utils'
 import RefundDialog from './RefundDialog'
 import {
@@ -707,6 +708,9 @@ export default function UserDashboard({ user }: UserDashboardProps) {
                 order={selectedOrder}
                 onRefundSuccess={handleRefundSuccess}
             />
+
+            {/* Footer */}
+            <Footer />
         </div>
     )
 } 

@@ -274,9 +274,9 @@ export default function GoogleCalendarConnect({
                     </div>
                 </div>
 
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-2 flex-shrink-0">
                     {localConnected ? (
-                        <>
+                        <div className="flex items-center space-x-2 flex-wrap gap-2">
                             {action === 'create_event' && (
                                 <button
                                     onClick={async () => {
@@ -328,37 +328,40 @@ export default function GoogleCalendarConnect({
                                             alert('An error occurred while adding the event to your calendar. Please try again.')
                                         }
                                     }}
-                                    className="flex items-center space-x-2 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors text-sm"
+                                    className="flex items-center space-x-2 px-3 py-1.5 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors text-sm whitespace-nowrap"
                                 >
-                                    <Calendar className="w-4 h-4" />
-                                    <span>Add to Calendar</span>
+                                    <Calendar className="w-4 h-4 flex-shrink-0" />
+                                    <span className="hidden sm:inline">Add to Calendar</span>
+                                    <span className="sm:hidden">Add</span>
                                 </button>
                             )}
                             <button
                                 onClick={handleDisconnect}
                                 disabled={isLoading}
-                                className="px-3 py-1.5 text-sm border border-gray-300 text-gray-700 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                                className="px-3 py-1.5 text-sm border border-gray-300 text-gray-700 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors whitespace-nowrap"
                             >
                                 {isLoading ? (
                                     <div className="flex items-center space-x-1">
-                                        <Loader2 className="w-3 h-3 animate-spin" />
-                                        <span>Disconnecting...</span>
+                                        <Loader2 className="w-3 h-3 animate-spin flex-shrink-0" />
+                                        <span className="hidden sm:inline">Disconnecting...</span>
+                                        <span className="sm:hidden">...</span>
                                     </div>
                                 ) : (
                                     'Disconnect'
                                 )}
                             </button>
-                        </>
+                        </div>
                     ) : (
                         <button
                             onClick={handleConnect}
                             disabled={isLoading}
-                            className="px-4 py-2 bg-blue-600 text-white text-sm rounded hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                            className="px-4 py-2 bg-blue-600 text-white text-sm rounded hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors whitespace-nowrap"
                         >
                             {isLoading ? (
                                 <div className="flex items-center space-x-1">
-                                    <Loader2 className="w-3 h-3 animate-spin" />
-                                    <span>Connecting...</span>
+                                    <Loader2 className="w-3 h-3 animate-spin flex-shrink-0" />
+                                    <span className="hidden sm:inline">{getActionText().replace('Connect', 'Connecting...')}</span>
+                                    <span className="sm:hidden">...</span>
                                 </div>
                             ) : (
                                 getActionText()
