@@ -66,7 +66,7 @@ export function SortControl({ sortBy, onSortChange, className = '' }: SortContro
             >
                 <div className="flex items-center gap-2">
                     <ArrowUpDown className="w-4 h-4 text-muted-foreground" />
-                    <span className="whitespace-nowrap">
+                    <span className="whitespace-nowrap text-muted-foreground">
                         {currentOption.label}
                     </span>
                 </div>

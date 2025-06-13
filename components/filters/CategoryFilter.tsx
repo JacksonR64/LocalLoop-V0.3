@@ -69,7 +69,7 @@ export function CategoryFilter({
                 aria-haspopup="listbox"
             >
                 <div className="flex items-center justify-between w-full">
-                    <span className="truncate">
+                    <span className="truncate text-muted-foreground">
                         {getDisplayText()}
                     </span>
                     {selectedCategories.length > 0 && (

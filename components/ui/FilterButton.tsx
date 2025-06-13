@@ -39,7 +39,7 @@ export const FilterButton = React.forwardRef<HTMLButtonElement, FilterButtonProp
             {...ariaProps}
         >
             <div className="flex items-center gap-2 flex-1 text-left">
-                {children || <span className={hasActiveFilter ? 'text-foreground' : 'text-muted-foreground'}>{placeholder}</span>}
+                {children || <span className="text-muted-foreground">{placeholder}</span>}
             </div>
             <ChevronDown className={`w-4 h-4 text-muted-foreground transition-transform ${isOpen ? 'rotate-180' : ''}`} />
         </button>
