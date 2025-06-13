@@ -137,7 +137,7 @@ export default function StaffDashboard({ user }: StaffDashboardProps) {
 
         if (!event.published) {
             return (
-                <Badge variant="secondary" className="bg-gray-100 text-gray-800 border-gray-200">
+                <Badge variant="secondary" className="bg-muted text-muted-foreground border-border">
                     Draft
                 </Badge>
             )
@@ -145,7 +145,7 @@ export default function StaffDashboard({ user }: StaffDashboardProps) {
 
         if (endDate < now) {
             return (
-                <Badge variant="secondary" className="bg-blue-100 text-blue-800 border-blue-200">
+                <Badge variant="secondary" className="bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-800">
                     Completed
                 </Badge>
             )
@@ -153,7 +153,7 @@ export default function StaffDashboard({ user }: StaffDashboardProps) {
 
         if (startDate <= now && endDate >= now) {
             return (
-                <Badge variant="default" className="bg-green-100 text-green-800 border-green-200">
+                <Badge variant="default" className="bg-green-50 dark:bg-green-950 text-green-700 dark:text-green-300 border-green-200 dark:border-green-800">
                     <Clock className="w-3 h-3 mr-1" />
                     Live
                 </Badge>
@@ -161,7 +161,7 @@ export default function StaffDashboard({ user }: StaffDashboardProps) {
         }
 
         return (
-            <Badge variant="default" className="bg-orange-100 text-orange-800 border-orange-200">
+            <Badge variant="default" className="bg-orange-50 dark:bg-orange-950 text-orange-700 dark:text-orange-300 border-orange-200 dark:border-orange-800">
                 <Calendar className="w-3 h-3 mr-1" />
                 Upcoming
             </Badge>
@@ -173,7 +173,7 @@ export default function StaffDashboard({ user }: StaffDashboardProps) {
             <div className="max-w-7xl mx-auto p-6">
                 <div className="flex items-center justify-center py-12">
                     <RefreshCw className="w-6 h-6 animate-spin mr-2" />
-                    <span className="text-gray-600">Loading dashboard...</span>
+                    <span className="text-muted-foreground">Loading dashboard...</span>
                 </div>
             </div>
         )
@@ -185,19 +185,19 @@ export default function StaffDashboard({ user }: StaffDashboardProps) {
             <div className="mb-8">
                 <div className="flex items-center justify-between">
                     <div>
-                        <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                        <h1 className="text-3xl font-bold text-foreground mb-2">
                             Staff Dashboard
                             <Badge
                                 variant={user.role === 'admin' ? 'default' : 'secondary'}
                                 className={`ml-3 text-xs ${user.role === 'admin'
-                                    ? 'bg-purple-100 text-purple-800 border-purple-200'
-                                    : 'bg-blue-100 text-blue-800 border-blue-200'
+                                    ? 'bg-purple-50 dark:bg-purple-950 text-purple-700 dark:text-purple-300 border-purple-200 dark:border-purple-800'
+                                    : 'bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-800'
                                     }`}
                             >
                                 {user.role === 'admin' ? 'Administrator' : 'Organizer'}
                             </Badge>
                         </h1>
-                        <p className="text-gray-600">
+                        <p className="text-muted-foreground">
                             Welcome back, {user.display_name || user.email}!
                             {user.role === 'admin'
                                 ? ' You have full system access.'
