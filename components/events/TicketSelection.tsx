@@ -233,48 +233,50 @@ export default function TicketSelection({
                                         <span className="text-sm">Sold out</span>
                                     </div>
                                 ) : (
-                                    <div className="flex items-center justify-between" data-test-id="quantity-controls">
-                                        <div className="flex items-center gap-2">
-                                            <span className="text-sm font-medium">Quantity:</span>
+                                    <div className="space-y-3" data-test-id="quantity-controls">
+                                        <div className="flex items-center justify-between">
                                             <div className="flex items-center gap-2">
-                                                <Button
-                                                    variant="outline"
-                                                    size="sm"
-                                                    onClick={() => updateQuantity(ticket.id, quantity - 1)}
-                                                    disabled={quantity <= 0}
-                                                    className="h-8 w-8 p-0"
-                                                    data-test-id="decrease-quantity-button"
-                                                >
-                                                    <Minus className="h-4 w-4" />
-                                                </Button>
-                                                <Input
-                                                    type="number"
-                                                    min="0"
-                                                    max={available}
-                                                    value={quantity}
-                                                    onChange={(e) => updateQuantity(ticket.id, parseInt(e.target.value) || 0)}
-                                                    className="w-16 text-center"
-                                                    data-test-id="quantity-input"
-                                                />
-                                                <Button
-                                                    variant="outline"
-                                                    size="sm"
-                                                    onClick={() => updateQuantity(ticket.id, quantity + 1)}
-                                                    disabled={quantity >= available}
-                                                    className="h-8 w-8 p-0"
-                                                    data-test-id="increase-quantity-button"
-                                                >
-                                                    <Plus className="h-4 w-4" />
-                                                </Button>
+                                                <span className="text-sm font-medium">Quantity:</span>
+                                                <div className="flex items-center gap-2">
+                                                    <Button
+                                                        variant="outline"
+                                                        size="sm"
+                                                        onClick={() => updateQuantity(ticket.id, quantity - 1)}
+                                                        disabled={quantity <= 0}
+                                                        className="h-8 w-8 p-0"
+                                                        data-test-id="decrease-quantity-button"
+                                                    >
+                                                        <Minus className="h-4 w-4" />
+                                                    </Button>
+                                                    <Input
+                                                        type="number"
+                                                        min="0"
+                                                        max={available}
+                                                        value={quantity}
+                                                        onChange={(e) => updateQuantity(ticket.id, parseInt(e.target.value) || 0)}
+                                                        className="w-16 text-center"
+                                                        data-test-id="quantity-input"
+                                                    />
+                                                    <Button
+                                                        variant="outline"
+                                                        size="sm"
+                                                        onClick={() => updateQuantity(ticket.id, quantity + 1)}
+                                                        disabled={quantity >= available}
+                                                        className="h-8 w-8 p-0"
+                                                        data-test-id="increase-quantity-button"
+                                                    >
+                                                        <Plus className="h-4 w-4" />
+                                                    </Button>
+                                                </div>
                                             </div>
                                         </div>
 
                                         {quantity > 0 && (
-                                            <div className="text-right" data-test-id="ticket-subtotal">
-                                                <div className="text-sm text-muted-foreground">Subtotal:</div>
-                                                <div className="font-semibold text-foreground" data-test-id="subtotal-amount">
+                                            <div className="flex justify-between items-center pt-2 border-t border-border" data-test-id="ticket-subtotal">
+                                                <span className="text-sm text-muted-foreground">Subtotal:</span>
+                                                <span className="font-semibold text-foreground" data-test-id="subtotal-amount">
                                                     {formatPrice(ticket.price * quantity)}
-                                                </div>
+                                                </span>
                                             </div>
                                         )}
                                     </div>
