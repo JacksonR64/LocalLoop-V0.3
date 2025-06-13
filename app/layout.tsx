@@ -4,6 +4,7 @@ import "./globals.css";
 import { AuthProvider } from "@/lib/auth-context";
 import { PerformanceMonitor } from "@/components/analytics/PerformanceMonitor";
 import { ThemeProvider } from 'next-themes';
+import { Navigation } from '@/components/ui/Navigation';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -99,8 +100,14 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-[var(--background)]`}
       >
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          suppressHydrationWarning
+        >
           <AuthProvider>
+            <Navigation />
             {children}
           </AuthProvider>
         </ThemeProvider>

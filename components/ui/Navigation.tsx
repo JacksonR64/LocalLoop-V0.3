@@ -7,6 +7,7 @@ import { Calendar, Menu, X } from 'lucide-react'
 import { useAuth } from '@/lib/auth-context'
 import { useAuth as useAuthHook } from '@/lib/hooks/useAuth'
 import { ProfileDropdown } from '@/components/auth/ProfileDropdown'
+import { ThemeToggle } from '@/components/ui/ThemeToggle'
 
 interface NavigationProps {
     className?: string
@@ -64,6 +65,8 @@ export function Navigation({
                             <Link href="/my-events" className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors">
                                 My Events
                             </Link>
+
+                            <ThemeToggle />
 
                             {/* Auth state conditional rendering */}
                             {authLoading ? (
@@ -126,6 +129,8 @@ export function Navigation({
                             >
                                 My Events
                             </Link>
+
+                            <ThemeToggle />
 
                             {/* Auth state conditional rendering for mobile */}
                             {authLoading ? (

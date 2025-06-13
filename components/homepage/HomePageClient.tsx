@@ -3,17 +3,12 @@
 import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Calendar, Menu, X } from 'lucide-react';
 import { LoadingSpinner } from '@/components/ui';
 import { EventCard, type EventData } from '@/components/events';
 import { EventFilters } from '@/components/filters/EventFilters';
 import { usePagination } from '@/lib/hooks/usePagination';
 import { useInfiniteScroll } from '@/lib/hooks/useInfiniteScroll';
-import { useAuth } from '@/lib/auth-context';
-import { useAuth as useAuthHook } from '@/lib/hooks/useAuth';
-import { ProfileDropdown } from '@/components/auth/ProfileDropdown';
 import { Footer } from '@/components/ui/Footer';
-import { ThemeToggle } from '@/components/ui/ThemeToggle';
 
 interface HomePageClientProps {
   featuredEvents: EventData[];
@@ -23,11 +18,6 @@ interface HomePageClientProps {
 export function HomePageClient({ featuredEvents, nonFeaturedEvents }: HomePageClientProps) {
   const router = useRouter();
   const [filteredEvents, setFilteredEvents] = React.useState(nonFeaturedEvents);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
-
-  // Auth state
-  const { user, loading: authLoading } = useAuth();
-  const { isStaff, isAdmin } = useAuthHook();
 
   // Memoize the filtered events setter to prevent infinite re-renders
   const handleFilteredEventsChange = React.useCallback((events: EventData[]) => {
@@ -84,190 +74,61 @@ export function HomePageClient({ featuredEvents, nonFeaturedEvents }: HomePageCl
 
   return (
     <>
-      {/* Navigation Header */}
-      <header className="bg-[var(--card)] shadow-sm border-b border-[var(--border)] sticky top-0 z-50" data-test-id="homepage-header">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            {/* Logo */}
-            <Link href="/" className="flex items-center gap-3" data-test-id="homepage-logo">
-              <div className="w-8 h-8 bg-[var(--primary)] rounded-lg flex items-center justify-center">
-                <Calendar className="w-5 h-5 text-[var(--primary-foreground)]" />
-              </div>
-              <h1 className="text-xl font-bold text-[var(--foreground)]" data-test-id="homepage-title">LocalLoop</h1>
-            </Link>
-
-            {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center gap-6" data-test-id="desktop-navigation">
-              <button
-                onClick={() => handleViewAll()}
-                className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
-                data-test-id="browse-events-button"
-              >
-                Browse Events
-              </button>
-              {(isStaff || isAdmin) && (
-                <Link href="/create-event" className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors" data-test-id="create-event-link">
-                  Create Event
-                </Link>
-              )}
-              <Link href="/my-events" className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors" data-test-id="my-events-link">
-                My Events
-              </Link>
-
-              {/* Theme Toggle */}
-              <ThemeToggle />
-
-              {/* Auth state conditional rendering */}
-              {authLoading ? (
-                <div className="w-20 h-10 bg-[var(--muted)] animate-pulse rounded-lg" data-test-id="auth-loading"></div>
-              ) : user ? (
-                <div data-test-id="profile-dropdown-container">
-                  <ProfileDropdown />
-                </div>
-              ) : (
-                <Link
-                  href="/auth/login"
-                  className="bg-[var(--primary)] text-[var(--primary-foreground)] px-4 py-2 rounded-lg hover:bg-[var(--primary-hover)] transition-colors"
-                  data-test-id="sign-in-button"
-                >
-                  Sign In
-                </Link>
-              )}
-            </nav>
-
-            {/* Mobile Menu Button */}
-            <button
-              className="md:hidden p-2 rounded-lg hover:bg-[var(--accent)] transition-colors"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              aria-label="Toggle mobile menu"
-              data-test-id="mobile-menu-button"
-            >
-              {isMobileMenuOpen ? (
-                <X className="w-6 h-6 text-[var(--muted-foreground)]" />
-              ) : (
-                <Menu className="w-6 h-6 text-[var(--muted-foreground)]" />
-              )}
-            </button>
-          </div>
-
-          {/* Mobile Navigation */}
-          {isMobileMenuOpen && (
-            <div className="md:hidden border-t border-[var(--border)] py-4" data-test-id="mobile-navigation">
-              <nav className="flex flex-col space-y-4">
-                <button
-                  onClick={() => {
-                    handleViewAll();
-                    setIsMobileMenuOpen(false);
-                  }}
-                  className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors py-2 text-left"
-                  data-test-id="mobile-browse-events-button"
-                >
-                  Browse Events
-                </button>
-                {(isStaff || isAdmin) && (
-                  <Link
-                    href="/create-event"
-                    className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors py-2"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    data-test-id="mobile-create-event-link"
-                  >
-                    Create Event
-                  </Link>
-                )}
-                <Link
-                  href="/my-events"
-                  className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors py-2"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  data-test-id="mobile-my-events-link"
-                >
-                  My Events
-                </Link>
-
-                {/* Theme Toggle for Mobile */}
-                <div className="py-2">
-                  <ThemeToggle />
-                </div>
-
-                {/* Auth state conditional rendering for mobile */}
-                {authLoading ? (
-                  <div className="w-full h-12 bg-[var(--muted)] animate-pulse rounded-lg" data-test-id="mobile-auth-loading"></div>
-                ) : user ? (
-                  <div data-test-id="mobile-profile-dropdown-container">
-                    <ProfileDropdown />
-                  </div>
-                ) : (
-                  <Link
-                    href="/auth/login"
-                    className="bg-[var(--primary)] text-[var(--primary-foreground)] px-4 py-3 rounded-lg hover:bg-[var(--primary-hover)] transition-colors text-left"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    data-test-id="mobile-sign-in-button"
-                  >
-                    Sign In
-                  </Link>
-                )}
-              </nav>
-            </div>
-          )}
-        </div>
-      </header>
-
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-600 to-purple-700 text-white" data-test-id="hero-section">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-24">
-          <div className="text-center">
-            <h2 className="text-3xl sm:text-4xl lg:text-6xl font-bold mb-4 sm:mb-6" data-test-id="hero-title">
-              Discover Local Events
-            </h2>
-            <p className="text-lg sm:text-xl lg:text-2xl mb-6 sm:mb-8 text-blue-100 max-w-3xl mx-auto px-4" data-test-id="hero-description">
-              Connect with your community through amazing local events. From workshops to social gatherings, find your next adventure.
-            </p>
-            {/* EventFilters Integration */}
-            <div className="max-w-3xl mx-auto mb-6 sm:mb-8" data-test-id="event-filters-container">
-              <EventFilters
-                events={nonFeaturedEvents}
-                onFilteredEventsChange={handleFilteredEventsChange}
-                showSearch={true}
-                showActiveFilters={true}
-                layout="horizontal"
-              />
-            </div>
-            <div className="flex flex-wrap justify-center gap-2 sm:gap-3 text-sm px-4" data-test-id="category-pills">
-              <button
-                onClick={() => handleCategoryFilter('workshop')}
-                className="bg-white/20 hover:bg-white/30 px-2 sm:px-3 py-1 rounded-full transition-colors cursor-pointer"
-                data-test-id="category-pill-workshop"
-              >
-                Workshop
-              </button>
-              <button
-                onClick={() => handleCategoryFilter('community')}
-                className="bg-white/20 hover:bg-white/30 px-2 sm:px-3 py-1 rounded-full transition-colors cursor-pointer"
-                data-test-id="category-pill-community"
-              >
-                Community
-              </button>
-              <button
-                onClick={() => handleCategoryFilter('arts')}
-                className="bg-white/20 hover:bg-white/30 px-2 sm:px-3 py-1 rounded-full transition-colors cursor-pointer"
-                data-test-id="category-pill-arts"
-              >
-                Arts
-              </button>
-              <button
-                onClick={() => handleCategoryFilter('business')}
-                className="bg-white/20 hover:bg-white/30 px-2 sm:px-3 py-1 rounded-full transition-colors cursor-pointer"
-                data-test-id="category-pill-business"
-              >
-                Business
-              </button>
-              <button
-                onClick={() => handleCategoryFilter('family')}
-                className="bg-white/20 hover:bg-white/30 px-2 sm:px-3 py-1 rounded-full transition-colors cursor-pointer"
-                data-test-id="category-pill-family"
-              >
-                Family
-              </button>
-            </div>
+      <section className="bg-gradient-to-br from-[var(--primary)] to-purple-700 text-white py-20" data-test-id="hero-section">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="text-4xl md:text-6xl font-bold mb-6" data-test-id="hero-title">
+            Discover Local Events
+          </h1>
+          <p className="text-xl md:text-2xl mb-8 text-blue-100 max-w-3xl mx-auto" data-test-id="hero-description">
+            Connect with your community through amazing local events. From workshops to social gatherings, find your next adventure.
+          </p>
+          {/* EventFilters Integration */}
+          <div className="max-w-3xl mx-auto mb-6 sm:mb-8" data-test-id="event-filters-container">
+            <EventFilters
+              events={nonFeaturedEvents}
+              onFilteredEventsChange={handleFilteredEventsChange}
+              showSearch={true}
+              showActiveFilters={true}
+              layout="horizontal"
+            />
+          </div>
+          <div className="flex flex-wrap justify-center gap-2 sm:gap-3 text-sm px-4" data-test-id="category-pills">
+            <button
+              onClick={() => handleCategoryFilter('workshop')}
+              className="bg-white/20 hover:bg-white/30 px-2 sm:px-3 py-1 rounded-full transition-colors cursor-pointer"
+              data-test-id="category-pill-workshop"
+            >
+              Workshop
+            </button>
+            <button
+              onClick={() => handleCategoryFilter('community')}
+              className="bg-white/20 hover:bg-white/30 px-2 sm:px-3 py-1 rounded-full transition-colors cursor-pointer"
+              data-test-id="category-pill-community"
+            >
+              Community
+            </button>
+            <button
+              onClick={() => handleCategoryFilter('arts')}
+              className="bg-white/20 hover:bg-white/30 px-2 sm:px-3 py-1 rounded-full transition-colors cursor-pointer"
+              data-test-id="category-pill-arts"
+            >
+              Arts
+            </button>
+            <button
+              onClick={() => handleCategoryFilter('business')}
+              className="bg-white/20 hover:bg-white/30 px-2 sm:px-3 py-1 rounded-full transition-colors cursor-pointer"
+              data-test-id="category-pill-business"
+            >
+              Business
+            </button>
+            <button
+              onClick={() => handleCategoryFilter('family')}
+              className="bg-white/20 hover:bg-white/30 px-2 sm:px-3 py-1 rounded-full transition-colors cursor-pointer"
+              data-test-id="category-pill-family"
+            >
+              Family
+            </button>
           </div>
         </div>
       </section>
